@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException, Header
 from fastapi.responses import JSONResponse
@@ -134,4 +134,5 @@ def simulate_chat(payload: SimulateMessagePayload):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 8000))`nuvicorn.run("main:app", host="0.0.0.0", port=port)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
