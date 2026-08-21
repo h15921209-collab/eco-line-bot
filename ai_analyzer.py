@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 from typing import List, Dict, Any, Optional
 from config import settings
 from data_service import DataService
@@ -8,13 +8,24 @@ logger = logging.getLogger("ai_analyzer")
 class EconomicAIAnalyzer:
     def __init__(self):
         self.api_key = settings.GEMINI_API_KEY
-        self.client = None
-        if self.api_key:
+
+    def _call_gemini_rest(self, prompt: str) -> str:
+        if not self.api_key:
+            return ""
+        import requests
+        headers = {"Content-Type": "application/json"}
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        models = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.0-flash"]
+        for m in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={self.api_key}"
             try:
-                from google import genai
-                self.client = genai.Client(api_key=self.api_key)
+                res = requests.post(url, headers=headers, json=payload, timeout=25)
+                if res.status_code == 200:
+                    data = res.json()
+                    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
             except Exception as e:
-                logger.warning(f"Gemini client initialization failed: {e}")
+                logger.warning(f"Model {m} failed: {e}")
+        return ""
 
     def generate_weekly_analysis(self, snapshot_data: Optional[List[Dict[str, Any]]] = None) -> str:
         """彙整最新一期總經數據並調用 Gemini 生成宏觀情勢週報"""
@@ -56,19 +67,10 @@ class EconomicAIAnalyzer:
             "- 使用繁體中文，語氣客觀、專業、結構清晰。\n"
             "- 善用 Emoji 與 Markdown 列點，適合在 LINE 上清晰閱讀。"
         )
-
-        if self.client:
-            try:
-                response = self.client.models.generate_content(
-                    model="gemini-3.6-flash",
-                    contents=prompt,
-                )
-                return response.text.strip()
-            except Exception as e:
-                logger.error(f"Gemini API Call failed: {e}")
-                return self._fallback_rule_based_analysis(snapshot_data, error_msg=str(e))
-        else:
-            return self._fallback_rule_based_analysis(snapshot_data)
+        ai_text = self._call_gemini_rest(prompt)
+        if ai_text:
+            return ai_text
+        return self._fallback_rule_based_analysis(snapshot_data)
 
     def generate_single_indicator_analysis(self, code: str) -> str:
         """針對特定單一指標的歷史序列進行趨勢分析"""
@@ -103,18 +105,10 @@ class EconomicAIAnalyzer:
             "3. 對央行貨幣政策與市場定價之傳導路徑\n"
             "4. 後續觀察重點"
         )
-
-        if self.client:
-            try:
-                response = self.client.models.generate_content(
-                    model="gemini-3.6-flash",
-                    contents=prompt,
-                )
-                return f"📊 【{ind.name} 專題分析】\n\n" + response.text.strip()
-            except Exception as e:
-                return f"📊 【{ind.name} 歷史趨勢】\n\n" + history_text + f"\n\n(提示: 配置 GEMINI_API_KEY 可自動產製 AI 深度評析)"
-        else:
-            return f"📊 【{ind.name} 歷史趨勢】\n\n" + history_text + f"\n\n💡 提示：在 .env 中填入 GEMINI_API_KEY 即可啟動 Gemini 自動深度趨勢評析！"
+        ai_text = self._call_gemini_rest(prompt)
+        if ai_text:
+            return f"📊 【{ind.name} 專題分析】\n\n" + ai_text
+        return f"📊 【{ind.name} 歷史趨勢】\n\n" + history_text
 
     def _fallback_rule_based_analysis(self, snapshot_data: List[Dict[str, Any]], error_msg: str = "") -> str:
         summary = ["📊 【宏觀經濟情勢週報 (智慧速報)】", ""]
