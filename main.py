@@ -48,7 +48,12 @@ if settings.LINE_CHANNEL_SECRET and settings.LINE_CHANNEL_ACCESS_TOKEN:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
-    logger.info("Economic Line Bot Server started.")
+    try:
+        from populate_full_data import populate_comprehensive_economic_data
+        populate_comprehensive_economic_data()
+    except Exception as e:
+        logger.warning(f"Populate data note: {e}")
+    logger.info("Economic Line Bot Server started successfully.")
     yield
 
 app = FastAPI(title="Economic Line Bot Assistant", lifespan=lifespan)
