@@ -1,4 +1,4 @@
-﻿import os
+import os
 from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey, Text
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
@@ -6,23 +6,15 @@ from config import settings
 
 db_url = settings.DATABASE_URL
 if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql+pg8000://", 1)
-elif db_url.startswith("postgresql://"):
-    db_url = db_url.replace("postgresql://", "postgresql+pg8000://", 1)
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-# 清理可能存在的 sslmode 參數衝突
-if "sslmode=" in db_url and "pg8000" in db_url:
-    db_url = db_url.replace("?sslmode=require", "").replace("&sslmode=require", "")
-
-connect_args = {}
-if "sqlite" in db_url:
-    connect_args["check_same_thread"] = False
-elif "pg8000" in db_url:
-    import ssl
-    ssl_context = ssl.create_default_context()
-    connect_args["ssl_context"] = ssl_context
-
-engine = create_engine(db_url, connect_args=connect_args, pool_pre_ping=True)
+try:
+    if "sqlite" in db_url:
+        engine = create_engine(db_url, connect_args={"check_same_thread": False})
+    else:
+        engine = create_engine(db_url, pool_pre_ping=True, pool_size=3, max_overflow=0)
+except Exception as e:
+    engine = create_engine("sqlite:///./eco_data.db", connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
