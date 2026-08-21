@@ -2,6 +2,10 @@
 import os
 import sys
 import json
+import hmac
+import hashlib
+import base64
+import logging
 import traceback
 
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,10 +27,11 @@ class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             content_length = int(self.headers.get("Content-Length", 0))
-            body = self.rfile.read(content_length).decode("utf-8") if content_length > 0 else ""
+            body_bytes = self.rfile.read(content_length) if content_length > 0 else b""
+            body_str = body_bytes.decode("utf-8", errors="replace")
             
             sig = self.headers.get("X-Line-Signature", "")
-            if not sig or not body:
+            if not sig or not body_str:
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
@@ -39,21 +44,21 @@ class handler(BaseHTTPRequestHandler):
             handler_logic = LineBotHandler()
             token = settings.LINE_CHANNEL_ACCESS_TOKEN
             
-            data = json.loads(body)
+            data = json.loads(body_str)
             events = data.get("events", [])
             import requests
             
             for event in events:
                 if event.get("type") == "message" and event.get("message", {}).get("type") == "text":
-                    user_msg = event["message"]["text"]
+                    user_msg = event["message"]["text"].strip()
                     reply_token = event.get("replyToken")
                     
                     # 產製分析回覆
                     reply_text = handler_logic.handle_message(user_msg)
                     
                     # 呼叫 LINE Reply API 回覆用戶
-                    if token and reply_token:
-                        requests.post(
+                    if token and reply_token and not reply_token.startswith("test"):
+                        reply_res = requests.post(
                             "https://api.line.me/v2/bot/message/reply",
                             headers={
                                 "Authorization": f"Bearer {token}",
@@ -65,6 +70,7 @@ class handler(BaseHTTPRequestHandler):
                             },
                             timeout=25
                         )
+                        print("LINE Reply API result:", reply_res.status_code, reply_res.text)
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
