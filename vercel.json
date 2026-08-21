@@ -1,5 +1,23 @@
 ﻿{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/main.py" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/line-webhook",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/callback",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "api/index.py"
+    }
   ]
 }
