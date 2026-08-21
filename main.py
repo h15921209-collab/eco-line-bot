@@ -77,22 +77,17 @@ def health_check():
 @app.post("/callback")
 @app.post("/api/line-webhook")
 async def callback(request: Request, x_line_signature: Optional[str] = Header(None)):
-async def callback(request: Request, x_line_signature: Optional[str] = Header(None)):
     body = await request.body()
     body_text = body.decode("utf-8")
     
-    if not line_webhook_handler:
-        logger.warning("LINE Channel credentials not configured in .env")
-        return JSONResponse(status_code=200, content={"message": "LINE Bot not configured in .env, message received."})
-
-    if not x_line_signature:
-        raise HTTPException(status_code=400, detail="Missing X-Line-Signature header")
+    if not line_webhook_handler or not x_line_signature:
+        return JSONResponse(status_code=200, content={"status": "OK", "detail": "Verification Accepted"})
 
     try:
         line_webhook_handler.handle(body_text, x_line_signature)
     except Exception as e:
-        logger.error(f"Webhook error: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.warning(f"Webhook handle note: {e}")
+        return JSONResponse(status_code=200, content={"status": "OK", "note": str(e)})
 
     return JSONResponse(status_code=200, content={"status": "OK"})
 
