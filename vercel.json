@@ -2,12 +2,12 @@
   "version": 2,
   "crons": [
     {
-      "path": "/api/collector",
-      "schedule": "30 0 * * *"
+      "path": "/api/morning-broadcast",
+      "schedule": "30 0 * * 1-5"
     },
     {
       "path": "/api/collector",
-      "schedule": "0 9 * * *"
+      "schedule": "0 9 * * 1-5"
     }
   ]
 }
