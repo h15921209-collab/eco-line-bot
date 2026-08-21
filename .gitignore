@@ -3,3 +3,4 @@
 __pycache__/
 *.pyc
 .system_generated/
+auto_deploy_*.py
