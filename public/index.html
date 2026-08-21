@@ -153,10 +153,13 @@
             <span class="mr-1.5">📷</span> 手機掃描立即開啟
           </h3>
           <p class="text-xs text-slate-400 mb-3">使用手機相機掃描，免輸入網址直接看研報與圖表</p>
-          <div class="bg-white p-2.5 rounded-xl inline-block shadow-lg">
-            <canvas id="qrcode-canvas"></canvas>
+          <div class="bg-white p-2 rounded-xl inline-block shadow-lg border border-slate-700">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=4&data=https%3A%2F%2Feco-line-bot.vercel.app" 
+                 alt="手機掃描開啟網頁" 
+                 class="w-36 h-36 rounded-lg block" 
+                 loading="eager" />
           </div>
-          <div class="text-xs text-sky-400 font-mono mt-2 select-all">https://eco-line-bot.vercel.app</div>
+          <div class="text-xs text-sky-400 font-mono mt-2 select-all font-semibold">eco-line-bot.vercel.app</div>
         </div>
 
         <!-- 動態圖表 -->
