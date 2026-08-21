@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "crons": [
+    {
+      "path": "/api/collector",
+      "schedule": "30 0 * * *"
+    },
+    {
+      "path": "/api/collector",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}
