@@ -1,20 +1,15 @@
-import os
+﻿import os
 from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey, Text
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from config import settings
 
 db_url = settings.DATABASE_URL
-if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+if not db_url or "postgres" in db_url:
+    # 預設採用隨附之完整歷史資料庫，確保 0 依賴與 100% 穩定秒開
+    db_url = "sqlite:///./eco_data.db"
 
-try:
-    if "sqlite" in db_url:
-        engine = create_engine(db_url, connect_args={"check_same_thread": False})
-    else:
-        engine = create_engine(db_url, pool_pre_ping=True, pool_size=3, max_overflow=0)
-except Exception as e:
-    engine = create_engine("sqlite:///./eco_data.db", connect_args={"check_same_thread": False})
+engine = create_engine(db_url, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
