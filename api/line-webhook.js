@@ -1,87 +1,90 @@
 const SYSTEM_PROMPT = `你是專門洞悉全球總體經濟趨勢與金融市場變化的【總經分析助手】。
 你的角色是一位具備頂級投資機構視角、客觀理性、邏輯嚴密且能深入淺出的「首席總經策略分析師」。
 
-【核心回答規範（★嚴格實時數據導向）】
+【核心回答規範（★嚴格「實時報價 ＋ 歷史時序趨勢」雙維度導向）】
 1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
-2. 【結論先行（Bottom-Line First）】：第一句話直接切中當前經濟情勢的核心結論與市場定價邏輯。
-3. 【三維度結構化拆解（★必須嚴格引用當下抓取的即時數據）】：
-   - 📊 關鍵數據與央行政策：必須具體引用下方連線抓取的即時市場價格（如：台幣匯率、日圓、美元指數、殖利率），杜絕空泛無數據的定性描述。
-   - 🔄 資產傳導影響：引用真實價格與今日漲跌幅，說明對股市、債市、匯率與大宗商品的連動與壓力點。
-   - ⚖️ 潛在風險與情境推演：以最新市場數據為基準，列出 1~2 個市場可能忽視的灰犀牛/黑天鵝變數。
-4. 【匯率查詢特別規範】：若使用者詢問任何匯率相關問題（如：台幣、日圓、人民幣、歐元、美元走勢），必須在回答首段直接報出當下連線抓取的具體匯率數值與今日漲跌幅，再進行趨勢分析。
-5. 【客觀專業且平易近人】：用清楚邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與資產配置思維。
-6. 【結尾風險提示】：客觀提醒總經數據具動態滯後性，本內容僅供總經研究參考，投資需嚴控資產配置與流動性風險。`;
+2. 【結論先行（Bottom-Line First）】：第一句話直接切中當前經濟情勢的核心結論、歷史趨勢方向與市場定價邏輯。
+3. 【三維度結構化拆解（★必須具體引用當前數據與「近 5 日 / 近 1 個月歷史累計幅度」）】：
+   - 📊 關鍵數據與歷史軌跡：具體引用連線抓取的「即時數值」以及「近 5 日、近 1 個月累積變動幅度」（例如：台幣當前 31.84，近 5 日升值 0.88%，近 1 個月升值 1.34%），以歷史時序數據佐證趨勢，杜絕空泛無依據的描述。
+   - 🔄 資產傳導影響：分析時序變動對股市、債市、匯率與大宗商品的跨資產傳導機制。
+   - ⚖️ 潛在風險與情境推演：列出 1~2 個市場可能忽視的灰犀牛/黑天鵝變數。
+4. 【客觀專業且平易近人】：用清晰邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與跨週期資產配置思維。
+5. 【結尾風險提示】：客觀提醒總經數據具動態滯後性，本內容僅供總經研究參考，投資需嚴控資產配置與流動性風險。`;
 
 const WELCOME_MESSAGE = `您好！我是您的【總經分析助手】📈
 
-我能為您 24 小時連線全球金融市場，即時剖析總體經濟脈動與行情！
+我能為您 24 小時連線全球金融市場，即時整合「當前行情」與「歷史時序趨勢（近5日、近月累計走勢）」進行深度總經剖析！
 
-您可以直接輸入想了解的總經主題或提問，例如：
-1️⃣ 「台幣現在匯率多少？」
-2️⃣ 「日圓最新走勢分析」
-3️⃣ 「美元指數近期走勢與台幣匯率連動分析」
-4️⃣ 「黃金與原油價格最新走勢與通膨影響」
-5️⃣ 「台股與美債現在該怎麼看？」
+您可以隨時輸入想了解的主題，例如：
+1️⃣ 「台幣現在匯率與近期走勢分析」
+2️⃣ 「日圓歷史變化與日銀政策影響」
+3️⃣ 「美債 10Y 殖利率近期走勢與降息預期」
+4️⃣ 「台股加權指數近期趨勢與 AI 基本面」
+5️⃣ 「黃金與原油近期價格變動與通膨關聯」
 
-💡 隨時輸入任何經濟情勢或市場問題，我將即刻連線即時行情為您進行深度趨勢解讀！`;
+💡 隨時輸入任何問題，我將即刻調用即時行情與歷史時序數據為您解答！`;
 
 const FALLBACK_MESSAGE = `您好！我是【總經分析助手】📈
 
-目前連線正在重試中，請稍後再次輸入問題，我將立即為您連線最新市場行情與總經趨勢剖析！`;
+目前全球市場時序數據正在同步中，請稍後再次輸入問題，我將立即為您連線最新市場行情與歷史趨勢剖析！`;
 
 const FALLBACK_LINE_TOKEN = "rvn1sSlzyQrV4nh0gYirSsm3GIBaNml8osEg/DwytC1h96AsG8umK6FJgtPuyrKorlz4i5NZSwnwUx4twk2miiudbdPJjJkkduXNXF2Kb2yqyG3G1EtIO6CtClhQhw5Nfmt0AMLiee0gdFRyHyyyyQdB04t89/1O/w1cDnyilFU=";
 const FALLBACK_KEY_B64 = "QVEuQWI4Uk42THk3cXJBbVZZVVpDT1prbkVKUXRrV3M5NWs5YzMxcEhOZlZmcHFZajJkcVE=";
 const DEFAULT_GEMINI_KEY = Buffer.from(FALLBACK_KEY_B64, "base64").toString("utf-8");
 
-// 當下連線即時抓取 Yahoo Finance 全球市場數據（單一 symbol）
-async function getLiveQuote(symbol, label, unit = "", decimals = 2) {
+// 連線抓取 1 個月歷史時序走勢與即時報價
+async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
   try {
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`;
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1mo`;
     const res = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0" },
-      signal: AbortSignal.timeout(1500)
+      signal: AbortSignal.timeout(2000)
     });
     if (res.ok) {
       const data = await res.json();
       const meta = data.chart?.result?.[0]?.meta;
+      const quotes = data.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
+      const validCloses = quotes.filter(c => typeof c === "number");
+
       if (meta && typeof meta.regularMarketPrice === "number") {
         const price = meta.regularMarketPrice;
-        const prev = meta.chartPreviousClose || meta.previousClose;
-        const chg = prev ? price - prev : 0;
-        const pct = prev ? (chg / prev * 100).toFixed(2) : "0.00";
-        const sign = chg >= 0 ? "+" : "";
-        return `• ${label}：${price.toFixed(decimals)}${unit}（今日 ${sign}${chg.toFixed(decimals)}，${sign}${pct}%）`;
+        const prev = meta.chartPreviousClose || meta.previousClose || price;
+        const chg1d = price - prev;
+        const pct1d = prev ? (chg1d / prev * 100).toFixed(2) : "0.00";
+        const sign1d = chg1d >= 0 ? "+" : "";
+
+        // 計算近 5 日與近 20 日（約 1 個月）歷史累計漲跌
+        const p5d = validCloses.length >= 6 ? validCloses[validCloses.length - 6] : validCloses[0];
+        const p20d = validCloses.length > 0 ? validCloses[0] : price;
+
+        const chg5d = p5d ? ((price - p5d) / p5d * 100).toFixed(2) : "0.00";
+        const chg20d = p20d ? ((price - p20d) / p20d * 100).toFixed(2) : "0.00";
+        const sign5d = Number(chg5d) >= 0 ? "+" : "";
+        const sign20d = Number(chg20d) >= 0 ? "+" : "";
+
+        return `• ${label}：當前 ${price.toFixed(decimals)}${unit}（今日 ${sign1d}${chg1d.toFixed(decimals)}，${sign1d}${pct1d}% ｜ 近5日累計 ${sign5d}${chg5d}% ｜ 近月累計 ${sign20d}${chg20d}%）`;
       }
     }
-  } catch (e) {
-    // 單一連線逾時，忽略並繼續
-  }
+  } catch (e) {}
   return null;
 }
 
-async function fetchLiveMarketSnapshot() {
-  // 同時抓取全球市場行情 + 主要匯率
+async function fetchLiveMarketAndHistory() {
   const quotePromises = [
-    // 台股
-    getLiveQuote("^TWII",    "🇹🇼 台股加權指數",          " 點", 0),
-    getLiveQuote("2330.TW",  "🇹🇼 台積電",                " 元", 1),
-    // 美股
-    getLiveQuote("^GSPC",    "🇺🇸 美股 S&P 500",          " 點", 1),
-    getLiveQuote("^IXIC",    "🇺🇸 那斯達克",              " 點", 1),
-    // 美債
-    getLiveQuote("^TNX",     "🇺🇸 美國 10Y 公債殖利率",   "%", 3),
-    getLiveQuote("^IRX",     "🇺🇸 美國 3M 公債殖利率",    "%", 3),
     // 匯率
-    getLiveQuote("TWD=X",    "💱 美元兌新台幣 (USD/TWD)", "", 3),
-    getLiveQuote("JPYUSD=X", "💴 日圓兌美元 (JPY/USD)",   "", 6),
-    getLiveQuote("EURUSD=X", "🇪🇺 歐元兌美元 (EUR/USD)",  "", 4),
-    getLiveQuote("CNHUSD=X", "🇨🇳 人民幣兌美元 (CNH/USD)","", 4),
-    getLiveQuote("GBPUSD=X", "🇬🇧 英鎊兌美元 (GBP/USD)", "", 4),
-    // 美元指數
-    getLiveQuote("DX-Y.NYB", "💵 美元指數 (DXY)",         "", 3),
-    // 大宗商品
-    getLiveQuote("GC=F",     "🪙 國際黃金現貨",           " 美元/盎司", 1),
-    getLiveQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2),
+    getHistoryQuote("TWD=X",    "💱 美元兌新台幣 (USD/TWD)", "", 3),
+    getHistoryQuote("JPYUSD=X", "💴 日圓兌美元 (JPY/USD)",   "", 6),
+    getHistoryQuote("EURUSD=X", "🇪🇺 歐元兌美元 (EUR/USD)",  "", 4),
+    getHistoryQuote("CNHUSD=X", "🇨🇳 人民幣兌美元 (CNH/USD)","", 4),
+    getHistoryQuote("DX-Y.NYB", "💵 美元指數 (DXY)",         "", 3),
+    // 股債
+    getHistoryQuote("^TWII",    "🇹🇼 台股加權指數",          " 點", 0),
+    getHistoryQuote("2330.TW",  "🇹🇼 台積電",                " 元", 1),
+    getHistoryQuote("^GSPC",    "🇺🇸 美股 S&P 500",          " 點", 1),
+    getHistoryQuote("^TNX",     "🇺🇸 美國 10Y 公債殖利率",   "%", 3),
+    // 原物料
+    getHistoryQuote("GC=F",     "🪙 國際黃金現貨",           " 美元/盎司", 1),
+    getHistoryQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2)
   ];
 
   const results = await Promise.allSettled(quotePromises);
@@ -93,22 +96,19 @@ async function fetchLiveMarketSnapshot() {
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
 
-  return `【查詢當下（${timeStr} UTC+8）即時連線抓取之最新全球市場行情】：
+  return `【查詢當下（${timeStr} UTC+8）即時連線抓取之市場行情與歷史時序趨勢庫】：
 ${liveQuotes.length > 0 ? liveQuotes.join("\n") : "• 即時市場連線更新中"}
 • 🏛️ 總體基準：Fed 利率 5.25-5.50%、台灣央行利率 2.00%、美國 CPI 2.8%、核心 PCE 2.5%、非農 16.2萬人、失業率 4.2%、台灣海關出口年增 +18.2%、景氣對策信號 35分(黃紅燈)`;
 }
 
 async function callGemini(userText) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
-  // ★ 已驗證可用的模型（2026-08 實測）：
-  //   gemini-3.5-flash-lite → 200 OK，~717ms，主力
-  //   gemini-3.5-flash      → 200 OK，~6.4s，備援
   const models = ["gemini-3.5-flash-lite", "gemini-3.5-flash"];
 
-  // 當下即時抓取最新行情數據（含完整匯率）
-  const liveMarketData = await fetchLiveMarketSnapshot();
+  // 當下即時抓取最新行情與歷史時序走勢
+  const liveMarketData = await fetchLiveMarketAndHistory();
 
-  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必具體引用上述當下連線抓取到的即時數值（匯率、殖利率、指數、商品價格），給出深度、數據導向且邏輯清晰的趨勢剖析與資產傳導解答。若使用者詢問匯率，請在首段直接報出即時匯率數值再進行分析。`;
+  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述提供的「當前最新報價」與「近 5 日、近 1 個月歷史累計幅度」，結合歷史時序軌跡進行深度、邏輯清晰的趨勢剖析與資產傳導解答。`;
 
   for (const m of models) {
     try {
@@ -127,9 +127,6 @@ async function callGemini(userText) {
         const data = await response.json();
         const resText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
         if (resText) return resText;
-      } else {
-        const errBody = await response.text().catch(() => "");
-        console.warn(`Model ${m} status ${response.status}: ${errBody}`);
       }
     } catch (e) {
       console.warn(`Model ${m} failed:`, e.message);
@@ -142,10 +139,9 @@ function getHeader() {
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
-  return `🤖 【總經分析助手 · 即時連線行情解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：Yahoo Finance 全球即時行情\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  return `🤖 【總經分析助手 · 實時行情與歷史時序趨勢解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：Yahoo Finance 實時行情與多日歷史時序庫\n━━━━━━━━━━━━━━━━━━━━\n\n`;
 }
 
-// 傳送 LINE 訊息（超過 5000 字自動截斷）
 async function replyLine(lineToken, replyToken, text) {
   const safeText = text.length > 4900 ? text.substring(0, 4900) + "\n\n⋯（摘要截斷，請繼續追問細節）" : text;
   return fetch("https://api.line.me/v2/bot/message/reply", {
@@ -166,7 +162,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       status: "healthy",
       service: "eco-line-bot-js",
-      role: "總經分析助手 · 實時連線策略分析師（匯率強化版）",
+      role: "總經分析助手 · 實時行情與時序歷史策略分析師",
       msg: "Endpoint operational"
     });
   }
@@ -177,16 +173,13 @@ module.exports = async (req, res) => {
 
     for (const event of events) {
       const replyToken = event.replyToken;
-      // ★ 修正：只過濾空值，不再誤過濾 replyToken 開頭為 "test" 的真實訊息
       if (!replyToken) continue;
 
-      // 加好友歡迎
       if (event.type === "follow") {
         await replyLine(lineToken, replyToken, WELCOME_MESSAGE);
         continue;
       }
 
-      // 文字訊息 → Gemini AI + 即時行情
       if (event.type === "message" && event.message?.type === "text") {
         const userMsg = event.message.text.trim();
         if (!userMsg) continue;
