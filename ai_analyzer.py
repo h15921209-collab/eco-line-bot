@@ -15,7 +15,7 @@ class EconomicAIAnalyzer:
         import requests
         headers = {"Content-Type": "application/json"}
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
-        models = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.0-flash"]
+        models = ["gemini-flash-latest", "gemini-pro-latest", "gemini-flash-lite-latest", "gemini-3.6-flash"]
         for m in models:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={self.api_key}"
             try:
