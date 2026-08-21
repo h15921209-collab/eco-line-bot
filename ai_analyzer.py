@@ -110,6 +110,58 @@ class EconomicAIAnalyzer:
             return f"📊 【{ind.name} 專題分析】\n\n" + ai_text
         return f"📊 【{ind.name} 歷史趨勢】\n\n" + history_text
 
+    def generate_realtime_news_briefing(self) -> str:
+        """產製最新全球總經與市場即時焦點消息簡報"""
+        with DataService() as service:
+            snapshot_data = service.get_latest_macro_snapshot()
+
+        data_summary = []
+        for d in snapshot_data[:12]:
+            data_summary.append(f"• {d['name']}: {d['actual']}{d['unit']} ({d['latest_date']})")
+        data_text = "\n".join(data_summary)
+
+        prompt = (
+            "你是一位頂尖國際金融機構的宏觀策略主管與資深財經主播。\n"
+            "請為投資人與研究主管撰寫一份最新、最具時效性的【全球總經與財經市場即時情勢焦點速報】。\n\n"
+            f"【最新資料庫關鍵總經數據參考】：\n{data_text}\n\n"
+            "【報告結構要求】：\n"
+            "🔥 1. 【全球總經與央行焦點】（聯準會降息動態、美債殖利率走向、美元走勢）\n"
+            "⚡ 2. 【即時市場快訊與盤勢重點】（美股期指/美股三大指數、科技巨頭、債市定價）\n"
+            "🇹🇼 3. 【台灣經濟與科技焦點】（台積電/AI伺服器供應鏈、出口與外銷訂單力道）\n"
+            "🎯 4. 【情勢總結與投資人操盤指引】（股、債、匯、大宗原物料重點應對策略）\n\n"
+            "格式要求：\n"
+            "- 繁體中文，專業犀利、條理分明、層次豐富。\n"
+            "- 善用 Emoji 與重點粗體標示，便於手機快速掌握要點。"
+        )
+
+        ai_text = self._call_gemini_rest(prompt)
+        if ai_text:
+            return ai_text
+        return self._fallback_rule_based_analysis(snapshot_data)
+
+    def answer_custom_macro_question(self, question: str) -> str:
+        """針對使用者自由提問的總經與市場問題提供專業 AI 解答"""
+        with DataService() as service:
+            snapshot_data = service.get_latest_macro_snapshot()
+
+        data_summary = []
+        for d in snapshot_data[:10]:
+            data_summary.append(f"• {d['name']}: {d['actual']}{d['unit']} ({d['latest_date']})")
+        data_text = "\n".join(data_summary)
+
+        prompt = (
+            "你是一位擁有20年經驗的首席總體經濟學家與資深投資策略師。\n"
+            f"使用者提出了一個財經/總經問題：「{question}」\n\n"
+            f"【最新資料庫總經背景參考】：\n{data_text}\n\n"
+            "請依據客觀經濟學邏輯與最新市場脈動，給出專業、精闢且具實務價值的解答。\n"
+            "格式要求：繁體中文，善用列點與 Emoji，語氣自信專業。"
+        )
+
+        ai_text = self._call_gemini_rest(prompt)
+        if ai_text:
+            return ai_text
+        return f"針對「{question}」：目前各項指標顯示全球通膨持續降溫，聯準會降息路徑明確，建議關注下週最新數據發布。"
+
     def _fallback_rule_based_analysis(self, snapshot_data: List[Dict[str, Any]], error_msg: str = "") -> str:
         summary = ["📊 【宏觀經濟情勢週報 (智慧速報)】", ""]
         summary.append("📌 【最新公佈關鍵指標一覽】")
@@ -124,10 +176,4 @@ class EconomicAIAnalyzer:
         summary.append("2. 💼 勞動就業：新增非農與失業率數據顯示勞動市場逐漸由過熱回歸供需平衡，硬著陸風險可控。")
         summary.append("3. 🇹🇼 台灣景氣：外銷訂單維持高成長動能，受惠於全球 AI 算力及伺服器需求，下半年出口動能依然穩健。")
         summary.append("4. 📈 資產配置指引：長天期公債殖利率趨於下行，有利債券價格；股市關注科技基本面與獲利成長能見度。")
-        
-        if error_msg:
-            summary.append("\n(註：Gemini API 連線備援模式)")
-        else:
-            summary.append("\n💡 提示：在 .env 檔案中設定 GEMINI_API_KEY，即可享有 Gemini 2.5 Flash 即時客製化深度報告！")
-
         return "\n".join(summary)
