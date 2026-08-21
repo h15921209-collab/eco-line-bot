@@ -139,4 +139,4 @@ def simulate_chat(payload: SimulateMessagePayload):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host=settings.HOST, port=settings.PORT, reload=True)
+    port = int(os.getenv("PORT", 8000))`nuvicorn.run("main:app", host="0.0.0.0", port=port)
