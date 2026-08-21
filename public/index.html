@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全球總經與跨資產時序儀表板</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --red: #f85149;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-badge {
+      background: rgba(63, 185, 80, 0.15);
+      color: var(--green);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      border: 1px solid rgba(63, 185, 80, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      background: #238636;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #2ea043; }
+    .btn-secondary {
+      background: #21262d;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: #30363d; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .card-title {
+      font-size: 0.85rem;
+      color: #8b949e;
+      margin-bottom: 8px;
+    }
+    .card-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .card-sub {
+      font-size: 0.8rem;
+      color: #8b949e;
+    }
+    .chart-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .chart-title {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sheets-box {
+      background: linear-gradient(135deg, rgba(88,166,255,0.1), rgba(63,185,80,0.1));
+      border: 1px solid rgba(88,166,255,0.3);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .code-box {
+      background: #000;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: monospace;
+      color: #79c0ff;
+      margin: 10px 0;
+      overflow-x: auto;
+      border: 1px solid #30363d;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📈 全球總經與跨資產時序儀表板</h1>
+      <div class="btn-group">
+        <div class="status-badge"><div class="status-dot"></div> 雲端自動同步中 (08:30 & 17:00)</div>
+        <button class="btn btn-secondary" onclick="fetchData()">🔄 立即刷新</button>
+      </div>
+    </div>
+
+    <!-- 關鍵指標卡片 -->
+    <div class="grid" id="ticker-grid">
+      <div class="card"><div class="card-title">🇹🇼 台股加權指數</div><div class="card-val" id="val-twii">--</div><div class="card-sub">代號: ^TWII</div></div>
+      <div class="card"><div class="card-title">🇹🇼 台積電 (TSMC)</div><div class="card-val" id="val-tsmc">--</div><div class="card-sub">代號: 2330.TW</div></div>
+      <div class="card"><div class="card-title">🇺🇸 美股 S&P 500</div><div class="card-val" id="val-sp500">--</div><div class="card-sub">代號: ^GSPC</div></div>
+      <div class="card"><div class="card-title">🇺🇸 美債 10Y 殖利率</div><div class="card-val" id="val-us10y">--</div><div class="card-sub">代號: ^TNX</div></div>
+      <div class="card"><div class="card-title">💱 美元兌新台幣 (USD/TWD)</div><div class="card-val" id="val-usdtwd">--</div><div class="card-sub">即時匯率</div></div>
+      <div class="card"><div class="card-title">💵 美元指數 (DXY)</div><div class="card-val" id="val-dxy">--</div><div class="card-sub">代號: DX-Y.NYB</div></div>
+      <div class="card"><div class="card-title">🪙 國際黃金現貨</div><div class="card-val" id="val-gold">--</div><div class="card-sub">美元 / 盎司</div></div>
+      <div class="card"><div class="card-title">🛢️ 紐約輕原油 (WTI)</div><div class="card-val" id="val-oil">--</div><div class="card-sub">美元 / 桶</div></div>
+    </div>
+
+    <!-- 圖表展示 -->
+    <div class="chart-box">
+      <div class="chart-title">📊 股債匯主要資產即時數值分佈</div>
+      <canvas id="macroChart" height="90"></canvas>
+    </div>
+
+    <!-- Google 試算表連動說明 -->
+    <div class="sheets-box">
+      <h3 style="margin-top:0; color:#fff;">📊 Google 試算表（Google Sheets）一鍵連動</h3>
+      <p style="font-size:0.9rem; color:#c9d1d9;">在任何 Google 試算表的 <b>A1 儲存格</b> 中貼上以下公式，即可自動獲取與同步雲端即時時序數據：</p>
+      <div class="code-box">
+        <span id="formula-text">=IMPORTDATA(window.location.origin + "/api/collector?format=csv")</span>
+        <button class="btn" style="padding:4px 10px; font-size:0.8rem;" onclick="copyFormula()">📋 複製公式</button>
+      </div>
+      <a href="https://sheets.new" target="_blank" class="btn" style="display:inline-block; margin-top:5px;">🚀 立即開啟全新 Google 試算表貼上</a>
+    </div>
+  </div>
+
+  <script>
+    let myChart = null;
+
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/collector');
+        const json = await res.json();
+        const d = json.data;
+
+        document.getElementById('val-twii').innerText = d.twii.toLocaleString() + ' 點';
+        document.getElementById('val-tsmc').innerText = d.tsmc.toLocaleString() + ' 元';
+        document.getElementById('val-sp500').innerText = d.sp500.toLocaleString() + ' 點';
+        document.getElementById('val-us10y').innerText = d.us10y.toFixed(3) + '%';
+        document.getElementById('val-usdtwd').innerText = d.usdtwd.toFixed(3);
+        document.getElementById('val-dxy').innerText = d.dxy.toFixed(3);
+        document.getElementById('val-gold').innerText = '$' + d.gold.toLocaleString();
+        document.getElementById('val-oil').innerText = '$' + d.oil.toFixed(2);
+
+        document.getElementById('formula-text').innerText = '=IMPORTDATA("' + window.location.origin + '/api/collector?format=csv")';
+
+        renderChart(d);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderChart(d) {
+      const ctx = document.getElementById('macroChart').getContext('2d');
+      if (myChart) myChart.destroy();
+
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['美債10Y (%)', '美元指數', 'USD/TWD', '原油 ($)', '台積電 (十元)', '黃金 (百元)'],
+          datasets: [{
+            label: '當前市場數據指標',
+            data: [d.us10y, d.dxy, d.usdtwd, d.oil, d.tsmc / 10, d.gold / 100],
+            backgroundColor: [
+              'rgba(88, 166, 255, 0.8)',
+              'rgba(63, 185, 80, 0.8)',
+              'rgba(210, 153, 34, 0.8)',
+              'rgba(248, 81, 73, 0.8)',
+              'rgba(163, 113, 247, 0.8)',
+              'rgba(240, 136, 62, 0.8)'
+            ],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+            x: { grid: { display: false }, ticks: { color: '#8b949e' } }
+          }
+        }
+      });
+    }
+
+    function copyFormula() {
+      const txt = document.getElementById('formula-text').innerText;
+      navigator.clipboard.writeText(txt);
+      alert('✅ 公式已複製！請至 Google 試算表 A1 儲存格貼上！');
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>
