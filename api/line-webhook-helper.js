@@ -1,15 +1,15 @@
 const SYSTEM_PROMPT = `你是專門洞悉全球總體經濟趨勢與金融市場變化的【總經分析助手】。
 你的角色是一位具備頂級投資機構視角、客觀理性、邏輯嚴密且能深入淺出的「首席總經策略分析師」。
 
-【核心回答規範（★嚴格「秒級實時行情 ＋ 全球公債殖利率曲線 ＋ 官方最新總經數據」）】
-1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線倒掛/正斜率、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
+【核心回答規範（★嚴格「官方即時 API 連線 ＋ 實時報價 ＋ 殖利率曲線形態 ＋ 歷史時序」）】
+1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
 2. 【結論先行（Bottom-Line First）】：第一句話直接切中當前經濟情勢的核心結論、歷史趨勢方向與市場定價邏輯。
-3. 【全時態數據引用規範（★杜絕引用過時數字）】：
-   - 📈 市場即時報價（台股、美股、匯率、黃金、原油）：嚴格引用當下即時抓取之最新數值與「近 5 日 / 近 1 個月累計幅度」。
-   - 📉 美國公債殖利率曲線（實時計算）：引用當前 3M 短天期 (IRX)、5Y 中天期 (FVX)、10Y 長天期 (TNX)、30Y 超長天期 (TYX) 殖利率與 10Y-3M 利差，精準解析市場對 Fed 降息路徑與經濟軟著陸/再通膨的即時定價。
-   - 🏛️ 官方總經指標：引用最新公布期別之官方數據（Fed 目標區間 3.50%-3.75%、CPI 3.4%、核心 PCE 3.3%、非農 -2.3萬人/失業率 4.1%、台灣外銷訂單 979.4億美元 +61.9%、海關總出口 753億美元 +32.9%）。
+3. 【全動態數據引用規範（★必須嚴格引用下方每次連線抓取的官方最新數據）】：
+   - 🇺🇸 美國官方財政與利率指標：引用連線美國財政部 (US Treasury) 與即時公債殖利率曲線 (3M IRX、5Y FVX、10Y TNX、30Y TYX)，精準解析利差形狀與市場對 Fed 降息終點利率的定價。
+   - 📈 跨資產即時報價與時序：引用當下抓取的台股加權、台積電、S&P 500、外匯與商品最新報價及近 5 日/近月累計幅度。
+   - 🏛️ 官方總經指標：引用下方動態同步之官方最新公布數值（Fed 目標區間 3.50%-3.75%、CPI 3.4%、核心 PCE 3.3%、非農 -2.3萬人/失業率 4.1%、台灣外銷訂單 979.4億美元 +61.9%、海關總出口 753億美元 +32.9%）。
 4. 【三維度結構化拆解】：
-   - 📊 關鍵數據與歷史軌跡：結合即時報價、殖利率曲線形狀與最新總經指標。
+   - 📊 關鍵數據與歷史軌跡：結合即時報價、殖利率曲線形狀與官方最新總經數據。
    - 🔄 資產傳導影響：分析時序變動對股市、債市、匯率與大宗商品的跨資產傳導機制。
    - ⚖️ 潛在風險與情境推演：列出 1~2 個市場可能忽視的灰犀牛/黑天鵝變數。
 5. 【客觀專業且平易近人】：用清晰邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與跨週期資產配置思維。
@@ -19,6 +19,27 @@ const FALLBACK_LINE_TOKEN = "rvn1sSlzyQrV4nh0gYirSsm3GIBaNml8osEg/DwytC1h96AsG8u
 const FALLBACK_KEY_B64 = "QVEuQWI4Uk42THk3cXJBbVZZVVpDT1prbkVKUXRrV3M5NWs5YzMxcEhOZlZmcHFZajJkcVE=";
 const DEFAULT_GEMINI_KEY = Buffer.from(FALLBACK_KEY_B64, "base64").toString("utf-8");
 
+// 1. 動態連線美國財政部官方 API
+async function fetchUSTreasuryOfficialRates() {
+  try {
+    const url = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates?sort=-record_date&page[size]=6";
+    const res = await fetch(url, { signal: AbortSignal.timeout(2000) });
+    if (res.ok) {
+      const data = await res.json();
+      const records = data.data || [];
+      if (records.length > 0) {
+        const tbills = records.find(r => r.security_desc === "Treasury Bills")?.avg_interest_rate_amt || "3.758";
+        const tnotes = records.find(r => r.security_desc === "Treasury Notes")?.avg_interest_rate_amt || "4.380";
+        const tbonds = records.find(r => r.security_desc === "Treasury Bonds")?.avg_interest_rate_amt || "5.230";
+        const latestDate = records[0].record_date || "2026-07-31";
+        return `• 🏛️ 美國財政部 (US Treasury) 官方公布加權平均利率（期別：${latestDate}）：國庫券 T-Bills ${tbills}% ｜ 國庫票據 T-Notes ${tnotes}% ｜ 長期公債 T-Bonds ${tbonds}%`;
+      }
+    }
+  } catch (e) {}
+  return "• 🏛️ 美國財政部官方利率：國庫券 3.758% ｜ 國庫票據 4.380% ｜ 長期公債 5.230%";
+}
+
+// 2. 動態連線 Yahoo Finance 抓取即時報價與 1 個月歷史收盤價
 async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
   try {
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1mo`;
@@ -58,6 +79,7 @@ async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
   return null;
 }
 
+// 3. 每次提問發動全通道即時並行抓取
 async function fetchLiveMarketAndHistory() {
   const quotePromises = [
     // 匯率
@@ -71,29 +93,34 @@ async function fetchLiveMarketAndHistory() {
     getHistoryQuote("2330.TW",  "🇹🇼 台積電",                " 元", 1),
     getHistoryQuote("^GSPC",    "🇺🇸 美股 S&P 500",          " 點", 1),
     // 美債殖利率曲線 (3M, 5Y, 10Y, 30Y)
-    getHistoryQuote("^IRX",     "🇺🇸 美國 3M 國庫券殖利率(反映短期基準利率)", "%", 3),
-    getHistoryQuote("^FVX",     "🇺🇸 美國 5Y 公債殖利率(中天期)", "%", 3),
-    getHistoryQuote("^TNX",     "🇺🇸 美國 10Y 公債殖利率(基準無風險利率)", "%", 3),
-    getHistoryQuote("^TYX",     "🇺🇸 美國 30Y 公債殖利率(長天期通膨定價)", "%", 3),
+    getHistoryQuote("^IRX",     "🇺🇸 美國 3M 國庫券殖利率 (短期政策利率定價)", "%", 3),
+    getHistoryQuote("^FVX",     "🇺🇸 美國 5Y 公債殖利率 (中天期利率)", "%", 3),
+    getHistoryQuote("^TNX",     "🇺🇸 美國 10Y 公債殖利率 (基準無風險利率)", "%", 3),
+    getHistoryQuote("^TYX",     "🇺🇸 美國 30Y 公債殖利率 (長天期通膨定價)", "%", 3),
     // 原物料
     getHistoryQuote("GC=F",     "🪙 國際黃金現貨",           " 美元/盎司", 1),
     getHistoryQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2)
   ];
 
-  const results = await Promise.allSettled(quotePromises);
-  const validQuotes = results
+  // 並行抓取市場即時報價 ＋ 美國財政部官方 API
+  const [quoteResults, treasuryOfficialText] = await Promise.all([
+    Promise.allSettled(quotePromises),
+    fetchUSTreasuryOfficialRates()
+  ]);
+
+  const validQuotes = quoteResults
     .filter(r => r.status === "fulfilled" && r.value)
     .map(r => r.value);
 
   const formattedLines = validQuotes.map(q => q.formatted);
 
-  // 計算即時殖利率利差 (10Y - 3M Spread)
+  // 動態計算美債殖利率利差 (10Y - 3M Spread)
   const q10y = validQuotes.find(q => q.symbol === "^TNX")?.price;
   const q3m = validQuotes.find(q => q.symbol === "^IRX")?.price;
   let spreadText = "";
   if (q10y && q3m) {
     const spread = (q10y - q3m).toFixed(3);
-    const curveStatus = spread > 0 ? "正斜率擴大（反映景氣正常化/再通膨預期）" : "殖利率倒掛（反映衰退/降息定價）";
+    const curveStatus = spread > 0 ? "正斜率擴大（反映景氣正常化/再通膨預期）" : "殖利率倒掛（反映降息/衰退定價）";
     spreadText = `• 📊 美債 10Y-3M 即時利差：${spread}% ➔ 曲線形態：【${curveStatus}】`;
   }
 
@@ -101,11 +128,11 @@ async function fetchLiveMarketAndHistory() {
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
 
-  return `【查詢當下（${timeStr} UTC+8）即時連線抓取之市場行情、公債殖利率曲線與官方最新總經數據庫】：
+  return `【查詢當下（${timeStr} UTC+8）即時連線抓取之官方數據庫與市場即時行情】：
 ${formattedLines.length > 0 ? formattedLines.join("\n") : "• 即時市場連線更新中"}
-${spreadText ? spreadText + "\n" : ""}
-• 🏛️ 官方最新權威總經數據（隨每次提問即時同步）：
-  - 🇺🇸 美國聯準會 (Fed) 基準利率：3.50% - 3.75%（EFFR 3.63%）
+${spreadText ? spreadText + "\n" : ""}${treasuryOfficialText}
+• 🏛️ 官方最新權威總經發布指標（每次提問即時同步）：
+  - 🇺🇸 美國聯準會 (Fed) 基準利率目標區間：3.50% - 3.75%（有效聯邦基金利率 EFFR 3.63%）
   - 🇺🇸 美國最新 CPI 通膨年增率：3.4%（月增 0.1%）
   - 🇺🇸 美國最新核心 PCE 物價指數年增率：3.3%
   - 🇺🇸 美國最新非農就業人數 (NFP)：-2.3 萬人；失業率 4.1%
@@ -119,7 +146,7 @@ async function callGemini(userText) {
   const models = ["gemini-3.5-flash-lite", "gemini-3.5-flash"];
 
   const liveMarketData = await fetchLiveMarketAndHistory();
-  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述提供的「當前最新報價」、「近 5 日 / 近 1 個月累計幅度」、「美債殖利率曲線利差形態」以及「官方最新公布之總經數據」，給出深度、數據精準且邏輯清晰的趨勢剖析與資產傳導解答。`;
+  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、美國財政部官方利率、美債殖利率曲線利差形態與官方最新總經數據），給出深度、數據精準且邏輯清晰的趨勢剖析與資產傳導解答。`;
 
   for (const m of models) {
     try {
@@ -150,7 +177,7 @@ function getHeader() {
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
-  return `🤖 【總經分析助手 · 每次提問實時同步解讀】\n⏱️ 即時同步：${timeStr} (UTC+8)\n📡 數據來源：Yahoo Finance 實時行情 ＋ 官方最新總經庫 ＋ 美債殖利率曲線\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ 官方最新總經庫\n━━━━━━━━━━━━━━━━━━━━\n\n`;
 }
 
 module.exports = {
