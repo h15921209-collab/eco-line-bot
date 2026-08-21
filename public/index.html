@@ -3,217 +3,261 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>全球總經與跨資產時序儀表板</title>
+  <title>宏觀全球智庫 · 24H 首席總經情勢與跨資產配置戰略門戶</title>
+  <!-- Tailwind CSS & Chart.js & Marked.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
-    :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --border: #30363d;
-      --text: #c9d1d9;
-      --accent: #58a6ff;
-      --green: #3fb950;
-      --red: #f85149;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .status-badge {
-      background: rgba(63, 185, 80, 0.15);
-      color: var(--green);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      border: 1px solid rgba(63, 185, 80, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--green);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--green);
-    }
-    .btn-group {
-      display: flex;
-      gap: 10px;
-    }
-    .btn {
-      background: #238636;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.2s;
-    }
-    .btn:hover { background: #2ea043; }
-    .btn-secondary {
-      background: #21262d;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .btn-secondary:hover { background: #30363d; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .card-title {
-      font-size: 0.85rem;
-      color: #8b949e;
-      margin-bottom: 8px;
-    }
-    .card-val {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-    .card-sub {
-      font-size: 0.8rem;
-      color: #8b949e;
-    }
-    .chart-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 25px;
-    }
-    .chart-title {
-      font-size: 1.1rem;
-      color: #fff;
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .sheets-box {
-      background: linear-gradient(135deg, rgba(88,166,255,0.1), rgba(63,185,80,0.1));
-      border: 1px solid rgba(88,166,255,0.3);
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-    .code-box {
-      background: #000;
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-family: monospace;
-      color: #79c0ff;
-      margin: 10px 0;
-      overflow-x: auto;
-      border: 1px solid #30363d;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    body { background-color: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .glass-card { background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(48, 54, 61, 0.8); }
+    .neon-border { border: 1px solid rgba(88, 166, 255, 0.3); box-shadow: 0 0 15px rgba(88, 166, 255, 0.1); }
+    .prose-custom h1, .prose-custom h2, .prose-custom h3 { color: #f8fafc; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .prose-custom p { margin-bottom: 0.75rem; line-height: 1.7; color: #cbd5e1; }
+    .prose-custom ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose-custom li { margin-bottom: 0.25rem; }
+    .prose-custom strong { color: #38bdf8; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>📈 全球總經與跨資產時序儀表板</h1>
-      <div class="btn-group">
-        <div class="status-badge"><div class="status-dot"></div> 雲端自動同步中 (08:30 & 17:00)</div>
-        <button class="btn btn-secondary" onclick="fetchData()">🔄 立即刷新</button>
+<body class="min-h-screen pb-16">
+
+  <!-- 頂部導航 -->
+  <nav class="border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl">🏛️</span>
+        <div>
+          <span class="font-bold text-lg text-white tracking-wide">宏觀全球智庫</span>
+          <span class="text-xs text-sky-400 block sm:inline sm:ml-2">24H 首席總經與資產配置戰略公開門戶</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+          <span class="w-2 h-2 bg-emerald-400 rounded-full mr-1.5 animate-pulse"></span>
+          雲端即時連線中
+        </span>
+        <button onclick="fetchInitialReport()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+          🔄 重新整理
+        </button>
       </div>
     </div>
+  </nav>
 
-    <!-- 關鍵指標卡片 -->
-    <div class="grid" id="ticker-grid">
-      <div class="card"><div class="card-title">🇹🇼 台股加權指數</div><div class="card-val" id="val-twii">--</div><div class="card-sub">代號: ^TWII</div></div>
-      <div class="card"><div class="card-title">🇹🇼 台積電 (TSMC)</div><div class="card-val" id="val-tsmc">--</div><div class="card-sub">代號: 2330.TW</div></div>
-      <div class="card"><div class="card-title">🇺🇸 美股 S&P 500</div><div class="card-val" id="val-sp500">--</div><div class="card-sub">代號: ^GSPC</div></div>
-      <div class="card"><div class="card-title">🇺🇸 美債 10Y 殖利率</div><div class="card-val" id="val-us10y">--</div><div class="card-sub">代號: ^TNX</div></div>
-      <div class="card"><div class="card-title">💱 美元兌新台幣 (USD/TWD)</div><div class="card-val" id="val-usdtwd">--</div><div class="card-sub">即時匯率</div></div>
-      <div class="card"><div class="card-title">💵 美元指數 (DXY)</div><div class="card-val" id="val-dxy">--</div><div class="card-sub">代號: DX-Y.NYB</div></div>
-      <div class="card"><div class="card-title">🪙 國際黃金現貨</div><div class="card-val" id="val-gold">--</div><div class="card-sub">美元 / 盎司</div></div>
-      <div class="card"><div class="card-title">🛢️ 紐約輕原油 (WTI)</div><div class="card-val" id="val-oil">--</div><div class="card-sub">美元 / 桶</div></div>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+
+    <!-- 即時資產價格跑馬看板 -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-6" id="ticker-bar">
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">🇹🇼 台股加權</div><div class="font-bold text-white text-sm mt-1" id="tick-twii">--</div><div class="text-[10px] text-slate-500">^TWII</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">🇹🇼 台積電</div><div class="font-bold text-white text-sm mt-1" id="tick-tsmc">--</div><div class="text-[10px] text-slate-500">2330.TW</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">🇺🇸 標普 500</div><div class="font-bold text-white text-sm mt-1" id="tick-sp500">--</div><div class="text-[10px] text-slate-500">^GSPC</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">🇺🇸 美債 10Y</div><div class="font-bold text-white text-sm mt-1" id="tick-us10y">--</div><div class="text-[10px] text-slate-500">殖利率</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">💱 台幣匯率</div><div class="font-bold text-white text-sm mt-1" id="tick-usdtwd">--</div><div class="text-[10px] text-slate-500">USD/TWD</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">💵 美元指數</div><div class="font-bold text-white text-sm mt-1" id="tick-dxy">--</div><div class="text-[10px] text-slate-500">DXY</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">🪙 國際黃金</div><div class="font-bold text-white text-sm mt-1" id="tick-gold">--</div><div class="text-[10px] text-slate-500">GC=F</div></div>
+      <div class="glass-card p-3 rounded-xl"><div class="text-xs text-slate-400">🛢️ 紐約原油</div><div class="font-bold text-white text-sm mt-1" id="tick-oil">--</div><div class="text-[10px] text-slate-500">WTI</div></div>
     </div>
 
-    <!-- 圖表展示 -->
-    <div class="chart-box">
-      <div class="chart-title">📊 股債匯主要資產即時數值分佈</div>
-      <canvas id="macroChart" height="90"></canvas>
-    </div>
+    <!-- 核心雙欄架構：左側 AI 首席研報與互動提問，右側 圖表與連動工具 -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- Google 試算表連動說明 -->
-    <div class="sheets-box">
-      <h3 style="margin-top:0; color:#fff;">📊 Google 試算表（Google Sheets）一鍵連動</h3>
-      <p style="font-size:0.9rem; color:#c9d1d9;">在任何 Google 試算表的 <b>A1 儲存格</b> 中貼上以下公式，即可自動獲取與同步雲端即時時序數據：</p>
-      <div class="code-box">
-        <span id="formula-text">=IMPORTDATA(window.location.origin + "/api/collector?format=csv")</span>
-        <button class="btn" style="padding:4px 10px; font-size:0.8rem;" onclick="copyFormula()">📋 複製公式</button>
+      <!-- 左側：最新 AI 研報展示區 + 即時提問 (8 columns) -->
+      <div class="lg:col-span-8 space-y-6">
+
+        <!-- 線上即時提問區 -->
+        <div class="glass-card p-5 rounded-2xl neon-border">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-base font-bold text-white flex items-center">
+              <span class="mr-2">💬</span> 向總經首席分析師即時提問
+            </h2>
+            <span class="text-xs text-slate-400">連線 Gemini 3.5 Flash 旗艦模型</span>
+          </div>
+
+          <div class="flex gap-2">
+            <input type="text" id="query-input" placeholder="例如：台股與美債現在該怎麼看？或 日圓匯率走勢..."
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
+            <button onclick="submitCustomQuery()" id="btn-submit"
+              class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-sky-500/20 whitespace-nowrap">
+              🚀 生成研報
+            </button>
+          </div>
+
+          <!-- 熱門問題標籤 -->
+          <div class="flex flex-wrap gap-2 mt-3 text-xs">
+            <span class="text-slate-500 py-1">熱門主題：</span>
+            <button onclick="quickAsk('台股與美債現在該怎麼看？')" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/80">📈 台股與美債配置</button>
+            <button onclick="quickAsk('聯準會降息路徑對美債與美股有何影響？')" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/80">🏛️ Fed 降息路徑</button>
+            <button onclick="quickAsk('台幣匯率與日圓走勢分析')" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/80">💱 台幣與日圓匯率</button>
+            <button onclick="quickAsk('黃金與原油價格最新走勢與通膨影響')" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/80">🪙 黃金與原油趨勢</button>
+          </div>
+        </div>
+
+        <!-- 研報內容展示卡片 -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl">
+          <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-2 mb-6">
+            <div>
+              <div class="text-xs text-sky-400 font-semibold tracking-wider uppercase">GLOBAL MACRO RESEARCH REPORT</div>
+              <h1 class="text-xl sm:text-2xl font-bold text-white mt-1" id="report-title">宏觀全球總經情勢與資產配置戰略研報</h1>
+            </div>
+            <div class="text-right text-xs text-slate-400">
+              <div>發布時間：<span id="report-time" class="text-slate-200">--</span></div>
+              <div class="mt-0.5 text-slate-500">數據庫：實時行情 ＋ 1個月歷史時序庫</div>
+            </div>
+          </div>
+
+          <!-- 研報正文 (Markdown 渲染) -->
+          <div id="report-content" class="prose-custom text-slate-300 text-sm sm:text-base">
+            <div class="animate-pulse flex space-y-4 flex-col py-8">
+              <div class="h-4 bg-slate-800 rounded w-3/4"></div>
+              <div class="h-4 bg-slate-800 rounded w-full"></div>
+              <div class="h-4 bg-slate-800 rounded w-5/6"></div>
+              <div class="h-4 bg-slate-800 rounded w-2/3"></div>
+            </div>
+          </div>
+
+          <!-- 研報底部操作列 -->
+          <div class="mt-8 pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-500">
+            <span>© 宏觀全球智庫 · 首席宏觀策略團隊版權所有</span>
+            <button onclick="copyReportText()" class="hover:text-slate-300 transition flex items-center gap-1">
+              📋 複製研報文字
+            </button>
+          </div>
+        </div>
+
       </div>
-      <a href="https://sheets.new" target="_blank" class="btn" style="display:inline-block; margin-top:5px;">🚀 立即開啟全新 Google 試算表貼上</a>
+
+      <!-- 右側：跨資產動態圖表 ＋ Google 試算表連動 ＋ LINE 整合 (4 columns) -->
+      <div class="lg:col-span-4 space-y-6">
+
+        <!-- 動態圖表卡片 -->
+        <div class="glass-card p-5 rounded-2xl">
+          <h3 class="text-sm font-bold text-white mb-3 flex items-center">
+            <span class="mr-2">📊</span> 跨資產即時數值分佈
+          </h3>
+          <div class="h-64">
+            <canvas id="macroChart"></canvas>
+          </div>
+          <div class="text-[11px] text-slate-500 mt-2 text-center">
+            數據來源：Yahoo Finance 實時全球行情串接
+          </div>
+        </div>
+
+        <!-- Google 試算表連動卡片 -->
+        <div class="glass-card p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-sky-950/40 border-sky-500/20">
+          <h3 class="text-sm font-bold text-white flex items-center">
+            <span class="mr-2">📗</span> Google 試算表即時連動
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">
+            在您的 Google 試算表 <b>A1 格子</b> 貼上公式，即可自動每日定時同步最新時序數據：
+          </p>
+          <div class="bg-black/50 p-2.5 rounded-lg border border-slate-800 my-3 font-mono text-[11px] text-sky-400 break-all select-all" id="sheets-formula">
+            =IMPORTDATA(window.location.origin + "/api/collector?format=csv")
+          </div>
+          <div class="flex gap-2">
+            <button onclick="copyFormula()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs py-2 rounded-lg font-medium border border-slate-700 transition">
+              📋 複製公式
+            </button>
+            <a href="https://sheets.new" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2 rounded-lg font-medium text-center transition">
+              🚀 開啟試算表
+            </a>
+          </div>
+        </div>
+
+        <!-- LINE Bot 串接卡片 -->
+        <div class="glass-card p-5 rounded-2xl border-emerald-500/20">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-xl">📱</div>
+            <div>
+              <h3 class="text-sm font-bold text-white">LINE 24H 總經顧問</h3>
+              <p class="text-xs text-slate-400">隨時隨地在手機接收即時研報</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mt-3">
+            在手機 LINE 直接提問，AI 將即時連線全球數據庫為您回覆最新分析！
+          </p>
+          <div class="mt-3 text-center">
+            <span class="text-xs text-emerald-400 font-medium">官方機器人 24 小時在線不斷電 ⚡</span>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-  </div>
+
+  </main>
 
   <script>
     let myChart = null;
+    let currentRawReport = "";
 
-    async function fetchData() {
+    async function fetchInitialReport() {
+      await loadTickerData();
+      await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略');
+    }
+
+    async function loadTickerData() {
       try {
         const res = await fetch('/api/collector');
         const json = await res.json();
         const d = json.data;
 
-        document.getElementById('val-twii').innerText = d.twii.toLocaleString() + ' 點';
-        document.getElementById('val-tsmc').innerText = d.tsmc.toLocaleString() + ' 元';
-        document.getElementById('val-sp500').innerText = d.sp500.toLocaleString() + ' 點';
-        document.getElementById('val-us10y').innerText = d.us10y.toFixed(3) + '%';
-        document.getElementById('val-usdtwd').innerText = d.usdtwd.toFixed(3);
-        document.getElementById('val-dxy').innerText = d.dxy.toFixed(3);
-        document.getElementById('val-gold').innerText = '$' + d.gold.toLocaleString();
-        document.getElementById('val-oil').innerText = '$' + d.oil.toFixed(2);
+        document.getElementById('tick-twii').innerText = d.twii.toLocaleString() + ' 點';
+        document.getElementById('tick-tsmc').innerText = d.tsmc.toLocaleString() + ' 元';
+        document.getElementById('tick-sp500').innerText = d.sp500.toLocaleString() + ' 點';
+        document.getElementById('tick-us10y').innerText = d.us10y.toFixed(3) + '%';
+        document.getElementById('tick-usdtwd').innerText = d.usdtwd.toFixed(3);
+        document.getElementById('tick-dxy').innerText = d.dxy.toFixed(3);
+        document.getElementById('tick-gold').innerText = '$' + d.gold.toLocaleString();
+        document.getElementById('tick-oil').innerText = '$' + d.oil.toFixed(2);
 
-        document.getElementById('formula-text').innerText = '=IMPORTDATA("' + window.location.origin + '/api/collector?format=csv")';
+        document.getElementById('sheets-formula').innerText = '=IMPORTDATA("' + window.location.origin + '/api/collector?format=csv")';
 
         renderChart(d);
       } catch (e) {
-        console.error(e);
+        console.error('Ticker fetch error:', e);
       }
+    }
+
+    async function runAnalysis(queryText) {
+      const reportBox = document.getElementById('report-content');
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.innerText = '⏳ 分析運算中...';
+
+      reportBox.innerHTML = `
+        <div class="py-12 text-center text-slate-400">
+          <div class="inline-block animate-spin text-3xl mb-3">⚙️</div>
+          <div class="font-medium text-white">正在連線全球實時數據庫與 Google Gemini 3.5 模型...</div>
+          <div class="text-xs text-slate-500 mt-1">即時計算「${queryText}」跨資產傳導與歷史時序統計中</div>
+        </div>
+      `;
+
+      try {
+        const res = await fetch('/api/analyze?q=' + encodeURIComponent(queryText));
+        const data = await res.json();
+
+        currentRawReport = data.report || '無研報內容';
+        document.getElementById('report-time').innerText = data.timestamp + ' (UTC+8)';
+        document.getElementById('report-title').innerText = '【研報主題】' + queryText;
+
+        // 渲染 Markdown
+        reportBox.innerHTML = marked.parse(currentRawReport);
+      } catch (e) {
+        reportBox.innerHTML = '<div class="text-red-400 py-6">連線分析逾時，請點擊上方重新整理。</div>';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '🚀 生成研報';
+      }
+    }
+
+    function submitCustomQuery() {
+      const q = document.getElementById('query-input').value.trim();
+      if (!q) return alert('請輸入想了解的總經或市場主題！');
+      runAnalysis(q);
+    }
+
+    function quickAsk(q) {
+      document.getElementById('query-input').value = q;
+      runAnalysis(q);
     }
 
     function renderChart(d) {
@@ -223,39 +267,46 @@
       myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['美債10Y (%)', '美元指數', 'USD/TWD', '原油 ($)', '台積電 (十元)', '黃金 (百元)'],
+          labels: ['美債10Y(%)', '美元指數', 'USD/TWD', '原油($)', '台積電(/10)', '黃金(/100)'],
           datasets: [{
-            label: '當前市場數據指標',
             data: [d.us10y, d.dxy, d.usdtwd, d.oil, d.tsmc / 10, d.gold / 100],
             backgroundColor: [
-              'rgba(88, 166, 255, 0.8)',
-              'rgba(63, 185, 80, 0.8)',
-              'rgba(210, 153, 34, 0.8)',
-              'rgba(248, 81, 73, 0.8)',
-              'rgba(163, 113, 247, 0.8)',
-              'rgba(240, 136, 62, 0.8)'
+              'rgba(56, 189, 248, 0.85)',
+              'rgba(52, 211, 153, 0.85)',
+              'rgba(251, 191, 36, 0.85)',
+              'rgba(248, 113, 113, 0.85)',
+              'rgba(192, 132, 252, 0.85)',
+              'rgba(251, 146, 60, 0.85)'
             ],
-            borderRadius: 6
+            borderRadius: 8
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            y: { grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
-            x: { grid: { display: false }, ticks: { color: '#8b949e' } }
+            y: { grid: { color: 'rgba(51, 65, 85, 0.4)' }, ticks: { color: '#94a3b8' } },
+            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
           }
         }
       });
     }
 
     function copyFormula() {
-      const txt = document.getElementById('formula-text').innerText;
+      const txt = document.getElementById('sheets-formula').innerText;
       navigator.clipboard.writeText(txt);
       alert('✅ 公式已複製！請至 Google 試算表 A1 儲存格貼上！');
     }
 
-    fetchData();
+    function copyReportText() {
+      if (!currentRawReport) return;
+      navigator.clipboard.writeText(currentRawReport);
+      alert('✅ 研報文字已成功複製至剪貼簿！');
+    }
+
+    // 啟動頁面
+    fetchInitialReport();
   </script>
 </body>
 </html>
