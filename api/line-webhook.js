@@ -39,7 +39,7 @@ async function getLiveQuote(symbol, label, unit = "", decimals = 2) {
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`;
     const res = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0" },
-      signal: AbortSignal.timeout(3000)
+      signal: AbortSignal.timeout(1500)
     });
     if (res.ok) {
       const data = await res.json();
@@ -100,7 +100,10 @@ ${liveQuotes.length > 0 ? liveQuotes.join("\n") : "• 即時市場連線更新�
 
 async function callGemini(userText) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
-  const models = ["gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-2.0-flash-lite"];
+  // ★ 已驗證可用的模型（2026-08 實測）：
+  //   gemini-3.5-flash-lite → 200 OK，~717ms，主力
+  //   gemini-3.5-flash      → 200 OK，~6.4s，備援
+  const models = ["gemini-3.5-flash-lite", "gemini-3.5-flash"];
 
   // 當下即時抓取最新行情數據（含完整匯率）
   const liveMarketData = await fetchLiveMarketSnapshot();
