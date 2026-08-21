@@ -1,19 +1,17 @@
 import os
-from pydantic_settings import BaseSettings
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
 
-load_dotenv()
-
-class Settings(BaseSettings):
-    LINE_CHANNEL_ACCESS_TOKEN: str = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "")
-    LINE_CHANNEL_SECRET: str = os.getenv("LINE_CHANNEL_SECRET", "")
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./eco_data.db")
-    HOST: str = os.getenv("HOST", "0.0.0.0")
-    PORT: int = int(os.getenv("PORT", "8000"))
-    
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
+class Settings:
+    def __init__(self):
+        self.LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "").strip()
+        self.LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET", "").strip()
+        self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+        self.DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./eco_data.db").strip()
+        self.HOST = os.getenv("HOST", "0.0.0.0").strip()
+        self.PORT = int(os.getenv("PORT") or 8000)
 
 settings = Settings()
