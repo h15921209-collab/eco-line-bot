@@ -9,6 +9,12 @@ class EconomicAIAnalyzer:
     def __init__(self):
         self.api_key = settings.GEMINI_API_KEY
 
+    def _get_ai_header(self, title: str = "Google Gemini 3 Flash 雲端深度研報") -> str:
+        from datetime import datetime, timezone, timedelta
+        tz_tw = timezone(timedelta(hours=8))
+        now_str = datetime.now(tz_tw).strftime("%Y-%m-%d %H:%M:%S")
+        return f"🤖 【{title}】\n⏱️ 即時運算時間：{now_str} (UTC+8)\n🧠 模型引擎：Google Gemini 3 Flash\n📊 數據錨定：全球與台灣總經資料庫即時運算\n━━━━━━━━━━━━━━━━━━━━\n\n"
+
     def _call_gemini_rest(self, prompt: str) -> str:
         if not self.api_key:
             return ""
@@ -69,7 +75,7 @@ class EconomicAIAnalyzer:
         )
         ai_text = self._call_gemini_rest(prompt)
         if ai_text:
-            return ai_text
+            return self._get_ai_header("Google Gemini 3 Flash 宏觀情勢週報") + ai_text
         return self._fallback_rule_based_analysis(snapshot_data)
 
     def generate_single_indicator_analysis(self, code: str) -> str:
@@ -107,7 +113,7 @@ class EconomicAIAnalyzer:
         )
         ai_text = self._call_gemini_rest(prompt)
         if ai_text:
-            return f"📊 【{ind.name} 專題分析】\n\n" + ai_text
+            return self._get_ai_header(f"Google Gemini 3 Flash 指標專題：{ind.name}") + ai_text
         return f"📊 【{ind.name} 歷史趨勢】\n\n" + history_text
 
     def generate_realtime_news_briefing(self) -> str:
@@ -136,7 +142,7 @@ class EconomicAIAnalyzer:
 
         ai_text = self._call_gemini_rest(prompt)
         if ai_text:
-            return ai_text
+            return self._get_ai_header("Google Gemini 3 Flash 即時市場焦點") + ai_text
         return self._fallback_rule_based_analysis(snapshot_data)
 
     def answer_custom_macro_question(self, question: str) -> str:
@@ -159,7 +165,7 @@ class EconomicAIAnalyzer:
 
         ai_text = self._call_gemini_rest(prompt)
         if ai_text:
-            return ai_text
+            return self._get_ai_header("Google Gemini 3 Flash 首席策略師解答") + ai_text
         return f"針對「{question}」：目前各項指標顯示全球通膨持續降溫，聯準會降息路徑明確，建議關注下週最新數據發布。"
 
     def _fallback_rule_based_analysis(self, snapshot_data: List[Dict[str, Any]], error_msg: str = "") -> str:
