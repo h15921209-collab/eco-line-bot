@@ -12,7 +12,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   
   <style>
     body { background-color: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -23,7 +22,6 @@
     .prose-custom ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.85rem; }
     .prose-custom li { margin-bottom: 0.35rem; line-height: 1.6; }
     .prose-custom strong { color: #38bdf8; }
-    /* 平滑滾動與手機優化 */
     html { scroll-behavior: smooth; }
   </style>
 </head>
@@ -40,10 +38,9 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-          <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5 animate-pulse"></span>
-          即時連線
-        </span>
+        <a href="#user-guide" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-3 py-1.5 rounded-lg transition font-medium">
+          📖 使用說明書
+        </a>
         <button onclick="fetchInitialReport()" class="text-xs bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
           🔄 刷新
         </button>
@@ -53,15 +50,23 @@
 
   <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 sm:mt-6">
 
-    <!-- 手機友善短網址提示橫幅 -->
-    <div class="mb-4 bg-gradient-to-r from-sky-950/60 to-blue-950/60 border border-sky-500/30 rounded-xl p-3 flex items-center justify-between text-xs sm:text-sm">
-      <div class="flex items-center space-x-2 text-slate-200">
-        <span class="text-lg">📱</span>
-        <span>手機專屬超好記網址：<b class="text-sky-300 underline select-all">eco-line-bot.vercel.app</b></span>
+    <!-- 08:30 定時推播 ＆ 手機短網址公告列 -->
+    <div class="mb-5 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 shadow-lg">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="flex items-start sm:items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg flex-shrink-0">⏰</div>
+          <div>
+            <div class="font-bold text-white flex items-center gap-1.5">
+              <span>每日早上 08:30 準時自動推播【首席財經早報】</span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">週一至週五</span>
+            </div>
+            <p class="text-slate-400 text-xs mt-0.5">盤前半小時整合隔夜美股美債、台股開盤指引與資產配置，直接推送至您的 LINE 聊天室！</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2 flex-shrink-0">
+          <a href="#user-guide" class="text-xs text-sky-400 hover:text-sky-300 underline font-medium">查看完整提問指南 ➔</a>
+        </div>
       </div>
-      <button onclick="shareLink()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs px-3 py-1 rounded-lg font-medium shadow transition">
-        🔗 分享網址
-      </button>
     </div>
 
     <!-- 即時資產價格跑馬看板（手機 4 列 / 電腦 8 列） -->
@@ -88,7 +93,7 @@
             <h2 class="text-sm sm:text-base font-bold text-white flex items-center">
               <span class="mr-2">💬</span> 首席分析師在線即時提問
             </h2>
-            <span class="text-[11px] text-slate-400">Google Gemini 3.5 AI</span>
+            <span class="text-[11px] text-slate-400">Google Gemini 3.5 旗艦大腦</span>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-2">
@@ -102,7 +107,7 @@
 
           <!-- 熱門主題快捷鍵 -->
           <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-3 text-[11px]">
-            <span class="text-slate-500 py-0.5">熱門：</span>
+            <span class="text-slate-500 py-0.5">熱門快捷：</span>
             <button onclick="quickAsk('台股與美債現在該怎麼看？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">📈 台股美債</button>
             <button onclick="quickAsk('聯準會降息路徑對美債與美股有何影響？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🏛️ Fed 降息</button>
             <button onclick="quickAsk('台幣匯率與日圓走勢分析')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">💱 匯率走勢</button>
@@ -119,7 +124,7 @@
             </div>
             <div class="text-left sm:text-right text-[11px] text-slate-400">
               <div>時間：<span id="report-time" class="text-slate-200">--</span></div>
-              <div class="text-slate-500">實時行情 ＋ 1個月歷史時序庫</div>
+              <div class="text-slate-500">實時行情 ＋ 官方最新數據庫</div>
             </div>
           </div>
 
@@ -139,6 +144,66 @@
             <button onclick="copyReportText()" class="text-sky-400 hover:text-sky-300 transition flex items-center gap-1">
               📋 複製研報
             </button>
+          </div>
+        </div>
+
+        <!-- 📘 新手使用說明書 ＆ 提問指南專區 -->
+        <div id="user-guide" class="glass-card p-6 sm:p-8 rounded-2xl border-sky-500/30">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-xl">📖</div>
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold text-white">總經分析助手 · 使用說明書 ＆ 服務指南</h2>
+              <p class="text-xs text-slate-400">教您如何隨時隨地發揮 AI 首席策略師的最大價值</p>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm text-slate-300 mt-5">
+            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              <h3 class="font-bold text-sky-400 flex items-center gap-2 mb-2">
+                <span>⏰ 1. 每日 08:30 自動推播（盤前半小時晨報）</span>
+              </h3>
+              <p class="leading-relaxed text-slate-300">
+                每週一至週五早上 <b>08:30</b>，雲端系統會自動採集隔夜美股與最新數據，並主動推送《首席財經晨訊》至您的 LINE。內容涵蓋：<b>隔夜美股四大指數、10Y美債殖利率、台股開盤指引、台幣匯率與資產配置焦點</b>。
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              <h3 class="font-bold text-emerald-400 flex items-center gap-2 mb-2">
+                <span>💬 2. 24H 隨時在線提問指南（點擊直接提問）</span>
+              </h3>
+              <p class="leading-relaxed text-slate-400 mb-3">
+                無論何時在 LINE 或本網頁輸入問題，AI 都會連線美國財政部與全球交易所真實數據解答：
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <button onclick="quickAsk('台幣現在匯率多少？近期走勢分析')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  💱 <b>匯率類</b>：台幣現在匯率與近期走勢分析
+                </button>
+                <button onclick="quickAsk('台股與美債現在該怎麼看？資產配置建議')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  📈 <b>股市類</b>：台股與美債現在該怎麼看？
+                </button>
+                <button onclick="quickAsk('美債 10Y 殖利率近期走勢與降息預期')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  🏛️ <b>債市類</b>：美債 10Y 殖利率與降息預期
+                </button>
+                <button onclick="quickAsk('日圓最新走勢與日銀升息對套利交易影響')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  💴 <b>日圓類</b>：日圓走勢與套利交易平倉
+                </button>
+                <button onclick="quickAsk('黃金與原油價格最新走勢與通膨關聯')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  🪙 <b>商品類</b>：黃金與原油走勢與通膨影響
+                </button>
+                <button onclick="quickAsk('美債殖利率曲線 10Y-3M 利差分析')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  📊 <b>曲線類</b>：美債 10Y-3M 殖利率利差形狀
+                </button>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              <h3 class="font-bold text-amber-400 flex items-center gap-2 mb-2">
+                <span>📱 3. LINE 機器人快捷指令</span>
+              </h3>
+              <p class="leading-relaxed text-slate-300">
+                在 LINE 聊天室中，隨時輸入「<b>說明</b>」、「<b>指南</b>」或「<b>help</b>」，機器人就會立刻將本說明書發送給您！
+              </p>
+            </div>
           </div>
         </div>
 
@@ -206,15 +271,7 @@
 
     async function fetchInitialReport() {
       await loadTickerData();
-      renderQRCode();
       await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略');
-    }
-
-    function renderQRCode() {
-      const canvas = document.getElementById('qrcode-canvas');
-      if (canvas && window.QRCode) {
-        QRCode.toCanvas(canvas, DOMAIN_URL, { width: 140, margin: 1, color: { dark: '#0b0f19', light: '#ffffff' } });
-      }
     }
 
     async function loadTickerData() {
@@ -278,6 +335,7 @@
     function quickAsk(q) {
       document.getElementById('query-input').value = q;
       runAnalysis(q);
+      window.scrollTo({ top: 180, behavior: 'smooth' });
     }
 
     function renderChart(d) {
@@ -323,15 +381,6 @@
       if (!currentRawReport) return;
       navigator.clipboard.writeText(currentRawReport);
       alert('✅ 研報文字已成功複製至剪貼簿！');
-    }
-
-    function shareLink() {
-      if (navigator.share) {
-        navigator.share({ title: '宏觀全球智庫 · 24H 首席總經門戶', url: DOMAIN_URL });
-      } else {
-        navigator.clipboard.writeText(DOMAIN_URL);
-        alert('✅ 網址已複製：' + DOMAIN_URL);
-      }
     }
 
     fetchInitialReport();
