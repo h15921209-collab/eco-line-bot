@@ -342,7 +342,7 @@
 
       </div>
 
-      <!-- 右側：4 大經典跨資產配置模型 ＋ 財富複利計算機 ＋ TradingView 折線圖 (4 columns) -->
+      <!-- 右側：4 大經典跨資產配置模型 ＋ 股災回測 ＋ 財富複利計算機 (4 columns) -->
       <div class="lg:col-span-4 space-y-5 sm:space-y-6 no-print">
 
         <!-- 🎛️ 4 大經典法人跨資產配置模擬器 -->
@@ -378,6 +378,21 @@
           <button onclick="askAIWithAmount()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-xl border border-slate-700 transition font-medium text-center block">
             🤖 請 AI 深度解析此流派配置 ➔
           </button>
+        </div>
+
+        <!-- 📉 歷史三大股災抗跌回測卡片 (Black Swan Stress Backtest) -->
+        <div class="glass-card p-4 sm:p-5 rounded-2xl border-purple-500/30">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-white flex items-center">
+              <span class="mr-2">📉</span> 歷史重大股災抗跌壓力回測
+            </h3>
+            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/40">極端防禦力</span>
+          </div>
+          <p class="text-xs text-slate-400 mb-2.5">當前流派在歷史重大危機中的最大回撤表現：</p>
+
+          <div class="space-y-1.5 text-xs" id="stress-backtest-list">
+            <!-- 動態渲染回測數據 -->
+          </div>
         </div>
 
         <!-- 🔮 長期財富複利成長模擬器 (Compounding Growth Simulator) -->
@@ -561,6 +576,12 @@
         name: '智庫均衡型 (50/30/10/10)',
         expReturn: 0.082,
         desc: '兼顧資本利得與降息收息的最均衡配置',
+        stress: {
+          y2008: '-18.5%',
+          y2020: '-12.0%',
+          y2022: '-14.0%',
+          grade: '🛡️ 良好防禦'
+        },
         items: [
           { name: '📈 股票資產 (50%)', ratio: 0.50, color: 'text-sky-400' },
           { name: '🏛️ 債券資產 (30%)', ratio: 0.30, color: 'text-red-400' },
@@ -572,6 +593,12 @@
         name: '達里歐全天候 (All-Weather)',
         expReturn: 0.075,
         desc: '橋水基金創辦人設計，穿越任何景氣循環',
+        stress: {
+          y2008: '-3.9%',
+          y2020: '-1.8%',
+          y2022: '-14.5%',
+          grade: '🏆 頂級抗跌'
+        },
         items: [
           { name: '📈 全球股票 (30%)', ratio: 0.30, color: 'text-sky-400' },
           { name: '🏛️ 長天期美債 (40%)', ratio: 0.40, color: 'text-red-400' },
@@ -583,6 +610,12 @@
         name: '哈利布朗永久組合 (Permanent)',
         expReturn: 0.068,
         desc: '極端等權重配置，完美抗通膨與抗衰退',
+        stress: {
+          y2008: '-0.7%',
+          y2020: '-1.2%',
+          y2022: '-12.8%',
+          grade: '💎 鋼鐵防護'
+        },
         items: [
           { name: '📈 股票資產 (25%)', ratio: 0.25, color: 'text-sky-400' },
           { name: '🏛️ 長期國債 (25%)', ratio: 0.25, color: 'text-red-400' },
@@ -594,6 +627,12 @@
         name: '巴菲特 90/10 組合',
         expReturn: 0.105,
         desc: '極致長期複利成長，超高股權進攻型',
+        stress: {
+          y2008: '-45.8%',
+          y2020: '-30.5%',
+          y2022: '-17.5%',
+          grade: '⚡ 高波動進攻'
+        },
         items: [
           { name: '📈 標普500/台股 (90%)', ratio: 0.90, color: 'text-sky-400' },
           { name: '💵 短期國債/現金 (10%)', ratio: 0.10, color: 'text-emerald-400' }
@@ -629,6 +668,32 @@
       });
       calcAllocation();
       calcCompounding();
+      renderStressBacktest();
+    }
+
+    function renderStressBacktest() {
+      const model = portfolioModels[currentPortfolioModel];
+      const s = model.stress;
+      const container = document.getElementById('stress-backtest-list');
+
+      container.innerHTML = `
+        <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+          <span class="text-slate-300">2008 金融海嘯 (標普-50.9%)</span>
+          <span class="font-mono font-bold ${s.y2008.startsWith('-0') || s.y2008.startsWith('-1') || s.y2008.startsWith('-3') ? 'text-emerald-400' : 'text-red-400'}">${s.y2008}</span>
+        </div>
+        <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+          <span class="text-slate-300">2020 疫情熔斷 (標普-33.9%)</span>
+          <span class="font-mono font-bold ${s.y2020.startsWith('-1') || s.y2020.startsWith('-0') ? 'text-emerald-400' : 'text-red-400'}">${s.y2020}</span>
+        </div>
+        <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+          <span class="text-slate-300">2022 股債雙殺 (標普-18.1%)</span>
+          <span class="font-mono font-bold text-amber-400">${s.y2022}</span>
+        </div>
+        <div class="flex justify-between pt-1 text-[11px] text-slate-400">
+          <span>歷史回撤抗跌評級：</span>
+          <span class="font-bold text-purple-300">${s.grade}</span>
+        </div>
+      `;
     }
 
     function calcAllocation() {
@@ -649,6 +714,7 @@
 
       container.innerHTML = html;
       calcCompounding();
+      renderStressBacktest();
     }
 
     function calcCompounding() {
@@ -802,6 +868,7 @@
     async function fetchInitialReport() {
       calcAllocation();
       calcCompounding();
+      renderStressBacktest();
       await loadTickerData();
       renderLineChart('twii');
       await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略');
