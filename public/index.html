@@ -26,7 +26,6 @@
     .prose-custom strong { color: #38bdf8; }
     html { scroll-behavior: smooth; }
 
-    /* PDF 與打印專屬優化樣式 */
     @media print {
       body { background-color: #ffffff !important; color: #000000 !important; }
       nav, #user-guide, .lg\\:col-span-4, #btn-submit, #query-input, .no-print { display: none !important; }
@@ -50,6 +49,9 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
+        <button onclick="shareToLine()" class="text-xs bg-[#06C755]/20 hover:bg-[#06C755]/30 text-[#06C755] border border-[#06C755]/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
+          📲 <span class="hidden sm:inline">轉發</span>LINE
+        </button>
         <button onclick="toggleSpeech()" id="btn-speech" class="text-xs bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
           <span id="speech-icon">🔊</span> <span id="speech-text" class="hidden sm:inline">語音朗讀</span>
         </button>
@@ -59,9 +61,6 @@
         <a href="#user-guide" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium">
           📖 說明
         </a>
-        <button onclick="fetchInitialReport()" class="text-xs bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700 transition">
-          🔄
-        </button>
       </div>
     </div>
   </nav>
@@ -179,7 +178,7 @@
           </div>
         </div>
 
-        <!-- 研報內容展示卡片（支援打印匯出） -->
+        <!-- 研報內容展示卡片（支援打印與一鍵分享） -->
         <div class="glass-card p-5 sm:p-8 rounded-2xl" id="printable-report-area">
           <div class="flex flex-wrap items-center justify-between pb-3.5 border-b border-slate-800 gap-2 mb-5">
             <div>
@@ -203,8 +202,11 @@
           </div>
 
           <!-- 底部操作 -->
-          <div class="mt-6 pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-500 no-print">
-            <div class="flex items-center gap-3">
+          <div class="mt-6 pt-3 border-t border-slate-800/80 flex flex-wrap justify-between items-center text-xs text-slate-500 gap-2 no-print">
+            <div class="flex flex-wrap items-center gap-3">
+              <button onclick="shareToLine()" class="text-[#06C755] hover:opacity-80 transition flex items-center gap-1 font-medium">
+                📲 分享至 LINE
+              </button>
               <button onclick="toggleSpeech()" class="text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 font-medium">
                 🔊 語音朗讀
               </button>
@@ -428,7 +430,6 @@
     let isSpeaking = false;
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
 
-    // 註冊 PWA Service Worker 支援完全離線可讀
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
@@ -444,6 +445,14 @@
     };
 
     let currentAsset = 'twii';
+
+    function shareToLine() {
+      if (!currentRawReport) return alert('研報生成中，請稍候再分享！');
+      const title = document.getElementById('report-title').innerText;
+      const snippet = currentRawReport.substring(0, 300).replace(/[\#\*\_\`]/g, '') + '...';
+      const shareText = encodeURIComponent(`【宏觀全球智庫 · 首席總經研報】\n📌 ${title}\n\n${snippet}\n\n📱 查看完整即時研報與圖表：\n${DOMAIN_URL}`);
+      window.open(`https://line.me/R/msg/text/?${shareText}`, '_blank');
+    }
 
     function exportReportPDF() {
       if (!currentRawReport) return alert('研報生成中，請稍候再匯出！');
