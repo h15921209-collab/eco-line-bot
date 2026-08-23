@@ -49,6 +49,9 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
+        <button onclick="openSearchModal()" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
+          🔍 <span class="hidden sm:inline">標的</span>快查
+        </button>
         <button onclick="shareToLine()" class="text-xs bg-[#06C755]/20 hover:bg-[#06C755]/30 text-[#06C755] border border-[#06C755]/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
           📲 <span class="hidden sm:inline">轉發</span>LINE
         </button>
@@ -58,9 +61,6 @@
         <button onclick="exportReportPDF()" class="text-xs bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
           📥 <span class="hidden sm:inline">匯出</span>PDF
         </button>
-        <a href="#user-guide" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium">
-          📖 說明
-        </a>
       </div>
     </div>
   </nav>
@@ -424,10 +424,65 @@
 
   </main>
 
+  <!-- 🔍 標的即時快查彈窗 Modal -->
+  <div id="search-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card w-full max-w-md p-5 rounded-2xl border-sky-500/40 shadow-2xl">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-bold text-white text-sm flex items-center gap-1.5">
+          <span>🔍</span> 全球標的即時秒級快查
+        </h3>
+        <button onclick="closeSearchModal()" class="text-slate-400 hover:text-white text-lg font-mono">✕</button>
+      </div>
+      <p class="text-xs text-slate-400 mb-3">支援輸入台美股、外匯、原物料或加密幣代碼：</p>
+      
+      <div class="flex gap-2 mb-3">
+        <input type="text" id="symbol-input" placeholder="例如：NVDA, TSLA, 2330.TW, BTC-USD"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500 font-mono uppercase">
+        <button onclick="searchTicker()" id="btn-symbol-search"
+          class="bg-sky-600 hover:bg-sky-500 active:scale-95 text-white text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
+          查詢
+        </button>
+      </div>
+
+      <!-- 快速熱門代碼標籤 -->
+      <div class="flex flex-wrap gap-1.5 mb-4 text-[10px]">
+        <span class="text-slate-500 py-0.5">熱門：</span>
+        <button onclick="quickSearchSymbol('NVDA')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">NVDA 輝達</button>
+        <button onclick="quickSearchSymbol('TSLA')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">TSLA 特斯拉</button>
+        <button onclick="quickSearchSymbol('2330.TW')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">2330 台積電</button>
+        <button onclick="quickSearchSymbol('BTC-USD')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">BTC 比特幣</button>
+      </div>
+
+      <!-- 查詢結果展示區 -->
+      <div id="search-result-box" class="hidden p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex justify-between items-start mb-2">
+          <div>
+            <div class="text-xs text-slate-400 font-mono" id="res-symbol">--</div>
+            <div class="font-bold text-white text-sm" id="res-name">--</div>
+          </div>
+          <div class="text-right">
+            <div class="font-mono text-base font-bold text-white" id="res-price">--</div>
+            <div class="font-mono text-xs" id="res-change">--</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 border-t border-slate-800/80 pt-2 mt-2 font-mono">
+          <div>今日最高：<span id="res-high" class="text-slate-200">--</span></div>
+          <div>今日最低：<span id="res-low" class="text-slate-200">--</span></div>
+          <div>52週高點：<span id="res-52high" class="text-slate-200">--</span></div>
+          <div>52週低點：<span id="res-52low" class="text-slate-200">--</span></div>
+        </div>
+        <button onclick="askAIForCurrentSymbol()" class="w-full mt-3 bg-gradient-to-r from-sky-600 to-blue-600 hover:opacity-90 active:scale-95 text-white text-xs py-2 rounded-xl transition font-medium text-center">
+          🤖 讓 AI 深入分析此標的 ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let lineChart = null;
     let currentRawReport = "";
     let isSpeaking = false;
+    let currentSearchedSymbol = "";
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
 
     if ('serviceWorker' in navigator) {
@@ -445,6 +500,66 @@
     };
 
     let currentAsset = 'twii';
+
+    function openSearchModal() {
+      document.getElementById('search-modal').classList.remove('hidden');
+      document.getElementById('symbol-input').focus();
+    }
+
+    function closeSearchModal() {
+      document.getElementById('search-modal').classList.add('hidden');
+    }
+
+    function quickSearchSymbol(sym) {
+      document.getElementById('symbol-input').value = sym;
+      searchTicker();
+    }
+
+    async function searchTicker() {
+      const sym = document.getElementById('symbol-input').value.trim().toUpperCase();
+      if (!sym) return alert('請輸入標的代碼！');
+
+      const btn = document.getElementById('btn-symbol-search');
+      btn.disabled = true;
+      btn.innerText = '查詢中...';
+
+      try {
+        const res = await fetch('/api/quote?symbol=' + encodeURIComponent(sym));
+        const json = await res.json();
+
+        if (res.ok && json.status === 'success') {
+          currentSearchedSymbol = json.symbol;
+          document.getElementById('res-symbol').innerText = json.symbol + ' · ' + json.currency;
+          document.getElementById('res-name').innerText = json.name;
+          document.getElementById('res-price').innerText = (json.currency === 'USD' ? '$' : '') + json.price.toFixed(2);
+          
+          const chgSign = json.change >= 0 ? '+' : '';
+          const chgColor = json.change >= 0 ? 'text-red-400' : 'text-emerald-400';
+          document.getElementById('res-change').className = 'font-mono text-xs ' + chgColor;
+          document.getElementById('res-change').innerText = `${chgSign}${json.change.toFixed(2)} (${chgSign}${json.pctChange}%)`;
+
+          document.getElementById('res-high').innerText = json.regularMarketDayHigh ? json.regularMarketDayHigh.toFixed(2) : '--';
+          document.getElementById('res-low').innerText = json.regularMarketDayLow ? json.regularMarketDayLow.toFixed(2) : '--';
+          document.getElementById('res-52high').innerText = json.high52 ? json.high52.toFixed(2) : '--';
+          document.getElementById('res-52low').innerText = json.low52 ? json.low52.toFixed(2) : '--';
+
+          document.getElementById('search-result-box').classList.remove('hidden');
+        } else {
+          alert('查無標的代碼行情，請確認代碼是否正確！');
+        }
+      } catch (e) {
+        alert('連線查詢失敗，請重試！');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '查詢';
+      }
+    }
+
+    function askAIForCurrentSymbol() {
+      if (!currentSearchedSymbol) return;
+      closeSearchModal();
+      quickAsk(`請針對【${currentSearchedSymbol}】結合最新行情、基本面估值與全球總體經濟趨勢進行深度策略研報分析`);
+    }
 
     function shareToLine() {
       if (!currentRawReport) return alert('研報生成中，請稍候再分享！');
