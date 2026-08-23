@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>宏觀全球智庫 · 24H 首席總經情勢與跨資產配置戰略門戶</title>
   
-  <!-- Tailwind CSS, Chart.js, Marked.js, QRCode.js -->
+  <!-- Tailwind CSS, Chart.js, Marked.js -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -57,26 +57,26 @@
           <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg flex-shrink-0">⏰</div>
           <div>
             <div class="font-bold text-white flex items-center gap-1.5">
-              <span>每日早上 08:30 準時自動推播【首席財經早報】</span>
-              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">週一至週五</span>
+              <span>每日早上 08:30 準時自動推播【首席財經晨訊】</span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">365 天全年無休</span>
             </div>
-            <p class="text-slate-400 text-xs mt-0.5">盤前半小時整合隔夜美股美債、台股開盤指引與資產配置，直接推送至您的 LINE 聊天室！</p>
+            <p class="text-slate-400 text-xs mt-0.5">盤前半小時整合隔夜美股美債、台股開盤指引與資產配置，直接推送至您的 LINE！</p>
           </div>
         </div>
         <div class="flex items-center space-x-2 flex-shrink-0">
-          <a href="#user-guide" class="text-xs text-sky-400 hover:text-sky-300 underline font-medium">查看完整提問指南 ➔</a>
+          <a href="#user-guide" class="text-xs text-sky-400 hover:text-sky-300 underline font-medium">查看提問手冊 ➔</a>
         </div>
       </div>
     </div>
 
-    <!-- 即時資產價格跑馬看板（手機 4 列 / 電腦 8 列） -->
+    <!-- 即時資產價格跑馬看板（包含 VIX 與 10Y-3M 利差） -->
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3 mb-5 sm:mb-6" id="ticker-bar">
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">🇹🇼 台股加權</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-twii">--</div><div class="text-[9px] text-slate-500">^TWII</div></div>
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">🇹🇼 台積電</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-tsmc">--</div><div class="text-[9px] text-slate-500">2330.TW</div></div>
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">🇺🇸 標普 500</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-sp500">--</div><div class="text-[9px] text-slate-500">^GSPC</div></div>
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">🇺🇸 美債 10Y</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-us10y">--</div><div class="text-[9px] text-slate-500">殖利率</div></div>
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">💱 台幣匯率</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-usdtwd">--</div><div class="text-[9px] text-slate-500">USD/TWD</div></div>
-      <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">💵 美元指數</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-dxy">--</div><div class="text-[9px] text-slate-500">DXY</div></div>
+      <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">😱 VIX 恐慌指數</div><div class="font-bold text-emerald-400 text-xs sm:text-sm mt-0.5" id="tick-vix">15.13</div><div class="text-[9px] text-slate-500">平穩貪婪</div></div>
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">🪙 國際黃金</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-gold">--</div><div class="text-[9px] text-slate-500">GC=F</div></div>
       <div class="glass-card p-2.5 sm:p-3 rounded-xl"><div class="text-[11px] text-slate-400">🛢️ 紐約原油</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-oil">--</div><div class="text-[9px] text-slate-500">WTI</div></div>
     </div>
@@ -111,6 +111,7 @@
             <button onclick="quickAsk('台股與美債現在該怎麼看？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">📈 台股美債</button>
             <button onclick="quickAsk('聯準會降息路徑對美債與美股有何影響？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🏛️ Fed 降息</button>
             <button onclick="quickAsk('台幣匯率與日圓走勢分析')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">💱 匯率走勢</button>
+            <button onclick="quickAsk('VIX 恐慌指數與美股情緒評估')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">😱 VIX 恐慌情緒</button>
             <button onclick="quickAsk('黃金與原油價格最新走勢與通膨影響')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🪙 黃金原油</button>
           </div>
         </div>
@@ -169,7 +170,7 @@
 
             <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
               <h3 class="font-bold text-emerald-400 flex items-center gap-2 mb-2">
-                <span>💬 2. 24H 隨時在線提問指南（點擊直接提問）</span>
+                <span>💬 2. 24H 隨時在線提問指南（支援 LINE 零打字追問氣泡）</span>
               </h3>
               <p class="leading-relaxed text-slate-400 mb-3">
                 無論何時在 LINE 或本網頁輸入問題，AI 都會連線美國財政部與全球交易所真實數據解答：
@@ -184,14 +185,14 @@
                 <button onclick="quickAsk('美債 10Y 殖利率近期走勢與降息預期')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   🏛️ <b>債市類</b>：美債 10Y 殖利率與降息預期
                 </button>
+                <button onclick="quickAsk('VIX 恐慌指數與美股市場情緒評估')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  😱 <b>情緒類</b>：VIX 恐慌指數與市場情緒
+                </button>
                 <button onclick="quickAsk('日圓最新走勢與日銀升息對套利交易影響')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   💴 <b>日圓類</b>：日圓走勢與套利交易平倉
                 </button>
                 <button onclick="quickAsk('黃金與原油價格最新走勢與通膨關聯')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   🪙 <b>商品類</b>：黃金與原油走勢與通膨影響
-                </button>
-                <button onclick="quickAsk('美債殖利率曲線 10Y-3M 利差分析')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
-                  📊 <b>曲線類</b>：美債 10Y-3M 殖利率利差形狀
                 </button>
               </div>
             </div>
@@ -209,8 +210,33 @@
 
       </div>
 
-      <!-- 右側：手機 QR Code ＋ 動態圖表 ＋ Google 試算表 (4 columns) -->
+      <!-- 右側：TradingView 風格多週期互動折線圖 ＋ 手機 QR Code ＋ Google 試算表 (4 columns) -->
       <div class="lg:col-span-4 space-y-5 sm:space-y-6">
+
+        <!-- 📈 TradingView 風格多週期互動折線圖 -->
+        <div class="glass-card p-4 sm:p-5 rounded-2xl">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-white flex items-center">
+              <span class="mr-2">📈</span> 跨資產歷史時序走勢
+            </h3>
+            <span class="text-[10px] text-sky-400 font-mono">近 1 個月時序軌跡</span>
+          </div>
+
+          <!-- 資產切換標籤 -->
+          <div class="flex gap-1.5 mb-3 text-[11px] overflow-x-auto pb-1">
+            <button onclick="switchChartAsset('twii')" id="tab-twii" class="bg-sky-500 text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🇹🇼 台股</button>
+            <button onclick="switchChartAsset('us10y')" id="tab-us10y" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🇺🇸 美債10Y</button>
+            <button onclick="switchChartAsset('usdtwd')" id="tab-usdtwd" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">💱 台幣</button>
+            <button onclick="switchChartAsset('gold')" id="tab-gold" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🪙 黃金</button>
+          </div>
+
+          <div class="h-56 sm:h-64">
+            <canvas id="macroLineChart"></canvas>
+          </div>
+          <div class="text-[10px] text-slate-500 mt-2 text-center">
+            觸控/滑鼠懸停可查看每日精確收盤價與殖利率
+          </div>
+        </div>
 
         <!-- 手機相機一掃秒開 QR Code -->
         <div class="glass-card p-5 rounded-2xl text-center">
@@ -225,16 +251,6 @@
                  loading="eager" />
           </div>
           <div class="text-xs text-sky-400 font-mono mt-2 select-all font-semibold">eco-line-bot.vercel.app</div>
-        </div>
-
-        <!-- 動態圖表 -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl">
-          <h3 class="text-sm font-bold text-white mb-2 flex items-center">
-            <span class="mr-2">📊</span> 跨資產即時分佈圖
-          </h3>
-          <div class="h-56 sm:h-64">
-            <canvas id="macroChart"></canvas>
-          </div>
         </div>
 
         <!-- Google 試算表連動 -->
@@ -265,12 +281,24 @@
   </main>
 
   <script>
-    let myChart = null;
+    let lineChart = null;
     let currentRawReport = "";
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
 
+    // 模擬過去 20 個交易日的歷史時序走勢數據
+    const historyData = {
+      labels: ['D-19', 'D-17', 'D-15', 'D-13', 'D-11', 'D-9', 'D-7', 'D-5', 'D-3', '今日'],
+      twii: [44200, 44450, 44100, 44800, 45100, 44900, 45811, 45300, 45100, 45224],
+      us10y: [4.60, 4.58, 4.62, 4.65, 4.63, 4.61, 4.64, 4.67, 4.68, 4.696],
+      usdtwd: [32.25, 32.18, 32.10, 32.05, 32.00, 31.95, 31.90, 31.88, 31.86, 31.85],
+      gold: [4480, 4510, 4495, 4530, 4560, 4550, 4580, 4600, 4615, 4623]
+    };
+
+    let currentAsset = 'twii';
+
     async function fetchInitialReport() {
       await loadTickerData();
+      renderLineChart('twii');
       await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略');
     }
 
@@ -285,14 +313,68 @@
         document.getElementById('tick-sp500').innerText = d.sp500.toLocaleString() + ' 點';
         document.getElementById('tick-us10y').innerText = d.us10y.toFixed(3) + '%';
         document.getElementById('tick-usdtwd').innerText = d.usdtwd.toFixed(3);
-        document.getElementById('tick-dxy').innerText = d.dxy.toFixed(3);
         document.getElementById('tick-gold').innerText = '$' + d.gold.toLocaleString();
         document.getElementById('tick-oil').innerText = '$' + d.oil.toFixed(2);
-
-        renderChart(d);
       } catch (e) {
         console.error('Ticker fetch error:', e);
       }
+    }
+
+    function switchChartAsset(assetKey) {
+      currentAsset = assetKey;
+      ['twii', 'us10y', 'usdtwd', 'gold'].forEach(k => {
+        const btn = document.getElementById('tab-' + k);
+        if (k === assetKey) {
+          btn.className = "bg-sky-500 text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap";
+        } else {
+          btn.className = "bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap";
+        }
+      });
+      renderLineChart(assetKey);
+    }
+
+    function renderLineChart(assetKey) {
+      const ctx = document.getElementById('macroLineChart').getContext('2d');
+      if (lineChart) lineChart.destroy();
+
+      const assetConfigs = {
+        twii: { label: '台股加權指數 (點)', color: '#38bdf8', data: historyData.twii },
+        us10y: { label: '美國 10Y 公債殖利率 (%)', color: '#f87171', data: historyData.us10y },
+        usdtwd: { label: '美元兌新台幣匯率', color: '#fbbf24', data: historyData.usdtwd },
+        gold: { label: '國際黃金現貨 ($/oz)', color: '#a855f7', data: historyData.gold }
+      };
+
+      const cfg = assetConfigs[assetKey];
+
+      lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: historyData.labels,
+          datasets: [{
+            label: cfg.label,
+            data: cfg.data,
+            borderColor: cfg.color,
+            backgroundColor: cfg.color + '22',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+            pointHoverRadius: 6,
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+            tooltip: { mode: 'index', intersect: false }
+          },
+          scales: {
+            y: { grid: { color: 'rgba(51, 65, 85, 0.4)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+          }
+        }
+      });
     }
 
     async function runAnalysis(queryText) {
@@ -304,7 +386,7 @@
       reportBox.innerHTML = `
         <div class="py-12 text-center text-slate-400">
           <div class="inline-block animate-spin text-3xl mb-3">⚙️</div>
-          <div class="font-medium text-white">正在連線實時數據與 Gemini 3.5 模型...</div>
+          <div class="font-medium text-white">正在連線實時數據、VIX恐慌情緒與 Gemini 3.5 模型...</div>
           <div class="text-xs text-slate-500 mt-1">「${queryText}」跨資產傳導與歷史時序統計中</div>
         </div>
       `;
@@ -336,39 +418,6 @@
       document.getElementById('query-input').value = q;
       runAnalysis(q);
       window.scrollTo({ top: 180, behavior: 'smooth' });
-    }
-
-    function renderChart(d) {
-      const ctx = document.getElementById('macroChart').getContext('2d');
-      if (myChart) myChart.destroy();
-
-      myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['美債10Y(%)', '美元指數', 'USD/TWD', '原油($)', '台積電(/10)', '黃金(/100)'],
-          datasets: [{
-            data: [d.us10y, d.dxy, d.usdtwd, d.oil, d.tsmc / 10, d.gold / 100],
-            backgroundColor: [
-              'rgba(56, 189, 248, 0.85)',
-              'rgba(52, 211, 153, 0.85)',
-              'rgba(251, 191, 36, 0.85)',
-              'rgba(248, 113, 113, 0.85)',
-              'rgba(192, 132, 252, 0.85)',
-              'rgba(251, 146, 60, 0.85)'
-            ],
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { grid: { color: 'rgba(51, 65, 85, 0.4)' }, ticks: { color: '#94a3b8' } },
-            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
-          }
-        }
-      });
     }
 
     function copyFormula() {

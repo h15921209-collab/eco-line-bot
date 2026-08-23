@@ -1,15 +1,16 @@
 const SYSTEM_PROMPT = `你是專門洞悉全球總體經濟趨勢與金融市場變化的【總經分析助手】。
 你的角色是一位具備頂級投資機構視角、客觀理性、邏輯嚴密且能深入淺出的「首席總經策略分析師」。
 
-【核心回答規範（★嚴格「官方即時 API 連線 ＋ 實時報價 ＋ 殖利率曲線形態 ＋ 歷史時序」）】
-1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
+【核心回答規範（★嚴格「官方即時 API ＋ 實時報價 ＋ 殖利率曲線 ＋ VIX恐慌情緒 ＋ 歷史時序」）】
+1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線、VIX 恐慌指數、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
 2. 【結論先行（Bottom-Line First）】：第一句話直接切中當前經濟情勢的核心結論、歷史趨勢方向與市場定價邏輯。
-3. 【全動態數據引用規範（★必須嚴格引用下方每次連線抓取的官方最新數據）】：
+3. 【全動態數據引用規範（★必須嚴格引用下方每次連線抓取的即時數據）】：
    - 🇺🇸 美國官方財政與利率指標：引用連線美國財政部 (US Treasury) 與即時公債殖利率曲線 (3M IRX、5Y FVX、10Y TNX、30Y TYX)，精準解析利差形狀與市場對 Fed 降息終點利率的定價。
+   - 😱 市場波動率與避險情緒 (VIX)：引用當前 VIX 恐慌指數數值，精準評估當前市場是處於低波動貪婪、常態還是避險升溫。
    - 📈 跨資產即時報價與時序：引用當下抓取的台股加權、台積電、S&P 500、外匯與商品最新報價及近 5 日/近月累計幅度。
    - 🏛️ 官方總經指標：引用下方動態同步之官方最新公布數值（Fed 目標區間 3.50%-3.75%、CPI 3.4%、核心 PCE 3.3%、非農 -2.3萬人/失業率 4.1%、台灣外銷訂單 979.4億美元 +61.9%、海關總出口 753億美元 +32.9%）。
 4. 【三維度結構化拆解】：
-   - 📊 關鍵數據與歷史軌跡：結合即時報價、殖利率曲線形狀與官方最新總經數據。
+   - 📊 關鍵數據與歷史軌跡：結合即時報價、殖利率曲線形狀、VIX 恐慌情緒與官方最新總經數據。
    - 🔄 資產傳導影響：分析時序變動對股市、債市、匯率與大宗商品的跨資產傳導機制。
    - ⚖️ 潛在風險與情境推演：列出 1~2 個市場可能忽視的灰犀牛/黑天鵝變數。
 5. 【客觀專業且平易近人】：用清晰邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與跨週期資產配置思維。
@@ -92,6 +93,8 @@ async function fetchLiveMarketAndHistory() {
     getHistoryQuote("^TWII",    "🇹🇼 台股加權指數",          " 點", 0),
     getHistoryQuote("2330.TW",  "🇹🇼 台積電",                " 元", 1),
     getHistoryQuote("^GSPC",    "🇺🇸 美股 S&P 500",          " 點", 1),
+    // 恐慌指數
+    getHistoryQuote("^VIX",     "😱 美股 VIX 恐慌指數 (波動率情緒)", "", 2),
     // 美債殖利率曲線 (3M, 5Y, 10Y, 30Y)
     getHistoryQuote("^IRX",     "🇺🇸 美國 3M 國庫券殖利率 (短期政策利率定價)", "%", 3),
     getHistoryQuote("^FVX",     "🇺🇸 美國 5Y 公債殖利率 (中天期利率)", "%", 3),
@@ -102,7 +105,6 @@ async function fetchLiveMarketAndHistory() {
     getHistoryQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2)
   ];
 
-  // 並行抓取市場即時報價 ＋ 美國財政部官方 API
   const [quoteResults, treasuryOfficialText] = await Promise.all([
     Promise.allSettled(quotePromises),
     fetchUSTreasuryOfficialRates()
@@ -114,7 +116,7 @@ async function fetchLiveMarketAndHistory() {
 
   const formattedLines = validQuotes.map(q => q.formatted);
 
-  // 動態計算美債殖利率利差 (10Y - 3M Spread)
+  // 1. 動態計算美債殖利率利差 (10Y - 3M Spread)
   const q10y = validQuotes.find(q => q.symbol === "^TNX")?.price;
   const q3m = validQuotes.find(q => q.symbol === "^IRX")?.price;
   let spreadText = "";
@@ -124,13 +126,25 @@ async function fetchLiveMarketAndHistory() {
     spreadText = `• 📊 美債 10Y-3M 即時利差：${spread}% ➔ 曲線形態：【${curveStatus}】`;
   }
 
+  // 2. 動態評估 VIX 恐慌指數市場情緒
+  const qvix = validQuotes.find(q => q.symbol === "^VIX")?.price;
+  let vixMoodText = "";
+  if (qvix) {
+    let mood = "常態中性區間";
+    if (qvix < 14) mood = "極度樂觀 / 低波動貪婪（留意突發回檔）";
+    else if (qvix <= 20) mood = "健康平穩波動區間";
+    else if (qvix <= 28) mood = "市場避險情緒升溫 / 波動放大";
+    else mood = "市場恐慌拋售狀態";
+    vixMoodText = `• 😱 市場情緒溫度計 (VIX)：${qvix} ➔ 定位：【${mood}】`;
+  }
+
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
 
   return `【查詢當下（${timeStr} UTC+8）即時連線抓取之官方數據庫與市場即時行情】：
 ${formattedLines.length > 0 ? formattedLines.join("\n") : "• 即時市場連線更新中"}
-${spreadText ? spreadText + "\n" : ""}${treasuryOfficialText}
+${spreadText ? spreadText + "\n" : ""}${vixMoodText ? vixMoodText + "\n" : ""}${treasuryOfficialText}
 • 🏛️ 官方最新權威總經發布指標（每次提問即時同步）：
   - 🇺🇸 美國聯準會 (Fed) 基準利率目標區間：3.50% - 3.75%（有效聯邦基金利率 EFFR 3.63%）
   - 🇺🇸 美國最新 CPI 通膨年增率：3.4%（月增 0.1%）
@@ -146,7 +160,7 @@ async function callGemini(userText) {
   const models = ["gemini-3.5-flash-lite", "gemini-3.5-flash"];
 
   const liveMarketData = await fetchLiveMarketAndHistory();
-  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、美國財政部官方利率、美債殖利率曲線利差形態與官方最新總經數據），給出深度、數據精準且邏輯清晰的趨勢剖析與資產傳導解答。`;
+  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、VIX恐慌指數情緒、美國財政部官方利率、美債殖利率曲線利差形態與官方最新總經數據），給出深度、數據精準且邏輯清晰的趨勢剖析與資產傳導解答。`;
 
   for (const m of models) {
     try {
@@ -177,7 +191,7 @@ function getHeader() {
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
-  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ 官方最新總經庫\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ VIX 情緒 ＋ 官方總經庫\n━━━━━━━━━━━━━━━━━━━━\n\n`;
 }
 
 module.exports = {
