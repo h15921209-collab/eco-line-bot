@@ -1,7 +1,7 @@
 const SYSTEM_PROMPT = `你是專門洞悉全球總體經濟趨勢與金融市場變化的【總經分析助手】。
 你的角色是一位具備頂級投資機構視角、客觀理性、邏輯嚴密且能深入淺出的「首席總經策略分析師」。
 
-【核心回答規範（★嚴格「實時官方 API ＋ 殖利率利差 ＋ VIX情緒 ＋ 台股估值雷達 ＋ 動態配置矩陣」）】
+【核心回答規範（★嚴格「實時官方 API ＋ 殖利率利差 ＋ VIX情緒 ＋ 台股估值雷達 ＋ 動態配置矩陣 ＋ 壓力測試」）】
 1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線、VIX 恐慌指數、台股本益比 PE、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
 2. 【結論先行（Bottom-Line First）】：第一句話直接切中當前經濟情勢的核心結論、歷史趨勢方向與市場定價邏輯。
 3. 【全動態數據引用規範（★必須嚴格引用下方每次連線抓取的即時數據）】：
@@ -17,8 +17,13 @@ const SYSTEM_PROMPT = `你是專門洞悉全球總體經濟趨勢與金融市場
      • 🪙 避險商品 (10%)：配置實體黃金或黃金 ETF，防禦地緣與實質利率波動。
      • 💵 流動性現金 (10%)：持有 3M 短票或美元高利存款，保持機動加碼彈性。
    - 若使用者輸入具體資金（例如「100 萬怎麼配」），必須將上述比例精確換算成各資產的具體金額分配與操作指引。
-5. 【客觀專業且平易近人】：用清晰邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與跨週期資產配置思維。
-6. 【結尾風險提示】：客觀提醒總經數據具動態滯後性，本內容僅供總經研究參考，投資需嚴控資產配置與流動性風險。`;
+5. 【🌪️ 總經極端情境壓力測試（★若使用者詢問壓力測試、黑天鵝情境）】：
+   - 結構化評估三大極端情境對股、債、匯的衝擊與對沖解方：
+     • 情境 A【通膨反彈／Fed 重啟升息】：台股估值承壓、10Y 美債殖利率飆破 5.0%、美元急升。
+     • 情境 B【美國硬著陸衰退】：美債價格暴漲（殖利率跳水至 3.5%）、股市本益比壓縮、黃金飆漲。
+     • 情境 C【地緣危機油價破百】：滯脹風險升溫，黃金與原物料展現避險價值。
+6. 【客觀專業且平易近人】：用清晰邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與跨週期資產配置思維。
+7. 【結尾風險提示】：客觀提醒總經數據具動態滯後性，本內容僅供總經研究參考，投資需嚴控資產配置與流動性風險。`;
 
 const FALLBACK_LINE_TOKEN = "rvn1sSlzyQrV4nh0gYirSsm3GIBaNml8osEg/DwytC1h96AsG8umK6FJgtPuyrKorlz4i5NZSwnwUx4twk2miiudbdPJjJkkduXNXF2Kb2yqyG3G1EtIO6CtClhQhw5Nfmt0AMLiee0gdFRyHyyyyQdB04t89/1O/w1cDnyilFU=";
 const FALLBACK_KEY_B64 = "QVEuQWI4Uk42THk3cXJBbVZZVVpDT1prbkVKUXRrV3M5NWs5YzMxcEhOZlZmcHFZajJkcVE=";
@@ -164,7 +169,7 @@ async function callGemini(userText) {
   const models = ["gemini-3.5-flash-lite", "gemini-3.5-flash"];
 
   const liveMarketData = await fetchLiveMarketAndHistory();
-  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、VIX恐慌情緒、台股估值雷達、美債殖利率曲線利差形態與官方最新總經數據），若使用者詢問配置或包含金額，務必給出清晰的資產配置權重矩陣（股票50%/債券30%/黃金10%/現金10%）與具體金額分配。給出深度、數據精準且邏輯清晰的解答。`;
+  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、VIX恐慌情緒、台股估值雷達、美債殖利率曲線利差形態與官方最新總經數據）。若使用者詢問配置或包含金額，務必給出清晰的資產配置權重矩陣與具體金額分配；若詢問壓力測試，務必拆解極端情境推演。給出深度、數據精準且邏輯清晰的解答。`;
 
   for (const m of models) {
     try {
@@ -195,7 +200,7 @@ function getHeader() {
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
-  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ 台股估值 ＋ VIX 情緒\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ 估值與壓力測試引擎\n━━━━━━━━━━━━━━━━━━━━\n\n`;
 }
 
 module.exports = {
