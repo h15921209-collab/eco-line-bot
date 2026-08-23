@@ -17,18 +17,18 @@ const USER_GUIDE_MESSAGE = `📖【宏觀全球智庫 · 總經分析助手使�
   💡 跨資產配置策略焦點（股、債、原物料）
 
 💬【2. 24H 隨時在線提問指南（支援底部零打字快捷氣泡）】
-您可以隨時在聊天室輸入任何總經問題、資金金額或壓力測試情境，AI 將在秒級連線最新數據（含 VIX 情緒、台股本益比估值、美國財政部官方利率與公債利差）為您解答！
+您可以隨時在聊天室輸入任何總經問題、資金金額、換匯試算或壓力測試，AI 將在秒級連線最新數據為您解答！
 
 🔥【熱門提問範例（直接點擊下方快捷按鈕或輸入）】：
 1️⃣ 配置類：「我有 100 萬想做總經資產配置該怎麼分？」或「50萬資產配置建議」
-2️⃣ 壓力類：「總經極端情境壓力測試（黑天鵝演練）」
-3️⃣ 估值類：「台股加權指數目前本益比估值、殖利率與位階評估」
-4️⃣ 債市類：「美債 10Y 殖利率近期走勢與降息預期」或「殖利率曲線利差分析」
-5️⃣ 匯率類：「台幣現在匯率多少？」或「日圓最新走勢與日銀政策影響」
+2️⃣ 換匯類：「100萬日圓換台幣多少？」或「台幣現在匯率與近期換匯建議」
+3️⃣ 壓力類：「總經極端情境壓力測試（黑天鵝演練）」
+4️⃣ 估值類：「台股加權指數目前本益比估值、殖利率與位階評估」
+5️⃣ 債市類：「美債 10Y 殖利率近期走勢與降息預期」或「殖利率曲線利差分析」
 6️⃣ 情緒類：「VIX 恐慌指數與美股情緒評估」
 
-🌐【3. 專屬手機視覺化圖表門戶（支援 PWA 加到手機主畫面）】
-點擊下方連結即可在手機上查看全天候動態圖表、配置計算機與歷史時序庫：
+🌐【3. 專屬手機視覺化圖表門戶（支援語音朗讀 ＆ PWA 桌面 App）】
+點擊下方連結即可在手機上查看全天候動態圖表、配置計算機與語音聽早報：
 👉 ${SHORT_WEB_URL}
 
 💡 隨時點擊下方「📖 說明」即可再次查看本手冊；現在您可以直接點擊快捷氣泡開始體驗！`;
@@ -55,6 +55,14 @@ function getQuickReplyItems() {
         type: "action",
         action: {
           type: "message",
+          label: "💱 日圓換匯試算",
+          text: "100萬日圓換算新台幣是多少？日圓近期走勢與換匯時機建議"
+        }
+      },
+      {
+        type: "action",
+        action: {
+          type: "message",
           label: "🌪️ 總經壓力測試",
           text: "請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）"
         }
@@ -71,14 +79,6 @@ function getQuickReplyItems() {
         type: "action",
         action: {
           type: "message",
-          label: "📈 台股與美債",
-          text: "台股與美債現在該怎麼看？"
-        }
-      },
-      {
-        type: "action",
-        action: {
-          type: "message",
           label: "📖 使用說明",
           text: "說明"
         }
@@ -87,9 +87,16 @@ function getQuickReplyItems() {
   };
 }
 
+// Unicode 安全截斷函數，防止 Emoji 被截斷導致 LINE 400 Bad Request
+function safeTruncate(str, maxLen = 4800) {
+  const chars = Array.from(str);
+  if (chars.length <= maxLen) return str;
+  return chars.slice(0, maxLen).join('') + "\n\n⋯（摘要截斷，請點上方連結查看完整版）";
+}
+
 async function replyLine(lineToken, replyToken, text) {
   const fullText = text.includes(SHORT_WEB_URL) ? text : (text + `\n\n📱 點此在手機開啟【視覺化圖表研報】：\n${SHORT_WEB_URL}`);
-  const safeText = fullText.length > 4900 ? fullText.substring(0, 4900) + "\n\n⋯（摘要截斷，請點上方連結查看完整版）" : fullText;
+  const safeText = safeTruncate(fullText, 4800);
   
   return fetch("https://api.line.me/v2/bot/message/reply", {
     method: "POST",
@@ -124,7 +131,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       status: "healthy",
       service: "eco-line-bot-js",
-      role: "總經分析助手 · 實時行情與時序歷史策略分析師（旗艦壓力測試版）",
+      role: "總經分析助手 · 實時行情與時序歷史策略分析師（自檢旗艦版）",
       webPortal: SHORT_WEB_URL,
       msg: "Endpoint operational"
     });

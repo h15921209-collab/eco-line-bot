@@ -63,8 +63,9 @@ ${rawReport || '今日全球總經數據同步中，請點擊下方連結查看�
 📱 點此查看【手機即時圖表完整版】：
 ${SHORT_WEB_URL}`;
 
-    const safeMessage = broadcastMessage.length > 4900 
-      ? broadcastMessage.substring(0, 4900) + "\n\n⋯（點上方連結看完整版）" 
+    const chars = Array.from(broadcastMessage);
+    const safeMessage = chars.length > 4800 
+      ? chars.slice(0, 4800).join('') + "\n\n⋯（點上方連結看完整版）" 
       : broadcastMessage;
 
     // 2. 呼叫 LINE 官方 Broadcast API 推播給所有好友

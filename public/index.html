@@ -40,8 +40,11 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
+        <button onclick="toggleSpeech()" id="btn-speech" class="text-xs bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
+          <span id="speech-icon">🔊</span> <span id="speech-text">語音朗讀</span>
+        </button>
         <a href="#user-guide" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-3 py-1.5 rounded-lg transition font-medium">
-          📖 使用說明書
+          📖 說明書
         </a>
         <button onclick="fetchInitialReport()" class="text-xs bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
           🔄 刷新
@@ -111,10 +114,10 @@
           <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-3 text-[11px]">
             <span class="text-slate-500 py-0.5">熱門快捷：</span>
             <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額與標的建議')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded-md border border-amber-500/40 font-medium">🎯 100萬配置試算</button>
+            <button onclick="quickAsk('100萬日圓換算新台幣是多少？日圓近期走勢與換匯時機建議')" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-500/40 font-medium">💱 日圓換匯試算</button>
             <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 px-2 py-0.5 rounded-md border border-purple-500/40 font-medium">🌪️ 總經壓力測試</button>
             <button onclick="quickAsk('台股加權指數目前本益比估值、殖利率與位階評估')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🇹🇼 台股估值位階</button>
             <button onclick="quickAsk('台股與美債現在該怎麼看？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">📈 台股美債</button>
-            <button onclick="quickAsk('聯準會降息路徑對美債與美股有何影響？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🏛️ Fed 降息</button>
           </div>
         </div>
 
@@ -143,7 +146,9 @@
 
           <!-- 底部操作 -->
           <div class="mt-6 pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-500">
-            <span>© 宏觀全球智庫 · 24H 首席策略團隊</span>
+            <button onclick="toggleSpeech()" class="text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 font-medium">
+              🔊 語音隨身聽
+            </button>
             <button onclick="copyReportText()" class="text-sky-400 hover:text-sky-300 transition flex items-center gap-1">
               📋 複製研報
             </button>
@@ -181,6 +186,9 @@
                 <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例')" class="text-left p-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition text-amber-200">
                   🎯 <b>配置類</b>：100萬總經跨資產配置試算
                 </button>
+                <button onclick="quickAsk('100萬日圓換算新台幣是多少？日圓近期走勢與換匯時機建議')" class="text-left p-2.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition text-emerald-200">
+                  💱 <b>換匯類</b>：100萬日圓換匯新台幣試算
+                </button>
                 <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="text-left p-2.5 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition text-purple-200">
                   🌪️ <b>壓力測試</b>：黑天鵝情境衝擊演練
                 </button>
@@ -192,9 +200,6 @@
                 </button>
                 <button onclick="quickAsk('美債 10Y 殖利率近期走勢與降息預期')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   🏛️ <b>債市類</b>：美債 10Y 殖利率與降息預期
-                </button>
-                <button onclick="quickAsk('台幣現在匯率多少？近期走勢分析')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
-                  💱 <b>匯率類</b>：台幣現在匯率與近期走勢分析
                 </button>
               </div>
             </div>
@@ -329,6 +334,7 @@
   <script>
     let lineChart = null;
     let currentRawReport = "";
+    let isSpeaking = false;
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
 
     const historyData = {
@@ -340,6 +346,45 @@
     };
 
     let currentAsset = 'twii';
+
+    function toggleSpeech() {
+      if (!('speechSynthesis' in window)) {
+        alert('您的瀏覽器不支援語音朗讀功能！');
+        return;
+      }
+
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        document.getElementById('speech-icon').innerText = '🔊';
+        document.getElementById('speech-text').innerText = '語音朗讀';
+        return;
+      }
+
+      if (!currentRawReport) return;
+
+      const cleanText = currentRawReport.replace(/[\#\*\_\`\•\—\-\[\]\(\)]/g, ' ').replace(/https?:\/\/\S+/g, '');
+      const utter = new SpeechSynthesisUtterance(cleanText);
+      utter.lang = 'zh-TW';
+      utter.rate = 1.05;
+
+      utter.onend = () => {
+        isSpeaking = false;
+        document.getElementById('speech-icon').innerText = '🔊';
+        document.getElementById('speech-text').innerText = '語音朗讀';
+      };
+
+      utter.onerror = () => {
+        isSpeaking = false;
+        document.getElementById('speech-icon').innerText = '🔊';
+        document.getElementById('speech-text').innerText = '語音朗讀';
+      };
+
+      window.speechSynthesis.speak(utter);
+      isSpeaking = true;
+      document.getElementById('speech-icon').innerText = '⏸️';
+      document.getElementById('speech-text').innerText = '暫停朗讀';
+    }
 
     function calcAllocation() {
       const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
