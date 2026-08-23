@@ -97,7 +97,7 @@
           </div>
 
           <div class="flex flex-col sm:flex-row gap-2">
-            <input type="text" id="query-input" placeholder="輸入總經問題，如：台股與美債現在該怎麼看？"
+            <input type="text" id="query-input" placeholder="輸入總經問題，如：我有100萬想做跨資產配置該怎麼配？"
               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             <button onclick="submitCustomQuery()" id="btn-submit"
               class="bg-gradient-to-r from-sky-500 to-blue-600 active:scale-95 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-sky-500/20 whitespace-nowrap">
@@ -108,11 +108,11 @@
           <!-- 熱門主題快捷鍵 -->
           <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-3 text-[11px]">
             <span class="text-slate-500 py-0.5">熱門快捷：</span>
+            <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額與標的建議')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded-md border border-amber-500/40 font-medium">🎯 100萬配置試算</button>
+            <button onclick="quickAsk('台股加權指數目前本益比估值、殖利率與位階評估')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🇹🇼 台股估值位階</button>
             <button onclick="quickAsk('台股與美債現在該怎麼看？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">📈 台股美債</button>
             <button onclick="quickAsk('聯準會降息路徑對美債與美股有何影響？')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🏛️ Fed 降息</button>
             <button onclick="quickAsk('台幣匯率與日圓走勢分析')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">💱 匯率走勢</button>
-            <button onclick="quickAsk('VIX 恐慌指數與美股情緒評估')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">😱 VIX 恐慌情緒</button>
-            <button onclick="quickAsk('黃金與原油價格最新走勢與通膨影響')" class="bg-slate-800/90 active:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700">🪙 黃金原油</button>
           </div>
         </div>
 
@@ -176,8 +176,11 @@
                 無論何時在 LINE 或本網頁輸入問題，AI 都會連線美國財政部與全球交易所真實數據解答：
               </p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <button onclick="quickAsk('台幣現在匯率多少？近期走勢分析')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
-                  💱 <b>匯率類</b>：台幣現在匯率與近期走勢分析
+                <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例')" class="text-left p-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition text-amber-200">
+                  🎯 <b>配置類</b>：100萬總經跨資產配置試算
+                </button>
+                <button onclick="quickAsk('台股加權指數目前本益比估值、殖利率與位階評估')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  🇹🇼 <b>估值類</b>：台股大盤本益比與位階評估
                 </button>
                 <button onclick="quickAsk('台股與美債現在該怎麼看？資產配置建議')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   📈 <b>股市類</b>：台股與美債現在該怎麼看？
@@ -185,11 +188,8 @@
                 <button onclick="quickAsk('美債 10Y 殖利率近期走勢與降息預期')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   🏛️ <b>債市類</b>：美債 10Y 殖利率與降息預期
                 </button>
-                <button onclick="quickAsk('VIX 恐慌指數與美股市場情緒評估')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
-                  😱 <b>情緒類</b>：VIX 恐慌指數與市場情緒
-                </button>
-                <button onclick="quickAsk('日圓最新走勢與日銀升息對套利交易影響')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
-                  💴 <b>日圓類</b>：日圓走勢與套利交易平倉
+                <button onclick="quickAsk('台幣現在匯率多少？近期走勢分析')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
+                  💱 <b>匯率類</b>：台幣現在匯率與近期走勢分析
                 </button>
                 <button onclick="quickAsk('黃金與原油價格最新走勢與通膨關聯')" class="text-left p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-slate-200">
                   🪙 <b>商品類</b>：黃金與原油走勢與通膨影響
@@ -210,8 +210,53 @@
 
       </div>
 
-      <!-- 右側：TradingView 風格多週期互動折線圖 ＋ 手機 QR Code ＋ Google 試算表 (4 columns) -->
+      <!-- 右側：動態資產配置計算機 ＋ TradingView 折線圖 ＋ QR Code (4 columns) -->
       <div class="lg:col-span-4 space-y-5 sm:space-y-6">
+
+        <!-- 🎛️ 動態跨資產配置計算機 -->
+        <div class="glass-card p-4 sm:p-5 rounded-2xl border-amber-500/30">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-white flex items-center">
+              <span class="mr-2">🎯</span> 跨資產配置模擬器
+            </h3>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">機構法人矩陣</span>
+          </div>
+          <p class="text-xs text-slate-400 mb-3">輸入預計配置金額，一鍵試算各資產具體比重：</p>
+          
+          <div class="flex gap-2 mb-3">
+            <div class="relative w-full">
+              <span class="absolute left-3 top-2.5 text-xs text-slate-500">NT$</span>
+              <input type="number" id="alloc-amount" value="1000000" step="100000"
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 font-mono">
+            </div>
+            <button onclick="calcAllocation()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white text-xs px-3 py-2 rounded-xl font-medium transition whitespace-nowrap">
+              試算
+            </button>
+          </div>
+
+          <div class="space-y-2 text-xs" id="alloc-result">
+            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+              <span class="text-sky-400 font-medium">📈 股票資產 (50%)</span>
+              <span class="font-mono text-white font-bold" id="alloc-stock">NT$ 500,000</span>
+            </div>
+            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+              <span class="text-red-400 font-medium">🏛️ 債券資產 (30%)</span>
+              <span class="font-mono text-white font-bold" id="alloc-bond">NT$ 300,000</span>
+            </div>
+            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+              <span class="text-amber-400 font-medium">🪙 避險黃金 (10%)</span>
+              <span class="font-mono text-white font-bold" id="alloc-gold">NT$ 100,000</span>
+            </div>
+            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+              <span class="text-emerald-400 font-medium">💵 流動現金 (10%)</span>
+              <span class="font-mono text-white font-bold" id="alloc-cash">NT$ 100,000</span>
+            </div>
+          </div>
+
+          <button onclick="askAIWithAmount()" class="w-full mt-3 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-xl border border-slate-700 transition font-medium text-center block">
+            🤖 請 AI 深度解析此配置方案 ➔
+          </button>
+        </div>
 
         <!-- 📈 TradingView 風格多週期互動折線圖 -->
         <div class="glass-card p-4 sm:p-5 rounded-2xl">
@@ -222,7 +267,6 @@
             <span class="text-[10px] text-sky-400 font-mono">近 1 個月時序軌跡</span>
           </div>
 
-          <!-- 資產切換標籤 -->
           <div class="flex gap-1.5 mb-3 text-[11px] overflow-x-auto pb-1">
             <button onclick="switchChartAsset('twii')" id="tab-twii" class="bg-sky-500 text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🇹🇼 台股</button>
             <button onclick="switchChartAsset('us10y')" id="tab-us10y" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🇺🇸 美債10Y</button>
@@ -285,7 +329,6 @@
     let currentRawReport = "";
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
 
-    // 模擬過去 20 個交易日的歷史時序走勢數據
     const historyData = {
       labels: ['D-19', 'D-17', 'D-15', 'D-13', 'D-11', 'D-9', 'D-7', 'D-5', 'D-3', '今日'],
       twii: [44200, 44450, 44100, 44800, 45100, 44900, 45811, 45300, 45100, 45224],
@@ -296,7 +339,22 @@
 
     let currentAsset = 'twii';
 
+    function calcAllocation() {
+      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
+      document.getElementById('alloc-stock').innerText = 'NT$ ' + Math.round(amt * 0.5).toLocaleString();
+      document.getElementById('alloc-bond').innerText = 'NT$ ' + Math.round(amt * 0.3).toLocaleString();
+      document.getElementById('alloc-gold').innerText = 'NT$ ' + Math.round(amt * 0.1).toLocaleString();
+      document.getElementById('alloc-cash').innerText = 'NT$ ' + Math.round(amt * 0.1).toLocaleString();
+    }
+
+    function askAIWithAmount() {
+      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
+      const wan = Math.round(amt / 10000);
+      quickAsk('我有 ' + wan + ' 萬想做總經跨資產配置該怎麼分配？請列出具體金額、標的建議與操作守則');
+    }
+
     async function fetchInitialReport() {
+      calcAllocation();
       await loadTickerData();
       renderLineChart('twii');
       await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略');
@@ -386,7 +444,7 @@
       reportBox.innerHTML = `
         <div class="py-12 text-center text-slate-400">
           <div class="inline-block animate-spin text-3xl mb-3">⚙️</div>
-          <div class="font-medium text-white">正在連線實時數據、VIX恐慌情緒與 Gemini 3.5 模型...</div>
+          <div class="font-medium text-white">正在連線實時數據、資產配置矩陣與 Gemini 3.5 模型...</div>
           <div class="text-xs text-slate-500 mt-1">「${queryText}」跨資產傳導與歷史時序統計中</div>
         </div>
       `;

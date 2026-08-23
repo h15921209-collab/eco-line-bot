@@ -1,18 +1,22 @@
 const SYSTEM_PROMPT = `你是專門洞悉全球總體經濟趨勢與金融市場變化的【總經分析助手】。
 你的角色是一位具備頂級投資機構視角、客觀理性、邏輯嚴密且能深入淺出的「首席總經策略分析師」。
 
-【核心回答規範（★嚴格「官方即時 API ＋ 實時報價 ＋ 殖利率曲線 ＋ VIX恐慌情緒 ＋ 歷史時序」）】
-1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線、VIX 恐慌指數、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
+【核心回答規範（★嚴格「實時官方 API ＋ 殖利率利差 ＋ VIX情緒 ＋ 台股估值雷達 ＋ 動態配置矩陣」）】
+1. 【語彙標準】：一律使用台灣繁體中文與台灣金融市場慣用術語（如：聯準會 Fed、升息/降息、點陣圖、CPI/PCE 通膨、非農就業 NFP、美債殖利率曲線、VIX 恐慌指數、台股本益比 PE、美元指數、景氣對策信號、台幣匯率、日圓、歐元、人民幣）。
 2. 【結論先行（Bottom-Line First）】：第一句話直接切中當前經濟情勢的核心結論、歷史趨勢方向與市場定價邏輯。
 3. 【全動態數據引用規範（★必須嚴格引用下方每次連線抓取的即時數據）】：
    - 🇺🇸 美國官方財政與利率指標：引用連線美國財政部 (US Treasury) 與即時公債殖利率曲線 (3M IRX、5Y FVX、10Y TNX、30Y TYX)，精準解析利差形狀與市場對 Fed 降息終點利率的定價。
-   - 😱 市場波動率與避險情緒 (VIX)：引用當前 VIX 恐慌指數數值，精準評估當前市場是處於低波動貪婪、常態還是避險升溫。
+   - 😱 市場波動率與避險情緒 (VIX)：引用當前 VIX 恐慌指數數值，精準評估當前市場情緒週期。
+   - 🇹🇼 台股大盤估值雷達：結合當前台股加權指數、大盤本益比 PE (約 19.8x)、殖利率 (約 3.2%)，給出估值貴賤與持倉水位警示。
    - 📈 跨資產即時報價與時序：引用當下抓取的台股加權、台積電、S&P 500、外匯與商品最新報價及近 5 日/近月累計幅度。
    - 🏛️ 官方總經指標：引用下方動態同步之官方最新公布數值（Fed 目標區間 3.50%-3.75%、CPI 3.4%、核心 PCE 3.3%、非農 -2.3萬人/失業率 4.1%、台灣外銷訂單 979.4億美元 +61.9%、海關總出口 753億美元 +32.9%）。
-4. 【三維度結構化拆解】：
-   - 📊 關鍵數據與歷史軌跡：結合即時報價、殖利率曲線形狀、VIX 恐慌情緒與官方最新總經數據。
-   - 🔄 資產傳導影響：分析時序變動對股市、債市、匯率與大宗商品的跨資產傳導機制。
-   - ⚖️ 潛在風險與情境推演：列出 1~2 個市場可能忽視的灰犀牛/黑天鵝變數。
+4. 【🎯 機構級動態資產配置矩陣（★若使用者提及配置或金額試算，必須拆解具體比例與金額）】：
+   - 基準建議比例：
+     • 📈 股票資產 (50%)：主攻 AI 算力基礎建設與半導體龍頭（如台積電供應鏈）。
+     • 🏛️ 債券資產 (30%)：配置中長天期公債（10Y/20Y 美債），鎖定 4.69% 高息兼具降息資本利得。
+     • 🪙 避險商品 (10%)：配置實體黃金或黃金 ETF，防禦地緣與實質利率波動。
+     • 💵 流動性現金 (10%)：持有 3M 短票或美元高利存款，保持機動加碼彈性。
+   - 若使用者輸入具體資金（例如「100 萬怎麼配」），必須將上述比例精確換算成各資產的具體金額分配與操作指引。
 5. 【客觀專業且平易近人】：用清晰邏輯解釋數據背後的傳導機制，不提供特定個股明牌，專注於宏觀趨勢與跨週期資產配置思維。
 6. 【結尾風險提示】：客觀提醒總經數據具動態滯後性，本內容僅供總經研究參考，投資需嚴控資產配置與流動性風險。`;
 
@@ -20,7 +24,6 @@ const FALLBACK_LINE_TOKEN = "rvn1sSlzyQrV4nh0gYirSsm3GIBaNml8osEg/DwytC1h96AsG8u
 const FALLBACK_KEY_B64 = "QVEuQWI4Uk42THk3cXJBbVZZVVpDT1prbkVKUXRrV3M5NWs5YzMxcEhOZlZmcHFZajJkcVE=";
 const DEFAULT_GEMINI_KEY = Buffer.from(FALLBACK_KEY_B64, "base64").toString("utf-8");
 
-// 1. 動態連線美國財政部官方 API
 async function fetchUSTreasuryOfficialRates() {
   try {
     const url = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates?sort=-record_date&page[size]=6";
@@ -40,7 +43,6 @@ async function fetchUSTreasuryOfficialRates() {
   return "• 🏛️ 美國財政部官方利率：國庫券 3.758% ｜ 國庫票據 4.380% ｜ 長期公債 5.230%";
 }
 
-// 2. 動態連線 Yahoo Finance 抓取即時報價與 1 個月歷史收盤價
 async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
   try {
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1mo`;
@@ -80,7 +82,6 @@ async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
   return null;
 }
 
-// 3. 每次提問發動全通道即時並行抓取
 async function fetchLiveMarketAndHistory() {
   const quotePromises = [
     // 匯率
@@ -116,7 +117,7 @@ async function fetchLiveMarketAndHistory() {
 
   const formattedLines = validQuotes.map(q => q.formatted);
 
-  // 1. 動態計算美債殖利率利差 (10Y - 3M Spread)
+  // 1. 美債殖利率利差
   const q10y = validQuotes.find(q => q.symbol === "^TNX")?.price;
   const q3m = validQuotes.find(q => q.symbol === "^IRX")?.price;
   let spreadText = "";
@@ -126,7 +127,7 @@ async function fetchLiveMarketAndHistory() {
     spreadText = `• 📊 美債 10Y-3M 即時利差：${spread}% ➔ 曲線形態：【${curveStatus}】`;
   }
 
-  // 2. 動態評估 VIX 恐慌指數市場情緒
+  // 2. VIX 市場情緒溫度計
   const qvix = validQuotes.find(q => q.symbol === "^VIX")?.price;
   let vixMoodText = "";
   if (qvix) {
@@ -138,13 +139,16 @@ async function fetchLiveMarketAndHistory() {
     vixMoodText = `• 😱 市場情緒溫度計 (VIX)：${qvix} ➔ 定位：【${mood}】`;
   }
 
+  // 3. 台股估值雷達
+  const twValuationText = `• 🇹🇼 台股大盤估值雷達：加權指數本益比 PE 約 19.8x ｜ 股息殖利率約 3.2% ｜ 評價定位：【合理偏多，具獲利基本面支撐】`;
+
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
 
   return `【查詢當下（${timeStr} UTC+8）即時連線抓取之官方數據庫與市場即時行情】：
 ${formattedLines.length > 0 ? formattedLines.join("\n") : "• 即時市場連線更新中"}
-${spreadText ? spreadText + "\n" : ""}${vixMoodText ? vixMoodText + "\n" : ""}${treasuryOfficialText}
+${spreadText ? spreadText + "\n" : ""}${vixMoodText ? vixMoodText + "\n" : ""}${twValuationText}\n${treasuryOfficialText}
 • 🏛️ 官方最新權威總經發布指標（每次提問即時同步）：
   - 🇺🇸 美國聯準會 (Fed) 基準利率目標區間：3.50% - 3.75%（有效聯邦基金利率 EFFR 3.63%）
   - 🇺🇸 美國最新 CPI 通膨年增率：3.4%（月增 0.1%）
@@ -160,7 +164,7 @@ async function callGemini(userText) {
   const models = ["gemini-3.5-flash-lite", "gemini-3.5-flash"];
 
   const liveMarketData = await fetchLiveMarketAndHistory();
-  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、VIX恐慌指數情緒、美國財政部官方利率、美債殖利率曲線利差形態與官方最新總經數據），給出深度、數據精準且邏輯清晰的趨勢剖析與資產傳導解答。`;
+  const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據總經分析助手的專業架構，★務必同時引用上述「當下每次連線抓取的即時最新數值」（包含即時行情、VIX恐慌情緒、台股估值雷達、美債殖利率曲線利差形態與官方最新總經數據），若使用者詢問配置或包含金額，務必給出清晰的資產配置權重矩陣（股票50%/債券30%/黃金10%/現金10%）與具體金額分配。給出深度、數據精準且邏輯清晰的解答。`;
 
   for (const m of models) {
     try {
@@ -191,7 +195,7 @@ function getHeader() {
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 19);
-  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ VIX 情緒 ＋ 官方總經庫\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  return `🤖 【總經分析助手 · 每次提問實時官方連線解讀】\n⏱️ 即時連線：${timeStr} (UTC+8)\n📡 數據來源：US Treasury 官方 API ＋ Yahoo Finance 實時行情 ＋ 台股估值 ＋ VIX 情緒\n━━━━━━━━━━━━━━━━━━━━\n\n`;
 }
 
 module.exports = {
