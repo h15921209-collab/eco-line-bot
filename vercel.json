@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/morning-broadcast",
-      "schedule": "30 0 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/collector",

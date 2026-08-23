@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
     const rawReport = await callGemini(promptTheme);
 
     const broadcastMessage = `☀️ 宏觀全球智庫 · ${reportTypeTitle}
-📅 日期：${dateStr} (08:30 發布)
+📅 發布時間：${timeStr.substring(0, 16)} (盤前晨訊)
 ━━━━━━━━━━━━━━━━━━━━
 
 ${rawReport || '今日全球總經數據同步中，請點擊下方連結查看最新實時行情。'}
