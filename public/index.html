@@ -342,51 +342,41 @@
 
       </div>
 
-      <!-- 右側：動態資產配置計算機 ＋ TradingView 折線圖 ＋ QR Code (4 columns) -->
+      <!-- 右側：4 大經典跨資產配置模型 ＋ TradingView 折線圖 ＋ QR Code (4 columns) -->
       <div class="lg:col-span-4 space-y-5 sm:space-y-6 no-print">
 
-        <!-- 🎛️ 動態跨資產配置計算機 -->
+        <!-- 🎛️ 4 大經典法人跨資產配置模擬器 -->
         <div class="glass-card p-4 sm:p-5 rounded-2xl border-amber-500/30">
           <div class="flex items-center justify-between mb-2">
             <h3 class="text-sm font-bold text-white flex items-center">
-              <span class="mr-2">🎯</span> 跨資產配置模擬器
+              <span class="mr-2">🎯</span> 4 大經典跨資產配置模型
             </h3>
-            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">機構法人矩陣</span>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">法人矩陣</span>
           </div>
-          <p class="text-xs text-slate-400 mb-3">輸入預計配置金額，一鍵試算各資產具體比重：</p>
           
+          <!-- 4 大經典策略切換 Tab -->
+          <div class="grid grid-cols-2 gap-1.5 mb-3 text-[10px]">
+            <button onclick="switchPortfolioModel('standard')" id="btn-model-standard" class="p-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition">🏛️ 智庫均衡型</button>
+            <button onclick="switchPortfolioModel('allweather')" id="btn-model-allweather" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">🛡️ 達里歐全天候</button>
+            <button onclick="switchPortfolioModel('permanent')" id="btn-model-permanent" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">🪙 永久投資組合</button>
+            <button onclick="switchPortfolioModel('buffett')" id="btn-model-buffett" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">🚀 巴菲特 90/10</button>
+          </div>
+
           <div class="flex gap-2 mb-3">
             <div class="relative w-full">
               <span class="absolute left-3 top-2.5 text-xs text-slate-500">NT$</span>
-              <input type="number" id="alloc-amount" value="1000000" step="100000"
+              <input type="number" id="alloc-amount" value="1000000" step="100000" oninput="calcAllocation()"
                 class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 font-mono">
             </div>
-            <button onclick="calcAllocation()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white text-xs px-3 py-2 rounded-xl font-medium transition whitespace-nowrap">
-              試算
-            </button>
           </div>
 
-          <div class="space-y-2 text-xs" id="alloc-result">
-            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-              <span class="text-sky-400 font-medium">📈 股票資產 (50%)</span>
-              <span class="font-mono text-white font-bold" id="alloc-stock">NT$ 500,000</span>
-            </div>
-            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-              <span class="text-red-400 font-medium">🏛️ 債券資產 (30%)</span>
-              <span class="font-mono text-white font-bold" id="alloc-bond">NT$ 300,000</span>
-            </div>
-            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-              <span class="text-amber-400 font-medium">🪙 避險黃金 (10%)</span>
-              <span class="font-mono text-white font-bold" id="alloc-gold">NT$ 100,000</span>
-            </div>
-            <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-              <span class="text-emerald-400 font-medium">💵 流動現金 (10%)</span>
-              <span class="font-mono text-white font-bold" id="alloc-cash">NT$ 100,000</span>
-            </div>
+          <!-- 動態配置比例列表 -->
+          <div class="space-y-1.5 text-xs" id="alloc-result-list">
+            <!-- 動態渲染 -->
           </div>
 
           <button onclick="askAIWithAmount()" class="w-full mt-3 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-xl border border-slate-700 transition font-medium text-center block">
-            🤖 請 AI 深度解析此配置方案 ➔
+            🤖 請 AI 深度解析此流派配置 ➔
           </button>
         </div>
 
@@ -515,7 +505,49 @@
     let currentRawReport = "";
     let isSpeaking = false;
     let currentSearchedSymbol = "";
+    let currentPortfolioModel = 'standard';
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
+
+    const portfolioModels = {
+      standard: {
+        name: '智庫均衡型 (50/30/10/10)',
+        desc: '兼顧資本利得與降息收息的最均衡配置',
+        items: [
+          { name: '📈 股票資產 (50%)', ratio: 0.50, color: 'text-sky-400' },
+          { name: '🏛️ 債券資產 (30%)', ratio: 0.30, color: 'text-red-400' },
+          { name: '🪙 避險黃金 (10%)', ratio: 0.10, color: 'text-amber-400' },
+          { name: '💵 流動現金 (10%)', ratio: 0.10, color: 'text-emerald-400' }
+        ]
+      },
+      allweather: {
+        name: '達里歐全天候 (All-Weather)',
+        desc: '橋水基金創辦人設計，穿越任何景氣循環',
+        items: [
+          { name: '📈 全球股票 (30%)', ratio: 0.30, color: 'text-sky-400' },
+          { name: '🏛️ 長天期美債 (40%)', ratio: 0.40, color: 'text-red-400' },
+          { name: '🏛️ 中期國債 (15%)', ratio: 0.15, color: 'text-indigo-400' },
+          { name: '🪙 黃金大宗 (15%)', ratio: 0.15, color: 'text-amber-400' }
+        ]
+      },
+      permanent: {
+        name: '哈利布朗永久組合 (Permanent)',
+        desc: '極端等權重配置，完美抗通膨與抗衰退',
+        items: [
+          { name: '📈 股票資產 (25%)', ratio: 0.25, color: 'text-sky-400' },
+          { name: '🏛️ 長期國債 (25%)', ratio: 0.25, color: 'text-red-400' },
+          { name: '🪙 實體黃金 (25%)', ratio: 0.25, color: 'text-amber-400' },
+          { name: '💵 短期現金 (25%)', ratio: 0.25, color: 'text-emerald-400' }
+        ]
+      },
+      buffett: {
+        name: '巴菲特 90/10 組合',
+        desc: '極致長期複利成長，超高股權進攻型',
+        items: [
+          { name: '📈 標普500/台股 (90%)', ratio: 0.90, color: 'text-sky-400' },
+          { name: '💵 短期國債/現金 (10%)', ratio: 0.10, color: 'text-emerald-400' }
+        ]
+      }
+    };
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -532,6 +564,45 @@
     };
 
     let currentAsset = 'twii';
+
+    function switchPortfolioModel(modelKey) {
+      currentPortfolioModel = modelKey;
+      ['standard', 'allweather', 'permanent', 'buffett'].forEach(k => {
+        const btn = document.getElementById('btn-model-' + k);
+        if (k === modelKey) {
+          btn.className = "p-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition";
+        } else {
+          btn.className = "p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition";
+        }
+      });
+      calcAllocation();
+    }
+
+    function calcAllocation() {
+      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
+      const model = portfolioModels[currentPortfolioModel];
+      const container = document.getElementById('alloc-result-list');
+
+      let html = '';
+      model.items.forEach(item => {
+        const itemAmt = Math.round(amt * item.ratio);
+        html += `
+          <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
+            <span class="${item.color} font-medium">${item.name}</span>
+            <span class="font-mono text-white font-bold">NT$ ${itemAmt.toLocaleString()}</span>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function askAIWithAmount() {
+      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
+      const wan = Math.round(amt / 10000);
+      const model = portfolioModels[currentPortfolioModel];
+      quickAsk(`我有 ${wan} 萬想採取【${model.name}】策略做跨資產配置，請詳細評估此配置在當前全球總經與降息環境下的優缺點、標的挑選與再平衡建議`);
+    }
 
     function openSearchModal() {
       document.getElementById('search-modal').classList.remove('hidden');
@@ -643,20 +714,6 @@
       isSpeaking = true;
       document.getElementById('speech-icon').innerText = '⏸️';
       document.getElementById('speech-text').innerText = '暫停朗讀';
-    }
-
-    function calcAllocation() {
-      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
-      document.getElementById('alloc-stock').innerText = 'NT$ ' + Math.round(amt * 0.5).toLocaleString();
-      document.getElementById('alloc-bond').innerText = 'NT$ ' + Math.round(amt * 0.3).toLocaleString();
-      document.getElementById('alloc-gold').innerText = 'NT$ ' + Math.round(amt * 0.1).toLocaleString();
-      document.getElementById('alloc-cash').innerText = 'NT$ ' + Math.round(amt * 0.1).toLocaleString();
-    }
-
-    function askAIWithAmount() {
-      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
-      const wan = Math.round(amt / 10000);
-      quickAsk('我有 ' + wan + ' 萬想做總經跨資產配置該怎麼分配？請列出具體金額、標的建議與操作守則');
     }
 
     async function fetchInitialReport() {
