@@ -342,7 +342,7 @@
 
       </div>
 
-      <!-- 右側：4 大經典跨資產配置模型 ＋ TradingView 折線圖 ＋ QR Code (4 columns) -->
+      <!-- 右側：4 大經典跨資產配置模型 ＋ 財富複利計算機 ＋ TradingView 折線圖 (4 columns) -->
       <div class="lg:col-span-4 space-y-5 sm:space-y-6 no-print">
 
         <!-- 🎛️ 4 大經典法人跨資產配置模擬器 -->
@@ -371,13 +371,61 @@
           </div>
 
           <!-- 動態配置比例列表 -->
-          <div class="space-y-1.5 text-xs" id="alloc-result-list">
+          <div class="space-y-1.5 text-xs mb-3" id="alloc-result-list">
             <!-- 動態渲染 -->
           </div>
 
-          <button onclick="askAIWithAmount()" class="w-full mt-3 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-xl border border-slate-700 transition font-medium text-center block">
+          <button onclick="askAIWithAmount()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-xl border border-slate-700 transition font-medium text-center block">
             🤖 請 AI 深度解析此流派配置 ➔
           </button>
+        </div>
+
+        <!-- 🔮 長期財富複利成長模擬器 (Compounding Growth Simulator) -->
+        <div class="glass-card p-4 sm:p-5 rounded-2xl border-emerald-500/30">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-white flex items-center">
+              <span class="mr-2">🔮</span> 長期財富複利成長投影
+            </h3>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/40">時間複利</span>
+          </div>
+          <p class="text-xs text-slate-400 mb-3">設定定期定額與年期，試算資產增長曲線：</p>
+
+          <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-1">每月定額 (NT$)</label>
+              <input type="number" id="compound-monthly" value="10000" step="1000" oninput="calcCompounding()"
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:border-emerald-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-1">投資年限 (年)</label>
+              <select id="compound-years" onchange="calcCompounding()"
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                <option value="5">5 年</option>
+                <option value="10" selected>10 年</option>
+                <option value="15">15 年</option>
+                <option value="20">20 年</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 text-xs">
+            <div class="flex justify-between text-slate-400">
+              <span>預估年化報酬：</span>
+              <span class="font-mono text-emerald-400 font-bold" id="res-compound-rate">8.2%</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>累計投入本金：</span>
+              <span class="font-mono text-slate-200" id="res-compound-principal">NT$ 2,200,000</span>
+            </div>
+            <div class="flex justify-between border-t border-slate-800/80 pt-1 mt-1">
+              <span class="font-bold text-white">期末預期總財富：</span>
+              <span class="font-mono text-emerald-400 font-bold text-sm" id="res-compound-total">NT$ 3,842,150</span>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>複利淨收益：</span>
+              <span class="font-mono text-amber-400" id="res-compound-gain">+NT$ 1,642,150 (+74.6%)</span>
+            </div>
+          </div>
         </div>
 
         <!-- 📈 TradingView 風格多週期互動折線圖 -->
@@ -511,6 +559,7 @@
     const portfolioModels = {
       standard: {
         name: '智庫均衡型 (50/30/10/10)',
+        expReturn: 0.082,
         desc: '兼顧資本利得與降息收息的最均衡配置',
         items: [
           { name: '📈 股票資產 (50%)', ratio: 0.50, color: 'text-sky-400' },
@@ -521,6 +570,7 @@
       },
       allweather: {
         name: '達里歐全天候 (All-Weather)',
+        expReturn: 0.075,
         desc: '橋水基金創辦人設計，穿越任何景氣循環',
         items: [
           { name: '📈 全球股票 (30%)', ratio: 0.30, color: 'text-sky-400' },
@@ -531,6 +581,7 @@
       },
       permanent: {
         name: '哈利布朗永久組合 (Permanent)',
+        expReturn: 0.068,
         desc: '極端等權重配置，完美抗通膨與抗衰退',
         items: [
           { name: '📈 股票資產 (25%)', ratio: 0.25, color: 'text-sky-400' },
@@ -541,6 +592,7 @@
       },
       buffett: {
         name: '巴菲特 90/10 組合',
+        expReturn: 0.105,
         desc: '極致長期複利成長，超高股權進攻型',
         items: [
           { name: '📈 標普500/台股 (90%)', ratio: 0.90, color: 'text-sky-400' },
@@ -576,6 +628,7 @@
         }
       });
       calcAllocation();
+      calcCompounding();
     }
 
     function calcAllocation() {
@@ -595,6 +648,36 @@
       });
 
       container.innerHTML = html;
+      calcCompounding();
+    }
+
+    function calcCompounding() {
+      const initialAmt = Number(document.getElementById('alloc-amount').value) || 1000000;
+      const monthlyAmt = Number(document.getElementById('compound-monthly').value) || 10000;
+      const years = Number(document.getElementById('compound-years').value) || 10;
+      const model = portfolioModels[currentPortfolioModel];
+      const r = model.expReturn;
+
+      document.getElementById('res-compound-rate').innerText = (r * 100).toFixed(1) + '%';
+
+      // 每月複利公式
+      const months = years * 12;
+      const monthlyRate = r / 12;
+      
+      let total = initialAmt * Math.pow(1 + monthlyRate, months);
+      if (monthlyRate > 0) {
+        total += monthlyAmt * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+      } else {
+        total += monthlyAmt * months;
+      }
+
+      const totalPrincipal = initialAmt + (monthlyAmt * months);
+      const netGain = total - totalPrincipal;
+      const gainPct = totalPrincipal > 0 ? ((netGain / totalPrincipal) * 100).toFixed(1) : 0;
+
+      document.getElementById('res-compound-principal').innerText = 'NT$ ' + Math.round(totalPrincipal).toLocaleString();
+      document.getElementById('res-compound-total').innerText = 'NT$ ' + Math.round(total).toLocaleString();
+      document.getElementById('res-compound-gain').innerText = `+NT$ ${Math.round(netGain).toLocaleString()} (+${gainPct}%)`;
     }
 
     function askAIWithAmount() {
@@ -718,6 +801,7 @@
 
     async function fetchInitialReport() {
       calcAllocation();
+      calcCompounding();
       await loadTickerData();
       renderLineChart('twii');
       await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略');
