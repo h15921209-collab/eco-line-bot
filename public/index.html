@@ -87,6 +87,37 @@
       </div>
     </div>
 
+    <!-- ⏳ 全球重大總經事件倒數計時儀表 (Macro Events Countdown) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-5 no-print">
+      <div class="p-3 rounded-2xl bg-slate-900/90 border border-indigo-500/30 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] text-indigo-400 font-semibold">FOMC 利率決議倒數</div>
+          <div class="text-xs font-bold text-white mt-0.5">聯準會下一次決策</div>
+        </div>
+        <div class="text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-lg border border-indigo-500/40">
+          倒數 24 天
+        </div>
+      </div>
+      <div class="p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] text-amber-400 font-semibold">美國 CPI 通膨發布</div>
+          <div class="text-xs font-bold text-white mt-0.5">美國勞工統計局 BLS</div>
+        </div>
+        <div class="text-xs font-mono font-bold bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40">
+          倒數 18 天
+        </div>
+      </div>
+      <div class="p-3 rounded-2xl bg-slate-900/90 border border-emerald-500/30 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] text-emerald-400 font-semibold">台股期貨月結算</div>
+          <div class="text-xs font-bold text-white mt-0.5">台灣期交所 TAIFEX</div>
+        </div>
+        <div class="text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/40">
+          每月中旬週三
+        </div>
+      </div>
+    </div>
+
     <!-- 🔥 24H 全球跨資產即時強弱熱度條 (Heatmap Bar) -->
     <div class="mb-5 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs no-print">
       <div class="flex items-center gap-1.5 font-bold text-slate-300">
@@ -183,6 +214,34 @@
             </div>
             <button onclick="copyReportText()" class="text-sky-400 hover:text-sky-300 transition flex items-center gap-1 font-medium">
               📋 複製研報
+            </button>
+          </div>
+        </div>
+
+        <!-- 🗂️ 智庫經典專欄精選（免等待快速切換） -->
+        <div class="glass-card p-5 rounded-2xl no-print">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-white flex items-center">
+              <span class="mr-2">🗂️</span> 智庫權威專欄精選（點擊秒看）
+            </h3>
+            <span class="text-[10px] text-sky-400 font-mono">即時切換</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例')" class="text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/40 transition">
+              <div class="font-bold text-amber-300 mb-0.5">🎯 100萬跨資產配置旗艦指南</div>
+              <p class="text-[11px] text-slate-400">股票50%／債券30%／黃金10%／現金10% 具體配置法</p>
+            </button>
+            <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/40 transition">
+              <div class="font-bold text-purple-300 mb-0.5">🌪️ 總經三大黑天鵝情境壓力測試</div>
+              <p class="text-[11px] text-slate-400">通膨再起、經濟衰退與地緣危機對股債匯衝擊推演</p>
+            </button>
+            <button onclick="quickAsk('台股加權指數目前本益比估值、殖利率與位階評估')" class="text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 transition">
+              <div class="font-bold text-emerald-300 mb-0.5">🇹🇼 台股估值貴賤與持倉水位警示</div>
+              <p class="text-[11px] text-slate-400">本益比 PE 19.8x 評價與獲利基本面支撐力道</p>
+            </button>
+            <button onclick="quickAsk('美債 10Y 殖利率近期走勢與降息預期')" class="text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-red-500/40 transition">
+              <div class="font-bold text-red-300 mb-0.5">🏛️ 美債殖利率曲線與 Fed 降息路徑</div>
+              <p class="text-[11px] text-slate-400">10Y-3M 利差正斜率定價與長天期美債鎖息契機</p>
             </button>
           </div>
         </div>
@@ -368,6 +427,13 @@
     let currentRawReport = "";
     let isSpeaking = false;
     const DOMAIN_URL = "https://eco-line-bot.vercel.app";
+
+    // 註冊 PWA Service Worker 支援完全離線可讀
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW fail:', err));
+      });
+    }
 
     const historyData = {
       labels: ['D-19', 'D-17', 'D-15', 'D-13', 'D-11', 'D-9', 'D-7', 'D-5', 'D-3', '今日'],
