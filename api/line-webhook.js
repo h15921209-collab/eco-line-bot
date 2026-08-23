@@ -16,19 +16,19 @@ const USER_GUIDE_MESSAGE = `📖【宏觀全球智庫 · 總經分析助手使�
   🇹🇼 今日台股開盤指引與匯率觀察
   💡 跨資產配置策略焦點（股、債、原物料）
 
-💬【2. 24H 隨時在線提問指南（支援底部零打字快捷氣泡）】
-您可以隨時在聊天室輸入任何總經問題、資金金額、換匯試算或壓力測試，AI 將在秒級連線最新數據為您解答！
+💬【2. 24H 隨時在線提問指南（支援代碼秒查 ＆ 快捷氣泡）】
+• ⚡ 代碼秒查：在聊天室直接輸入「NVDA」、「TSLA」、「2330」或「BTC」，立即回傳最新即時報價！
+• 🎯 深度研報：輸入任何總經問題或資金配置，AI 將秒級連線最新數據為您解答！
 
 🔥【熱門提問範例（直接點擊下方快捷按鈕或輸入）】：
-1️⃣ 配置類：「我有 100 萬想做總經資產配置該怎麼分？」或「50萬資產配置建議」
+1️⃣ 配置類：「我有 100 萬想做總經資產配置該怎麼分？」
 2️⃣ 換匯類：「100萬日圓換台幣多少？」或「台幣現在匯率與近期換匯建議」
 3️⃣ 壓力類：「總經極端情境壓力測試（黑天鵝演練）」
 4️⃣ 估值類：「台股加權指數目前本益比估值、殖利率與位階評估」
-5️⃣ 債市類：「美債 10Y 殖利率近期走勢與降息預期」或「殖利率曲線利差分析」
-6️⃣ 情緒類：「VIX 恐慌指數與美股情緒評估」
+5️⃣ 債市類：「美債 10Y 殖利率近期走勢與降息預期」
 
-🌐【3. 專屬手機視覺化圖表門戶（支援語音朗讀 ＆ PWA 桌面 App）】
-點擊下方連結即可在手機上查看全天候動態圖表、配置計算機與語音聽早報：
+🌐【3. 專屬手機視覺化圖表門戶（支援語音朗讀 ＆ 匯出 PDF）】
+點擊下方連結即可在手機上查看全天候動態圖表、配置計算機、代碼快查與語音聽早報：
 👉 ${SHORT_WEB_URL}
 
 💡 隨時點擊下方「📖 說明」即可再次查看本手冊；現在您可以直接點擊快捷氣泡開始體驗！`;
@@ -85,6 +85,57 @@ function getQuickReplyItems() {
       }
     ]
   };
+}
+
+// 快速代碼查詢偵測（若使用者只輸入純代碼如 NVDA, 2330, TSLA, BTC，秒級回傳報價卡片）
+async function tryFetchStockQuote(text) {
+  const t = text.trim().toUpperCase();
+  let symbol = t;
+
+  if (/^\d{4}$/.test(t)) {
+    symbol = t + ".TW";
+  } else if (/^[A-Z]{1,5}$/.test(t)) {
+    if (t === "BTC") symbol = "BTC-USD";
+    else if (t === "ETH") symbol = "ETH-USD";
+  } else if (/^[A-Z0-9\.\=\-]{2,10}$/.test(t)) {
+    symbol = t;
+  } else {
+    return null;
+  }
+
+  // 排除一般指令詞
+  if (["HELP", "MENU", "INFO", "TEST", "OK", "YES", "NO"].includes(symbol)) return null;
+
+  try {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;
+    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" }, signal: AbortSignal.timeout(3500) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const meta = data.chart?.result?.[0]?.meta;
+    if (!meta || typeof meta.regularMarketPrice !== "number") return null;
+
+    const price = meta.regularMarketPrice;
+    const prev = meta.chartPreviousClose || meta.previousClose || price;
+    const chg = price - prev;
+    const pct = prev ? ((chg / prev) * 100).toFixed(2) : "0.00";
+    const sign = chg >= 0 ? "+" : "";
+    const emoji = chg >= 0 ? "🔺" : "🔻";
+    const cur = meta.currency || "USD";
+    const name = meta.shortName || meta.symbol || symbol;
+
+    return `📊【${name} (${symbol}) 即時行情】
+━━━━━━━━━━━━━━━━━━━━
+💵 最新現價：${price.toFixed(2)} ${cur}
+${emoji} 今日漲跌：${sign}${chg.toFixed(2)} (${sign}${pct}%)
+📈 今日最高：${meta.regularMarketDayHigh ? meta.regularMarketDayHigh.toFixed(2) : "--"}
+📉 今日最低：${meta.regularMarketDayLow ? meta.regularMarketDayLow.toFixed(2) : "--"}
+🏔️ 52週高點：${meta.fiftyTwoWeekHigh ? meta.fiftyTwoWeekHigh.toFixed(2) : "--"}
+🏖️ 52週低點：${meta.fiftyTwoWeekLow ? meta.fiftyTwoWeekLow.toFixed(2) : "--"}
+
+💡 提示：如需針對【${symbol}】進行基本面估值與全球總經連動分析，請輸入：「分析 ${symbol}」或點擊下方快捷氣泡！`;
+  } catch (e) {
+    return null;
+  }
 }
 
 // Unicode 安全截斷函數，防止 Emoji 被截斷導致 LINE 400 Bad Request
@@ -154,11 +205,20 @@ module.exports = async (req, res) => {
         const userMsg = event.message.text.trim();
         if (!userMsg) continue;
 
+        // 1. 優先判斷是否為說明書指令
         if (isHelpQuery(userMsg)) {
           await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE);
           continue;
         }
 
+        // 2. 判斷是否為純代碼查詢（例如 NVDA, TSLA, 2330, BTC），若是則秒級回傳報價
+        const quickQuote = await tryFetchStockQuote(userMsg);
+        if (quickQuote) {
+          await replyLine(lineToken, replyToken, quickQuote);
+          continue;
+        }
+
+        // 3. 一般總經諮詢走 Gemini 深度推理
         const aiReport = await callGemini(userMsg);
         const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
 
