@@ -2,15 +2,35 @@ const fs = require('fs');
 const path = require('path');
 
 const ASSETS = [
-  { key: 'twii', sym: '^TWII', header: 'TAIEX', dec: 0, defaultVal: 44291 },
-  { key: 'tsmc', sym: '2330.TW', header: 'TSMC', dec: 1, defaultVal: 2360 },
-  { key: 'sp500', sym: '^GSPC', header: 'SP500', dec: 1, defaultVal: 7641.2 },
-  { key: 'nasdaq', sym: '^IXIC', header: 'NASDAQ', dec: 1, defaultVal: 26067.2 },
-  { key: 'us10y', sym: '^TNX', header: 'US10Y', dec: 3, defaultVal: 4.696 },
+  // 1. 科技與全球核心股指
+  { key: 'twii', sym: '^TWII', header: 'TAIEX', dec: 0, defaultVal: 44369 },
+  { key: 'tsmc', sym: '2330.TW', header: 'TSMC', dec: 1, defaultVal: 2365 },
+  { key: 'tsm_adr', sym: 'TSM', header: 'TSM_ADR', dec: 2, defaultVal: 410.12 },
+  { key: 'sox', sym: '^SOX', header: 'SOX', dec: 1, defaultVal: 11423.2 },
+  { key: 'nvda', sym: 'NVDA', header: 'NVDA', dec: 2, defaultVal: 208.48 },
+  { key: 'sp500', sym: '^GSPC', header: 'SP500', dec: 1, defaultVal: 7652.9 },
+  { key: 'nasdaq', sym: '^IXIC', header: 'NASDAQ', dec: 1, defaultVal: 25980.2 },
+  { key: 'dji', sym: '^DJI', header: 'DJI', dec: 1, defaultVal: 53417.2 },
+  // 2. 公債利率、利差與美元
+  { key: 'us10y', sym: '^TNX', header: 'US10Y', dec: 3, defaultVal: 4.704 },
+  { key: 'us2y', sym: '2YY=F', header: 'US2Y', dec: 3, defaultVal: 3.961 },
   { key: 'us3m', sym: '^IRX', header: 'US3M', dec: 3, defaultVal: 3.703 },
-  { key: 'usdtwd', sym: 'TWD=X', header: 'USDTWD', dec: 3, defaultVal: 31.85 },
-  { key: 'gold', sym: 'GC=F', header: 'Gold', dec: 1, defaultVal: 4623.2 },
-  { key: 'oil', sym: 'CL=F', header: 'Oil', dec: 2, defaultVal: 86.45 },
+  { key: 'dxy', sym: 'DX-Y.NYB', header: 'DXY', dec: 3, defaultVal: 99.008 },
+  // 3. 貴金屬與工業金屬
+  { key: 'gold', sym: 'GC=F', header: 'Gold', dec: 1, defaultVal: 4712.3 },
+  { key: 'silver', sym: 'SI=F', header: 'Silver', dec: 2, defaultVal: 68.36 },
+  { key: 'copper', sym: 'HG=F', header: 'Copper', dec: 3, defaultVal: 6.604 },
+  // 4. 重工業原物料與煤鐵
+  { key: 'iron_ore', sym: 'TIO=F', header: 'IronOre', dec: 2, defaultVal: 161.91 },
+  { key: 'coal', sym: 'MTF=F', header: 'Coal', dec: 2, defaultVal: 104.75 },
+  // 5. 能源、海運供應鏈與農糧
+  { key: 'oil', sym: 'CL=F', header: 'Oil', dec: 2, defaultVal: 85.69 },
+  { key: 'natgas', sym: 'NG=F', header: 'NatGas', dec: 3, defaultVal: 2.814 },
+  { key: 'maersk', sym: 'AMKBY', header: 'Maersk', dec: 2, defaultVal: 17.44 },
+  { key: 'soybean', sym: 'ZS=F', header: 'Soybean', dec: 1, defaultVal: 1223.75 },
+  // 6. 外匯與市場情緒
+  { key: 'usdtwd', sym: 'TWD=X', header: 'USDTWD', dec: 3, defaultVal: 31.873 },
+  { key: 'usdkrw', sym: 'KRW=X', header: 'USDKRW', dec: 2, defaultVal: 1381.98 },
   { key: 'vix', sym: '^VIX', header: 'VIX', dec: 2, defaultVal: 15.85 }
 ];
 
@@ -73,7 +93,7 @@ module.exports = async (req, res) => {
   const todayStr = utc8.toISOString().substring(0, 10);
   const timeStr = utc8.toISOString().replace('T', ' ').substring(0, 19);
 
-  // 1. 並行抓取所有資產的近 1 個月時序數據
+  // 1. 並行抓取全套 24 大資產的近 1 個月時序數據
   const assetResults = await Promise.all(ASSETS.map(fetchAssetHistory));
 
   // 2. 收集所有不重複日期
@@ -105,6 +125,27 @@ module.exports = async (req, res) => {
         rowObj[r.key] = r.curPrice;
       });
     }
+
+    // 計算衍生指標
+    const u10 = rowObj.us10y || 4.704;
+    const u2 = rowObj.us2y || 3.961;
+    const u3 = rowObj.us3m || 3.703;
+    const g = rowObj.gold || 4712.3;
+    const c = rowObj.copper || 6.604;
+    const s = rowObj.silver || 68.36;
+    const tsmAdr = rowObj.tsm_adr || 410.12;
+    const twdRate = rowObj.usdtwd || 31.873;
+    const tsmcTw = rowObj.tsmc || 2365;
+
+    rowObj.spread_10y2y = Number((u10 - u2).toFixed(3));
+    rowObj.spread_10y3m = Number((u10 - u3).toFixed(3));
+    rowObj.gold_copper_ratio = c > 0 ? Number((g / c).toFixed(1)) : 713.5;
+    rowObj.gold_silver_ratio = s > 0 ? Number((g / s).toFixed(1)) : 68.9;
+    
+    // 台積電 ADR 溢價率: ((ADR*TWD/5 - TSMC_TW) / TSMC_TW) * 100%
+    const adrInTwd = (tsmAdr * twdRate) / 5;
+    rowObj.tsmc_adr_premium = tsmcTw > 0 ? Number((((adrInTwd - tsmcTw) / tsmcTw) * 100).toFixed(2)) : 10.45;
+
     return rowObj;
   });
 
@@ -118,14 +159,40 @@ module.exports = async (req, res) => {
     latestSnapshot[`${r.key}_pct`] = r.pct;
   });
 
-  // 4. 如果要求格式為 CSV（供 Google Sheets `=IMPORTDATA` 匯入完整歷史表格）
+  // 衍生指標注入 Snapshot
+  const cur10 = latestSnapshot.us10y || 4.704;
+  const cur2 = latestSnapshot.us2y || 3.961;
+  const cur3 = latestSnapshot.us3m || 3.703;
+  const curG = latestSnapshot.gold || 4712.3;
+  const curC = latestSnapshot.copper || 6.604;
+  const curS = latestSnapshot.silver || 68.36;
+  const curTsmAdr = latestSnapshot.tsm_adr || 410.12;
+  const curTwd = latestSnapshot.usdtwd || 31.873;
+  const curTsmc = latestSnapshot.tsmc || 2365;
+
+  latestSnapshot.spread_10y2y = Number((cur10 - cur2).toFixed(3));
+  latestSnapshot.spread_10y3m = Number((cur10 - cur3).toFixed(3));
+  latestSnapshot.gold_copper_ratio = curC > 0 ? Number((curG / curC).toFixed(1)) : 713.5;
+  latestSnapshot.gold_silver_ratio = curS > 0 ? Number((curG / curS).toFixed(1)) : 68.9;
+  const curAdrInTwd = (curTsmAdr * curTwd) / 5;
+  latestSnapshot.tsmc_adr_premium = curTsmc > 0 ? Number((((curAdrInTwd - curTsmc) / curTsmc) * 100).toFixed(2)) : 10.45;
+
+  // 4. 如果要求格式為 CSV（供 Google Sheets `=IMPORTDATA` 匯入完整長時序大表）
   if (req.query?.format === 'csv') {
-    const headers = ['Date', 'Time', ...ASSETS.map(a => a.header)];
+    const headers = [
+      'Date', 'Time',
+      ...ASSETS.map(a => a.header),
+      'Spread_10Y2Y', 'Spread_10Y3M', 'Gold_Copper_Ratio', 'Gold_Silver_Ratio', 'TSMC_ADR_Premium_Pct'
+    ];
     
-    // 由最新排到最舊（Newest to Oldest），方便在試算表頂部瀏覽最新走勢
+    // 由最新排到最舊（Newest to Oldest）
     const csvRows = [...historyRows].reverse().map(row => {
       const rowTime = row.date === todayStr ? timeStr : `${row.date} 16:00:00`;
-      const vals = [row.date, rowTime, ...ASSETS.map(a => row[a.key])];
+      const vals = [
+        row.date, rowTime,
+        ...ASSETS.map(a => row[a.key]),
+        row.spread_10y2y, row.spread_10y3m, row.gold_copper_ratio, row.gold_silver_ratio, row.tsmc_adr_premium
+      ];
       return vals.join(',');
     });
 
@@ -144,9 +211,17 @@ module.exports = async (req, res) => {
       history: {
         labels: historyRows.slice(-10).map(r => r.date.substring(5)),
         twii: historyRows.slice(-10).map(r => r.twii),
+        sox: historyRows.slice(-10).map(r => r.sox),
+        nvda: historyRows.slice(-10).map(r => r.nvda),
         us10y: historyRows.slice(-10).map(r => r.us10y),
+        us2y: historyRows.slice(-10).map(r => r.us2y),
         usdtwd: historyRows.slice(-10).map(r => r.usdtwd),
-        gold: historyRows.slice(-10).map(r => r.gold)
+        gold: historyRows.slice(-10).map(r => r.gold),
+        copper: historyRows.slice(-10).map(r => r.copper),
+        iron_ore: historyRows.slice(-10).map(r => r.iron_ore),
+        coal: historyRows.slice(-10).map(r => r.coal),
+        oil: historyRows.slice(-10).map(r => r.oil),
+        natgas: historyRows.slice(-10).map(r => r.natgas)
       }
     },
     history_table: historyRows
