@@ -160,6 +160,16 @@
     </div>
 
     <!-- 📊 全維度即時資產價格跑馬看板（包含科技/利差/銅煤鐵/能源） -->
+    <div class="mb-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 px-1 no-print">
+      <div class="flex items-center gap-2">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span>連線狀態：<b class="text-emerald-400">🇹🇼 台股/台幣 盤中即時撮合</b> ｜ <b class="text-sky-400">🇺🇸 美股/美債/大宗 隔夜最新結算</b></span>
+      </div>
+      <div class="text-[10px] text-slate-500 font-mono hidden sm:inline">動態零快取 · 實時更新</div>
+    </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-2.5 mb-5 sm:mb-6 no-print" id="ticker-bar">
       <div class="glass-card p-2.5 rounded-xl"><div class="text-[10px] text-slate-400">🇹🇼 台股加權</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-twii">--</div><div class="text-[9px] text-slate-500">^TWII</div></div>
       <div class="glass-card p-2.5 rounded-xl"><div class="text-[10px] text-slate-400">🇹🇼 台積電現股</div><div class="font-bold text-white text-xs sm:text-sm mt-0.5" id="tick-tsmc">--</div><div class="text-[9px] text-slate-500">2330.TW</div></div>
@@ -483,12 +493,13 @@
       <!-- 快速熱門代碼標籤 -->
       <div class="flex flex-wrap gap-1.5 mb-4 text-[10px]">
         <span class="text-slate-500 py-0.5">熱門：</span>
-        <button onclick="quickSearchSymbol('NVDA')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">NVDA 輝達</button>
-        <button onclick="quickSearchSymbol('台積電')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">2330 台積電</button>
-        <button onclick="quickSearchSymbol('HG=F')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">HG 銅博士</button>
-        <button onclick="quickSearchSymbol('TIO=F')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">TIO 鐵礦砂</button>
-        <button onclick="quickSearchSymbol('MTF=F')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">MTF 煤炭</button>
-        <button onclick="quickSearchSymbol('AMKBY')" class="bg-slate-800 px-2 py-0.5 rounded text-slate-300">馬士基</button>
+        <button onclick="quickSearchSymbol('NVDA')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">NVDA 輝達</button>
+        <button onclick="quickSearchSymbol('台積電')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">2330 台積電</button>
+        <button onclick="quickSearchSymbol('費半')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚀 費半</button>
+        <button onclick="quickSearchSymbol('銅博士')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🏭 銅博士</button>
+        <button onclick="quickSearchSymbol('鐵礦砂')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🧱 鐵礦砂</button>
+        <button onclick="quickSearchSymbol('煤炭')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🔥 煤炭現貨</button>
+        <button onclick="quickSearchSymbol('馬士基')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚢 馬士基</button>
       </div>
 
       <!-- 查詢結果展示區 -->
@@ -928,7 +939,7 @@
         gold: { label: '國際黃金現貨 ($/oz)', color: '#fbbf24', data: dynamicHistory.gold },
         copper: { label: '國際銅博士 ($/lb)', color: '#fb923c', data: dynamicHistory.copper },
         iron_ore: { label: '國際鐵礦砂 ($/噸)', color: '#eab308', data: dynamicHistory.iron_ore },
-        coal: { label: '國際煤炭期貨 ($/噸)', color: '#94a3b8', data: dynamicHistory.coal }
+        coal: { label: '國際動力煤現貨 ($/噸)', color: '#94a3b8', data: dynamicHistory.coal }
       };
 
       const cfg = assetConfigs[assetKey] || assetConfigs.twii;
