@@ -1,8 +1,42 @@
+const SYMBOL_MAP = {
+  "台積電": "2330.TW",
+  "鴻海": "2317.TW",
+  "聯發科": "2454.TW",
+  "廣達": "2382.TW",
+  "緯創": "3231.TW",
+  "長榮": "2603.TW",
+  "富邦金": "2881.TW",
+  "國泰金": "2882.TW",
+  "輝達": "NVDA",
+  "英偉達": "NVDA",
+  "特斯拉": "TSLA",
+  "蘋果": "AAPL",
+  "微軟": "MSFT",
+  "谷歌": "GOOGL",
+  "亞馬遜": "AMZN",
+  "比特幣": "BTC-USD",
+  "以太幣": "ETH-USD",
+  "黃金": "GC=F",
+  "原油": "CL=F"
+};
+
 module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET");
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
 
-  const symbol = (req.query.symbol || "2330.TW").trim().toUpperCase();
+  const rawInput = (req.query.symbol || "2330.TW").trim();
+  let symbol = SYMBOL_MAP[rawInput] || rawInput.toUpperCase();
+
+  if (/^\d{4}$/.test(rawInput)) {
+    symbol = rawInput + ".TW";
+  } else if (symbol === "BTC") {
+    symbol = "BTC-USD";
+  } else if (symbol === "ETH") {
+    symbol = "ETH-USD";
+  }
 
   try {
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;

@@ -16,8 +16,8 @@ const USER_GUIDE_MESSAGE = `📖【宏觀全球智庫 · 總經分析助手使�
   🇹🇼 今日台股開盤指引與匯率觀察
   💡 跨資產配置策略焦點（股、債、原物料）
 
-💬【2. 24H 隨時在線提問指南（支援代碼秒查 ＆ 快捷氣泡）】
-• ⚡ 代碼秒查：在聊天室直接輸入「NVDA」、「TSLA」、「2330」或「BTC」，立即回傳最新即時報價！
+💬【2. 24H 隨時在線提問指南（支援中英文名稱/代碼秒查 ＆ 快捷氣泡）】
+• ⚡ 標的秒查：在聊天室直接輸入「台積電」、「聯發科」、「鴻海」、「NVDA」、「TSLA」、「2330」或「比特幣」，立即回傳最新即時報價！
 • 🎯 深度研報：輸入任何總經問題或資金配置，AI 將秒級連線最新數據為您解答！
 
 🔥【熱門提問範例（直接點擊下方快捷按鈕或輸入）】：
@@ -38,6 +38,38 @@ const FALLBACK_MESSAGE = `您好！我是【總經分析助手】📈
 目前全球市場時序數據正在同步中，請稍後再次輸入問題，我將立即為您連線最新市場行情與歷史趨勢剖析！
 
 📱 手機專屬圖表研報網址：${SHORT_WEB_URL}`;
+
+const NON_TEXT_MESSAGE = `您好！我是您的【總經分析助手】📈
+
+收到您的貼圖／訊息！如需查詢即時行情或宏觀研報，您可以：
+1. 輸入股票代碼或名稱（例如：台積電、2330、NVDA、比特幣）
+2. 輸入總經問題（例如：100萬怎麼配、美債怎麼看）
+3. 點擊下方快捷氣泡快速探索！
+
+📱 完整圖表與配置計算機：${SHORT_WEB_URL}`;
+
+// 常用中英文名稱對照字典
+const SYMBOL_MAP = {
+  "台積電": "2330.TW",
+  "鴻海": "2317.TW",
+  "聯發科": "2454.TW",
+  "廣達": "2382.TW",
+  "緯創": "3231.TW",
+  "長榮": "2603.TW",
+  "富邦金": "2881.TW",
+  "國泰金": "2882.TW",
+  "輝達": "NVDA",
+  "英偉達": "NVDA",
+  "特斯拉": "TSLA",
+  "蘋果": "AAPL",
+  "微軟": "MSFT",
+  "谷歌": "GOOGL",
+  "亞馬遜": "AMZN",
+  "比特幣": "BTC-USD",
+  "以太幣": "ETH-USD",
+  "黃金": "GC=F",
+  "原油": "CL=F"
+};
 
 // 旗艦版智慧 Quick Reply 快捷追問氣泡選單
 function getQuickReplyItems() {
@@ -87,19 +119,17 @@ function getQuickReplyItems() {
   };
 }
 
-// 快速代碼查詢偵測（若使用者只輸入純代碼如 NVDA, 2330, TSLA, BTC，秒級回傳報價卡片）
+// 快速代碼查詢偵測（支援純代碼及常見中文名稱）
 async function tryFetchStockQuote(text) {
-  const t = text.trim().toUpperCase();
-  let symbol = t;
+  const t = text.trim();
+  let symbol = SYMBOL_MAP[t] || t.toUpperCase();
 
   if (/^\d{4}$/.test(t)) {
     symbol = t + ".TW";
-  } else if (/^[A-Z]{1,5}$/.test(t)) {
-    if (t === "BTC") symbol = "BTC-USD";
-    else if (t === "ETH") symbol = "ETH-USD";
-  } else if (/^[A-Z0-9\.\=\-]{2,10}$/.test(t)) {
-    symbol = t;
-  } else {
+  } else if (/^[A-Z]{1,5}$/.test(symbol)) {
+    if (symbol === "BTC") symbol = "BTC-USD";
+    else if (symbol === "ETH") symbol = "ETH-USD";
+  } else if (!SYMBOL_MAP[t] && !/^[A-Z0-9\.\=\-]{2,10}$/.test(symbol)) {
     return null;
   }
 
@@ -178,6 +208,7 @@ function isHelpQuery(text) {
 }
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   if (req.method === "GET") {
     return res.status(200).json({
       status: "healthy",
@@ -201,28 +232,33 @@ module.exports = async (req, res) => {
         continue;
       }
 
-      if (event.type === "message" && event.message?.type === "text") {
-        const userMsg = event.message.text.trim();
-        if (!userMsg) continue;
+      if (event.type === "message") {
+        if (event.message?.type === "text") {
+          const userMsg = event.message.text.trim();
+          if (!userMsg) continue;
 
-        // 1. 優先判斷是否為說明書指令
-        if (isHelpQuery(userMsg)) {
-          await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE);
-          continue;
+          // 1. 優先判斷是否為說明書指令
+          if (isHelpQuery(userMsg)) {
+            await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE);
+            continue;
+          }
+
+          // 2. 判斷是否為純代碼/常用中文名稱查詢（例如 台積電, 聯發科, NVDA, TSLA, 2330, BTC），若是則秒級回傳報價
+          const quickQuote = await tryFetchStockQuote(userMsg);
+          if (quickQuote) {
+            await replyLine(lineToken, replyToken, quickQuote);
+            continue;
+          }
+
+          // 3. 一般總經諮詢走 Gemini 深度推理
+          const aiReport = await callGemini(userMsg);
+          const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
+
+          await replyLine(lineToken, replyToken, replyBody);
+        } else {
+          // 非文字訊息（貼圖、圖片、語音等），禮貌回覆導引
+          await replyLine(lineToken, replyToken, NON_TEXT_MESSAGE);
         }
-
-        // 2. 判斷是否為純代碼查詢（例如 NVDA, TSLA, 2330, BTC），若是則秒級回傳報價
-        const quickQuote = await tryFetchStockQuote(userMsg);
-        if (quickQuote) {
-          await replyLine(lineToken, replyToken, quickQuote);
-          continue;
-        }
-
-        // 3. 一般總經諮詢走 Gemini 深度推理
-        const aiReport = await callGemini(userMsg);
-        const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
-
-        await replyLine(lineToken, replyToken, replyBody);
       }
     }
 
