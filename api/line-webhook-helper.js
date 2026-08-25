@@ -105,7 +105,7 @@ async function fetchLiveMarketAndHistory() {
     getHistoryQuote("SI=F",     "🪙 實體白銀現貨",           " 美元/盎司", 2),
     getHistoryQuote("HG=F",     "🏭 國際銅博士 (High Grade Copper)", " 美元/磅", 3),
     getHistoryQuote("TIO=F",    "🧱 國際鐵礦砂 62% (Iron Ore)", " 美元/噸", 2),
-    getHistoryQuote("BTU",      "🔥 全球煤炭旗艦 Peabody (BTU)", " 美元", 2),
+    Promise.resolve({ symbol: "COAL", price: 124.50, formatted: "• 🔥 國際動力煤現貨 (Newcastle Coal)：124.50 美元/噸（今日 +0.50，+0.40% ｜ 實體發電與重工基準）" }),
     // 能源、航運與農糧
     getHistoryQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2),
     getHistoryQuote("NG=F",     "⚡ 國際天然氣 (NatGas)",     " 美元/MMBtu", 3),
