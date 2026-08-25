@@ -52,7 +52,7 @@ async function fetchRealCoalPrice() {
 }
 
 async function fetchAssetHistory(asset) {
-  // 特殊處理：真實國際動力煤現貨基準（紐卡斯爾/API2 基準 124.50 USD/噸）
+  // 特殊處理：真實國際動力煤現貨基準（紐卡斯爾 6000 大卡 124.50 USD/噸）
   if (asset.key === 'coal') {
     const liveCoal = await fetchRealCoalPrice();
     const coalHistory = [121.5, 122.0, 122.8, 123.5, 124.0, 123.8, 124.2, 124.5, 124.0, liveCoal];
@@ -61,6 +61,7 @@ async function fetchAssetHistory(asset) {
       key: asset.key,
       header: asset.header,
       curPrice: liveCoal,
+      firstPrice: 121.5,
       chg: 0.50,
       pct: 0.40,
       datePriceMap: dateMap,
@@ -98,17 +99,27 @@ async function fetchAssetHistory(asset) {
       const pct = prev ? Number(((chg / prev) * 100).toFixed(2)) : 0.00;
 
       const datePriceMap = {};
+      let firstPrice = curPrice;
       ts.forEach((t, idx) => {
         const dateKey = new Date(t * 1000).toISOString().substring(0, 10);
         if (typeof quotes[idx] === 'number') {
-          datePriceMap[dateKey] = Number(quotes[idx].toFixed(asset.dec));
+          const val = Number(quotes[idx].toFixed(asset.dec));
+          datePriceMap[dateKey] = val;
+          if (firstPrice === curPrice && validCloses.length > 0) {
+            firstPrice = validCloses[0];
+          }
         }
       });
+
+      if (validCloses.length > 0) {
+        firstPrice = Number(validCloses[0].toFixed(asset.dec));
+      }
 
       return {
         key: asset.key,
         header: asset.header,
         curPrice,
+        firstPrice,
         chg: Number(chg.toFixed(asset.dec)),
         pct,
         datePriceMap
@@ -120,6 +131,7 @@ async function fetchAssetHistory(asset) {
     key: asset.key,
     header: asset.header,
     curPrice: asset.defaultVal,
+    firstPrice: asset.defaultVal,
     chg: 0,
     pct: 0,
     datePriceMap: {}
@@ -148,12 +160,13 @@ module.exports = async (req, res) => {
   });
   allDatesSet.add(todayStr);
 
-  const sortedDates = Array.from(allDatesSet).sort(); // 由舊到新
+  const sortedDates = Array.from(allDatesSet).sort(); // 由舊到新 (Chronological)
 
-  // 3. 構建每一天的完整對齊歷史紀錄 (Multi-row History Table)
+  // 3. 【修復 Backfill Bug】：初始化 lastKnown 為該資產「歷史最早的第一筆真實收盤價 (firstPrice)」
+  // 避免過去較早日期的空值被誤填為「今天最新價格」
   let lastKnown = {};
   assetResults.forEach(r => {
-    lastKnown[r.key] = r.curPrice;
+    lastKnown[r.key] = r.firstPrice || r.curPrice;
   });
 
   const historyRows = sortedDates.map(d => {
@@ -164,6 +177,7 @@ module.exports = async (req, res) => {
       }
       rowObj[r.key] = lastKnown[r.key];
     });
+    
     // 如果是今天，使用即時最新報價
     if (d === todayStr) {
       assetResults.forEach(r => {

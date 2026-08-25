@@ -591,22 +591,25 @@
       const now = new Date();
       const currentYear = now.getFullYear();
 
+      // 1. FOMC 利率決議
       const fomcSchedule = [
         new Date(currentYear, 0, 29), new Date(currentYear, 2, 19), new Date(currentYear, 4, 7),
         new Date(currentYear, 5, 18), new Date(currentYear, 6, 30), new Date(currentYear, 8, 17),
         new Date(currentYear, 10, 5), new Date(currentYear, 11, 17), new Date(currentYear + 1, 0, 28)
       ];
-      const nextFomc = fomcSchedule.find(d => d > now) || fomcSchedule[0];
-      const diffFomcDays = Math.ceil((nextFomc - now) / (1000 * 60 * 60 * 24));
-      document.getElementById('countdown-fomc').innerText = `倒數 ${diffFomcDays} 天 (${nextFomc.getMonth() + 1}/${nextFomc.getDate()})`;
+      const nextFomc = fomcSchedule.find(d => (d.getTime() + 86400000) > now.getTime()) || fomcSchedule[0];
+      const diffFomcDays = Math.max(0, Math.ceil((nextFomc - now) / (1000 * 60 * 60 * 24)));
+      document.getElementById('countdown-fomc').innerText = diffFomcDays === 0 ? `今日決策日 (${nextFomc.getMonth() + 1}/${nextFomc.getDate()})` : `倒數 ${diffFomcDays} 天 (${nextFomc.getMonth() + 1}/${nextFomc.getDate()})`;
 
-      let cpiTarget = new Date(currentYear, now.getMonth(), 12);
-      if (now > cpiTarget) cpiTarget = new Date(currentYear, now.getMonth() + 1, 12);
-      const diffCpiDays = Math.ceil((cpiTarget - now) / (1000 * 60 * 60 * 24));
-      document.getElementById('countdown-cpi').innerText = `倒數 ${diffCpiDays} 天 (${cpiTarget.getMonth() + 1}/${cpiTarget.getDate()})`;
+      // 2. 美國 CPI 通膨數據
+      let cpiTarget = new Date(currentYear, now.getMonth(), 12, 20, 30);
+      if (now > cpiTarget) cpiTarget = new Date(currentYear, now.getMonth() + 1, 12, 20, 30);
+      const diffCpiDays = Math.max(0, Math.ceil((cpiTarget - now) / (1000 * 60 * 60 * 24)));
+      document.getElementById('countdown-cpi').innerText = diffCpiDays === 0 ? `今晚 20:30 發布` : `倒數 ${diffCpiDays} 天 (${cpiTarget.getMonth() + 1}/${cpiTarget.getDate()})`;
 
+      // 3. 台指期月結算（每月第 3 個週三 13:30）
       function getThirdWednesday(year, month) {
-        const d = new Date(year, month, 1);
+        const d = new Date(year, month, 1, 13, 30);
         let count = 0;
         while (d.getMonth() === month) {
           if (d.getDay() === 3) {
@@ -619,8 +622,8 @@
       }
       let taifexTarget = getThirdWednesday(currentYear, now.getMonth());
       if (now > taifexTarget) taifexTarget = getThirdWednesday(currentYear, now.getMonth() + 1);
-      const diffTaifexDays = Math.ceil((taifexTarget - now) / (1000 * 60 * 60 * 24));
-      document.getElementById('countdown-taifex').innerText = `倒數 ${diffTaifexDays} 天 (${taifexTarget.getMonth() + 1}/${taifexTarget.getDate()})`;
+      const diffTaifexDays = Math.max(0, Math.ceil((taifexTarget - now) / (1000 * 60 * 60 * 24)));
+      document.getElementById('countdown-taifex').innerText = diffTaifexDays === 0 ? `今日 13:30 結算` : `倒數 ${diffTaifexDays} 天 (${taifexTarget.getMonth() + 1}/${taifexTarget.getDate()})`;
     }
 
     function switchPortfolioModel(modelKey) {
