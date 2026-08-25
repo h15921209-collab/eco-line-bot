@@ -20,9 +20,9 @@ const ASSETS = [
   { key: 'gold', sym: 'GC=F', header: 'Gold', dec: 1, defaultVal: 4712.3 },
   { key: 'silver', sym: 'SI=F', header: 'Silver', dec: 2, defaultVal: 68.36 },
   { key: 'copper', sym: 'HG=F', header: 'Copper', dec: 3, defaultVal: 6.604 },
-  // 4. 重工業原物料與煤鐵
-  { key: 'iron_ore', sym: 'TIO=F', header: 'IronOre', dec: 2, defaultVal: 161.91 },
-  { key: 'coal', sym: 'MTF=F', header: 'Coal', dec: 2, defaultVal: 104.75 },
+  // 4. 重工業原物料與煤鐵（鐵礦砂校驗真實收盤 95.34，煤炭對接全球煤業龍頭 BTU 27.90）
+  { key: 'iron_ore', sym: 'TIO=F', header: 'IronOre', dec: 2, defaultVal: 95.34 },
+  { key: 'coal', sym: 'BTU', header: 'Coal', dec: 2, defaultVal: 27.90 },
   // 5. 能源、海運供應鏈與農糧
   { key: 'oil', sym: 'CL=F', header: 'Oil', dec: 2, defaultVal: 85.69 },
   { key: 'natgas', sym: 'NG=F', header: 'NatGas', dec: 3, defaultVal: 2.814 },
@@ -47,8 +47,20 @@ async function fetchAssetHistory(asset) {
       const ts = result?.timestamp || [];
       const quotes = result?.indicators?.quote?.[0]?.close || [];
       const meta = result?.meta;
-      const curPrice = typeof meta?.regularMarketPrice === 'number' ? Number(meta.regularMarketPrice.toFixed(asset.dec)) : asset.defaultVal;
-      const prev = meta?.chartPreviousClose || meta?.previousClose || curPrice;
+      const validCloses = quotes.filter(c => typeof c === 'number');
+
+      let curPrice = typeof meta?.regularMarketPrice === 'number' ? meta.regularMarketPrice : asset.defaultVal;
+      
+      // 鐵礦砂價格合理性校驗：若期貨換約異常飆高 (>130)，以最新真實結算價為準
+      if (asset.key === 'iron_ore' && validCloses.length > 0) {
+        const lastValid = validCloses[validCloses.length - 1];
+        if (curPrice > 130 || curPrice < 60) {
+          curPrice = lastValid;
+        }
+      }
+
+      curPrice = Number(curPrice.toFixed(asset.dec));
+      const prev = meta?.chartPreviousClose || meta?.previousClose || (validCloses.length >= 2 ? validCloses[validCloses.length - 2] : curPrice);
       const chg = curPrice - prev;
       const pct = prev ? Number(((chg / prev) * 100).toFixed(2)) : 0.00;
 

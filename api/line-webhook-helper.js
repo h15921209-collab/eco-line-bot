@@ -60,7 +60,10 @@ async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
       const validCloses = quotes.filter(c => typeof c === "number");
 
       if (meta && typeof meta.regularMarketPrice === "number") {
-        const price = meta.regularMarketPrice;
+        let price = meta.regularMarketPrice;
+        if (symbol === "TIO=F" && validCloses.length > 0 && (price > 130 || price < 60)) {
+          price = validCloses[validCloses.length - 1];
+        }
         const prev = meta.chartPreviousClose || meta.previousClose || price;
         const chg = price - prev;
         const pct = prev ? (chg / prev * 100).toFixed(2) : "0.00";
@@ -101,8 +104,8 @@ async function fetchLiveMarketAndHistory() {
     getHistoryQuote("GC=F",     "🪙 國際黃金現貨",           " 美元/盎司", 1),
     getHistoryQuote("SI=F",     "🪙 實體白銀現貨",           " 美元/盎司", 2),
     getHistoryQuote("HG=F",     "🏭 國際銅博士 (High Grade Copper)", " 美元/磅", 3),
-    getHistoryQuote("TIO=F",    "🧱 國際鐵礦砂 (Iron Ore 62%)", " 美元/噸", 2),
-    getHistoryQuote("MTF=F",    "🔥 國際煤炭期貨 (API2 Coal)", " 美元/噸", 2),
+    getHistoryQuote("TIO=F",    "🧱 國際鐵礦砂 62% (Iron Ore)", " 美元/噸", 2),
+    getHistoryQuote("BTU",      "🔥 全球煤炭旗艦 Peabody (BTU)", " 美元", 2),
     // 能源、航運與農糧
     getHistoryQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2),
     getHistoryQuote("NG=F",     "⚡ 國際天然氣 (NatGas)",     " 美元/MMBtu", 3),
