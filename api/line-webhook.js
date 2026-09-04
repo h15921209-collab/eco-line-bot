@@ -182,10 +182,11 @@ function getQuickReplyItems() {
 
 // 頂級投行深色科技風 LINE Flex Message 彩色卡片生成器
 function createStockFlexCard(data) {
-  const { name, symbol, price, chg, pct, cur, dayHigh, dayLow, high52, low52, rangePercent, isUp, sign } = data;
+  const { name, symbol, price, prevClose, chg, pct, cur, dayHigh, dayLow, high52, low52, rangePercent, isUp, sign } = data;
+  const safePrevClose = (typeof prevClose === 'number' && !isNaN(prevClose)) ? prevClose : (price - chg);
   return {
     type: "flex",
-    altText: `📊【${name}】${price.toFixed(2)} ${cur} (${sign}${pct}%)`,
+    altText: `📊【${name}】${price.toFixed(2)} ${cur} (較昨收 ${sign}${pct}%)`,
     contents: {
       type: "bubble",
       size: "mega",
@@ -244,10 +245,24 @@ function createStockFlexCard(data) {
             ]
           },
           {
-            type: "text",
-            text: `今日漲跌：${sign}${chg.toFixed(2)} ${cur}`,
-            size: "xs",
-            color: isUp ? "#F87171" : "#4ADE80"
+            type: "box",
+            layout: "horizontal",
+            contents: [
+              {
+                type: "text",
+                text: `較昨收：${sign}${chg.toFixed(2)} (${sign}${pct}%)`,
+                size: "xs",
+                color: isUp ? "#F87171" : "#4ADE80",
+                flex: 1
+              },
+              {
+                type: "text",
+                text: `昨收價：${safePrevClose.toFixed(2)}`,
+                size: "xs",
+                color: "#94A3B8",
+                align: "end"
+              }
+            ]
           },
           { type: "separator", color: "#334155" },
           {
@@ -354,6 +369,7 @@ async function tryFetchStockQuote(text) {
       name: "國際動力煤現貨 (紐卡斯爾 6000大卡)",
       symbol: "NEWC_COAL",
       price: 124.50,
+      prevClose: 124.00,
       chg: 0.50,
       pct: "0.40",
       cur: "USD/噸",
@@ -397,6 +413,7 @@ async function tryFetchStockQuote(text) {
       name,
       symbol,
       price,
+      prevClose: prev,
       chg,
       pct,
       cur,

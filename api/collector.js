@@ -65,8 +65,10 @@ async function fetchAssetHistory(asset) {
     const dateMap = {};
     return {
       key: asset.key,
+      sym: 'NEWC_COAL',
       header: asset.header,
       curPrice: liveCoal,
+      prevPrice: 124.00,
       firstPrice: 121.5,
       chg: 0.50,
       pct: 0.40,
@@ -123,8 +125,10 @@ async function fetchAssetHistory(asset) {
 
       return {
         key: asset.key,
+        sym: asset.sym,
         header: asset.header,
         curPrice,
+        prevPrice: Number(prev.toFixed(asset.dec)),
         firstPrice,
         chg: Number(chg.toFixed(asset.dec)),
         pct,
@@ -135,8 +139,10 @@ async function fetchAssetHistory(asset) {
 
   return {
     key: asset.key,
+    sym: asset.sym,
     header: asset.header,
     curPrice: asset.defaultVal,
+    prevPrice: asset.defaultVal,
     firstPrice: asset.defaultVal,
     chg: 0,
     pct: 0,
@@ -242,7 +248,81 @@ module.exports = async (req, res) => {
   const curAdrInTwd = (curTsmAdr * curTwd) / 5;
   latestSnapshot.tsmc_adr_premium = curTsmc > 0 ? Number((((curAdrInTwd - curTsmc) / curTsmc) * 100).toFixed(2)) : 10.45;
 
-  // 4. 如果要求格式為 CSV（供 Google Sheets `=IMPORTDATA` 匯入完整長時序大表）
+  // 計算衍生指標之「前日比較基準」與變動量
+  const prevRow = historyRows.length >= 2 ? historyRows[historyRows.length - 2] : null;
+  if (prevRow) {
+    const spreadChgBps = Number(((latestSnapshot.spread_10y2y - prevRow.spread_10y2y) * 100).toFixed(1));
+    latestSnapshot.spread_10y2y_chg_bps = spreadChgBps;
+    latestSnapshot.spread_10y2y_prev = prevRow.spread_10y2y;
+
+    const adrChgPct = Number((latestSnapshot.tsmc_adr_premium - prevRow.tsmc_adr_premium).toFixed(2));
+    latestSnapshot.tsmc_adr_premium_chg = adrChgPct;
+    latestSnapshot.tsmc_adr_premium_prev = prevRow.tsmc_adr_premium;
+
+    const gcChg = Number((latestSnapshot.gold_copper_ratio - prevRow.gold_copper_ratio).toFixed(1));
+    latestSnapshot.gold_copper_ratio_chg = gcChg;
+    latestSnapshot.gold_copper_ratio_prev = prevRow.gold_copper_ratio;
+  }
+
+  // 4-A. 即時快照對比表 CSV（明確顯示每項標的之「最新價 vs 昨收基準價」）
+  if (req.query?.format === 'snapshot_csv' || req.query?.format === 'snapshot') {
+    const csvHeaders = ['Symbol', 'Asset_Key', 'Name', 'Price', 'Currency', 'PrevClose_Baseline', 'Change_vs_PrevClose', 'PctChange_vs_PrevClose', 'Comparison_Basis', 'UpdateTime'];
+    const rows = assetResults.map(r => {
+      const pClose = (r.prevPrice !== undefined && typeof r.prevPrice === 'number') ? r.prevPrice : Number((r.curPrice - r.chg).toFixed(2));
+      const chgSign = r.chg >= 0 ? '+' : '';
+      const pctSign = r.pct >= 0 ? '+' : '';
+      const cur = r.sym?.endsWith('.TW') ? 'TWD' : 'USD';
+      return [
+        r.sym || r.key,
+        r.key,
+        `"${r.header}"`,
+        r.curPrice,
+        cur,
+        pClose,
+        `${chgSign}${r.chg}`,
+        `${pctSign}${r.pct}%`,
+        '"較前一交易日收盤價(較昨收)"',
+        timeStr
+      ].join(',');
+    });
+
+    // 加入 10Y-2Y 利差與 ADR 溢價率衍生指標
+    const sprPrev = latestSnapshot.spread_10y2y_prev !== undefined ? latestSnapshot.spread_10y2y_prev : latestSnapshot.spread_10y2y;
+    const sprBps = latestSnapshot.spread_10y2y_chg_bps !== undefined ? latestSnapshot.spread_10y2y_chg_bps : 0;
+    rows.push([
+      'SPREAD_10Y2Y',
+      'spread_10y2y',
+      '"美債10Y-2Y經典利差"',
+      `${latestSnapshot.spread_10y2y}%`,
+      '%',
+      `${sprPrev}%`,
+      `${sprBps >= 0 ? '+' : ''}${sprBps} bps`,
+      `${sprBps >= 0 ? '+' : ''}${sprBps} bps`,
+      '"較前一交易日利差"',
+      timeStr
+    ].join(','));
+
+    const adrPrev = latestSnapshot.tsmc_adr_premium_prev !== undefined ? latestSnapshot.tsmc_adr_premium_prev : latestSnapshot.tsmc_adr_premium;
+    const adrChg = latestSnapshot.tsmc_adr_premium_chg !== undefined ? latestSnapshot.tsmc_adr_premium_chg : 0;
+    rows.push([
+      'TSMC_ADR_PREMIUM',
+      'tsmc_adr_premium',
+      '"台積電ADR溢價率"',
+      `${latestSnapshot.tsmc_adr_premium}%`,
+      '%',
+      `${adrPrev}%`,
+      `${adrChg >= 0 ? '+' : ''}${adrChg}%`,
+      `${adrChg >= 0 ? '+' : ''}${adrChg}%`,
+      '"較前一交易日溢價"',
+      timeStr
+    ].join(','));
+
+    const csvContent = csvHeaders.join(',') + '\n' + rows.join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    return res.status(200).send(csvContent);
+  }
+
+  // 4-B. 長時序大表 CSV（供 Google Sheets `=IMPORTDATA` 匯入完整長時序大表）
   if (req.query?.format === 'csv') {
     const headers = [
       'Date', 'Time',
