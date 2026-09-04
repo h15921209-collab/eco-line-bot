@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
     const marketSnapshot = await fetchLiveMarketAndHistory();
     
     // 2. 呼叫 Gemini AI 進行分析
-    const aiReport = await callGemini(userQuery);
+    const aiReport = await callGemini(userQuery, marketSnapshot);
 
     const now = new Date();
     const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);

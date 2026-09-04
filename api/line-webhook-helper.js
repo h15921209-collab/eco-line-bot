@@ -230,11 +230,11 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 * **風險提示**：總體經濟數據具備滯後性，投資人應恪守分批布局與資金紀律，切忌過度槓桿。`;
 }
 
-async function callGemini(userText) {
+async function callGemini(userText, existingMarketData = null) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
   const models = ["gemini-2.5-flash", "gemini-flash-latest", "gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.7-flash"];
 
-  const liveMarketData = await fetchLiveMarketAndHistory();
+  const liveMarketData = existingMarketData || (await fetchLiveMarketAndHistory());
   const prompt = `${SYSTEM_PROMPT}\n\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請依據首席總經策略師的專業架構，★務必同時引用上述「每次連線抓取的即時最新數值」（包含費半SOX、輝達、台積ADR溢價、10Y-2Y利差、中鋼、熱軋鋼捲、煤鐵、天然氣、馬士基航運、金銅比、VIX恐慌情緒、台股估值雷達與官方最新總經數據）。若使用者詢問配置或金額，給出資產配置矩陣與具體金額分配；若詢問壓力測試，拆解極端情境推演。給出深度、數據精準且邏輯清晰的解答。`;
 
   for (const m of models) {
@@ -247,20 +247,23 @@ async function callGemini(userText) {
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { maxOutputTokens: 1024, temperature: 0.4 }
         }),
-        signal: AbortSignal.timeout(6000)
+        signal: AbortSignal.timeout(3000)
       });
 
       if (response.ok) {
         const data = await response.json();
         const resText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
         if (resText) return resText;
+      } else if (response.status === 429) {
+        // 金鑰額度耗盡，立即秒級切換機構級量化研報防禦引擎，不反覆重試浪費等待時間
+        break;
       }
     } catch (e) {
-      // 忽略單一模型失敗，嘗試下一個
+      // 忽略逾時，繼續嘗試
     }
   }
 
-  // 若所有模型呼叫因配額或網路受限，自動啟動機構級量化深度研報生成引擎
+  // 自動啟動機構級量化深度研報生成引擎（零延遲）
   return generateInstitutionalQuantReport(userText, liveMarketData);
 }
 
