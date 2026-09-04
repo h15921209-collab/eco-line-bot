@@ -25,10 +25,32 @@ async function fetchSingleQuote(sym) {
 
     let price = meta.regularMarketPrice;
     if (sym === 'TIO=F' && price > 130) price = 95.34; // CME 坑口結算異常值過濾保護
-    const prev = meta.chartPreviousClose || meta.previousClose || price;
-    const chg = price - prev;
-    const pct = prev ? Number(((chg / prev) * 100).toFixed(2)) : 0;
-    return { price, chg, pct, currency: meta.currency || 'USD' };
+
+    const quotes = data.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
+    const validCloses = quotes.filter(c => typeof c === 'number');
+
+    let chg = (typeof meta.regularMarketChange === 'number') ? meta.regularMarketChange : null;
+    let pctVal = (typeof meta.regularMarketChangePercent === 'number') ? meta.regularMarketChangePercent : null;
+    let prev = (chg !== null) ? (price - chg) : null;
+
+    if (prev === null || isNaN(prev) || prev <= 0) {
+      prev = (validCloses.length >= 2 ? validCloses[validCloses.length - 2] : (meta.previousClose || price));
+      chg = price - prev;
+      pctVal = prev > 0 ? ((chg / prev) * 100) : 0;
+    }
+
+    if (sym.endsWith('.TW') || sym === '^TWII') {
+      if (Math.abs(pctVal) > 10.0 && validCloses.length >= 2) {
+        prev = validCloses[validCloses.length - 2];
+        chg = price - prev;
+        pctVal = prev > 0 ? ((chg / prev) * 100) : 0;
+        if (pctVal > 10.0) pctVal = 10.0;
+        if (pctVal < -10.0) pctVal = -10.0;
+      }
+    }
+
+    const pct = Number(pctVal.toFixed(2));
+    return { price, chg: Number(chg.toFixed(2)), pct, currency: meta.currency || 'USD' };
   } catch (e) {
     return null;
   }

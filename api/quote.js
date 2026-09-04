@@ -178,9 +178,27 @@ module.exports = async (req, res) => {
       price = validCloses[validCloses.length - 1];
     }
 
-    const prev = meta.chartPreviousClose || meta.previousClose || (validCloses.length >= 2 ? validCloses[validCloses.length - 2] : price);
-    const change = Number((price - prev).toFixed(2));
-    const pctChange = prev ? Number(((change / prev) * 100).toFixed(2)) : 0;
+    let change = (typeof meta.regularMarketChange === 'number') ? Number(meta.regularMarketChange.toFixed(2)) : null;
+    let pctChange = (typeof meta.regularMarketChangePercent === 'number') ? Number(meta.regularMarketChangePercent.toFixed(2)) : null;
+    let prev = (change !== null) ? Number((price - change).toFixed(2)) : null;
+
+    if (prev === null || isNaN(prev) || prev <= 0) {
+      prev = (validCloses.length >= 2 ? validCloses[validCloses.length - 2] : (meta.previousClose || price));
+      prev = Number(prev.toFixed(2));
+      change = Number((price - prev).toFixed(2));
+      pctChange = prev > 0 ? Number(((change / prev) * 100).toFixed(2)) : 0;
+    }
+
+    // 台股單日法定限制 (±10%) 防漂移濾網
+    if (symbol.endsWith('.TW') || symbol === '^TWII') {
+      if (Math.abs(pctChange) > 10.0 && validCloses.length >= 2) {
+        prev = Number(validCloses[validCloses.length - 2].toFixed(2));
+        change = Number((price - prev).toFixed(2));
+        pctChange = prev > 0 ? Number(((change / prev) * 100).toFixed(2)) : 0;
+        if (pctChange > 10.0) pctChange = 10.0;
+        if (pctChange < -10.0) pctChange = -10.0;
+      }
+    }
 
     return res.status(200).json({
       status: "success",

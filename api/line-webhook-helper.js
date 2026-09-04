@@ -64,9 +64,27 @@ async function getHistoryQuote(symbol, label, unit = "", decimals = 2) {
         if (symbol === "TIO=F" && validCloses.length > 0 && (price > 130 || price < 60)) {
           price = validCloses[validCloses.length - 1];
         }
-        const prev = meta.chartPreviousClose || meta.previousClose || price;
-        const chg = price - prev;
-        const pct = prev ? (chg / prev * 100).toFixed(2) : "0.00";
+        let chg = (typeof meta.regularMarketChange === 'number') ? meta.regularMarketChange : null;
+        let pctVal = (typeof meta.regularMarketChangePercent === 'number') ? meta.regularMarketChangePercent : null;
+        let prev = (chg !== null) ? (price - chg) : null;
+
+        if (prev === null || isNaN(prev) || prev <= 0) {
+          prev = (validCloses.length >= 2 ? validCloses[validCloses.length - 2] : (meta.previousClose || price));
+          chg = price - prev;
+          pctVal = prev > 0 ? ((chg / prev) * 100) : 0;
+        }
+
+        if (symbol.endsWith('.TW') || symbol === '^TWII') {
+          if (Math.abs(pctVal) > 10.0 && validCloses.length >= 2) {
+            prev = validCloses[validCloses.length - 2];
+            chg = price - prev;
+            pctVal = prev > 0 ? ((chg / prev) * 100) : 0;
+            if (pctVal > 10.0) pctVal = 10.0;
+            if (pctVal < -10.0) pctVal = -10.0;
+          }
+        }
+
+        const pct = pctVal.toFixed(2);
         const sign = chg >= 0 ? "+" : "";
 
         const p5d = validCloses.length >= 6 ? validCloses[validCloses.length - 6] : validCloses[0];

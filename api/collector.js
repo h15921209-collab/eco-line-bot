@@ -102,9 +102,42 @@ async function fetchAssetHistory(asset) {
       }
 
       curPrice = Number(curPrice.toFixed(asset.dec));
-      const prev = meta?.chartPreviousClose || meta?.previousClose || (validCloses.length >= 2 ? validCloses[validCloses.length - 2] : curPrice);
-      const chg = curPrice - prev;
-      const pct = prev ? Number(((chg / prev) * 100).toFixed(2)) : 0.00;
+
+      // 計算真實前日收盤價 (Previous Close) - 徹底摒棄 chartPreviousClose 陷阱
+      let prev = null;
+      let chg = null;
+      let pct = null;
+
+      // 優先級 1: Yahoo 官方計算之真實今日變動額與百分比
+      if (typeof meta?.regularMarketChange === 'number' && typeof meta?.regularMarketChangePercent === 'number' && Math.abs(meta.regularMarketChangePercent) > 0) {
+        chg = Number(meta.regularMarketChange.toFixed(asset.dec));
+        pct = Number(meta.regularMarketChangePercent.toFixed(2));
+        prev = Number((curPrice - chg).toFixed(asset.dec));
+      }
+
+      // 優先級 2: 若官方欄位缺失，以歷史序列倒數第 2 筆有效收盤價為前日收盤
+      if (prev === null || isNaN(prev) || prev <= 0) {
+        if (validCloses.length >= 2) {
+          prev = Number(validCloses[validCloses.length - 2].toFixed(asset.dec));
+        } else if (validCloses.length === 1) {
+          prev = Number(validCloses[0].toFixed(asset.dec));
+        } else {
+          prev = curPrice;
+        }
+        chg = Number((curPrice - prev).toFixed(asset.dec));
+        pct = prev > 0 ? Number(((chg / prev) * 100).toFixed(2)) : 0.00;
+      }
+
+      // 優先級 3: 台股單日法定限制 (±10%) 防漂移濾網
+      if (asset.sym?.endsWith('.TW') || asset.sym === '^TWII') {
+        if (Math.abs(pct) > 10.0 && validCloses.length >= 2) {
+          prev = Number(validCloses[validCloses.length - 2].toFixed(asset.dec));
+          chg = Number((curPrice - prev).toFixed(asset.dec));
+          pct = prev > 0 ? Number(((chg / prev) * 100).toFixed(2)) : 0.00;
+          if (pct > 10.0) pct = 10.0;
+          if (pct < -10.0) pct = -10.0;
+        }
+      }
 
       const datePriceMap = {};
       let firstPrice = curPrice;
