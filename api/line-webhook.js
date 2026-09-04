@@ -1,6 +1,6 @@
 const { callGemini, getHeader, FALLBACK_LINE_TOKEN } = require('./line-webhook-helper');
 
-const SHORT_WEB_URL = "https://eco-line-bot.vercel.app";
+const SHORT_WEB_URL = process.env.BASE_URL || "https://eco-line-bot.vercel.app";
 
 // 完整使用說明書與服務指南
 const USER_GUIDE_MESSAGE = `📖【宏觀全球智庫 · 總經分析助手使用說明書】

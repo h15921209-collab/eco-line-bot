@@ -451,7 +451,7 @@
           <p class="text-xs text-slate-400 mt-1">
             在試算表 <b>A1 儲存格</b> 貼上公式自動載入完整 29 行全維度數據：
           </p>
-          <div class="bg-black/50 p-2.5 rounded-lg border border-slate-800 my-2.5 font-mono text-[11px] text-sky-400 break-all select-all">
+          <div id="sheets-formula-box" class="bg-black/50 p-2.5 rounded-lg border border-slate-800 my-2.5 font-mono text-[11px] text-sky-400 break-all select-all">
             =IMPORTDATA("https://eco-line-bot.vercel.app/api/collector?format=csv")
           </div>
           <div class="flex gap-2">
@@ -533,7 +533,9 @@
     let isSpeaking = false;
     let currentSearchedSymbol = "";
     let currentPortfolioModel = 'standard';
-    const DOMAIN_URL = "https://eco-line-bot.vercel.app";
+    const DOMAIN_URL = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost'))
+      ? window.location.origin
+      : (window.location.origin || "https://eco-line-bot.vercel.app");
 
     const portfolioModels = {
       standard: {
@@ -829,6 +831,9 @@
     }
 
     async function fetchInitialReport() {
+      if (document.getElementById('sheets-formula-box')) {
+        document.getElementById('sheets-formula-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=csv")';
+      }
       updateEventCountdowns();
       calcAllocation();
       calcCompounding();

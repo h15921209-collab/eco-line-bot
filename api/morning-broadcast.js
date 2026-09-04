@@ -1,6 +1,6 @@
 const { callGemini, fetchLiveMarketAndHistory, FALLBACK_LINE_TOKEN } = require('./line-webhook-helper');
 
-const SHORT_WEB_URL = "https://eco-line-bot.vercel.app";
+const SHORT_WEB_URL = process.env.BASE_URL || "https://eco-line-bot.vercel.app";
 
 // 每日早報/週末週報專屬生成與推播端點
 module.exports = async (req, res) => {
