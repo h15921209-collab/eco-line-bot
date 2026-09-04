@@ -149,13 +149,26 @@
       </div>
     </div>
 
-    <!-- 🔥 24H 全球跨資產即時強弱熱度條 (Dynamic Heatmap Bar) -->
-    <div class="mb-5 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs no-print">
-      <div class="flex items-center gap-1.5 font-bold text-slate-300">
-        <span>🔥 24H 跨資產實時強弱熱力（較昨收基準）：</span>
+    <!-- 🔥 全球跨資產多週期強弱熱度條 (Multi-Timeframe Heatmap Bar) -->
+    <div class="mb-5 p-3.5 rounded-2xl bg-slate-900/95 border border-slate-800 no-print shadow-lg">
+      <div class="flex flex-wrap items-center justify-between gap-2.5 pb-2.5 mb-2.5 border-b border-slate-800/80">
+        <div class="flex items-center gap-2">
+          <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+            <span>🔥</span> 全球跨資產多週期強弱熱力榜
+          </span>
+          <span class="text-[11px] text-slate-400">（基準：<span id="current-tf-label" class="text-amber-400 font-bold">較前日收盤 1D</span>）</span>
+        </div>
+        <!-- 多週期比較維度切換按鈕 (1D, 5D, 1M, YTD, 1Y) -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-medium" id="timeframe-buttons">
+          <button onclick="switchTimeframe('1d')" id="btn-tf-1d" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition shadow-sm">較昨收 (1D)</button>
+          <button onclick="switchTimeframe('5d')" id="btn-tf-5d" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較上週 (5D)</button>
+          <button onclick="switchTimeframe('1m')" id="btn-tf-1m" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較上月 (1M)</button>
+          <button onclick="switchTimeframe('ytd')" id="btn-tf-ytd" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較年初 (YTD)</button>
+          <button onclick="switchTimeframe('1y')" id="btn-tf-1y" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較去年 (1Y)</button>
+        </div>
       </div>
       <div class="flex flex-wrap items-center gap-2 text-[11px] font-mono" id="dynamic-heatmap-bar">
-        <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">數據即時載入中...</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">跨週期數據即時載入中...</span>
       </div>
     </div>
 
@@ -194,304 +207,164 @@
       <div class="glass-card p-2.5 rounded-xl"><div class="text-[10px] text-slate-400">😱 VIX 恐慌指數</div><div class="font-bold text-emerald-400 text-xs sm:text-sm mt-0.5" id="tick-vix">--</div><div class="text-[9px] text-slate-500">市場情緒</div></div>
     </div>
 
-    <!-- 核心雙欄架構 -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+    <!-- 核心全寬布局架構 (Full-Width Layout) -->
+    <div class="space-y-6">
 
-      <!-- 左側：最新 AI 研報展示區 + 即時提問 (8 columns) -->
-      <div class="lg:col-span-8 space-y-5 sm:space-y-6">
-
-        <!-- 線上即時提問區 -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl neon-border no-print">
-          <div class="flex items-center justify-between mb-2 sm:mb-3">
-            <h2 class="text-sm sm:text-base font-bold text-white flex items-center">
-              <span class="mr-2">💬</span> 首席分析師在線即時提問
-            </h2>
-            <span class="text-[11px] text-slate-400">Google Gemini 3.5 旗艦大腦</span>
-          </div>
-
-          <div class="flex flex-col sm:flex-row gap-2">
-            <input type="text" id="query-input" placeholder="輸入總經問題，如：我有100萬想做跨資產配置該怎麼配？"
-              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
-            <button onclick="submitCustomQuery()" id="btn-submit"
-              class="bg-gradient-to-r from-sky-500 to-blue-600 active:scale-95 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-sky-500/20 whitespace-nowrap">
-              🚀 生成研報
-            </button>
-          </div>
-
-          <!-- 熱門主題快捷鍵 -->
-          <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-3 text-[11px]">
-            <span class="text-slate-500 py-0.5">熱門快捷：</span>
-            <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額與標的建議')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded-md border border-amber-500/40 font-medium">🎯 100萬配置試算</button>
-            <button onclick="quickAsk('費城半導體、輝達與台積電ADR溢價率對台股開盤與AI供應鏈深度研判')" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-2 py-0.5 rounded-md border border-sky-500/40 font-medium">🚀 費半/NVDA/台積</button>
-            <button onclick="quickAsk('銅博士、鐵礦砂、煤炭與天然氣價格走勢對全球實體基建與通膨的傳導分析')" class="bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 px-2 py-0.5 rounded-md border border-orange-500/40 font-medium">⛏️ 銅煤鐵能源基建</button>
-            <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 px-2 py-0.5 rounded-md border border-purple-500/40 font-medium">🌪️ 總經壓力測試</button>
-            <button onclick="quickAsk('美債 10Y-2Y 殖利率利差形態與 Fed 降息終點利率定價剖析')" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-2 py-0.5 rounded-md border border-red-500/40 font-medium">🏛️ 10Y-2Y 利差形狀</button>
-          </div>
+      <!-- 1. 線上即時提問區 (Full Width) -->
+      <div class="glass-card p-4 sm:p-6 rounded-2xl neon-border no-print shadow-xl">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm sm:text-base font-bold text-white flex items-center">
+            <span class="mr-2">💬</span> 首席分析師在線即時提問
+          </h2>
+          <span class="text-[11px] text-sky-400 font-mono bg-sky-950/60 px-2 py-0.5 rounded-lg border border-sky-500/30">Google Gemini 3.5 旗艦策略大腦</span>
         </div>
 
-        <!-- 研報內容展示卡片（支援打印與一鍵分享） -->
-        <div class="glass-card p-5 sm:p-8 rounded-2xl" id="printable-report-area">
-          <div class="flex flex-wrap items-center justify-between pb-3.5 border-b border-slate-800 gap-2 mb-5">
-            <div>
-              <div class="text-[10px] text-sky-400 font-semibold tracking-wider uppercase">MACRO STRATEGY INTELLIGENCE REPORT</div>
-              <h1 class="text-lg sm:text-2xl font-bold text-white mt-0.5" id="report-title">宏觀全球總經情勢與資產配置研報</h1>
-            </div>
-            <div class="text-left sm:text-right text-[11px] text-slate-400">
-              <div>時間：<span id="report-time" class="text-slate-200">--</span></div>
-              <div class="text-slate-500">實時行情 ＋ 官方最新數據庫</div>
-            </div>
-          </div>
-
-          <!-- 研報正文 -->
-          <div id="report-content" class="prose-custom text-slate-300">
-            <div class="animate-pulse flex space-y-3 flex-col py-6">
-              <div class="h-4 bg-slate-800 rounded w-3/4"></div>
-              <div class="h-4 bg-slate-800 rounded w-full"></div>
-              <div class="h-4 bg-slate-800 rounded w-5/6"></div>
-              <div class="h-4 bg-slate-800 rounded w-2/3"></div>
-            </div>
-          </div>
-
-          <!-- 底部操作 -->
-          <div class="mt-6 pt-3 border-t border-slate-800/80 flex flex-wrap justify-between items-center text-xs text-slate-500 gap-2 no-print">
-            <div class="flex flex-wrap items-center gap-3">
-              <button onclick="shareToLine()" class="text-[#06C755] hover:opacity-80 transition flex items-center gap-1 font-medium">
-                📲 分享至 LINE
-              </button>
-              <button onclick="toggleSpeech()" class="text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 font-medium">
-                🔊 語音朗讀
-              </button>
-              <button onclick="exportReportPDF()" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1 font-medium">
-                📥 匯出 PDF
-              </button>
-            </div>
-            <button onclick="copyReportText()" class="text-sky-400 hover:text-sky-300 transition flex items-center gap-1 font-medium">
-              📋 複製研報
-            </button>
-          </div>
-        </div>
-
-        <!-- 📘 新手使用說明書 ＆ 提問指南專區 -->
-        <div id="user-guide" class="glass-card p-6 sm:p-8 rounded-2xl border-sky-500/30 no-print">
-          <div class="flex items-center space-x-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-xl">📖</div>
-            <div>
-              <h2 class="text-lg sm:text-xl font-bold text-white">總經分析助手 · 使用說明書 ＆ 服務指南</h2>
-              <p class="text-xs text-slate-400">教您如何隨時隨地發揮 AI 首席策略師的最大價值</p>
-            </div>
-          </div>
-
-          <div class="space-y-4 text-xs sm:text-sm text-slate-300 mt-5">
-            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-              <h3 class="font-bold text-sky-400 flex items-center gap-2 mb-2">
-                <span>⏰ 1. 每日 08:30 自動推播（盤前半小時晨報）</span>
-              </h3>
-              <p class="leading-relaxed text-slate-300">
-                每週一至週五早上 <b>08:30</b>，雲端系統會自動採集隔夜美股、費半、輝達、台積ADR、10Y-2Y利差與大宗煤鐵，並主動推送《首席財經晨訊》至您的 LINE。
-              </p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-              <h3 class="font-bold text-emerald-400 flex items-center gap-2 mb-2">
-                <span>💬 2. 24H 隨時在線提問指南（支援中英文名稱秒查）</span>
-              </h3>
-              <p class="leading-relaxed text-slate-400 mb-3">
-                無論何時在 LINE 或本網頁輸入問題或名稱（如台積電、聯發科、NVDA、銅博士、鐵礦砂），AI 都會連線真實數據解答：
-              </p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例')" class="text-left p-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition text-amber-200">
-                  🎯 <b>配置類</b>：100萬總經跨資產配置試算
-                </button>
-                <button onclick="quickAsk('費城半導體、輝達與台積電ADR溢價率對台股開盤與AI供應鏈深度研判')" class="text-left p-2.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition text-sky-200">
-                  🚀 <b>科技類</b>：費半 SOX 與輝達 NVDA 連動研判
-                </button>
-                <button onclick="quickAsk('銅博士、鐵礦砂、煤炭與天然氣價格走勢對全球實體基建與通膨的傳導分析')" class="text-left p-2.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 transition text-orange-200">
-                  ⛏️ <b>原物料</b>：銅煤鐵與天然氣實體基建
-                </button>
-                <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="text-left p-2.5 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition text-purple-200">
-                  🌪️ <b>壓力測試</b>：黑天鵝情境衝擊演練
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 右側：4 大經典跨資產配置模型 ＋ 股災回測 ＋ 財富複利計算機 (4 columns) -->
-      <div class="lg:col-span-4 space-y-5 sm:space-y-6 no-print">
-
-        <!-- 🎛️ 4 大經典法人跨資產配置模擬器 -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl border-amber-500/30">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-bold text-white flex items-center">
-              <span class="mr-2">🎯</span> 4 大經典跨資產配置模型
-            </h3>
-            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">法人矩陣</span>
-          </div>
-          
-          <!-- 4 大經典策略切換 Tab -->
-          <div class="grid grid-cols-2 gap-1.5 mb-3 text-[10px]">
-            <button onclick="switchPortfolioModel('standard')" id="btn-model-standard" class="p-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition">🏛️ 智庫均衡型</button>
-            <button onclick="switchPortfolioModel('allweather')" id="btn-model-allweather" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">🛡️ 達里歐全天候</button>
-            <button onclick="switchPortfolioModel('permanent')" id="btn-model-permanent" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">🪙 永久投資組合</button>
-            <button onclick="switchPortfolioModel('buffett')" id="btn-model-buffett" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">🚀 巴菲特 90/10</button>
-          </div>
-
-          <div class="flex gap-2 mb-3">
-            <div class="relative w-full">
-              <span class="absolute left-3 top-2.5 text-xs text-slate-500">NT$</span>
-              <input type="number" id="alloc-amount" value="1000000" step="100000" oninput="calcAllocation()"
-                class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 font-mono">
-            </div>
-          </div>
-
-          <!-- 動態配置比例列表 -->
-          <div class="space-y-1.5 text-xs mb-3" id="alloc-result-list">
-            <!-- 動態渲染 -->
-          </div>
-
-          <button onclick="askAIWithAmount()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-xl border border-slate-700 transition font-medium text-center block">
-            🤖 請 AI 深度解析此流派配置 ➔
+        <div class="flex flex-col sm:flex-row gap-2.5">
+          <input type="text" id="query-input" placeholder="輸入任何總經問題或標的，如：我有100萬想做跨資產配置該怎麼配？/ 費半與台積電連動研判"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 shadow-inner">
+          <button onclick="submitCustomQuery()" id="btn-submit"
+            class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 active:scale-95 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-lg shadow-sky-500/25 whitespace-nowrap">
+            🚀 生成深度研報
           </button>
         </div>
 
-        <!-- 📉 歷史三大股災抗跌回測卡片 (Black Swan Stress Backtest) -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl border-purple-500/30">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-bold text-white flex items-center">
-              <span class="mr-2">📉</span> 歷史重大股災抗跌壓力回測
-            </h3>
-            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/40">極端防禦力</span>
-          </div>
-          <p class="text-xs text-slate-400 mb-2.5">當前流派在歷史重大危機中的最大回撤表現：</p>
+        <!-- 熱門主題快捷鍵 -->
+        <div class="flex flex-wrap items-center gap-2 mt-3.5 text-xs">
+          <span class="text-slate-400 text-[11px]">熱門快捷：</span>
+          <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額與標的建議')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40 font-medium transition">🎯 100萬配置試算</button>
+          <button onclick="quickAsk('費城半導體、輝達與台積電ADR溢價率對台股開盤與AI供應鏈深度研判')" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-2.5 py-1 rounded-lg border border-sky-500/40 font-medium transition">🚀 費半/NVDA/台積</button>
+          <button onclick="quickAsk('銅博士、鐵礦砂、煤炭與天然氣價格走勢對全球實體基建與通膨的傳導分析')" class="bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 px-2.5 py-1 rounded-lg border border-orange-500/40 font-medium transition">⛏️ 銅煤鐵能源基建</button>
+          <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 px-2.5 py-1 rounded-lg border border-purple-500/40 font-medium transition">🌪️ 總經壓力測試</button>
+          <button onclick="quickAsk('美債 10Y-2Y 殖利率利差形態與 Fed 降息終點利率定價剖析')" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-2.5 py-1 rounded-lg border border-red-500/40 font-medium transition">🏛️ 10Y-2Y 利差形狀</button>
+        </div>
+      </div>
 
-          <div class="space-y-1.5 text-xs" id="stress-backtest-list">
-            <!-- 動態渲染回測數據 -->
+      <!-- 2. 研報內容展示卡片（全寬展開，支援打印與一鍵分享） -->
+      <div class="glass-card p-5 sm:p-8 rounded-2xl shadow-xl" id="printable-report-area">
+        <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-2 mb-5">
+          <div>
+            <div class="text-[10px] text-sky-400 font-semibold tracking-wider uppercase">MACRO STRATEGY INTELLIGENCE REPORT</div>
+            <h1 class="text-lg sm:text-2xl font-bold text-white mt-0.5" id="report-title">宏觀全球總經情勢與資產配置研報</h1>
+          </div>
+          <div class="text-left sm:text-right text-xs text-slate-400">
+            <div>時間：<span id="report-time" class="text-slate-200 font-mono">--</span></div>
+            <div class="text-slate-500 text-[11px] mt-0.5">實時行情 ＋ 官方最新數據庫連動</div>
           </div>
         </div>
 
-        <!-- 🔮 長期財富複利成長模擬器 (Compounding Growth Simulator) -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl border-emerald-500/30">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-bold text-white flex items-center">
-              <span class="mr-2">🔮</span> 長期財富複利成長投影
-            </h3>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/40">時間複利</span>
-          </div>
-          <p class="text-xs text-slate-400 mb-3">設定定期定額與年期，試算資產增長曲線：</p>
-
-          <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
-            <div>
-              <label class="text-[10px] text-slate-400 block mb-1">每月定額 (NT$)</label>
-              <input type="number" id="compound-monthly" value="10000" step="1000" oninput="calcCompounding()"
-                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:border-emerald-500 focus:outline-none">
-            </div>
-            <div>
-              <label class="text-[10px] text-slate-400 block mb-1">投資年限 (年)</label>
-              <select id="compound-years" onchange="calcCompounding()"
-                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
-                <option value="5">5 年</option>
-                <option value="10" selected>10 年</option>
-                <option value="15">15 年</option>
-                <option value="20">20 年</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 text-xs">
-            <div class="flex justify-between text-slate-400">
-              <span>預估年化報酬：</span>
-              <span class="font-mono text-emerald-400 font-bold" id="res-compound-rate">8.2%</span>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>累計投入本金：</span>
-              <span class="font-mono text-slate-200" id="res-compound-principal">NT$ 2,200,000</span>
-            </div>
-            <div class="flex justify-between border-t border-slate-800/80 pt-1 mt-1">
-              <span class="font-bold text-white">期末預期總財富：</span>
-              <span class="font-mono text-emerald-400 font-bold text-sm" id="res-compound-total">NT$ 3,842,150</span>
-            </div>
-            <div class="flex justify-between text-[11px] text-slate-500">
-              <span>複利淨收益：</span>
-              <span class="font-mono text-amber-400" id="res-compound-gain">+NT$ 1,642,150 (+74.6%)</span>
-            </div>
+        <!-- 研報正文 -->
+        <div id="report-content" class="prose-custom text-slate-300 leading-relaxed">
+          <div class="animate-pulse flex space-y-3 flex-col py-6">
+            <div class="h-4 bg-slate-800 rounded w-3/4"></div>
+            <div class="h-4 bg-slate-800 rounded w-full"></div>
+            <div class="h-4 bg-slate-800 rounded w-5/6"></div>
+            <div class="h-4 bg-slate-800 rounded w-2/3"></div>
           </div>
         </div>
 
-        <!-- 📈 TradingView 風格多週期互動折線圖 -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-sm font-bold text-white flex items-center">
-              <span class="mr-2">📈</span> 跨資產歷史時序走勢
-            </h3>
-            <span class="text-[10px] text-sky-400 font-mono">實時連線動態軌跡</span>
-          </div>
-
-          <div class="flex gap-1.5 mb-3 text-[11px] overflow-x-auto pb-1">
-            <button onclick="switchChartAsset('twii')" id="tab-twii" class="bg-sky-500 text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🇹🇼 台股</button>
-            <button onclick="switchChartAsset('sox')" id="tab-sox" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🚀 費半</button>
-            <button onclick="switchChartAsset('nvda')" id="tab-nvda" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🤖 輝達</button>
-            <button onclick="switchChartAsset('us10y')" id="tab-us10y" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🇺🇸 美債10Y</button>
-            <button onclick="switchChartAsset('gold')" id="tab-gold" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🪙 黃金</button>
-            <button onclick="switchChartAsset('copper')" id="tab-copper" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🏭 銅博士</button>
-            <button onclick="switchChartAsset('iron_ore')" id="tab-iron_ore" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🧱 鐵礦砂</button>
-            <button onclick="switchChartAsset('coal')" id="tab-coal" class="bg-slate-800 text-slate-400 hover:text-white px-2.5 py-1 rounded-lg font-medium transition whitespace-nowrap">🔥 煤炭</button>
-          </div>
-
-          <div class="h-56 sm:h-64">
-            <canvas id="macroLineChart"></canvas>
-          </div>
-          <div class="text-[10px] text-slate-500 mt-2 text-center">
-            觸控/滑鼠懸停可查看每日精確收盤價與殖利率
-          </div>
-        </div>
-
-        <!-- Google 試算表連動 -->
-        <div class="glass-card p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-sky-950/40 border-sky-500/20">
-          <h3 class="text-sm font-bold text-white flex items-center">
-            <span class="mr-2">📗</span> Google 試算表即時連線大表
-          </h3>
-          <p class="text-xs text-slate-400 mt-1">
-            在試算表 <b>A1 儲存格</b> 貼上公式自動載入：
-          </p>
-          <div class="space-y-2 my-2.5">
-            <div>
-              <div class="text-[10px] text-amber-300 font-semibold mb-1">📊 1. 【即時快照對比表】（包含代碼、最新價、昨收價、漲跌額與幅度）：</div>
-              <div id="sheets-snapshot-box" class="bg-black/50 p-2 rounded-lg border border-amber-500/30 font-mono text-[10px] text-amber-300 break-all select-all">
-                =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=snapshot_csv")
-              </div>
-            </div>
-            <div>
-              <div class="text-[10px] text-sky-400 font-semibold mb-1">📜 2. 【長時序歷史庫】（完整 36 欄長時序歷程）：</div>
-              <div id="sheets-formula-box" class="bg-black/50 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-sky-400 break-all select-all">
-                =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=csv")
-              </div>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="copySnapshotFormula()" class="bg-amber-600/30 hover:bg-amber-600/50 active:scale-95 text-amber-300 text-xs py-2 rounded-lg font-medium border border-amber-500/40 transition">
-              📋 複製快照公式
+        <!-- 底部操作 -->
+        <div class="mt-6 pt-3.5 border-t border-slate-800/80 flex flex-wrap justify-between items-center text-xs text-slate-500 gap-2 no-print">
+          <div class="flex flex-wrap items-center gap-3">
+            <button onclick="shareToLine()" class="text-[#06C755] hover:opacity-80 transition flex items-center gap-1 font-medium">
+              📲 分享至 LINE
             </button>
-            <button onclick="copyFormula()" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs py-2 rounded-lg font-medium border border-slate-700 transition">
-              📋 複製時序公式
+            <button onclick="toggleSpeech()" class="text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 font-medium">
+              <span id="speech-icon">🔊</span> <span id="speech-text">語音朗讀</span>
+            </button>
+            <button onclick="exportReportPDF()" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1 font-medium">
+              📥 匯出 PDF
             </button>
           </div>
-          <a href="https://sheets.new" target="_blank" class="w-full mt-2 block bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white text-xs py-2 rounded-lg font-medium text-center transition">
-            🚀 點此開啟全新 Google 試算表
+          <button onclick="copyReportText()" class="text-sky-400 hover:text-sky-300 transition flex items-center gap-1 font-medium">
+            📋 複製研報全文
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. 📈 TradingView 風格多週期互動折線圖 (Full Width) -->
+      <div class="glass-card p-5 sm:p-6 rounded-2xl shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-white flex items-center">
+              <span class="mr-2">📈</span> 跨資產歷史時序動態走勢
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">即時連線長時序歷程與每日精確收盤價</p>
+          </div>
+          <span class="text-[11px] text-sky-400 font-mono bg-sky-950/60 px-2.5 py-1 rounded-lg border border-sky-500/30">實時時序軌跡</span>
+        </div>
+
+        <div class="flex gap-2 mb-4 text-xs overflow-x-auto pb-1.5">
+          <button onclick="switchChartAsset('twii')" id="tab-twii" class="bg-sky-500 text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap shadow-sm">🇹🇼 台股加權</button>
+          <button onclick="switchChartAsset('sox')" id="tab-sox" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🚀 費城半導體</button>
+          <button onclick="switchChartAsset('nvda')" id="tab-nvda" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🤖 輝達 NVIDIA</button>
+          <button onclick="switchChartAsset('us10y')" id="tab-us10y" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🇺🇸 美債 10Y</button>
+          <button onclick="switchChartAsset('gold')" id="tab-gold" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🪙 國際黃金</button>
+          <button onclick="switchChartAsset('copper')" id="tab-copper" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🏭 銅博士</button>
+          <button onclick="switchChartAsset('iron_ore')" id="tab-iron_ore" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🧱 鐵礦砂</button>
+          <button onclick="switchChartAsset('coal')" id="tab-coal" class="bg-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap">🔥 動力煤</button>
+        </div>
+
+        <div class="h-64 sm:h-80 w-full">
+          <canvas id="macroLineChart"></canvas>
+        </div>
+        <div class="text-[11px] text-slate-500 mt-3 text-center">
+          💡 觸控或滑鼠游標懸停折線即可查看歷史每日收盤點位與殖利率數值
+        </div>
+      </div>
+
+      <!-- 4. Google 試算表連動專區 (Full Width) -->
+      <div class="glass-card p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/40 border-sky-500/20 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-white flex items-center">
+              <span class="mr-2">📗</span> Google 試算表即時連線大表（多週期 ＆ 完整歷史時序）
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">
+              在您的 Google 試算表 <b>A1 儲存格</b> 貼上以下公式，免寫代碼自動載入最新雲端數據：
+            </p>
+          </div>
+          <a href="https://sheets.new" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white text-xs px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
+            <span>🚀</span> 開啟新試算表
           </a>
+        </div>
 
-          <!-- 永久歷史自動封存 Apps Script 說明 -->
-          <div class="mt-3 pt-3 border-t border-slate-800">
-            <div class="flex justify-between items-center cursor-pointer" onclick="toggleScriptHelp()">
-              <span class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
-                <span>📜</span> 每天 16:00 自動封存為永久歷史庫 (Apps Script)
-              </span>
-              <span id="script-help-icon" class="text-xs text-slate-500">▼</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-amber-500/30">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-xs text-amber-300 font-bold">📊 1. 【即時快照對比表】（最新價、昨收價、漲跌額與多週期幅度）</div>
+              <button onclick="copySnapshotFormula()" class="bg-amber-600/30 hover:bg-amber-600/50 active:scale-95 text-amber-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-amber-500/40 transition">
+                📋 複製
+              </button>
             </div>
-            <div id="script-help-body" class="hidden mt-2 text-[10px] text-slate-400 space-y-1.5 bg-black/40 p-2 rounded-lg border border-slate-800">
-              <p>在 Google 試算表點選 <b>擴充功能 ➔ Apps Script</b>，貼上以下代碼並設定每日定時觸發，即可終身免費自動封存每一天數據：</p>
-              <pre id="apps-script-code" class="bg-slate-950 p-2 rounded text-sky-300 font-mono text-[9px] overflow-x-auto select-all">function archiveDailyData() {
+            <div id="sheets-snapshot-box" class="bg-black/60 p-2.5 rounded-lg border border-slate-800 font-mono text-[11px] text-amber-300 break-all select-all">
+              =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=snapshot_csv")
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-sky-500/30">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-xs text-sky-400 font-bold">📜 2. 【長時序歷史庫】（完整 36 欄歷史序列歷程）</div>
+              <button onclick="copyFormula()" class="bg-sky-600/30 hover:bg-sky-600/50 active:scale-95 text-sky-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-sky-500/40 transition">
+                📋 複製
+              </button>
+            </div>
+            <div id="sheets-formula-box" class="bg-black/60 p-2.5 rounded-lg border border-slate-800 font-mono text-[11px] text-sky-400 break-all select-all">
+              =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=csv")
+            </div>
+          </div>
+        </div>
+
+        <!-- 永久歷史自動封存 Apps Script 說明 -->
+        <div class="pt-3 border-t border-slate-800/80">
+          <div class="flex justify-between items-center cursor-pointer select-none" onclick="toggleScriptHelp()">
+            <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+              <span>📜</span> 每天 16:00 自動封存為永久歷史庫 (Apps Script 免費自動化)
+            </span>
+            <span id="script-help-icon" class="text-xs text-slate-500">▼ 展開教學</span>
+          </div>
+          <div id="script-help-body" class="hidden mt-3 text-xs text-slate-400 space-y-2 bg-black/50 p-3 rounded-xl border border-slate-800">
+            <p>在 Google 試算表點選 <b>擴充功能 ➔ Apps Script</b>，貼上下方代碼並設定每日定時觸發，即可終身免費自動封存每一天的歷史數據：</p>
+            <pre id="apps-script-code" class="bg-slate-950 p-3 rounded-lg text-sky-300 font-mono text-[10px] overflow-x-auto select-all leading-relaxed">function archiveDailyData() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var live = ss.getSheets()[0];
   var hist = ss.getSheetByName("歷史永久庫") || ss.insertSheet("歷史永久庫");
@@ -500,13 +373,56 @@
   var lastDate = hist.getLastRow() > 1 ? hist.getRange(hist.getLastRow(), 1).getValue() : "";
   if (lastDate != todayData[0]) hist.appendRow(todayData);
 }</pre>
-              <button onclick="copyAppsScript()" class="w-full bg-amber-600/30 hover:bg-amber-600/50 text-amber-300 py-1 rounded text-center font-medium transition">
-                📋 複製 Apps Script 每日自動封存代碼
+            <button onclick="copyAppsScript()" class="w-full bg-amber-600/30 hover:bg-amber-600/50 text-amber-300 py-1.5 rounded-lg text-center font-medium transition text-xs">
+              📋 複製 Apps Script 每日自動封存代碼
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 📘 新手使用說明書 ＆ 提問指南專區 (Full Width) -->
+      <div id="user-guide" class="glass-card p-6 sm:p-8 rounded-2xl border-sky-500/30 no-print shadow-xl">
+        <div class="flex items-center space-x-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-xl">📖</div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-white">總經分析助手 · 使用說明書 ＆ 服務指南</h2>
+            <p class="text-xs text-slate-400">發揮 AI 首席策略師與宏觀數據庫的最大價值</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm text-slate-300 mt-5">
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <h3 class="font-bold text-sky-400 flex items-center gap-2 mb-2">
+              <span>⏰ 1. 每日 08:30 自動推播（盤前半小時晨報）</span>
+            </h3>
+            <p class="leading-relaxed text-slate-300">
+              每週一至週五早上 <b>08:30</b>，雲端系統會自動採集隔夜美股、費半、輝達、台積ADR、10Y-2Y利差與大宗煤鐵，並主動推送《首席財經晨訊》至您的 LINE。
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <h3 class="font-bold text-emerald-400 flex items-center gap-2 mb-2">
+              <span>💬 2. 24H 隨時在線提問指南（支援中英文名稱秒查）</span>
+            </h3>
+            <p class="leading-relaxed text-slate-400 mb-3">
+              無論何時在 LINE 或本網頁輸入問題或名稱（如台積電、聯發科、NVDA、銅博士、鐵礦砂），AI 都會連線真實數據解答：
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例')" class="text-left p-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition text-amber-200">
+                🎯 <b>配置類</b>：100萬總經跨資產配置試算
+              </button>
+              <button onclick="quickAsk('費城半導體、輝達與台積電ADR溢價率對台股開盤與AI供應鏈深度研判')" class="text-left p-2.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition text-sky-200">
+                🚀 <b>科技類</b>：費半 SOX 與輝達 NVDA 連動研判
+              </button>
+              <button onclick="quickAsk('銅博士、鐵礦砂、煤炭與天然氣價格走勢對全球實體基建與通膨的傳導分析')" class="text-left p-2.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 transition text-orange-200">
+                ⛏️ <b>原物料</b>：銅煤鐵與天然氣實體基建
+              </button>
+              <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="text-left p-2.5 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition text-purple-200">
+                🌪️ <b>壓力測試</b>：黑天鵝情境衝擊演練
               </button>
             </div>
           </div>
         </div>
-
       </div>
 
     </div>
@@ -584,54 +500,92 @@
       ? window.location.origin
       : (window.location.origin || "https://eco-line-bot.vercel.app");
 
-    const portfolioModels = {
-      standard: {
-        name: '智庫均衡型 (50/30/10/10)',
-        expReturn: 0.082,
-        desc: '兼顧資本利得與降息收息的最均衡配置',
-        stress: { y2008: '-18.5%', y2020: '-12.0%', y2022: '-14.0%', grade: '🛡️ 良好防禦' },
-        items: [
-          { name: '📈 股票資產 (50%)', ratio: 0.50, color: 'text-sky-400' },
-          { name: '🏛️ 債券資產 (30%)', ratio: 0.30, color: 'text-red-400' },
-          { name: '🪙 避險黃金 (10%)', ratio: 0.10, color: 'text-amber-400' },
-          { name: '💵 流動現金 (10%)', ratio: 0.10, color: 'text-emerald-400' }
-        ]
-      },
-      allweather: {
-        name: '達里歐全天候 (All-Weather)',
-        expReturn: 0.075,
-        desc: '橋水基金創辦人設計，穿越任何景氣循環',
-        stress: { y2008: '-3.9%', y2020: '-1.8%', y2022: '-14.5%', grade: '🏆 頂級抗跌' },
-        items: [
-          { name: '📈 全球股票 (30%)', ratio: 0.30, color: 'text-sky-400' },
-          { name: '🏛️ 長天期美債 (40%)', ratio: 0.40, color: 'text-red-400' },
-          { name: '🏛️ 中期國債 (15%)', ratio: 0.15, color: 'text-indigo-400' },
-          { name: '🪙 黃金大宗 (15%)', ratio: 0.15, color: 'text-amber-400' }
-        ]
-      },
-      permanent: {
-        name: '哈利布朗永久組合 (Permanent)',
-        expReturn: 0.068,
-        desc: '極端等權重配置，完美抗通膨與抗衰退',
-        stress: { y2008: '-0.7%', y2020: '-1.2%', y2022: '-12.8%', grade: '💎 鋼鐵防護' },
-        items: [
-          { name: '📈 股票資產 (25%)', ratio: 0.25, color: 'text-sky-400' },
-          { name: '🏛️ 長期國債 (25%)', ratio: 0.25, color: 'text-red-400' },
-          { name: '🪙 實體黃金 (25%)', ratio: 0.25, color: 'text-amber-400' },
-          { name: '💵 短期現金 (25%)', ratio: 0.25, color: 'text-emerald-400' }
-        ]
-      },
-      buffett: {
-        name: '巴菲特 90/10 組合',
-        expReturn: 0.105,
-        desc: '極致長期複利成長，超高股權進攻型',
-        stress: { y2008: '-45.8%', y2020: '-30.5%', y2022: '-17.5%', grade: '⚡ 高波動進攻' },
-        items: [
-          { name: '📈 標普500/台股 (90%)', ratio: 0.90, color: 'text-sky-400' },
-          { name: '💵 短期國債/現金 (10%)', ratio: 0.10, color: 'text-emerald-400' }
-        ]
-      }
-    };
+    let currentTimeframe = '1d';
+    let cachedTickerData = null;
+
+    function switchTimeframe(tf) {
+      currentTimeframe = tf;
+      const tfMap = {
+        '1d': '較前日收盤 1D',
+        '5d': '較近 5 交易日 (上週) 5D',
+        '1m': '較近 20 交易日 (上月) 1M',
+        'ytd': '較當年首個交易日 (年初至今) YTD',
+        '1y': '較去年同期 (近 1 年) 1Y'
+      };
+      const labelEl = document.getElementById('current-tf-label');
+      if (labelEl) labelEl.innerText = tfMap[tf] || tf;
+
+      ['1d', '5d', '1m', 'ytd', '1y'].forEach(k => {
+        const btn = document.getElementById('btn-tf-' + k);
+        if (btn) {
+          if (k === tf) {
+            btn.className = "px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition shadow-sm";
+          } else {
+            btn.className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition";
+          }
+        }
+      });
+      renderHeatmap();
+    }
+
+    function renderHeatmap() {
+      if (!cachedTickerData) return;
+      const d = cachedTickerData;
+      const tf = currentTimeframe;
+
+      const getPct = (prefix) => {
+        const key = `${prefix}_pct_${tf}`;
+        if (d[key] !== undefined && d[key] !== null) return d[key];
+        if (tf === '1d' && d[`${prefix}_pct`] !== undefined) return d[`${prefix}_pct`];
+        return undefined;
+      };
+
+      const tfTitleMap = {
+        '1d': '比較基準：較前一交易日收盤價 (1D)',
+        '5d': '比較基準：較近 5 個交易日收盤價 (5D)',
+        '1m': '比較基準：較近 20 個交易日收盤價 (1M)',
+        'ytd': '比較基準：較當年第一個交易日收盤價 (YTD)',
+        '1y': '比較基準：較近一年收盤價 (1Y)'
+      };
+      const titleText = tfTitleMap[tf] || '';
+
+      const tfBadgeMap = {
+        '1d': '較昨收',
+        '5d': '較上週',
+        '1m': '較上月',
+        'ytd': '較年初',
+        '1y': '較去年'
+      };
+      const badgePrefix = tfBadgeMap[tf] || '較基準';
+
+      const hList = [
+        { name: '🇹🇼 台股', pct: getPct('twii') },
+        { name: '🏭 中鋼', pct: getPct('csc') },
+        { name: '🔩 熱軋', pct: getPct('hrc') },
+        { name: '🚀 費半', pct: getPct('sox') },
+        { name: '🤖 輝達', pct: getPct('nvda') },
+        { name: '🪙 黃金', pct: getPct('gold') },
+        { name: '🏭 銅博士', pct: getPct('copper') },
+        { name: '🧱 鐵礦砂', pct: getPct('iron_ore') },
+        { name: '🔥 煤炭', pct: getPct('coal') },
+        { name: '🚢 BDI', pct: getPct('bdry') },
+        { name: '🛢️ 原油', pct: getPct('oil') },
+        { name: '💱 台幣', val: d.usdtwd, pct: getPct('usdtwd') },
+        { name: '😱 VIX', val: d.vix, pct: getPct('vix') }
+      ];
+
+      let heatHtml = '';
+      hList.forEach(item => {
+        if (item.pct !== undefined && item.pct !== null) {
+          const sign = item.pct >= 0 ? '+' : '';
+          const bg = item.pct >= 0 ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+          const txt = item.val ? `${item.name} ${item.val} (${badgePrefix} ${sign}${item.pct}%)` : `${item.name} ${badgePrefix} ${sign}${item.pct}%`;
+          heatHtml += `<span class="px-2 py-0.5 rounded border ${bg}" title="${titleText}">${txt}</span>`;
+        }
+      });
+      const barEl = document.getElementById('dynamic-heatmap-bar');
+      if (barEl) barEl.innerHTML = heatHtml;
+    }
 
     let dynamicHistory = {
       labels: ['D-9', 'D-8', 'D-7', 'D-6', 'D-5', 'D-4', 'D-3', 'D-2', 'D-1', '今日'],
@@ -686,101 +640,6 @@
       document.getElementById('countdown-taifex').innerText = diffTaifexDays === 0 ? `今日 13:30 結算` : `倒數 ${diffTaifexDays} 天 (${taifexTarget.getMonth() + 1}/${taifexTarget.getDate()})`;
     }
 
-    function switchPortfolioModel(modelKey) {
-      currentPortfolioModel = modelKey;
-      ['standard', 'allweather', 'permanent', 'buffett'].forEach(k => {
-        const btn = document.getElementById('btn-model-' + k);
-        if (k === modelKey) {
-          btn.className = "p-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition";
-        } else {
-          btn.className = "p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition";
-        }
-      });
-      calcAllocation();
-      calcCompounding();
-      renderStressBacktest();
-    }
-
-    function renderStressBacktest() {
-      const model = portfolioModels[currentPortfolioModel];
-      const s = model.stress;
-      const container = document.getElementById('stress-backtest-list');
-
-      container.innerHTML = `
-        <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-          <span class="text-slate-300">2008 金融海嘯 (標普-50.9%)</span>
-          <span class="font-mono font-bold ${s.y2008.startsWith('-0') || s.y2008.startsWith('-1') || s.y2008.startsWith('-3') ? 'text-emerald-400' : 'text-red-400'}">${s.y2008}</span>
-        </div>
-        <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-          <span class="text-slate-300">2020 疫情熔斷 (標普-33.9%)</span>
-          <span class="font-mono font-bold ${s.y2020.startsWith('-1') || s.y2020.startsWith('-0') ? 'text-emerald-400' : 'text-red-400'}">${s.y2020}</span>
-        </div>
-        <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-          <span class="text-slate-300">2022 股債雙殺 (標普-18.1%)</span>
-          <span class="font-mono font-bold text-amber-400">${s.y2022}</span>
-        </div>
-        <div class="flex justify-between pt-1 text-[11px] text-slate-400">
-          <span>歷史回撤抗跌評級：</span>
-          <span class="font-bold text-purple-300">${s.grade}</span>
-        </div>
-      `;
-    }
-
-    function calcAllocation() {
-      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
-      const model = portfolioModels[currentPortfolioModel];
-      const container = document.getElementById('alloc-result-list');
-
-      let html = '';
-      model.items.forEach(item => {
-        const itemAmt = Math.round(amt * item.ratio);
-        html += `
-          <div class="flex justify-between p-2 rounded-lg bg-slate-900/90 border border-slate-800">
-            <span class="${item.color} font-medium">${item.name}</span>
-            <span class="font-mono text-white font-bold">NT$ ${itemAmt.toLocaleString()}</span>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-      calcCompounding();
-      renderStressBacktest();
-    }
-
-    function calcCompounding() {
-      const initialAmt = Number(document.getElementById('alloc-amount').value) || 1000000;
-      const monthlyAmt = Number(document.getElementById('compound-monthly').value) || 10000;
-      const years = Number(document.getElementById('compound-years').value) || 10;
-      const model = portfolioModels[currentPortfolioModel];
-      const r = model.expReturn;
-
-      document.getElementById('res-compound-rate').innerText = (r * 100).toFixed(1) + '%';
-
-      const months = years * 12;
-      const monthlyRate = r / 12;
-      
-      let total = initialAmt * Math.pow(1 + monthlyRate, months);
-      if (monthlyRate > 0) {
-        total += monthlyAmt * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-      } else {
-        total += monthlyAmt * months;
-      }
-
-      const totalPrincipal = initialAmt + (monthlyAmt * months);
-      const netGain = total - totalPrincipal;
-      const gainPct = totalPrincipal > 0 ? ((netGain / totalPrincipal) * 100).toFixed(1) : 0;
-
-      document.getElementById('res-compound-principal').innerText = 'NT$ ' + Math.round(totalPrincipal).toLocaleString();
-      document.getElementById('res-compound-total').innerText = 'NT$ ' + Math.round(total).toLocaleString();
-      document.getElementById('res-compound-gain').innerText = `+NT$ ${Math.round(netGain).toLocaleString()} (+${gainPct}%)`;
-    }
-
-    function askAIWithAmount() {
-      const amt = Number(document.getElementById('alloc-amount').value) || 1000000;
-      const wan = Math.round(amt / 10000);
-      const model = portfolioModels[currentPortfolioModel];
-      quickAsk(`我有 ${wan} 萬想採取【${model.name}】策略做跨資產配置，請詳細評估此配置在當前全球總經與降息環境下的優缺點、標的挑選與再平衡建議`);
-    }
 
     function openSearchModal() {
       document.getElementById('search-modal').classList.remove('hidden');
@@ -899,9 +758,6 @@
         document.getElementById('sheets-formula-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=csv")';
       }
       updateEventCountdowns();
-      calcAllocation();
-      calcCompounding();
-      renderStressBacktest();
       await loadTickerData();
       renderLineChart('twii');
       await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑、費半AI與股債匯跨資產配置策略');
@@ -998,33 +854,9 @@
           dynamicHistory = { ...dynamicHistory, ...d.history };
         }
 
-        // 動態更新 24H 跨資產熱力條
-        const hList = [
-          { name: '🇹🇼 台股', pct: d.twii_pct },
-          { name: '🏭 中鋼', pct: d.csc_pct },
-          { name: '🔩 熱軋', pct: d.hrc_pct },
-          { name: '🚀 費半', pct: d.sox_pct },
-          { name: '🤖 輝達', pct: d.nvda_pct },
-          { name: '🪙 黃金', pct: d.gold_pct },
-          { name: '🏭 銅博士', pct: d.copper_pct },
-          { name: '🧱 鐵礦砂', pct: d.iron_ore_pct },
-          { name: '🔥 煤炭', pct: d.coal_pct },
-          { name: '🚢 BDI', pct: d.bdry_pct },
-          { name: '🛢️ 原油', pct: d.oil_pct },
-          { name: '💱 台幣', val: d.usdtwd, pct: d.usdtwd_pct },
-          { name: '😱 VIX', val: d.vix, pct: d.vix_pct }
-        ];
-
-        let heatHtml = '';
-        hList.forEach(item => {
-          if (item.pct !== undefined) {
-            const sign = item.pct >= 0 ? '+' : '';
-            const bg = item.pct >= 0 ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-            const txt = item.val ? `${item.name} ${item.val} (較昨收 ${sign}${item.pct}%)` : `${item.name} 較昨收 ${sign}${item.pct}%`;
-            heatHtml += `<span class="px-2 py-0.5 rounded border ${bg}" title="比較基準：較前一交易日收盤價">${txt}</span>`;
-          }
-        });
-        document.getElementById('dynamic-heatmap-bar').innerHTML = heatHtml;
+        // 6. 動態多週期熱力條渲染 (連動 1D / 5D / 1M / YTD / 1Y)
+        cachedTickerData = d;
+        renderHeatmap();
 
       } catch (e) {
         console.error('Ticker fetch error:', e);

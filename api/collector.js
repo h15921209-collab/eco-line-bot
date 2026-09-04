@@ -78,7 +78,7 @@ async function fetchAssetHistory(asset) {
   }
 
   try {
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(asset.sym)}?interval=1d&range=1mo`;
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(asset.sym)}?interval=1d&range=1y`;
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0' },
       signal: AbortSignal.timeout(3500)
@@ -139,6 +139,27 @@ async function fetchAssetHistory(asset) {
         }
       }
 
+      // 計算多維度歷史比較基準 (1D, 5D, 1M, YTD, 1Y)
+      const p5d = validCloses.length >= 6 ? validCloses[validCloses.length - 6] : validCloses[0];
+      const p1m = validCloses.length >= 21 ? validCloses[validCloses.length - 21] : validCloses[0];
+      const p1y = validCloses.length > 0 ? validCloses[0] : curPrice;
+
+      const curYear = new Date().getFullYear();
+      let ytdQuote = p1m;
+      for (let i = 0; i < ts.length; i++) {
+        const yr = new Date(ts[i] * 1000).getFullYear();
+        if (yr === curYear && typeof quotes[i] === 'number') {
+          ytdQuote = quotes[i];
+          break;
+        }
+      }
+
+      const pct_1d = pct;
+      const pct_5d = p5d > 0 ? Number((((curPrice - p5d) / p5d) * 100).toFixed(2)) : 0;
+      const pct_1m = p1m > 0 ? Number((((curPrice - p1m) / p1m) * 100).toFixed(2)) : 0;
+      const pct_ytd = ytdQuote > 0 ? Number((((curPrice - ytdQuote) / ytdQuote) * 100).toFixed(2)) : 0;
+      const pct_1y = p1y > 0 ? Number((((curPrice - p1y) / p1y) * 100).toFixed(2)) : 0;
+
       const datePriceMap = {};
       let firstPrice = curPrice;
       ts.forEach((t, idx) => {
@@ -165,6 +186,11 @@ async function fetchAssetHistory(asset) {
         firstPrice,
         chg: Number(chg.toFixed(asset.dec)),
         pct,
+        pct_1d,
+        pct_5d,
+        pct_1m,
+        pct_ytd,
+        pct_1y,
         datePriceMap
       };
     }
@@ -261,6 +287,11 @@ module.exports = async (req, res) => {
   assetResults.forEach(r => {
     latestSnapshot[r.key] = r.curPrice;
     latestSnapshot[`${r.key}_pct`] = r.pct;
+    latestSnapshot[`${r.key}_pct_1d`] = r.pct_1d !== undefined ? r.pct_1d : r.pct;
+    latestSnapshot[`${r.key}_pct_5d`] = r.pct_5d !== undefined ? r.pct_5d : r.pct;
+    latestSnapshot[`${r.key}_pct_1m`] = r.pct_1m !== undefined ? r.pct_1m : r.pct;
+    latestSnapshot[`${r.key}_pct_ytd`] = r.pct_ytd !== undefined ? r.pct_ytd : r.pct;
+    latestSnapshot[`${r.key}_pct_1y`] = r.pct_1y !== undefined ? r.pct_1y : r.pct;
   });
 
   // 衍生指標注入 Snapshot
