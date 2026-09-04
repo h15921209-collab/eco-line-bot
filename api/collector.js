@@ -23,12 +23,18 @@ const ASSETS = [
   // 4. 重工業大宗原物料（鐵礦砂 95.34 美元/噸、國際動力煤 124.50 美元/噸）
   { key: 'iron_ore', sym: 'TIO=F', header: 'IronOre', dec: 2, defaultVal: 95.34 },
   { key: 'coal', sym: 'COAL_BENCHMARK', header: 'Coal', dec: 2, defaultVal: 124.50 },
-  // 5. 能源、海運供應鏈與農糧
+  { key: 'hrc', sym: 'HRC=F', header: 'HRC_Steel', dec: 1, defaultVal: 1244.0 },
+  // 5. 鋼鐵產業龍頭與散裝乾貨海運
+  { key: 'csc', sym: '2002.TW', header: 'CSC', dec: 2, defaultVal: 19.10 },
+  { key: 'chunghung', sym: '2014.TW', header: 'ChungHung', dec: 2, defaultVal: 17.00 },
+  { key: 'tungho', sym: '2006.TW', header: 'TungHo', dec: 2, defaultVal: 81.60 },
+  { key: 'bdry', sym: 'BDRY', header: 'BDI_BDRY', dec: 2, defaultVal: 16.14 },
+  // 6. 能源、海運供應鏈與農糧
   { key: 'oil', sym: 'CL=F', header: 'Oil', dec: 2, defaultVal: 85.69 },
   { key: 'natgas', sym: 'NG=F', header: 'NatGas', dec: 3, defaultVal: 2.814 },
   { key: 'maersk', sym: 'AMKBY', header: 'Maersk', dec: 2, defaultVal: 17.44 },
   { key: 'soybean', sym: 'ZS=F', header: 'Soybean', dec: 1, defaultVal: 1223.75 },
-  // 6. 外匯與市場情緒
+  // 7. 外匯與市場情緒
   { key: 'usdtwd', sym: 'TWD=X', header: 'USDTWD', dec: 3, defaultVal: 31.873 },
   { key: 'usdkrw', sym: 'KRW=X', header: 'USDKRW', dec: 2, defaultVal: 1381.98 },
   { key: 'vix', sym: '^VIX', header: 'VIX', dec: 2, defaultVal: 15.85 }

@@ -25,6 +25,7 @@ const collectorHandler = require('./api/collector');
 const quoteHandler = require('./api/quote');
 const analyzeHandler = require('./api/analyze');
 const morningBroadcastHandler = require('./api/morning-broadcast');
+const alertCheckHandler = require('./api/alert-check');
 
 // 註冊 API 路由
 app.all('/api/line-webhook', (req, res) => lineWebhookHandler(req, res));
@@ -33,6 +34,7 @@ app.all('/api/quote', (req, res) => quoteHandler(req, res));
 app.all('/api/analyze', (req, res) => analyzeHandler(req, res));
 app.all('/api/morning-broadcast', (req, res) => morningBroadcastHandler(req, res));
 app.all('/api/cron-daily', (req, res) => morningBroadcastHandler(req, res));
+app.all('/api/alert-check', (req, res) => alertCheckHandler(req, res));
 
 // 靜態資源目錄
 app.use(express.static(path.join(__dirname, 'public')));

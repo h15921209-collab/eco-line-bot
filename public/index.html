@@ -462,6 +462,31 @@
               🚀 開啟試算表
             </a>
           </div>
+
+          <!-- 永久歷史自動封存 Apps Script 說明 -->
+          <div class="mt-3 pt-3 border-t border-slate-800">
+            <div class="flex justify-between items-center cursor-pointer" onclick="toggleScriptHelp()">
+              <span class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+                <span>📜</span> 每天 16:00 自動封存為永久歷史庫 (Apps Script)
+              </span>
+              <span id="script-help-icon" class="text-xs text-slate-500">▼</span>
+            </div>
+            <div id="script-help-body" class="hidden mt-2 text-[10px] text-slate-400 space-y-1.5 bg-black/40 p-2 rounded-lg border border-slate-800">
+              <p>在 Google 試算表點選 <b>擴充功能 ➔ Apps Script</b>，貼上以下代碼並設定每日定時觸發，即可終身免費自動封存每一天數據：</p>
+              <pre id="apps-script-code" class="bg-slate-950 p-2 rounded text-sky-300 font-mono text-[9px] overflow-x-auto select-all">function archiveDailyData() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var live = ss.getSheets()[0];
+  var hist = ss.getSheetByName("歷史永久庫") || ss.insertSheet("歷史永久庫");
+  if (hist.getLastRow() === 0) hist.appendRow(live.getRange(1, 1, 1, live.getLastColumn()).getValues()[0]);
+  var todayData = live.getRange(2, 1, 1, live.getLastColumn()).getValues()[0];
+  var lastDate = hist.getLastRow() > 1 ? hist.getRange(hist.getLastRow(), 1).getValue() : "";
+  if (lastDate != todayData[0]) hist.appendRow(todayData);
+}</pre>
+              <button onclick="copyAppsScript()" class="w-full bg-amber-600/30 hover:bg-amber-600/50 text-amber-300 py-1 rounded text-center font-medium transition">
+                📋 複製 Apps Script 每日自動封存代碼
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -482,7 +507,7 @@
       <p class="text-xs text-slate-400 mb-3">支援輸入台美股（代碼或名稱）、外匯、原物料或加密幣：</p>
       
       <div class="flex gap-2 mb-3">
-        <input type="text" id="symbol-input" placeholder="例如：台積電, 聯發科, NVDA, TSLA, BTC"
+        <input type="text" id="symbol-input" placeholder="例如：中鋼, 台積電, NVDA, 煤炭, 熱軋, BDI"
           class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500 font-mono">
         <button onclick="searchTicker()" id="btn-symbol-search"
           class="bg-sky-600 hover:bg-sky-500 active:scale-95 text-white text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
@@ -493,13 +518,15 @@
       <!-- 快速熱門代碼標籤 -->
       <div class="flex flex-wrap gap-1.5 mb-4 text-[10px]">
         <span class="text-slate-500 py-0.5">熱門：</span>
+        <button onclick="quickSearchSymbol('中鋼')" class="bg-amber-900/40 border border-amber-600/40 hover:bg-amber-800/60 px-2 py-0.5 rounded text-amber-300 font-medium">🏭 中鋼 2002</button>
+        <button onclick="quickSearchSymbol('熱軋')" class="bg-amber-900/40 border border-amber-600/40 hover:bg-amber-800/60 px-2 py-0.5 rounded text-amber-300 font-medium">🔩 熱軋鋼捲</button>
+        <button onclick="quickSearchSymbol('BDI')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚢 BDI 散裝</button>
         <button onclick="quickSearchSymbol('NVDA')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">NVDA 輝達</button>
         <button onclick="quickSearchSymbol('台積電')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">2330 台積電</button>
         <button onclick="quickSearchSymbol('費半')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚀 費半</button>
-        <button onclick="quickSearchSymbol('銅博士')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🏭 銅博士</button>
+        <button onclick="quickSearchSymbol('銅博士')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🥉 銅博士</button>
         <button onclick="quickSearchSymbol('鐵礦砂')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🧱 鐵礦砂</button>
         <button onclick="quickSearchSymbol('煤炭')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🔥 煤炭現貨</button>
-        <button onclick="quickSearchSymbol('馬士基')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚢 馬士基</button>
       </div>
 
       <!-- 查詢結果展示區 -->
@@ -1033,6 +1060,24 @@
       if (!currentRawReport) return;
       navigator.clipboard.writeText(currentRawReport);
       alert('✅ 研報文字已成功複製至剪貼簿！');
+    }
+
+    function toggleScriptHelp() {
+      const body = document.getElementById('script-help-body');
+      const icon = document.getElementById('script-help-icon');
+      if (body.classList.contains('hidden')) {
+        body.classList.remove('hidden');
+        icon.innerText = '▲';
+      } else {
+        body.classList.add('hidden');
+        icon.innerText = '▼';
+      }
+    }
+
+    function copyAppsScript() {
+      const code = document.getElementById('apps-script-code').innerText;
+      navigator.clipboard.writeText(code);
+      alert('✅ Google Apps Script 每日自動歷史封存腳本已複製！\n請至 Google 試算表 ➔ 擴充功能 ➔ Apps Script 貼上並設定每日觸發！');
     }
 
     fetchInitialReport();
