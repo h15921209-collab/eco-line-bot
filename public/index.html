@@ -149,17 +149,19 @@
       </div>
     </div>
 
-    <!-- 🔥 全球跨資產多週期強弱熱度條 (Multi-Timeframe Heatmap Bar) -->
-    <div class="mb-5 p-3.5 rounded-2xl bg-slate-900/95 border border-slate-800 no-print shadow-lg">
-      <div class="flex flex-wrap items-center justify-between gap-2.5 pb-2.5 mb-2.5 border-b border-slate-800/80">
+    <!-- 🔥 全球跨資產多週期強弱熱力榜 (Bloomberg / Finviz Micro-Tiles Heatmap) -->
+    <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-slate-900/95 border border-slate-800 no-print shadow-xl">
+      <!-- 頂部：標題、當前比較基準與多週期切換 (1D, 5D, 1M, YTD, 1Y) -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3.5 border-b border-slate-800/80">
         <div class="flex items-center gap-2">
-          <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
-            <span>🔥</span> 全球跨資產多週期強弱熱力榜
+          <span class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+            <span class="text-amber-400">🔥</span> 全球跨資產多週期強弱熱力榜
           </span>
-          <span class="text-[11px] text-slate-400">（基準：<span id="current-tf-label" class="text-amber-400 font-bold">較前日收盤 1D</span>）</span>
+          <span class="text-xs text-slate-400 font-normal">（基準：<span id="current-tf-label" class="text-amber-400 font-bold">較前日收盤 1D</span>）</span>
         </div>
-        <!-- 多週期比較維度切換按鈕 (1D, 5D, 1M, YTD, 1Y) -->
-        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-medium" id="timeframe-buttons">
+
+        <!-- 5 大週期比較維度切換按鈕 -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-medium" id="timeframe-buttons">
           <button onclick="switchTimeframe('1d')" id="btn-tf-1d" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition shadow-sm">較昨收 (1D)</button>
           <button onclick="switchTimeframe('5d')" id="btn-tf-5d" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較上週 (5D)</button>
           <button onclick="switchTimeframe('1m')" id="btn-tf-1m" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較上月 (1M)</button>
@@ -167,8 +169,23 @@
           <button onclick="switchTimeframe('1y')" id="btn-tf-1y" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">較去年 (1Y)</button>
         </div>
       </div>
-      <div class="flex flex-wrap items-center gap-2 text-[11px] font-mono" id="dynamic-heatmap-bar">
-        <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">跨週期數據即時載入中...</span>
+
+      <!-- 四大分組標籤快速過濾鈕 (全部 / 科技 / 鋼鐵 / 利率 / 能源) -->
+      <div class="flex items-center gap-2 mb-4 text-xs overflow-x-auto pb-1">
+        <span class="text-slate-500 text-[11px] whitespace-nowrap mr-1">板塊切換：</span>
+        <button onclick="filterHeatmapCategory('all')" id="btn-cat-all" class="px-3 py-1 rounded-lg bg-sky-500/25 text-sky-300 border border-sky-500/40 font-bold transition whitespace-nowrap shadow-sm">全部全覽 (18大標的)</button>
+        <button onclick="filterHeatmapCategory('tech')" id="btn-cat-tech" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🚀 科技與股指</button>
+        <button onclick="filterHeatmapCategory('steel')" id="btn-cat-steel" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏭 鋼鐵與基建</button>
+        <button onclick="filterHeatmapCategory('rates')" id="btn-cat-rates" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ 利率與匯率</button>
+        <button onclick="filterHeatmapCategory('energy')" id="btn-cat-energy" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">⚡ 能源與原物料</button>
+      </div>
+
+      <!-- 動態微型磁貼矩陣主容器 -->
+      <div id="dynamic-heatmap-container" class="space-y-4">
+        <div class="p-8 text-center text-xs text-slate-500 font-mono">
+          <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+          <div>跨資產多週期磁貼熱力數據載入中...</div>
+        </div>
       </div>
     </div>
 
@@ -501,6 +518,7 @@
       : (window.location.origin || "https://eco-line-bot.vercel.app");
 
     let currentTimeframe = '1d';
+    let currentHeatmapCategory = 'all';
     let cachedTickerData = null;
 
     function switchTimeframe(tf) {
@@ -528,6 +546,22 @@
       renderHeatmap();
     }
 
+    function filterHeatmapCategory(cat) {
+      currentHeatmapCategory = cat;
+      const cats = ['all', 'tech', 'steel', 'rates', 'energy'];
+      cats.forEach(c => {
+        const btn = document.getElementById('btn-cat-' + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = "px-3 py-1 rounded-lg bg-sky-500/25 text-sky-300 border border-sky-500/40 font-bold transition whitespace-nowrap shadow-sm";
+          } else {
+            btn.className = "px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap";
+          }
+        }
+      });
+      renderHeatmap();
+    }
+
     function renderHeatmap() {
       if (!cachedTickerData) return;
       const d = cachedTickerData;
@@ -536,18 +570,9 @@
       const getPct = (prefix) => {
         const key = `${prefix}_pct_${tf}`;
         if (d[key] !== undefined && d[key] !== null) return d[key];
-        if (tf === '1d' && d[`${prefix}_pct`] !== undefined) return d[`${prefix}_pct`];
+        if (tf === '1d' && d[`${prefix}_pct`] !== undefined && d[`${prefix}_pct`] !== null) return d[`${prefix}_pct`];
         return undefined;
       };
-
-      const tfTitleMap = {
-        '1d': '比較基準：較前一交易日收盤價 (1D)',
-        '5d': '比較基準：較近 5 個交易日收盤價 (5D)',
-        '1m': '比較基準：較近 20 個交易日收盤價 (1M)',
-        'ytd': '比較基準：較當年第一個交易日收盤價 (YTD)',
-        '1y': '比較基準：較近一年收盤價 (1Y)'
-      };
-      const titleText = tfTitleMap[tf] || '';
 
       const tfBadgeMap = {
         '1d': '較昨收',
@@ -558,33 +583,159 @@
       };
       const badgePrefix = tfBadgeMap[tf] || '較基準';
 
-      const hList = [
-        { name: '🇹🇼 台股', pct: getPct('twii') },
-        { name: '🏭 中鋼', pct: getPct('csc') },
-        { name: '🔩 熱軋', pct: getPct('hrc') },
-        { name: '🚀 費半', pct: getPct('sox') },
-        { name: '🤖 輝達', pct: getPct('nvda') },
-        { name: '🪙 黃金', pct: getPct('gold') },
-        { name: '🏭 銅博士', pct: getPct('copper') },
-        { name: '🧱 鐵礦砂', pct: getPct('iron_ore') },
-        { name: '🔥 煤炭', pct: getPct('coal') },
-        { name: '🚢 BDI', pct: getPct('bdry') },
-        { name: '🛢️ 原油', pct: getPct('oil') },
-        { name: '💱 台幣', val: d.usdtwd, pct: getPct('usdtwd') },
-        { name: '😱 VIX', val: d.vix, pct: getPct('vix') }
+      // 18 大跨資產標的分組定義
+      const groups = [
+        {
+          id: 'tech',
+          title: '🚀 科技與股指',
+          desc: '半導體、AI龍頭與海內外權值核心',
+          items: [
+            { name: '台股加權', code: 'TWII', symbol: '^TWII', price: (d.twii ? d.twii.toLocaleString() + ' 點' : '--'), pct: getPct('twii') },
+            { name: '台積電', code: '2330', symbol: '2330.TW', price: (d.tsmc ? d.tsmc.toLocaleString() + ' 元' : '--'), pct: getPct('tsmc') },
+            { name: '費城半導體', code: 'SOX', symbol: '^SOX', price: (d.sox ? d.sox.toLocaleString() + ' 點' : '--'), pct: getPct('sox') },
+            { name: '輝達', code: 'NVDA', symbol: 'NVDA', price: (d.nvda ? '$' + d.nvda.toFixed(2) : '--'), pct: getPct('nvda') },
+            { name: '標普 500', code: 'SPX', symbol: '^GSPC', price: (d.sp500 ? d.sp500.toLocaleString() + ' 點' : '--'), pct: getPct('sp500') }
+          ]
+        },
+        {
+          id: 'steel',
+          title: '🏭 鋼鐵與基建',
+          desc: '熱軋卷板、煉鋼原物料與海運散裝',
+          items: [
+            { name: '中鋼', code: '2002', symbol: '2002.TW', price: (d.csc ? d.csc.toFixed(2) + ' 元' : '--'), pct: getPct('csc') },
+            { name: '熱軋卷板', code: 'HRC', symbol: 'HRC', price: (d.hrc ? '$' + d.hrc.toLocaleString() : '--'), pct: getPct('hrc') },
+            { name: '鐵礦砂 62%', code: 'TIO', symbol: 'TIO', price: (d.iron_ore ? '$' + d.iron_ore.toFixed(2) : '--'), pct: getPct('iron_ore') },
+            { name: '焦煤/煤炭', code: 'COAL', symbol: 'COAL', price: (d.coal ? '$' + d.coal.toFixed(2) : '--'), pct: getPct('coal') },
+            { name: '散裝航運', code: 'BDRY', symbol: 'BDRY', price: (d.bdry ? '$' + d.bdry.toFixed(2) : '--'), pct: getPct('bdry') }
+          ]
+        },
+        {
+          id: 'rates',
+          title: '🏛️ 利率與匯率',
+          desc: '美債殖利率曲線、利差與避險情緒指標',
+          items: [
+            { name: '美債 10 年期', code: 'US10Y', symbol: '^TNX', price: (d.us10y ? d.us10y.toFixed(3) + '%' : '--'), pct: getPct('us10y') },
+            { 
+              name: '10Y-2Y 利差', 
+              code: 'SPREAD', 
+              symbol: 'T10Y2Y', 
+              price: (d.spread_10y2y !== undefined ? (d.spread_10y2y >= 0 ? '+' : '') + d.spread_10y2y.toFixed(3) + '%' : '--'), 
+              pct: (tf === '1d' && d.spread_10y2y_chg_bps !== undefined ? d.spread_10y2y_chg_bps : getPct('spread_10y2y')),
+              isBps: (tf === '1d' && d.spread_10y2y_chg_bps !== undefined)
+            },
+            { name: '美元/台幣', code: 'USDTWD', symbol: 'USDTWD=X', price: (d.usdtwd ? d.usdtwd.toFixed(3) : '--'), pct: getPct('usdtwd') },
+            { name: '恐慌指數 VIX', code: 'VIX', symbol: '^VIX', price: (d.vix ? d.vix.toFixed(2) : '--'), pct: getPct('vix') }
+          ]
+        },
+        {
+          id: 'energy',
+          title: '⚡ 能源與原物料',
+          desc: '貴金屬、工業之母銅與傳統原油天然氣',
+          items: [
+            { name: '紐約黃金', code: 'GOLD', symbol: 'GC=F', price: (d.gold ? '$' + d.gold.toLocaleString() : '--'), pct: getPct('gold') },
+            { name: '高級銅', code: 'COPPER', symbol: 'HG=F', price: (d.copper ? '$' + d.copper.toFixed(3) : '--'), pct: getPct('copper') },
+            { name: 'WTI 原油', code: 'OIL', symbol: 'CL=F', price: (d.oil ? '$' + d.oil.toFixed(2) : '--'), pct: getPct('oil') },
+            { name: '美國天然氣', code: 'NATGAS', symbol: 'NG=F', price: (d.natgas ? '$' + d.natgas.toFixed(3) : '--'), pct: getPct('natgas') }
+          ]
+        }
       ];
 
-      let heatHtml = '';
-      hList.forEach(item => {
-        if (item.pct !== undefined && item.pct !== null) {
-          const sign = item.pct >= 0 ? '+' : '';
-          const bg = item.pct >= 0 ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-          const txt = item.val ? `${item.name} ${item.val} (${badgePrefix} ${sign}${item.pct}%)` : `${item.name} ${badgePrefix} ${sign}${item.pct}%`;
-          heatHtml += `<span class="px-2 py-0.5 rounded border ${bg}" title="${titleText}">${txt}</span>`;
-        }
+      // 依當前篩選過濾板塊
+      const filteredGroups = (currentHeatmapCategory === 'all')
+        ? groups
+        : groups.filter(g => g.id === currentHeatmapCategory);
+
+      let html = '';
+
+      filteredGroups.forEach(grp => {
+        html += `
+          <div class="rounded-xl bg-slate-950/60 p-3.5 border border-slate-800/80">
+            <div class="flex items-center justify-between mb-2.5 pb-1.5 border-b border-slate-800/60">
+              <div class="flex items-center gap-2">
+                <span class="text-xs sm:text-sm font-bold text-white tracking-wide">${grp.title}</span>
+                <span class="text-[11px] text-slate-400 hidden sm:inline">· ${grp.desc}</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">${grp.items.length} 檔標的</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
+        `;
+
+        grp.items.forEach(item => {
+          const hasPct = (item.pct !== undefined && item.pct !== null && !isNaN(item.pct));
+          const numPct = hasPct ? parseFloat(item.pct) : 0;
+          const isBps = !!item.isBps;
+          const unitStr = isBps ? ' bps' : '%';
+          
+          let cardBg = 'bg-slate-900/60 border-slate-800 text-slate-300';
+          let badgeBg = 'bg-slate-800 text-slate-400 border-slate-700';
+          let arrow = '—';
+          let sign = '';
+
+          if (hasPct) {
+            if (numPct > 0) {
+              sign = '+';
+              arrow = '▲';
+              if (numPct >= 3 || (isBps && numPct >= 5)) {
+                // 大漲深紅漸層
+                cardBg = 'bg-gradient-to-br from-red-950/80 via-slate-900 to-slate-900 border-red-500/50 shadow-md shadow-red-950/20';
+                badgeBg = 'bg-red-500/25 text-red-300 border-red-500/40';
+              } else {
+                // 小漲淡紅
+                cardBg = 'bg-gradient-to-br from-red-950/35 via-slate-900 to-slate-900 border-red-500/25';
+                badgeBg = 'bg-red-500/15 text-red-400 border-red-500/30';
+              }
+            } else if (numPct < 0) {
+              sign = '';
+              arrow = '▼';
+              if (numPct <= -3 || (isBps && numPct <= -5)) {
+                // 大跌深綠漸層
+                cardBg = 'bg-gradient-to-br from-emerald-950/80 via-slate-900 to-slate-900 border-emerald-500/50 shadow-md shadow-emerald-950/20';
+                badgeBg = 'bg-emerald-500/25 text-emerald-300 border-emerald-500/40';
+              } else {
+                // 小跌淡綠
+                cardBg = 'bg-gradient-to-br from-emerald-950/35 via-slate-900 to-slate-900 border-emerald-500/25';
+                badgeBg = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+              }
+            } else {
+              arrow = '—';
+              cardBg = 'bg-slate-900/60 border-slate-800 text-slate-300';
+              badgeBg = 'bg-slate-800 text-slate-400 border-slate-700';
+            }
+          }
+
+          const valText = hasPct ? `${sign}${numPct}${unitStr}` : '--';
+          const tooltipTitle = `${item.name} (${item.code})\n即時行情報價：${item.price}\n基準比較 (${badgePrefix})：${valText}\n點擊立即啟動標的快速查價與深度 AI 研報`;
+
+          html += `
+            <div onclick="quickSearchSymbol('${item.symbol}')" title="${tooltipTitle}" class="p-3 rounded-xl border ${cardBg} flex flex-col justify-between transition-all duration-200 hover:scale-[1.03] hover:border-amber-400/60 hover:shadow-lg cursor-pointer group select-none">
+              <div class="flex items-center justify-between gap-1 mb-1">
+                <span class="text-xs font-bold text-slate-200 truncate group-hover:text-amber-300 transition">${item.name}</span>
+                <span class="text-[9px] font-mono text-slate-400 px-1 py-0.2 rounded bg-slate-950/70 border border-slate-800/80">${item.code}</span>
+              </div>
+              <div class="font-mono text-sm sm:text-base font-extrabold text-white tracking-tight my-1 truncate">
+                ${item.price}
+              </div>
+              <div class="flex items-center justify-between pt-1.5 border-t border-slate-800/60 mt-1">
+                <span class="text-[10px] text-slate-400">${badgePrefix}</span>
+                <span class="inline-flex items-center gap-0.5 text-xs font-mono font-bold px-1.5 py-0.5 rounded border ${badgeBg}">
+                  <span class="text-[10px]">${arrow}</span>
+                  <span>${valText}</span>
+                </span>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
       });
-      const barEl = document.getElementById('dynamic-heatmap-bar');
-      if (barEl) barEl.innerHTML = heatHtml;
+
+      const containerEl = document.getElementById('dynamic-heatmap-container');
+      if (containerEl) {
+        containerEl.innerHTML = html;
+      }
     }
 
     let dynamicHistory = {
