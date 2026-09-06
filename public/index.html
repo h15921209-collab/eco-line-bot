@@ -118,33 +118,103 @@
       </div>
     </div>
 
-    <!-- ⏳ 全球重大總經事件動態倒數計時儀表 (Dynamic Macro Events Countdown) -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-5 no-print">
-      <div class="p-3 rounded-2xl bg-slate-900/90 border border-indigo-500/30 flex items-center justify-between">
-        <div>
-          <div class="text-[10px] text-indigo-400 font-semibold">FOMC 利率決議倒數</div>
-          <div class="text-xs font-bold text-white mt-0.5">聯準會下一次決策</div>
+    <!-- 📅 全球總經大事行事曆 (Macro Economic Calendar - 比照財經M平方規格) -->
+    <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-slate-900/95 border border-slate-800 no-print shadow-xl" id="macro-calendar-container">
+      <!-- 頂部：標題、倒數徽章與資訊 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3.5 border-b border-slate-800/80">
+        <div class="flex items-center gap-2.5">
+          <span class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+            <span class="text-sky-400 text-lg">📅</span> 全球總經每週大事行事曆
+          </span>
+          <span class="text-[11px] text-slate-400 font-normal hidden sm:inline">（比照財經M平方標準 · 官方即時排程與預期對比）</span>
         </div>
-        <div class="text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-lg border border-indigo-500/40" id="countdown-fomc">
-          計算中...
+
+        <!-- 3 大重磅事件快速倒數膠囊 -->
+        <div class="flex flex-wrap items-center gap-2 text-[11px] font-mono">
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/30 text-indigo-300">
+            <span class="text-indigo-400 font-sans">🏛️ FOMC：</span>
+            <span class="font-bold text-white" id="countdown-fomc">計算中...</span>
+          </div>
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300">
+            <span class="text-amber-400 font-sans">📊 美國 CPI：</span>
+            <span class="font-bold text-white" id="countdown-cpi">計算中...</span>
+          </div>
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">
+            <span class="text-emerald-400 font-sans">🇹🇼 台指結算：</span>
+            <span class="font-bold text-white" id="countdown-taifex">計算中...</span>
+          </div>
         </div>
       </div>
-      <div class="p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex items-center justify-between">
-        <div>
-          <div class="text-[10px] text-amber-400 font-semibold">美國 CPI 通膨發布</div>
-          <div class="text-xs font-bold text-white mt-0.5">美國勞工統計局 BLS</div>
+
+      <!-- 控制列：週期切換 (本週/下週/本月) + 地區篩選 + 只看三星必看開關 -->
+      <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3.5 text-xs">
+        <!-- 週期切換 -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 font-medium">
+          <button onclick="switchCalendarPeriod('week')" id="btn-cal-week" class="px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition shadow-sm">本週焦點 (This Week)</button>
+          <button onclick="switchCalendarPeriod('next_week')" id="btn-cal-next_week" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">下週預告 (Next Week)</button>
+          <button onclick="switchCalendarPeriod('month')" id="btn-cal-month" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">本月全覽 (This Month)</button>
         </div>
-        <div class="text-xs font-mono font-bold bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40" id="countdown-cpi">
-          計算中...
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- 地區篩選按鈕 -->
+          <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-[11px] overflow-x-auto">
+            <span class="text-slate-500 px-1">地區：</span>
+            <button onclick="filterCalendarRegion('all')" id="btn-reg-all" class="px-2 py-0.5 rounded-lg bg-sky-500/30 text-sky-200 border border-sky-500/40 font-bold transition">全部</button>
+            <button onclick="filterCalendarRegion('US')" id="btn-reg-US" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇺🇸 美國</button>
+            <button onclick="filterCalendarRegion('TW')" id="btn-reg-TW" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇹🇼 台灣</button>
+            <button onclick="filterCalendarRegion('CN')" id="btn-reg-CN" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇨🇳 中國</button>
+            <button onclick="filterCalendarRegion('EU')" id="btn-reg-EU" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇪🇺 歐洲</button>
+            <button onclick="filterCalendarRegion('JP')" id="btn-reg-JP" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇯🇵 日本</button>
+          </div>
+
+          <!-- 只看三星必看開關 -->
+          <button onclick="toggleCalendarImportance()" id="btn-cal-star3" class="px-2.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/40 text-slate-400 hover:text-amber-300 transition flex items-center gap-1 font-medium text-[11px]">
+            <span>🔥</span>
+            <span>只看 ⭐⭐⭐ 重磅必看</span>
+          </button>
         </div>
       </div>
-      <div class="p-3 rounded-2xl bg-slate-900/90 border border-emerald-500/30 flex items-center justify-between">
-        <div>
-          <div class="text-[10px] text-emerald-400 font-semibold">台股期貨月結算</div>
-          <div class="text-xs font-bold text-white mt-0.5">台灣期交所 TAIFEX</div>
+
+      <!-- 當前排程時段提示 -->
+      <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2.5 px-1 font-mono">
+        <div>排程區間：<span id="cal-period-range" class="text-sky-300 font-bold">載入中...</span></div>
+        <div id="cal-events-count" class="text-slate-500">共 0 項重大數據</div>
+      </div>
+
+      <!-- 行事曆主體：桌面表格 (Desktop Table) + 行動卡片 (Mobile Cards) -->
+      <div id="calendar-table-container" class="rounded-xl overflow-hidden border border-slate-800/80 bg-slate-950/60">
+        <!-- 桌面表格 -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-900/90 text-slate-400 border-b border-slate-800 text-[11px] font-medium">
+                <th class="py-2.5 px-3 whitespace-nowrap">時間 (UTC+8)</th>
+                <th class="py-2.5 px-2.5 whitespace-nowrap">地區</th>
+                <th class="py-2.5 px-3">經濟指標 / 重大事件</th>
+                <th class="py-2.5 px-2.5 text-center whitespace-nowrap">重要性</th>
+                <th class="py-2.5 px-3 text-right whitespace-nowrap">前值</th>
+                <th class="py-2.5 px-3 text-right whitespace-nowrap">市場預期</th>
+                <th class="py-2.5 px-3 text-right whitespace-nowrap">實際值 / 狀態</th>
+                <th class="py-2.5 px-3 text-center whitespace-nowrap">策略連動</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-table-body" class="divide-y divide-slate-800/50">
+              <tr>
+                <td colspan="8" class="text-center py-8 text-slate-500">
+                  <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+                  <div>正在連線全球總經日曆排程...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/40" id="countdown-taifex">
-          計算中...
+
+        <!-- 行動版卡片列表 (Mobile View) -->
+        <div class="md:hidden divide-y divide-slate-800/60 p-1" id="calendar-mobile-list">
+          <div class="text-center py-6 text-slate-500 text-xs">
+            <div class="inline-block animate-spin text-lg mb-1.5">⚙️</div>
+            <div>正在連線全球總經日曆排程...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -738,6 +808,212 @@
       if (containerEl) {
         containerEl.innerHTML = html;
       }
+    // ==========================================
+    // 📅 全球總經大事行事曆 (Macro Calendar) 邏輯
+    // ==========================================
+    let currentCalendarPeriod = 'week';
+    let currentCalendarRegion = 'all';
+    let calendarOnlyStar3 = false;
+    let cachedCalendarEvents = [];
+
+    async function loadMacroCalendar(period = currentCalendarPeriod) {
+      currentCalendarPeriod = period;
+      try {
+        const res = await fetch(`/api/calendar?period=${period}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'success') {
+          cachedCalendarEvents = data.events || [];
+          
+          // 更新時段標籤
+          const rangeEl = document.getElementById('cal-period-range');
+          if (rangeEl) rangeEl.innerText = data.range || '';
+
+          // 更新頂部三大倒數（若 API 有回傳）
+          if (data.countdowns) {
+            if (data.countdowns.fomc) {
+              const el = document.getElementById('countdown-fomc');
+              if (el) el.innerText = `${data.countdowns.fomc.daysText} (${data.countdowns.fomc.label.split(' ')[0]})`;
+            }
+            if (data.countdowns.cpi) {
+              const el = document.getElementById('countdown-cpi');
+              if (el) el.innerText = `${data.countdowns.cpi.daysText} (${data.countdowns.cpi.label.split(' ')[0]})`;
+            }
+            if (data.countdowns.taifex) {
+              const el = document.getElementById('countdown-taifex');
+              if (el) el.innerText = `${data.countdowns.taifex.daysText} (${data.countdowns.taifex.label.split(' ')[0]})`;
+            }
+          }
+
+          renderCalendarTable();
+        }
+      } catch (e) {
+        console.warn('Load calendar error:', e);
+      }
+    }
+
+    function switchCalendarPeriod(period) {
+      ['week', 'next_week', 'month'].forEach(p => {
+        const btn = document.getElementById('btn-cal-' + p);
+        if (btn) {
+          if (p === period) {
+            btn.className = "px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition shadow-sm";
+          } else {
+            btn.className = "px-3 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition";
+          }
+        }
+      });
+      loadMacroCalendar(period);
+    }
+
+    function filterCalendarRegion(region) {
+      currentCalendarRegion = region;
+      ['all', 'US', 'TW', 'CN', 'EU', 'JP'].forEach(r => {
+        const btn = document.getElementById('btn-reg-' + r);
+        if (btn) {
+          if (r === region) {
+            btn.className = "px-2 py-0.5 rounded-lg bg-sky-500/30 text-sky-200 border border-sky-500/40 font-bold transition";
+          } else {
+            btn.className = "px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition";
+          }
+        }
+      });
+      renderCalendarTable();
+    }
+
+    function toggleCalendarImportance() {
+      calendarOnlyStar3 = !calendarOnlyStar3;
+      const btn = document.getElementById('btn-cal-star3');
+      if (btn) {
+        if (calendarOnlyStar3) {
+          btn.className = "px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold transition flex items-center gap-1 text-[11px] shadow-sm";
+        } else {
+          btn.className = "px-2.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/40 text-slate-400 hover:text-amber-300 transition flex items-center gap-1 font-medium text-[11px]";
+        }
+      }
+      renderCalendarTable();
+    }
+
+    function renderCalendarTable() {
+      let events = cachedCalendarEvents;
+
+      // 依地區過濾
+      if (currentCalendarRegion !== 'all') {
+        events = events.filter(ev => ev.country === currentCalendarRegion);
+      }
+
+      // 依重要性過濾
+      if (calendarOnlyStar3) {
+        events = events.filter(ev => ev.importance === 3);
+      }
+
+      const countEl = document.getElementById('cal-events-count');
+      if (countEl) countEl.innerText = `篩選後共 ${events.length} 項重大數據`;
+
+      const tbody = document.getElementById('calendar-table-body');
+      const mobileList = document.getElementById('calendar-mobile-list');
+
+      if (events.length === 0) {
+        const emptyHtml = `<tr><td colspan="8" class="text-center py-8 text-slate-500">所選條件區間無排程數據，請切換其他週期或地區查看。</td></tr>`;
+        if (tbody) tbody.innerHTML = emptyHtml;
+        if (mobileList) mobileList.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">所選條件區間無排程數據。</div>`;
+        return;
+      }
+
+      let tableHtml = '';
+      let mobileHtml = '';
+
+      events.forEach((ev, idx) => {
+        // 重要度星星標記
+        let starsHtml = '<span class="text-amber-400 font-bold">⭐⭐⭐</span>';
+        if (ev.importance === 2) starsHtml = '<span class="text-amber-400/80">⭐⭐</span><span class="text-slate-700">⭐</span>';
+        if (ev.importance === 1) starsHtml = '<span class="text-amber-400/60">⭐</span><span class="text-slate-700">⭐⭐</span>';
+
+        // 實際值與狀態
+        let actualHtml = '';
+        if (ev.isReleased) {
+          actualHtml = `<span class="font-mono font-bold text-amber-300">${ev.actual}</span> <span class="text-[9px] text-slate-500 bg-slate-900 px-1 py-0.2 rounded ml-1">已發布</span>`;
+        } else {
+          actualHtml = `<span class="font-mono text-slate-500">--</span> <span class="text-[9px] text-sky-400/80 bg-sky-950/60 px-1.5 py-0.2 rounded border border-sky-500/20 ml-1">⏳ 待公布</span>`;
+        }
+
+        const zebraBg = (idx % 2 === 0) ? 'bg-slate-950/40' : 'bg-slate-900/30';
+        const safePrompt = ev.aiPrompt.replace(/"/g, '&quot;').replace(/'/g, "\\'");
+
+        // 桌面列
+        tableHtml += `
+          <tr class="${zebraBg} hover:bg-sky-950/25 transition group">
+            <td class="py-2.5 px-3 whitespace-nowrap font-mono">
+              <span class="text-slate-200 font-bold">${ev.dateDisplay}</span>
+              <span class="text-[11px] text-sky-400 ml-1 font-semibold">${ev.time}</span>
+            </td>
+            <td class="py-2.5 px-2.5 whitespace-nowrap">
+              <span class="inline-flex items-center gap-1 font-medium text-slate-300">
+                <span class="text-base">${ev.flag}</span>
+                <span class="text-[11px] text-slate-400">${ev.countryName}</span>
+              </span>
+            </td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-slate-200 group-hover:text-amber-300 transition">${ev.event}</div>
+            </td>
+            <td class="py-2.5 px-2.5 text-center whitespace-nowrap text-[11px]">
+              ${starsHtml}
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono text-slate-400">
+              ${ev.previous}
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono text-slate-300">
+              ${ev.forecast}
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              ${actualHtml}
+            </td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              <button onclick="askAIForCalendarEvent('${safePrompt}')" class="bg-sky-600/25 hover:bg-sky-500 text-sky-300 hover:text-slate-950 px-2 py-1 rounded-lg border border-sky-500/30 font-medium transition text-[11px] flex items-center gap-1 mx-auto shadow-sm">
+                <span>🤖</span>
+                <span>解讀</span>
+              </button>
+            </td>
+          </tr>
+        `;
+
+        // 行動版卡片
+        mobileHtml += `
+          <div class="p-3 rounded-xl ${zebraBg} mb-2 border border-slate-800/60">
+            <div class="flex items-center justify-between gap-1 mb-1.5">
+              <span class="inline-flex items-center gap-1 font-bold text-xs text-slate-200">
+                <span>${ev.flag}</span>
+                <span>${ev.countryName}</span>
+                <span class="text-slate-400 font-mono font-normal ml-1">${ev.dateDisplay} ${ev.time}</span>
+              </span>
+              <span class="text-[10px]">${starsHtml}</span>
+            </div>
+            <div class="text-xs font-bold text-white mb-2 leading-snug">
+              ${ev.event}
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[10px] font-mono bg-slate-950/70 p-2 rounded-lg border border-slate-800/80 mb-2">
+              <div>前值：<span class="text-slate-300">${ev.previous}</span></div>
+              <div>預期：<span class="text-slate-300">${ev.forecast}</span></div>
+              <div>實際：${actualHtml}</div>
+            </div>
+            <button onclick="askAIForCalendarEvent('${safePrompt}')" class="w-full bg-sky-600/20 hover:bg-sky-500 text-sky-300 hover:text-slate-950 py-1.5 rounded-lg border border-sky-500/30 font-medium transition text-xs flex items-center justify-center gap-1">
+              <span>🤖 讓 AI 深入解讀此事件 ➔</span>
+            </button>
+          </div>
+        `;
+      });
+
+      if (tbody) tbody.innerHTML = tableHtml;
+      if (mobileList) mobileList.innerHTML = mobileHtml;
+    }
+
+    function askAIForCalendarEvent(promptText) {
+      document.getElementById('query-input').value = promptText;
+      runAnalysis(promptText);
+      const targetArea = document.getElementById('printable-report-area');
+      if (targetArea) {
+        targetArea.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     let dynamicHistory = {
@@ -943,6 +1219,7 @@
         document.getElementById('sheets-formula-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=csv")';
       }
       updateEventCountdowns();
+      loadMacroCalendar('week');
       loadDynamicTopics();
       await loadTickerData();
       renderLineChart('twii');

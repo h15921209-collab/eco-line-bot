@@ -27,6 +27,7 @@ const analyzeHandler = require('./api/analyze');
 const morningBroadcastHandler = require('./api/morning-broadcast');
 const alertCheckHandler = require('./api/alert-check');
 const topicsHandler = require('./api/topics');
+const calendarHandler = require('./api/calendar');
 
 // 註冊 API 路由
 app.all('/api/line-webhook', (req, res) => lineWebhookHandler(req, res));
@@ -34,6 +35,7 @@ app.all('/api/collector', (req, res) => collectorHandler(req, res));
 app.all('/api/quote', (req, res) => quoteHandler(req, res));
 app.all('/api/analyze', (req, res) => analyzeHandler(req, res));
 app.all('/api/topics', (req, res) => topicsHandler(req, res));
+app.all('/api/calendar', (req, res) => calendarHandler(req, res));
 app.all('/api/morning-broadcast', (req, res) => morningBroadcastHandler(req, res));
 app.all('/api/cron-daily', (req, res) => morningBroadcastHandler(req, res));
 app.all('/api/alert-check', (req, res) => alertCheckHandler(req, res));
