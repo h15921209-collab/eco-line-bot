@@ -209,17 +209,42 @@ async function fetchAssetHistory(asset) {
   };
 }
 
+// 120 秒伺服器記憶體快取配置
+const CACHE_TTL_MS = 120 * 1000;
+let cachedCollectorPayload = null;
+let lastCollectorFetchTime = 0;
+
+function sendCollectorResponse(req, res, payload) {
+  if (req.query?.format === 'snapshot_csv') {
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    return res.status(200).send(payload.snapshotCsv);
+  }
+  if (req.query?.format === 'csv') {
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    return res.status(200).send(payload.historyCsv);
+  }
+  return res.status(200).json(payload.jsonData);
+}
+
 module.exports = async (req, res) => {
-  // 強制禁用快取，確保每次請求皆為最新實時數據
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  const now = new Date();
-  const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
-  const todayStr = utc8.toISOString().substring(0, 10);
-  const timeStr = utc8.toISOString().replace('T', ' ').substring(0, 19);
+  const isForce = req.query?.force === '1' || req.query?.refresh === '1';
+  const nowMs = Date.now();
+
+  // 若快取仍在 120 秒有效期間內且非強制刷新，直接由記憶體 0.01 秒瞬間回傳！
+  if (!isForce && cachedCollectorPayload && (nowMs - lastCollectorFetchTime < CACHE_TTL_MS)) {
+    return sendCollectorResponse(req, res, cachedCollectorPayload);
+  }
+
+  try {
+    const now = new Date();
+    const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
+    const todayStr = utc8.toISOString().substring(0, 10);
+    const timeStr = utc8.toISOString().replace('T', ' ').substring(0, 19);
 
   // 1. 並行抓取全套 24 大資產的近 1 個月時序數據
   const assetResults = await Promise.all(ASSETS.map(fetchAssetHistory));
@@ -328,93 +353,84 @@ module.exports = async (req, res) => {
     latestSnapshot.gold_copper_ratio_prev = prevRow.gold_copper_ratio;
   }
 
-  // 4-A. 即時快照對比表 CSV（明確顯示每項標的之「最新價 vs 昨收基準價」）
-  if (req.query?.format === 'snapshot_csv' || req.query?.format === 'snapshot') {
-    const csvHeaders = ['Symbol', 'Asset_Key', 'Name', 'Price', 'Currency', 'PrevClose_Baseline', 'Change_vs_PrevClose', 'PctChange_vs_PrevClose', 'Comparison_Basis', 'UpdateTime'];
-    const rows = assetResults.map(r => {
-      const pClose = (r.prevPrice !== undefined && typeof r.prevPrice === 'number') ? r.prevPrice : Number((r.curPrice - r.chg).toFixed(2));
-      const chgSign = r.chg >= 0 ? '+' : '';
-      const pctSign = r.pct >= 0 ? '+' : '';
-      const cur = r.sym?.endsWith('.TW') ? 'TWD' : 'USD';
-      return [
-        r.sym || r.key,
-        r.key,
-        `"${r.header}"`,
-        r.curPrice,
-        cur,
-        pClose,
-        `${chgSign}${r.chg}`,
-        `${pctSign}${r.pct}%`,
-        '"較前一交易日收盤價(較昨收)"',
-        timeStr
-      ].join(',');
-    });
-
-    // 加入 10Y-2Y 利差與 ADR 溢價率衍生指標
-    const sprPrev = latestSnapshot.spread_10y2y_prev !== undefined ? latestSnapshot.spread_10y2y_prev : latestSnapshot.spread_10y2y;
-    const sprBps = latestSnapshot.spread_10y2y_chg_bps !== undefined ? latestSnapshot.spread_10y2y_chg_bps : 0;
-    rows.push([
-      'SPREAD_10Y2Y',
-      'spread_10y2y',
-      '"美債10Y-2Y經典利差"',
-      `${latestSnapshot.spread_10y2y}%`,
-      '%',
-      `${sprPrev}%`,
-      `${sprBps >= 0 ? '+' : ''}${sprBps} bps`,
-      `${sprBps >= 0 ? '+' : ''}${sprBps} bps`,
-      '"較前一交易日利差"',
+  // 4-A. 即時快照對比表 CSV
+  const csvHeaders = ['Symbol', 'Asset_Key', 'Name', 'Price', 'Currency', 'PrevClose_Baseline', 'Change_vs_PrevClose', 'PctChange_vs_PrevClose', 'Comparison_Basis', 'UpdateTime'];
+  const snapshotRows = assetResults.map(r => {
+    const pClose = (r.prevPrice !== undefined && typeof r.prevPrice === 'number') ? r.prevPrice : Number((r.curPrice - r.chg).toFixed(2));
+    const chgSign = r.chg >= 0 ? '+' : '';
+    const pctSign = r.pct >= 0 ? '+' : '';
+    const cur = r.sym?.endsWith('.TW') ? 'TWD' : 'USD';
+    return [
+      r.sym || r.key,
+      r.key,
+      `"${r.header}"`,
+      r.curPrice,
+      cur,
+      pClose,
+      `${chgSign}${r.chg}`,
+      `${pctSign}${r.pct}%`,
+      '"較前一交易日收盤價(較昨收)"',
       timeStr
-    ].join(','));
+    ].join(',');
+  });
 
-    const adrPrev = latestSnapshot.tsmc_adr_premium_prev !== undefined ? latestSnapshot.tsmc_adr_premium_prev : latestSnapshot.tsmc_adr_premium;
-    const adrChg = latestSnapshot.tsmc_adr_premium_chg !== undefined ? latestSnapshot.tsmc_adr_premium_chg : 0;
-    rows.push([
-      'TSMC_ADR_PREMIUM',
-      'tsmc_adr_premium',
-      '"台積電ADR溢價率"',
-      `${latestSnapshot.tsmc_adr_premium}%`,
-      '%',
-      `${adrPrev}%`,
-      `${adrChg >= 0 ? '+' : ''}${adrChg}%`,
-      `${adrChg >= 0 ? '+' : ''}${adrChg}%`,
-      '"較前一交易日溢價"',
-      timeStr
-    ].join(','));
+  // 加入 10Y-2Y 利差與 ADR 溢價率衍生指標
+  const sprPrev = latestSnapshot.spread_10y2y_prev !== undefined ? latestSnapshot.spread_10y2y_prev : latestSnapshot.spread_10y2y;
+  const sprBps = latestSnapshot.spread_10y2y_chg_bps !== undefined ? latestSnapshot.spread_10y2y_chg_bps : 0;
+  snapshotRows.push([
+    'SPREAD_10Y2Y',
+    'spread_10y2y',
+    '"美債10Y-2Y經典利差"',
+    `${latestSnapshot.spread_10y2y}%`,
+    '%',
+    `${sprPrev}%`,
+    `${sprBps >= 0 ? '+' : ''}${sprBps} bps`,
+    `${sprBps >= 0 ? '+' : ''}${sprBps} bps`,
+    '"較前一交易日利差"',
+    timeStr
+  ].join(','));
 
-    const csvContent = csvHeaders.join(',') + '\n' + rows.join('\n');
-    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    return res.status(200).send(csvContent);
-  }
+  const adrPrev = latestSnapshot.tsmc_adr_premium_prev !== undefined ? latestSnapshot.tsmc_adr_premium_prev : latestSnapshot.tsmc_adr_premium;
+  const adrChg = latestSnapshot.tsmc_adr_premium_chg !== undefined ? latestSnapshot.tsmc_adr_premium_chg : 0;
+  snapshotRows.push([
+    'TSMC_ADR_PREMIUM',
+    'tsmc_adr_premium',
+    '"台積電ADR溢價率"',
+    `${latestSnapshot.tsmc_adr_premium}%`,
+    '%',
+    `${adrPrev}%`,
+    `${adrChg >= 0 ? '+' : ''}${adrChg}%`,
+    `${adrChg >= 0 ? '+' : ''}${adrChg}%`,
+    '"較前一交易日溢價"',
+    timeStr
+  ].join(','));
 
-  // 4-B. 長時序大表 CSV（供 Google Sheets `=IMPORTDATA` 匯入完整長時序大表）
-  if (req.query?.format === 'csv') {
-    const headers = [
-      'Date', 'Time',
-      ...ASSETS.map(a => a.header),
-      'Spread_10Y2Y', 'Spread_10Y3M', 'Gold_Copper_Ratio', 'Gold_Silver_Ratio', 'TSMC_ADR_Premium_Pct'
+  const snapshotCsv = '\uFEFF' + csvHeaders.join(',') + '\n' + snapshotRows.join('\n');
+
+  // 4-B. 長時序大表 CSV
+  const historyHeaders = [
+    'Date', 'Time',
+    ...ASSETS.map(a => a.header),
+    'Spread_10Y2Y', 'Spread_10Y3M', 'Gold_Copper_Ratio', 'Gold_Silver_Ratio', 'TSMC_ADR_Premium_Pct'
+  ];
+  
+  const historyCsvRows = [...historyRows].reverse().map(row => {
+    const rowTime = row.date === todayStr ? timeStr : `${row.date} 16:00:00`;
+    const vals = [
+      row.date, rowTime,
+      ...ASSETS.map(a => row[a.key]),
+      row.spread_10y2y, row.spread_10y3m, row.gold_copper_ratio, row.gold_silver_ratio, row.tsmc_adr_premium
     ];
-    
-    // 由最新排到最舊（Newest to Oldest）
-    const csvRows = [...historyRows].reverse().map(row => {
-      const rowTime = row.date === todayStr ? timeStr : `${row.date} 16:00:00`;
-      const vals = [
-        row.date, rowTime,
-        ...ASSETS.map(a => row[a.key]),
-        row.spread_10y2y, row.spread_10y3m, row.gold_copper_ratio, row.gold_silver_ratio, row.tsmc_adr_premium
-      ];
-      return vals.join(',');
-    });
+    return vals.join(',');
+  });
 
-    const csvContent = headers.join(',') + '\n' + csvRows.join('\n');
-    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    return res.status(200).send(csvContent);
-  }
+  const historyCsv = '\uFEFF' + historyHeaders.join(',') + '\n' + historyCsvRows.join('\n');
 
-  // 5. JSON 格式返回：包含最新報價、歷史行數與圖表數列
+  // 5. JSON 格式資料結構
   const coalAsset = assetResults.find(a => a.key === 'coal');
   const coalHist = coalAsset?.fallbackHistory || historyRows.slice(-10).map(r => r.coal || 124.50);
 
-  return res.status(200).json({
+  const jsonData = {
     status: 'success',
     timestamp: timeStr,
     totalHistoricalDays: historyRows.length,
@@ -437,5 +453,22 @@ module.exports = async (req, res) => {
       }
     },
     history_table: historyRows
-  });
+  };
+
+  // 寫入 120 秒記憶體快取
+  cachedCollectorPayload = {
+    snapshotCsv,
+    historyCsv,
+    jsonData
+  };
+  lastCollectorFetchTime = Date.now();
+
+  return sendCollectorResponse(req, res, cachedCollectorPayload);
+} catch (err) {
+  console.error('Collector fetch error:', err);
+  if (cachedCollectorPayload) {
+    return sendCollectorResponse(req, res, cachedCollectorPayload);
+  }
+  return res.status(500).json({ status: 'error', message: err.message });
+}
 };

@@ -277,24 +277,31 @@
           <button onclick="loadMacroNews()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 text-[11px]">
             <span>🔄</span> 重新整理
           </button>
+          <button id="btn-toggle-news" onclick="toggleNewsCollapse()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 hover:text-white border border-slate-700 transition flex items-center gap-1 text-[11px] font-medium active:scale-95">
+            <span id="news-toggle-icon">▼</span>
+            <span id="news-toggle-text">收合新聞</span>
+          </button>
         </div>
       </div>
 
-      <!-- 分類標籤篩選列 -->
-      <div class="flex items-center gap-1.5 mb-3.5 text-xs overflow-x-auto pb-1">
-        <button onclick="filterNewsCategory('all')" id="btn-news-all" class="px-3 py-1 rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold transition whitespace-nowrap shadow-sm">全部情報</button>
-        <button onclick="filterNewsCategory('fed')" id="btn-news-fed" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ Fed 聯準會</button>
-        <button onclick="filterNewsCategory('cpi')" id="btn-news-cpi" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📊 CPI/PCE 通膨</button>
-        <button onclick="filterNewsCategory('employment')" id="btn-news-employment" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 非農就業</button>
-        <button onclick="filterNewsCategory('yield')" id="btn-news-yield" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📈 美債殖利率</button>
-        <button onclick="filterNewsCategory('ecb')" id="btn-news-ecb" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🇪🇺 歐洲央行</button>
-      </div>
+      <!-- 可折疊主體區域 -->
+      <div id="news-collapsible-body" class="transition-all duration-300">
+        <!-- 分類標籤篩選列 -->
+        <div class="flex items-center gap-1.5 mb-3.5 text-xs overflow-x-auto pb-1">
+          <button onclick="filterNewsCategory('all')" id="btn-news-all" class="px-3 py-1 rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold transition whitespace-nowrap shadow-sm">全部情報</button>
+          <button onclick="filterNewsCategory('fed')" id="btn-news-fed" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ Fed 聯準會</button>
+          <button onclick="filterNewsCategory('cpi')" id="btn-news-cpi" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📊 CPI/PCE 通膨</button>
+          <button onclick="filterNewsCategory('employment')" id="btn-news-employment" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 非農就業</button>
+          <button onclick="filterNewsCategory('yield')" id="btn-news-yield" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📈 美債殖利率</button>
+          <button onclick="filterNewsCategory('ecb')" id="btn-news-ecb" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🇪🇺 歐洲央行</button>
+        </div>
 
-      <!-- 新聞清單列表 -->
-      <div id="macro-news-list" class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
-        <div class="text-center py-8 text-slate-500 text-xs font-mono">
-          <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
-          <div>正在檢索美歐央行與總經最新情報...</div>
+        <!-- 新聞清單列表 -->
+        <div id="macro-news-list" class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+          <div class="text-center py-8 text-slate-500 text-xs font-mono">
+            <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+            <div>正在檢索美歐央行與總經最新情報...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1189,6 +1196,23 @@
       const targetArea = document.getElementById('printable-report-area');
       if (targetArea) {
         targetArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function toggleNewsCollapse() {
+      const body = document.getElementById('news-collapsible-body');
+      const icon = document.getElementById('news-toggle-icon');
+      const text = document.getElementById('news-toggle-text');
+      if (!body) return;
+
+      if (body.classList.contains('hidden')) {
+        body.classList.remove('hidden');
+        if (icon) icon.innerText = '▼';
+        if (text) text.innerText = '收合新聞';
+      } else {
+        body.classList.add('hidden');
+        if (icon) icon.innerText = '▲';
+        if (text) text.innerText = '展開新聞';
       }
     }
 
