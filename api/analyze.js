@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const userQuery = req.query?.q || req.body?.q || '當前全球總體經濟情勢、聯準會政策路徑與股債匯跨資產配置策略';
+    const userQuery = req.query?.q || req.body?.q || '全球總體經濟數據深度剖析：通膨指標 (CPI/PCE)、就業市場與聯準會貨幣政策路徑研判';
     
     // 1. 抓取即時數據與時序庫
     const marketSnapshot = await fetchLiveMarketAndHistory();

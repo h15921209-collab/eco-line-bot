@@ -245,14 +245,16 @@
           </button>
         </div>
 
-        <!-- 熱門主題快捷鍵 -->
-        <div class="flex flex-wrap items-center gap-2 mt-3.5 text-xs">
-          <span class="text-slate-400 text-[11px]">熱門快捷：</span>
-          <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額與標的建議')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40 font-medium transition">🎯 100萬配置試算</button>
-          <button onclick="quickAsk('費城半導體、輝達與台積電ADR溢價率對台股開盤與AI供應鏈深度研判')" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-2.5 py-1 rounded-lg border border-sky-500/40 font-medium transition">🚀 費半/NVDA/台積</button>
-          <button onclick="quickAsk('銅博士、鐵礦砂、煤炭與天然氣價格走勢對全球實體基建與通膨的傳導分析')" class="bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 px-2.5 py-1 rounded-lg border border-orange-500/40 font-medium transition">⛏️ 銅煤鐵能源基建</button>
-          <button onclick="quickAsk('請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）')" class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 px-2.5 py-1 rounded-lg border border-purple-500/40 font-medium transition">🌪️ 總經壓力測試</button>
-          <button onclick="quickAsk('美債 10Y-2Y 殖利率利差形態與 Fed 降息終點利率定價剖析')" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-2.5 py-1 rounded-lg border border-red-500/40 font-medium transition">🏛️ 10Y-2Y 利差形狀</button>
+        <!-- 動態總經焦點與熱門主題快捷鍵 (排除資產配置，純經濟數據與即時新聞動態隨機) -->
+        <div class="flex flex-wrap items-center gap-2 mt-3.5 text-xs" id="hot-topics-container">
+          <span class="text-slate-400 text-[11px] flex items-center gap-1">
+            <span>🔥</span> 今日焦點：
+          </span>
+          <button onclick="quickAsk('美國最新 CPI 與核心 PCE 通膨年增率走勢，對聯準會 (Fed) 利率決策路徑與終點利率定價的傳導分析')" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40 font-medium transition">📊 CPI 通膨與降息路徑</button>
+          <button onclick="quickAsk('美債 10Y-2Y 殖利率曲線斜率變化、倒掛修復歷程，對美國景氣衰退預警與金融流動性環境之深度剖析')" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-2.5 py-1 rounded-lg border border-sky-500/40 font-medium transition">🏛️ 10Y-2Y 美債殖利率</button>
+          <button onclick="quickAsk('美國非農就業人口增長、失業率跳動與平均時薪年增率，對就業市場冷卻進度與通膨黏性之影響')" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/40 font-medium transition">💼 非農就業與薪資增長</button>
+          <button onclick="quickAsk('經濟部最新台灣外銷訂單金額、年增動能與電子資通訊產品接單表現，對半導體先進製程景氣週期之投射')" class="bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 px-2.5 py-1 rounded-lg border border-indigo-500/40 font-medium transition">🇹🇼 外銷訂單與半導體景氣</button>
+          <button onclick="quickAsk('國際高級銅價、紐約黃金價格走勢與金銅比 (Gold/Copper Ratio) 波動，對全球實體製造業景氣擴張或避險升溫之訊號解讀')" class="bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 px-2.5 py-1 rounded-lg border border-orange-500/40 font-medium transition">⛏️ 金銅比與實體景氣</button>
         </div>
       </div>
 
@@ -261,7 +263,7 @@
         <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-2 mb-5">
           <div>
             <div class="text-[10px] text-sky-400 font-semibold tracking-wider uppercase">MACRO STRATEGY INTELLIGENCE REPORT</div>
-            <h1 class="text-lg sm:text-2xl font-bold text-white mt-0.5" id="report-title">宏觀全球總經情勢與資產配置研報</h1>
+            <h1 class="text-lg sm:text-2xl font-bold text-white mt-0.5" id="report-title">宏觀全球總體經濟與關鍵數據研報</h1>
           </div>
           <div class="text-left sm:text-right text-xs text-slate-400">
             <div>時間：<span id="report-time" class="text-slate-200 font-mono">--</span></div>
@@ -425,8 +427,8 @@
               無論何時在 LINE 或本網頁輸入問題或名稱（如台積電、聯發科、NVDA、銅博士、鐵礦砂），AI 都會連線真實數據解答：
             </p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <button onclick="quickAsk('我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例')" class="text-left p-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition text-amber-200">
-                🎯 <b>配置類</b>：100萬總經跨資產配置試算
+              <button onclick="quickAsk('美國最新 CPI 與核心 PCE 通膨年增率走勢，對聯準會 (Fed) 利率決策路徑與終點利率定價的傳導分析')" class="text-left p-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition text-amber-200">
+                📊 <b>通膨與利率</b>：CPI/PCE 與 Fed 降息路徑
               </button>
               <button onclick="quickAsk('費城半導體、輝達與台積電ADR溢價率對台股開盤與AI供應鏈深度研判')" class="text-left p-2.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition text-sky-200">
                 🚀 <b>科技類</b>：費半 SOX 與輝達 NVDA 連動研判
@@ -904,14 +906,47 @@
       document.getElementById('speech-text').innerText = '暫停朗讀';
     }
 
+    async function loadDynamicTopics() {
+      try {
+        const res = await fetch('/api/topics');
+        if (!res.ok) return;
+        const json = await res.json();
+        if (json.status === 'success' && Array.isArray(json.topics) && json.topics.length > 0) {
+          const container = document.getElementById('hot-topics-container');
+          if (!container) return;
+          
+          let html = '<span class="text-slate-400 text-[11px] flex items-center gap-1"><span>🔥</span> 今日焦點：</span>';
+          const colorStyles = [
+            'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border-amber-500/40',
+            'bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border-sky-500/40',
+            'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-emerald-500/40',
+            'bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border-indigo-500/40',
+            'bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 border-orange-500/40'
+          ];
+          
+          json.topics.forEach((t, idx) => {
+            const style = colorStyles[idx % colorStyles.length];
+            const liveBadge = t.isLiveNews ? '<span class="text-[9px] bg-red-500/30 text-red-300 px-1 py-0.2 rounded ml-1 font-bold">即時</span>' : '';
+            const safeQuery = t.query.replace(/"/g, '&quot;').replace(/'/g, "\\'");
+            html += `<button onclick="quickAsk('${safeQuery}')" class="${style} px-2.5 py-1 rounded-lg border font-medium transition flex items-center gap-1 shadow-sm">${t.label}${liveBadge}</button>`;
+          });
+          
+          container.innerHTML = html;
+        }
+      } catch (e) {
+        console.warn('Load dynamic topics failed:', e);
+      }
+    }
+
     async function fetchInitialReport() {
       if (document.getElementById('sheets-formula-box')) {
         document.getElementById('sheets-formula-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=csv")';
       }
       updateEventCountdowns();
+      loadDynamicTopics();
       await loadTickerData();
       renderLineChart('twii');
-      await runAnalysis('當前全球總體經濟情勢、聯準會政策路徑、費半AI與股債匯跨資產配置策略');
+      await runAnalysis('全球總體經濟數據深度剖析：通膨指標 (CPI/PCE)、就業市場與聯準會貨幣政策路徑研判');
     }
 
     function updateMarketStatus() {
@@ -1086,8 +1121,8 @@
       reportBox.innerHTML = `
         <div class="py-12 text-center text-slate-400">
           <div class="inline-block animate-spin text-3xl mb-3">⚙️</div>
-          <div class="font-medium text-white">正在連線 24 大總經指標、煤鐵能源與 Gemini 3.5 模型...</div>
-          <div class="text-xs text-slate-500 mt-1">「${queryText}」跨市場利差與實體基建時序推演中</div>
+          <div class="font-medium text-white">正在連線 24 大總經指標、大宗商品與 Google Gemini 3.6 Flash 模型...</div>
+          <div class="text-xs text-slate-500 mt-1">「${queryText}」總經數據與時序推演中</div>
         </div>
       `;
 
