@@ -307,7 +307,17 @@ async function callGemini(userText, existingMarketData = null) {
   ];
 
   const liveMarketData = existingMarketData || (await fetchLiveMarketAndHistory());
-  const prompt = `${SYSTEM_PROMPT}\n\n【當前連線抓取的即時市場全維度數據庫】：\n${liveMarketData}\n\n使用者提問：「${userText}」\n\n請以首席策略分析師的真實一對一面對面諮詢口吻解答：\n★嚴禁輸出「一、核心結論」、「二、科技...」等任何制式大標題與固定章節套版！\n★開門見山第一句直接切入你的核心多空判斷與邏輯，並自然融入上述即時最新行情數值。\n★解答要有觀點、有溫度、有交易員的市場直覺，文末主動提示 1~2 個潛在盲點或尾部風險，並向對方拋出一個具有策略意義的反問。`;
+
+  let newsContext = "";
+  try {
+    const { getLatestMacroNews } = require('./news');
+    const newsList = await getLatestMacroNews(6);
+    if (newsList && newsList.length > 0) {
+      newsContext = "\n\n【最新隔夜美歐央行與總經重大新聞時事背景】：\n" + newsList.map((n, i) => `${i + 1}. [${n.timeDisplay} ${n.tag}] ${n.title} (來源: ${n.source})`).join("\n");
+    }
+  } catch (e) {}
+
+  const prompt = `${SYSTEM_PROMPT}\n\n【當前連線抓取的即時市場全維度數據庫】：\n${liveMarketData}${newsContext}\n\n使用者提問：「${userText}」\n\n請以首席策略分析師的真實一對一面對面諮詢口吻解答：\n★嚴禁輸出「一、核心結論」、「二、科技...」等任何制式大標題與固定章節套版！\n★開門見山第一句直接切入你的核心多空判斷與邏輯，並自然融入上述即時最新行情數值與最新央行新聞時事。\n★解答要有觀點、有溫度、有交易員的市場直覺，文末主動提示 1~2 個潛在盲點或尾部風險，並向對方拋出一個具有策略意義的反問。`;
 
   for (const m of models) {
     try {

@@ -53,11 +53,20 @@ module.exports = async (req, res) => {
     // 1. 呼叫 Gemini AI 生成今日早報/週報
     const rawReport = await callGemini(promptTheme);
 
+    let headlinesBlock = '';
+    try {
+      const { getLatestMacroNews } = require('./news');
+      const topNews = await getLatestMacroNews(3);
+      if (topNews && topNews.length > 0) {
+        headlinesBlock = `📰 【隔夜美歐央行與總經重大頭條】\n` + topNews.map((n, i) => `${i + 1}. ${n.icon} ${n.title} (${n.source})`).join('\n') + '\n\n';
+      }
+    } catch (e) {}
+
     const broadcastMessage = `☀️ 宏觀全球智庫 · ${reportTypeTitle}
 📅 發布時間：${timeStr.substring(0, 16)} (盤前晨訊)
 ━━━━━━━━━━━━━━━━━━━━
 
-${rawReport || '今日全球總經數據同步中，請點擊下方連結查看最新實時行情。'}
+${headlinesBlock}${rawReport || '今日全球總經數據同步中，請點擊下方連結查看最新實時行情。'}
 
 ━━━━━━━━━━━━━━━━━━━━
 📱 點此查看【手機即時圖表完整版】：

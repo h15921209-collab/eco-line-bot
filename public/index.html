@@ -259,6 +259,46 @@
       </div>
     </div>
 
+    <!-- 📰 美歐央行與總經即時情報流 (Macro News Feed) -->
+    <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-slate-900/95 border border-slate-800 no-print shadow-xl" id="macro-news-container">
+      <!-- 頂部標題、總數與刷新按鈕 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3.5 border-b border-slate-800/80">
+        <div class="flex items-center gap-2.5">
+          <span class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+            <span class="text-amber-400 text-lg">📰</span> 美歐央行與總經即時情報流
+          </span>
+          <span class="text-[11px] text-slate-400 font-normal hidden sm:inline">（聚焦 Fed 利率決策、CPI 通膨、非農就業與美債殖利率）</span>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-[11px] text-slate-400 font-mono bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
+            收錄：<span id="news-total-count" class="text-amber-300 font-bold">--</span> 則核心情報
+          </span>
+          <button onclick="loadMacroNews()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 text-[11px]">
+            <span>🔄</span> 重新整理
+          </button>
+        </div>
+      </div>
+
+      <!-- 分類標籤篩選列 -->
+      <div class="flex items-center gap-1.5 mb-3.5 text-xs overflow-x-auto pb-1">
+        <button onclick="filterNewsCategory('all')" id="btn-news-all" class="px-3 py-1 rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold transition whitespace-nowrap shadow-sm">全部情報</button>
+        <button onclick="filterNewsCategory('fed')" id="btn-news-fed" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ Fed 聯準會</button>
+        <button onclick="filterNewsCategory('cpi')" id="btn-news-cpi" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📊 CPI/PCE 通膨</button>
+        <button onclick="filterNewsCategory('employment')" id="btn-news-employment" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 非農就業</button>
+        <button onclick="filterNewsCategory('yield')" id="btn-news-yield" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📈 美債殖利率</button>
+        <button onclick="filterNewsCategory('ecb')" id="btn-news-ecb" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🇪🇺 歐洲央行</button>
+      </div>
+
+      <!-- 新聞清單列表 -->
+      <div id="macro-news-list" class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+        <div class="text-center py-8 text-slate-500 text-xs font-mono">
+          <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+          <div>正在檢索美歐央行與總經最新情報...</div>
+        </div>
+      </div>
+    </div>
+
     <!-- 📊 全維度即時資產價格跑馬看板（包含科技/利差/銅煤鐵/能源） -->
     <div class="mb-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 px-1 no-print">
       <div class="flex items-center gap-2">
@@ -417,28 +457,43 @@
           </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-3">
           <div class="p-3.5 rounded-xl bg-slate-950/80 border border-amber-500/30">
             <div class="flex items-center justify-between mb-1.5">
-              <div class="text-xs text-amber-300 font-bold">📊 1. 【即時快照對比表】（最新價、昨收價、漲跌額與多週期幅度）</div>
+              <div class="text-xs text-amber-300 font-bold">📊 1. 【即時快照對比表】</div>
               <button onclick="copySnapshotFormula()" class="bg-amber-600/30 hover:bg-amber-600/50 active:scale-95 text-amber-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-amber-500/40 transition">
                 📋 複製
               </button>
             </div>
-            <div id="sheets-snapshot-box" class="bg-black/60 p-2.5 rounded-lg border border-slate-800 font-mono text-[11px] text-amber-300 break-all select-all">
+            <div class="text-[10px] text-slate-400 mb-1">最新價、昨收價、漲跌額與多週期幅度</div>
+            <div id="sheets-snapshot-box" class="bg-black/60 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-amber-300 break-all select-all">
               =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=snapshot_csv")
             </div>
           </div>
 
           <div class="p-3.5 rounded-xl bg-slate-950/80 border border-sky-500/30">
             <div class="flex items-center justify-between mb-1.5">
-              <div class="text-xs text-sky-400 font-bold">📜 2. 【長時序歷史庫】（完整 36 欄歷史序列歷程）</div>
+              <div class="text-xs text-sky-400 font-bold">📜 2. 【長時序歷史庫】</div>
               <button onclick="copyFormula()" class="bg-sky-600/30 hover:bg-sky-600/50 active:scale-95 text-sky-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-sky-500/40 transition">
                 📋 複製
               </button>
             </div>
-            <div id="sheets-formula-box" class="bg-black/60 p-2.5 rounded-lg border border-slate-800 font-mono text-[11px] text-sky-400 break-all select-all">
+            <div class="text-[10px] text-slate-400 mb-1">完整 36 欄跨資產長時序序列歷程</div>
+            <div id="sheets-formula-box" class="bg-black/60 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-sky-400 break-all select-all">
               =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=csv")
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/30">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-xs text-emerald-300 font-bold">📰 3. 【總經新聞歷程庫】</div>
+              <button onclick="copyNewsFormula()" class="bg-emerald-600/30 hover:bg-emerald-600/50 active:scale-95 text-emerald-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-emerald-500/40 transition">
+                📋 複製
+              </button>
+            </div>
+            <div class="text-[10px] text-slate-400 mb-1">最新 100 則美歐央行與總經重大情報</div>
+            <div id="sheets-news-box" class="bg-black/60 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-emerald-300 break-all select-all">
+              =IMPORTDATA("https://eco-line-assistant.onrender.com/api/news?format=csv")
             </div>
           </div>
         </div>
@@ -1018,6 +1073,125 @@
       }
     }
 
+    // ==========================================
+    // 📰 美歐央行與總經即時情報流 (Macro News Feed) 前端邏輯
+    // ==========================================
+    let currentNewsCategory = 'all';
+    let cachedMacroNews = [];
+
+    async function loadMacroNews(cat = currentNewsCategory) {
+      currentNewsCategory = cat;
+      const listEl = document.getElementById('macro-news-list');
+      if (listEl && cachedMacroNews.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-8 text-slate-500 text-xs font-mono">
+            <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+            <div>正在檢索美歐央行與總經最新情報...</div>
+          </div>
+        `;
+      }
+
+      try {
+        const res = await fetch('/api/news?category=' + encodeURIComponent(cat) + '&t=' + Date.now());
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'success') {
+          cachedMacroNews = data.news || [];
+          const countEl = document.getElementById('news-total-count');
+          if (countEl) countEl.innerText = data.total || cachedMacroNews.length;
+          renderNewsList();
+        }
+      } catch (e) {
+        console.warn('Load macro news failed:', e);
+        if (listEl) {
+          listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">暫無最新新聞資料或連線異常，請稍後點擊重新整理。</div>';
+        }
+      }
+    }
+
+    function filterNewsCategory(cat) {
+      currentNewsCategory = cat;
+      const cats = ['all', 'fed', 'cpi', 'employment', 'yield', 'ecb'];
+      cats.forEach(c => {
+        const btn = document.getElementById('btn-news-' + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = "px-3 py-1 rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold transition whitespace-nowrap shadow-sm";
+          } else {
+            btn.className = "px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap";
+          }
+        }
+      });
+      loadMacroNews(cat);
+    }
+
+    function renderNewsList() {
+      const listEl = document.getElementById('macro-news-list');
+      if (!listEl) return;
+
+      if (!cachedMacroNews || cachedMacroNews.length === 0) {
+        listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">目前分類暫無相關新聞。</div>';
+        return;
+      }
+
+      const tagColorMap = {
+        'Fed': 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        'CPI': 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        'PCE': 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        '通膨': 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        '非農': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+        '就業': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+        '美債': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        '殖利率': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        '歐洲央行': 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+        '總經': 'bg-slate-700/50 text-slate-300 border-slate-600'
+      };
+
+      let html = '';
+      cachedMacroNews.forEach(item => {
+        const tagsHtml = (item.tags || []).map(t => {
+          const style = tagColorMap[t] || 'bg-slate-800 text-slate-300 border-slate-700';
+          return `<span class="text-[10px] px-1.5 py-0.5 rounded border ${style}">#${t}</span>`;
+        }).join(' ');
+
+        const safeTitle = (item.title || '').replace(/"/g, '&quot;').replace(/'/g, "\\'");
+        const safePrompt = `請結合最新隔夜新聞「${safeTitle}」，深入解析其對聯準會利率路徑、美債殖利率、美元指數及跨資產股債定價的總體經濟連鎖傳導影響`;
+
+        html += `
+          <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800/80 hover:border-amber-500/40 transition duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <span class="text-[10px] font-mono text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">${item.time || ''}</span>
+                <span class="text-[10px] text-slate-500">${item.source || '總經情報'}</span>
+                <div class="flex items-center gap-1">${tagsHtml}</div>
+              </div>
+              <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-semibold text-slate-200 hover:text-amber-300 transition line-clamp-2 sm:line-clamp-1 block">
+                ${item.title}
+              </a>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+              <button onclick="askAIForNews('${safePrompt}')" class="px-2.5 py-1.5 rounded-lg bg-sky-600/20 hover:bg-sky-500 text-sky-300 hover:text-slate-950 border border-sky-500/30 text-xs font-medium transition flex items-center gap-1">
+                <span>🤖</span>
+                <span>AI 連鎖解讀</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      listEl.innerHTML = html;
+    }
+
+    function askAIForNews(promptText) {
+      const qInput = document.getElementById('query-input');
+      if (qInput) qInput.value = promptText;
+      runAnalysis(promptText);
+      const targetArea = document.getElementById('printable-report-area');
+      if (targetArea) {
+        targetArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
     let dynamicHistory = {
       labels: ['D-9', 'D-8', 'D-7', 'D-6', 'D-5', 'D-4', 'D-3', 'D-2', 'D-1', '今日'],
       twii: [44200, 44450, 44100, 44800, 45100, 44900, 45811, 45300, 45100, 44369],
@@ -1220,8 +1394,15 @@
       if (document.getElementById('sheets-formula-box')) {
         document.getElementById('sheets-formula-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=csv")';
       }
+      if (document.getElementById('sheets-snapshot-box')) {
+        document.getElementById('sheets-snapshot-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=snapshot_csv")';
+      }
+      if (document.getElementById('sheets-news-box')) {
+        document.getElementById('sheets-news-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/news?format=csv")';
+      }
       updateEventCountdowns();
       loadMacroCalendar('week');
+      loadMacroNews('all');
       loadDynamicTopics();
       await loadTickerData();
       renderLineChart('twii');
@@ -1444,6 +1625,12 @@
       const txt = '=IMPORTDATA("' + DOMAIN_URL + '/api/collector?format=csv")';
       navigator.clipboard.writeText(txt);
       alert('✅ 【長時序歷史庫公式】已複製！請至 Google 試算表 A1 儲存格貼上！');
+    }
+
+    function copyNewsFormula() {
+      const txt = '=IMPORTDATA("' + DOMAIN_URL + '/api/news?format=csv")';
+      navigator.clipboard.writeText(txt);
+      alert('✅ 【美歐央行新聞歷程庫公式】已複製！\n請至 Google 試算表 A1 儲存格貼上，即可呈現即時最新 100 則重大央行與總經情報！');
     }
 
     function copyReportText() {
