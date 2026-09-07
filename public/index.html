@@ -783,8 +783,8 @@
           desc: '熱軋卷板、煉鋼原物料與海運散裝貨櫃',
           items: [
             { name: '中鋼', code: '2002', symbol: '2002.TW', price: (d.csc ? d.csc.toFixed(2) + ' 元' : '--'), pct: getPct('csc') },
-            { name: '熱軋卷板', code: 'HRC', symbol: 'HRC', price: (d.hrc ? '$' + d.hrc.toLocaleString() : '--'), pct: getPct('hrc') },
-            { name: '鐵礦砂 62%', code: 'TIO', symbol: 'TIO', price: (d.iron_ore ? '$' + d.iron_ore.toFixed(2) : '--'), pct: getPct('iron_ore') },
+            { name: '熱軋卷板', code: 'HRC', symbol: 'HRC=F', price: (d.hrc ? '$' + d.hrc.toLocaleString() : '--'), pct: getPct('hrc') },
+            { name: '鐵礦砂 62%', code: 'TIO', symbol: 'TIO=F', price: (d.iron_ore ? '$' + d.iron_ore.toFixed(2) : '--'), pct: getPct('iron_ore') },
             { name: '焦煤/煤炭', code: 'COAL', symbol: 'COAL', price: (d.coal ? '$' + d.coal.toFixed(2) : '--'), pct: getPct('coal') },
             { name: '散裝航運', code: 'BDRY', symbol: 'BDRY', price: (d.bdry ? '$' + d.bdry.toFixed(2) : '--'), pct: getPct('bdry') },
             { name: '馬士基海運', code: 'MAERSK', symbol: 'AMKBY', price: (d.maersk ? '$' + d.maersk.toFixed(2) : '--'), pct: getPct('maersk') }
