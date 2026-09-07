@@ -37,7 +37,9 @@ const ASSETS = [
   // 7. 外匯與市場情緒
   { key: 'usdtwd', sym: 'TWD=X', header: 'USDTWD', dec: 3, defaultVal: 31.873 },
   { key: 'usdkrw', sym: 'KRW=X', header: 'USDKRW', dec: 2, defaultVal: 1381.98 },
-  { key: 'vix', sym: '^VIX', header: 'VIX', dec: 2, defaultVal: 15.85 }
+  { key: 'vix', sym: '^VIX', header: 'VIX', dec: 2, defaultVal: 15.85 },
+  // 8. 數位資產與全球投機流動性
+  { key: 'btc', sym: 'BTC-USD', header: 'Bitcoin', dec: 0, defaultVal: 88500 }
 ];
 
 async function fetchRealCoalPrice() {
@@ -449,7 +451,8 @@ module.exports = async (req, res) => {
         iron_ore: historyRows.slice(-10).map(r => r.iron_ore),
         coal: coalHist,
         oil: historyRows.slice(-10).map(r => r.oil),
-        natgas: historyRows.slice(-10).map(r => r.natgas)
+        natgas: historyRows.slice(-10).map(r => r.natgas),
+        btc: historyRows.slice(-10).map(r => r.btc)
       }
     },
     history_table: historyRows

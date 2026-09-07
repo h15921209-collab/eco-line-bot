@@ -718,7 +718,7 @@
       };
       const badgePrefix = tfBadgeMap[tf] || '較基準';
 
-      // 18 大跨資產標的分組定義
+      // 24 大跨資產標的分組定義（4 大板塊各 6 檔完美對稱）
       const groups = [
         {
           id: 'tech',
@@ -729,19 +729,21 @@
             { name: '台積電', code: '2330', symbol: '2330.TW', price: (d.tsmc ? d.tsmc.toLocaleString() + ' 元' : '--'), pct: getPct('tsmc') },
             { name: '費城半導體', code: 'SOX', symbol: '^SOX', price: (d.sox ? d.sox.toLocaleString() + ' 點' : '--'), pct: getPct('sox') },
             { name: '輝達', code: 'NVDA', symbol: 'NVDA', price: (d.nvda ? '$' + d.nvda.toFixed(2) : '--'), pct: getPct('nvda') },
-            { name: '標普 500', code: 'SPX', symbol: '^GSPC', price: (d.sp500 ? d.sp500.toLocaleString() + ' 點' : '--'), pct: getPct('sp500') }
+            { name: '標普 500', code: 'SPX', symbol: '^GSPC', price: (d.sp500 ? d.sp500.toLocaleString() + ' 點' : '--'), pct: getPct('sp500') },
+            { name: '台積電ADR', code: 'TSM', symbol: 'TSM', price: (d.tsm_adr ? '$' + d.tsm_adr.toFixed(2) : '--'), pct: getPct('tsm_adr') }
           ]
         },
         {
           id: 'steel',
           title: '🏭 鋼鐵與基建',
-          desc: '熱軋卷板、煉鋼原物料與海運散裝',
+          desc: '熱軋卷板、煉鋼原物料與海運散裝貨櫃',
           items: [
             { name: '中鋼', code: '2002', symbol: '2002.TW', price: (d.csc ? d.csc.toFixed(2) + ' 元' : '--'), pct: getPct('csc') },
             { name: '熱軋卷板', code: 'HRC', symbol: 'HRC', price: (d.hrc ? '$' + d.hrc.toLocaleString() : '--'), pct: getPct('hrc') },
             { name: '鐵礦砂 62%', code: 'TIO', symbol: 'TIO', price: (d.iron_ore ? '$' + d.iron_ore.toFixed(2) : '--'), pct: getPct('iron_ore') },
             { name: '焦煤/煤炭', code: 'COAL', symbol: 'COAL', price: (d.coal ? '$' + d.coal.toFixed(2) : '--'), pct: getPct('coal') },
-            { name: '散裝航運', code: 'BDRY', symbol: 'BDRY', price: (d.bdry ? '$' + d.bdry.toFixed(2) : '--'), pct: getPct('bdry') }
+            { name: '散裝航運', code: 'BDRY', symbol: 'BDRY', price: (d.bdry ? '$' + d.bdry.toFixed(2) : '--'), pct: getPct('bdry') },
+            { name: '馬士基海運', code: 'MAERSK', symbol: 'AMKBY', price: (d.maersk ? '$' + d.maersk.toFixed(2) : '--'), pct: getPct('maersk') }
           ]
         },
         {
@@ -750,6 +752,7 @@
           desc: '美債殖利率曲線、利差與避險情緒指標',
           items: [
             { name: '美債 10 年期', code: 'US10Y', symbol: '^TNX', price: (d.us10y ? d.us10y.toFixed(3) + '%' : '--'), pct: getPct('us10y') },
+            { name: '美債 2 年期', code: 'US2Y', symbol: '2YY=F', price: (d.us2y ? d.us2y.toFixed(3) + '%' : '--'), pct: getPct('us2y') },
             { 
               name: '10Y-2Y 利差', 
               code: 'SPREAD', 
@@ -758,6 +761,7 @@
               pct: (tf === '1d' && d.spread_10y2y_chg_bps !== undefined ? d.spread_10y2y_chg_bps : getPct('spread_10y2y')),
               isBps: (tf === '1d' && d.spread_10y2y_chg_bps !== undefined)
             },
+            { name: '美元指數', code: 'DXY', symbol: 'DX-Y.NYB', price: (d.dxy ? d.dxy.toFixed(3) : '--'), pct: getPct('dxy') },
             { name: '美元/台幣', code: 'USDTWD', symbol: 'USDTWD=X', price: (d.usdtwd ? d.usdtwd.toFixed(3) : '--'), pct: getPct('usdtwd') },
             { name: '恐慌指數 VIX', code: 'VIX', symbol: '^VIX', price: (d.vix ? d.vix.toFixed(2) : '--'), pct: getPct('vix') }
           ]
@@ -765,12 +769,14 @@
         {
           id: 'energy',
           title: '⚡ 能源與原物料',
-          desc: '貴金屬、工業之母銅與傳統原油天然氣',
+          desc: '貴金屬、工業之母銅與全球數位流動性',
           items: [
             { name: '紐約黃金', code: 'GOLD', symbol: 'GC=F', price: (d.gold ? '$' + d.gold.toLocaleString() : '--'), pct: getPct('gold') },
+            { name: '紐約白銀', code: 'SILVER', symbol: 'SI=F', price: (d.silver ? '$' + d.silver.toFixed(2) : '--'), pct: getPct('silver') },
             { name: '高級銅', code: 'COPPER', symbol: 'HG=F', price: (d.copper ? '$' + d.copper.toFixed(3) : '--'), pct: getPct('copper') },
             { name: 'WTI 原油', code: 'OIL', symbol: 'CL=F', price: (d.oil ? '$' + d.oil.toFixed(2) : '--'), pct: getPct('oil') },
-            { name: '美國天然氣', code: 'NATGAS', symbol: 'NG=F', price: (d.natgas ? '$' + d.natgas.toFixed(3) : '--'), pct: getPct('natgas') }
+            { name: '美國天然氣', code: 'NATGAS', symbol: 'NG=F', price: (d.natgas ? '$' + d.natgas.toFixed(3) : '--'), pct: getPct('natgas') },
+            { name: '比特幣', code: 'BTC', symbol: 'BTC-USD', price: (d.btc ? '$' + Math.round(d.btc).toLocaleString() : '--'), pct: getPct('btc') }
           ]
         }
       ];
@@ -792,7 +798,7 @@
               </div>
               <span class="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">${grp.items.length} 檔標的</span>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
         `;
 
         grp.items.forEach(item => {
