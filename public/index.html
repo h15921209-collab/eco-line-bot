@@ -1193,8 +1193,11 @@
                 <span class="text-[10px] text-slate-500">${item.source || '總經情報'}</span>
                 <div class="flex items-center gap-1">${tagsHtml}</div>
               </div>
-              <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-semibold text-slate-200 hover:text-amber-300 transition line-clamp-2 sm:line-clamp-1 block">
-                ${item.title}
+              <a href="${item.link}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="text-xs sm:text-sm font-semibold text-slate-200 hover:text-amber-300 transition line-clamp-2 sm:line-clamp-1 block group">
+                <span>${item.title}</span>
+                <span class="text-[10px] font-normal text-sky-400 opacity-80 group-hover:opacity-100 transition ml-1.5 inline-flex items-center gap-0.5">
+                  <span>🔗</span><span>查看原文</span>
+                </span>
               </a>
             </div>
             <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">

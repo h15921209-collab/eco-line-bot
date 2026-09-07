@@ -69,10 +69,97 @@ function categorizeNews(title) {
   return { category, tag, icon };
 }
 
-// 抓取 Google News RSS 美歐央行與總經新聞
+// 1. 抓取 Yahoo 股市國際總經新聞 (具備直接文章 URL)
+function fetchYahooMacroNews() {
+  return new Promise((resolve) => {
+    https.get('https://tw.stock.yahoo.com/rss?category=intl-markets', { timeout: 4000, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+      if (res.statusCode !== 200) return resolve([]);
+      let rawData = '';
+      res.on('data', (c) => { rawData += c; });
+      res.on('end', () => {
+        try {
+          const itemRegex = /<item>[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>[\s\S]*?<pubDate>([\s\S]*?)<\/pubDate>[\s\S]*?<\/item>/gi;
+          let match;
+          const items = [];
+          while ((match = itemRegex.exec(rawData))) {
+            const title = match[1].trim();
+            const link = match[2].trim();
+            const pubDateStr = match[3].trim();
+            if (title && title.length >= 8) {
+              const pubTime = new Date(pubDateStr);
+              const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
+              const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
+              const { category, tag, icon } = categorizeNews(title);
+              items.push({
+                id: Buffer.from(title).toString('base64').substring(0, 16),
+                title,
+                source: 'Yahoo股市',
+                link,
+                pubDate: pubDateStr,
+                timeDisplay: timeStr,
+                timestamp: isNaN(pubTime.getTime()) ? Date.now() : pubTime.getTime(),
+                category,
+                tag,
+                icon,
+                aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
+              });
+            }
+          }
+          resolve(items);
+        } catch (e) {
+          resolve([]);
+        }
+      });
+    }).on('error', () => resolve([])).on('timeout', function() { this.destroy(); resolve([]); });
+  });
+}
+
+// 2. 抓取 鉅亨網 (Cnyes) 焦點總經新聞 (具備直接文章 URL)
+function fetchCnyesMacroNews() {
+  return new Promise((resolve) => {
+    https.get('https://news.cnyes.com/api/v3/news/category/headline?limit=30', { timeout: 4000, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+      if (res.statusCode !== 200) return resolve([]);
+      let rawData = '';
+      res.on('data', (c) => { rawData += c; });
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(rawData);
+          const raw = json.items?.data || [];
+          const items = [];
+          raw.forEach(it => {
+            const title = it.title.trim();
+            if (title && title.length >= 8) {
+              const pubTime = new Date(it.publishAt * 1000);
+              const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
+              const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
+              const { category, tag, icon } = categorizeNews(title);
+              items.push({
+                id: Buffer.from(title).toString('base64').substring(0, 16),
+                title,
+                source: '鉅亨網',
+                link: `https://news.cnyes.com/news/id/${it.newsId}`,
+                pubDate: pubTime.toUTCString(),
+                timeDisplay: timeStr,
+                timestamp: it.publishAt * 1000,
+                category,
+                tag,
+                icon,
+                aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
+              });
+            }
+          });
+          resolve(items);
+        } catch (e) {
+          resolve([]);
+        }
+      });
+    }).on('error', () => resolve([])).on('timeout', function() { this.destroy(); resolve([]); });
+  });
+}
+
+// 3. 抓取 Google News RSS 美歐央行與總經新聞 (將重定向失效之 CBMi 網址安全升級為直達搜尋)
 function fetchMacroNewsRss() {
   return new Promise((resolve) => {
-    // 聚焦美歐央行貨幣政策、通膨、就業與美債關鍵字
     const query = encodeURIComponent('聯準會 OR Fed OR 鮑爾 OR "核心CPI" OR "非農就業" OR "美債殖利率" OR "歐洲央行" OR "PCE物價"');
     const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant`;
 
@@ -94,7 +181,7 @@ function fetchMacroNewsRss() {
               .replace(/&quot;/g, '"')
               .replace(/&#39;/g, "'")
               .trim();
-            const link = match[2].trim();
+            const rawLink = match[2].trim();
             const pubDateStr = match[3].trim();
 
             let source = '財經新聞';
@@ -103,6 +190,11 @@ function fetchMacroNewsRss() {
               source = title.substring(dashIdx + 3).trim();
               title = title.substring(0, dashIdx).trim();
             }
+
+            // 避開 Google News CBMi 轉址白屏：若為 Google News 封裝網址，升級為精準直達原文搜尋
+            const cleanLink = rawLink.includes('news.google.com/rss/articles/')
+              ? `https://www.google.com/search?q=${encodeURIComponent(title + ' ' + source)}`
+              : rawLink;
 
             if (title && title.length >= 8) {
               const pubTime = new Date(pubDateStr);
@@ -115,7 +207,7 @@ function fetchMacroNewsRss() {
                 id: Buffer.from(title).toString('base64').substring(0, 16),
                 title,
                 source,
-                link,
+                link: cleanLink,
                 pubDate: pubDateStr,
                 timeDisplay: timeStr,
                 timestamp: isNaN(pubTime.getTime()) ? Date.now() : pubTime.getTime(),
@@ -141,14 +233,20 @@ function fetchMacroNewsRss() {
   });
 }
 
-// 核心更新與儲存函式
+// 核心更新與儲存函式 (三源並行匯聚)
 async function refreshAndStoreNews() {
   loadStoredNews();
-  const fetched = await fetchMacroNewsRss();
+  const [yahooNews, cnyesNews, googleNews] = await Promise.all([
+    fetchYahooMacroNews(),
+    fetchCnyesMacroNews(),
+    fetchMacroNewsRss()
+  ]);
 
-  if (fetched && fetched.length > 0) {
+  const allFetched = [...yahooNews, ...cnyesNews, ...googleNews];
+
+  if (allFetched && allFetched.length > 0) {
     const existingTitles = new Set(inMemoryNews.map(n => n.title));
-    const newItems = fetched.filter(n => !existingTitles.has(n.title));
+    const newItems = allFetched.filter(n => !existingTitles.has(n.title));
 
     if (newItems.length > 0) {
       inMemoryNews = [...newItems, ...inMemoryNews];
