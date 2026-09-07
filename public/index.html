@@ -581,62 +581,106 @@
 
   </main>
 
-  <!-- 🔍 標的即時快查彈窗 Modal -->
-  <div id="search-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-md p-5 rounded-2xl border-sky-500/40 shadow-2xl">
+  <!-- 🔍 標的即時快查與走勢圖彈窗 Modal -->
+  <div id="search-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="glass-card w-full max-w-xl max-h-[92vh] overflow-y-auto p-4 sm:p-6 rounded-2xl border-sky-500/40 shadow-2xl">
       <div class="flex justify-between items-center mb-3">
-        <h3 class="font-bold text-white text-sm flex items-center gap-1.5">
-          <span>🔍</span> 全球標的即時秒級快查
+        <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-1.5">
+          <span class="text-amber-400">📈</span> 全球指標即時趨勢圖 ＆ 深度查價
         </h3>
-        <button onclick="closeSearchModal()" class="text-slate-400 hover:text-white text-lg font-mono">✕</button>
+        <button onclick="closeSearchModal()" class="text-slate-400 hover:text-white text-lg font-mono p-1">✕</button>
       </div>
-      <p class="text-xs text-slate-400 mb-3">支援輸入台美股（代碼或名稱）、外匯、原物料或加密幣：</p>
+      <p class="text-xs text-slate-400 mb-3">點擊熱力榜或輸入代碼/名稱，秒級展開走勢圖與 20MA 月線：</p>
       
       <div class="flex gap-2 mb-3">
-        <input type="text" id="symbol-input" placeholder="例如：中鋼, 台積電, NVDA, 煤炭, 熱軋, BDI"
+        <input type="text" id="symbol-input" placeholder="例如：中鋼, 台積電, NVDA, 煤炭, 熱軋, BDI, 美元指數"
           class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500 font-mono">
-        <button onclick="searchTicker()" id="btn-symbol-search"
+        <button onclick="searchTicker(currentModalRange)" id="btn-symbol-search"
           class="bg-sky-600 hover:bg-sky-500 active:scale-95 text-white text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
           查詢
         </button>
       </div>
 
       <!-- 快速熱門代碼標籤 -->
-      <div class="flex flex-wrap gap-1.5 mb-4 text-[10px]">
-        <span class="text-slate-500 py-0.5">熱門：</span>
+      <div class="flex flex-wrap gap-1.5 mb-3 text-[10px]">
+        <span class="text-slate-500 py-0.5">快捷：</span>
         <button onclick="quickSearchSymbol('中鋼')" class="bg-amber-900/40 border border-amber-600/40 hover:bg-amber-800/60 px-2 py-0.5 rounded text-amber-300 font-medium">🏭 中鋼 2002</button>
         <button onclick="quickSearchSymbol('熱軋')" class="bg-amber-900/40 border border-amber-600/40 hover:bg-amber-800/60 px-2 py-0.5 rounded text-amber-300 font-medium">🔩 熱軋鋼捲</button>
         <button onclick="quickSearchSymbol('BDI')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚢 BDI 散裝</button>
         <button onclick="quickSearchSymbol('NVDA')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">NVDA 輝達</button>
         <button onclick="quickSearchSymbol('台積電')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">2330 台積電</button>
         <button onclick="quickSearchSymbol('費半')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🚀 費半</button>
-        <button onclick="quickSearchSymbol('銅博士')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🥉 銅博士</button>
-        <button onclick="quickSearchSymbol('鐵礦砂')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🧱 鐵礦砂</button>
-        <button onclick="quickSearchSymbol('煤炭')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🔥 煤炭現貨</button>
+        <button onclick="quickSearchSymbol('黃金')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🪙 黃金</button>
+        <button onclick="quickSearchSymbol('白銀')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🥈 白銀</button>
+        <button onclick="quickSearchSymbol('BTC')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">₿ 比特幣</button>
+        <button onclick="quickSearchSymbol('DXY')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">💵 美元指數</button>
+        <button onclick="quickSearchSymbol('10Y2Y')" class="bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-slate-300">🏛️ 10Y-2Y利差</button>
       </div>
 
       <!-- 查詢結果展示區 -->
-      <div id="search-result-box" class="hidden p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+      <div id="search-result-box" class="hidden p-3.5 sm:p-4 rounded-xl bg-slate-900 border border-slate-800">
+        <!-- 頂部標的與即時報價 -->
         <div class="flex justify-between items-start mb-2">
           <div>
             <div class="text-xs text-slate-400 font-mono" id="res-symbol">--</div>
-            <div class="font-bold text-white text-sm" id="res-name">--</div>
+            <div class="font-bold text-white text-base sm:text-lg" id="res-name">--</div>
           </div>
           <div class="text-right">
-            <div class="font-mono text-base font-bold text-white" id="res-price">--</div>
+            <div class="font-mono text-lg sm:text-xl font-bold text-white" id="res-price">--</div>
             <div class="font-mono text-xs" id="res-change">--</div>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 border-t border-slate-800/80 pt-2 mt-2 font-mono">
-          <div>較昨收基準：<span id="res-prevclose" class="text-amber-300 font-bold">--</span></div>
-          <div>今日振幅：<span id="res-range" class="text-slate-200">--</span></div>
-          <div>今日最高：<span id="res-high" class="text-slate-200">--</span></div>
-          <div>今日最低：<span id="res-low" class="text-slate-200">--</span></div>
-          <div>52週高點：<span id="res-52high" class="text-slate-200">--</span></div>
-          <div>52週低點：<span id="res-52low" class="text-slate-200">--</span></div>
+
+        <!-- 趨勢圖表與多週期切換 (5D / 1M / 3M / 1Y) -->
+        <div class="my-3 p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2 pb-1.5 border-b border-slate-800/80">
+            <!-- 週期切換按鈕 -->
+            <div class="flex items-center gap-1 bg-slate-900 p-0.5 rounded-lg border border-slate-800 text-xs">
+              <button onclick="switchModalChartRange('5d')" id="btn-modal-range-5d" class="px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white transition text-xs font-medium">5D (5日)</button>
+              <button onclick="switchModalChartRange('1mo')" id="btn-modal-range-1mo" class="px-2.5 py-0.5 rounded-md bg-sky-500 text-slate-950 font-bold transition text-xs shadow-sm">1M (月線)</button>
+              <button onclick="switchModalChartRange('3mo')" id="btn-modal-range-3mo" class="px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white transition text-xs font-medium">3M (季線)</button>
+              <button onclick="switchModalChartRange('1y')" id="btn-modal-range-1y" class="px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white transition text-xs font-medium">1Y (年線)</button>
+            </div>
+
+            <!-- 區間統計指標 -->
+            <div class="flex items-center gap-2 text-[11px] font-mono">
+              <span class="text-slate-400">區間漲跌：<b id="res-range-pct" class="text-amber-300 font-bold">--</b></span>
+              <span class="text-slate-600 hidden sm:inline">|</span>
+              <span class="text-slate-400 hidden sm:inline">高：<b id="res-range-high" class="text-slate-200">--</b></span>
+              <span class="text-slate-400 hidden sm:inline">低：<b id="res-range-low" class="text-slate-200">--</b></span>
+            </div>
+          </div>
+
+          <!-- Canvas 容器 -->
+          <div class="relative w-full h-52 sm:h-60">
+            <canvas id="tickerModalChart"></canvas>
+            <div id="chart-loading-spinner" class="absolute inset-0 flex items-center justify-center bg-slate-950/80 rounded-xl hidden">
+              <div class="text-xs text-sky-400 flex items-center gap-2 font-mono">
+                <span class="inline-block animate-spin">⚙️</span>
+                <span>正在載入時序走勢與 20MA 均線...</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-400 mt-2 flex flex-wrap items-center justify-between gap-1 pt-1.5 border-t border-slate-900">
+            <span>💡 實線為價格走勢 · <span class="text-amber-400 font-medium">🟡 虛線為 20MA 月線 (均線)</span></span>
+            <span class="text-slate-500">支援觸控/滑鼠懸停十字光標查價</span>
+          </div>
         </div>
-        <button onclick="askAIForCurrentSymbol()" class="w-full mt-3 bg-gradient-to-r from-sky-600 to-blue-600 hover:opacity-90 active:scale-95 text-white text-xs py-2 rounded-xl transition font-medium text-center">
-          🤖 讓 AI 深入分析此標的 ➔
+
+        <!-- 6大關鍵價位指標 -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[10px] text-slate-400 font-mono">
+          <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">較昨收基準：<span id="res-prevclose" class="text-amber-300 font-bold">--</span></div>
+          <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">今日振幅：<span id="res-range" class="text-slate-200">--</span></div>
+          <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">今日最高：<span id="res-high" class="text-slate-200">--</span></div>
+          <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">今日最低：<span id="res-low" class="text-slate-200">--</span></div>
+          <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">52週高點：<span id="res-52high" class="text-slate-200">--</span></div>
+          <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">52週低點：<span id="res-52low" class="text-slate-200">--</span></div>
+        </div>
+
+        <!-- 一鍵 AI 深度研報按鈕 -->
+        <button onclick="askAIForCurrentSymbol()" class="w-full mt-3 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 hover:opacity-95 active:scale-95 text-white text-xs sm:text-sm py-2.5 rounded-xl transition font-medium text-center shadow-lg shadow-sky-600/20 flex items-center justify-center gap-2">
+          <span>🤖</span>
+          <span>讓 Google Gemini 3.6 Flash 深入分析此標的 ➔</span>
         </button>
       </div>
     </div>
@@ -845,7 +889,7 @@
           }
 
           const valText = hasPct ? `${sign}${numPct}${unitStr}` : '--';
-          const tooltipTitle = `${item.name} (${item.code})\n即時行情報價：${item.price}\n基準比較 (${badgePrefix})：${valText}\n點擊立即啟動標的快速查價與深度 AI 研報`;
+          const tooltipTitle = `${item.name} (${item.code})\n即時行情報價：${item.price}\n基準比較 (${badgePrefix})：${valText}\n點擊立即展開歷史趨勢圖、20MA月線與深度 AI 研報`;
 
           html += `
             <div onclick="quickSearchSymbol('${item.symbol}')" title="${tooltipTitle}" class="p-3 rounded-xl border ${cardBg} flex flex-col justify-between transition-all duration-200 hover:scale-[1.03] hover:border-amber-400/60 hover:shadow-lg cursor-pointer group select-none">
@@ -1300,6 +1344,9 @@
     }
 
 
+    let tickerModalChart = null;
+    let currentModalRange = '1mo';
+
     function openSearchModal() {
       document.getElementById('search-modal').classList.remove('hidden');
       document.getElementById('symbol-input').focus();
@@ -1310,11 +1357,32 @@
     }
 
     function quickSearchSymbol(sym) {
+      openSearchModal();
       document.getElementById('symbol-input').value = sym;
-      searchTicker();
+      currentModalRange = '1mo';
+      searchTicker('1mo');
     }
 
-    async function searchTicker() {
+    function switchModalChartRange(range) {
+      currentModalRange = range;
+      const ranges = ['5d', '1mo', '3mo', '1y'];
+      ranges.forEach(r => {
+        const btn = document.getElementById('btn-modal-range-' + r);
+        if (btn) {
+          if (r === range) {
+            btn.className = "px-2.5 py-0.5 rounded-md bg-sky-500 text-slate-950 font-bold transition text-xs shadow-sm";
+          } else {
+            btn.className = "px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white transition text-xs font-medium";
+          }
+        }
+      });
+      const spinner = document.getElementById('chart-loading-spinner');
+      if (spinner) spinner.classList.remove('hidden');
+      searchTicker(range);
+    }
+
+    async function searchTicker(reqRange = currentModalRange) {
+      currentModalRange = reqRange;
       const sym = document.getElementById('symbol-input').value.trim();
       if (!sym) return alert('請輸入標的代碼或名稱！');
 
@@ -1322,25 +1390,56 @@
       btn.disabled = true;
       btn.innerText = '查詢中...';
 
+      const spinner = document.getElementById('chart-loading-spinner');
+      if (spinner) spinner.classList.remove('hidden');
+
+      // 更新週期按鈕狀態
+      ['5d', '1mo', '3mo', '1y'].forEach(r => {
+        const b = document.getElementById('btn-modal-range-' + r);
+        if (b) {
+          if (r === reqRange) {
+            b.className = "px-2.5 py-0.5 rounded-md bg-sky-500 text-slate-950 font-bold transition text-xs shadow-sm";
+          } else {
+            b.className = "px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white transition text-xs font-medium";
+          }
+        }
+      });
+
       try {
-        const res = await fetch('/api/quote?symbol=' + encodeURIComponent(sym));
+        const res = await fetch('/api/quote?symbol=' + encodeURIComponent(sym) + '&range=' + encodeURIComponent(reqRange));
         const json = await res.json();
 
         if (res.ok && json.status === 'success') {
           currentSearchedSymbol = json.symbol;
           document.getElementById('res-symbol').innerText = json.symbol + ' · ' + json.currency;
           document.getElementById('res-name').innerText = json.name;
-          const currSign = (json.currency === 'USD' ? '$' : (json.currency === 'TWD' ? 'NT$ ' : ''));
-          document.getElementById('res-price').innerText = currSign + json.price.toFixed(2);
+          const currSign = (json.currency === 'USD' ? '$' : (json.currency === 'TWD' ? 'NT$ ' : (json.isBps ? '' : '')));
+          const unitSign = json.isBps ? '%' : '';
+          document.getElementById('res-price').innerText = currSign + json.price + unitSign;
           
           const chgSign = json.change >= 0 ? '+' : '';
           const chgColor = json.change >= 0 ? 'text-red-400' : 'text-emerald-400';
           document.getElementById('res-change').className = 'font-mono text-xs font-bold ' + chgColor;
-          document.getElementById('res-change').innerText = `較昨收 ${chgSign}${json.change.toFixed(2)} (${chgSign}${json.pctChange}%)`;
+          document.getElementById('res-change').innerText = `較昨收 ${chgSign}${json.change} (${chgSign}${json.pctChange}%)`;
+
+          // 區間統計指標
+          const rangePctEl = document.getElementById('res-range-pct');
+          if (rangePctEl) {
+            const rSign = (json.rangePctChange >= 0) ? '+' : '';
+            const rColor = (json.rangePctChange >= 0) ? 'text-red-400' : 'text-emerald-400';
+            rangePctEl.className = rColor + ' font-bold';
+            rangePctEl.innerText = `${rSign}${json.rangePctChange}%`;
+          }
+          if (document.getElementById('res-range-high')) {
+            document.getElementById('res-range-high').innerText = json.rangeHigh !== undefined ? (currSign + json.rangeHigh + unitSign) : '--';
+          }
+          if (document.getElementById('res-range-low')) {
+            document.getElementById('res-range-low').innerText = json.rangeLow !== undefined ? (currSign + json.rangeLow + unitSign) : '--';
+          }
 
           const prevVal = (json.prevClose !== undefined && typeof json.prevClose === 'number') ? json.prevClose : (json.price - json.change);
           if (document.getElementById('res-prevclose')) {
-            document.getElementById('res-prevclose').innerText = currSign + prevVal.toFixed(2);
+            document.getElementById('res-prevclose').innerText = currSign + prevVal.toFixed(2) + unitSign;
           }
           
           const dayH = json.regularMarketDayHigh;
@@ -1354,27 +1453,143 @@
             }
           }
 
-          document.getElementById('res-high').innerText = dayH ? (currSign + dayH.toFixed(2)) : '--';
-          document.getElementById('res-low').innerText = dayL ? (currSign + dayL.toFixed(2)) : '--';
-          document.getElementById('res-52high').innerText = json.high52 ? (currSign + json.high52.toFixed(2)) : '--';
-          document.getElementById('res-52low').innerText = json.low52 ? (currSign + json.low52.toFixed(2)) : '--';
+          document.getElementById('res-high').innerText = dayH ? (currSign + dayH.toFixed(2) + unitSign) : '--';
+          document.getElementById('res-low').innerText = dayL ? (currSign + dayL.toFixed(2) + unitSign) : '--';
+          document.getElementById('res-52high').innerText = json.high52 ? (currSign + json.high52.toFixed(2) + unitSign) : '--';
+          document.getElementById('res-52low').innerText = json.low52 ? (currSign + json.low52.toFixed(2) + unitSign) : '--';
 
           document.getElementById('search-result-box').classList.remove('hidden');
+
+          // 繪製趨勢圖表
+          renderTickerModalChart(json.history, reqRange, json.symbol, json.name, json.rangePctChange, json.currency, json.isBps);
         } else {
           alert('查無標的代碼行情，請確認代碼或名稱是否正確！');
         }
       } catch (e) {
+        console.error('Ticker search error:', e);
         alert('連線查詢失敗，請重試！');
       } finally {
         btn.disabled = false;
         btn.innerText = '查詢';
+        if (spinner) spinner.classList.add('hidden');
       }
+    }
+
+    function renderTickerModalChart(history, range, symbol, name, rangePctChange, currency, isBps) {
+      const canvas = document.getElementById('tickerModalChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (tickerModalChart) {
+        tickerModalChart.destroy();
+        tickerModalChart = null;
+      }
+
+      if (!history || !Array.isArray(history.closes) || history.closes.length === 0) {
+        return;
+      }
+
+      const isUp = (rangePctChange !== undefined && rangePctChange !== null) ? (rangePctChange >= 0) : true;
+      const primaryColor = isUp ? '#ef4444' : '#10b981';
+      
+      const gradient = ctx.createLinearGradient(0, 0, 0, 240);
+      if (isUp) {
+        gradient.addColorStop(0, 'rgba(239, 68, 68, 0.32)');
+        gradient.addColorStop(1, 'rgba(239, 68, 68, 0.00)');
+      } else {
+        gradient.addColorStop(0, 'rgba(16, 185, 129, 0.32)');
+        gradient.addColorStop(1, 'rgba(16, 185, 129, 0.00)');
+      }
+
+      const datasets = [
+        {
+          label: `${name || symbol} 走勢 (${currency || ''})`,
+          data: history.closes,
+          borderColor: primaryColor,
+          backgroundColor: gradient,
+          fill: true,
+          tension: 0.25,
+          borderWidth: 2.2,
+          pointRadius: history.closes.length > 50 ? 0 : 2.5,
+          pointHoverRadius: 6,
+          pointBackgroundColor: primaryColor
+        }
+      ];
+
+      if (Array.isArray(history.ma20) && history.ma20.length > 0) {
+        datasets.push({
+          label: '20MA 月線 (均線)',
+          data: history.ma20,
+          borderColor: '#fbbf24',
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          fill: false,
+          tension: 0.25,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          pointBackgroundColor: '#fbbf24'
+        });
+      }
+
+      tickerModalChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: history.labels || [],
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#94a3b8',
+                boxWidth: 10,
+                font: { size: 10 }
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.95)',
+              titleColor: '#e2e8f0',
+              bodyColor: '#38bdf8',
+              borderColor: '#334155',
+              borderWidth: 1,
+              padding: 8,
+              callbacks: {
+                label: function(context) {
+                  let val = context.parsed.y;
+                  return ` ${context.dataset.label}: ${val}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              grid: { color: 'rgba(51, 65, 85, 0.3)' },
+              ticks: { color: '#94a3b8', font: { size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: '#94a3b8',
+                font: { size: 10 },
+                maxTicksLimit: 7
+              }
+            }
+          }
+        }
+      });
     }
 
     function askAIForCurrentSymbol() {
       if (!currentSearchedSymbol) return;
       closeSearchModal();
-      quickAsk(`請針對【${currentSearchedSymbol}】結合最新行情、基本面估值與全球總體經濟趨勢進行深度策略研報分析`);
+      quickAsk(`請針對【${currentSearchedSymbol}】結合最新行情走勢、20MA均線位階與全球總體經濟趨勢進行深度策略研報分析`);
     }
 
     function shareToLine() {
