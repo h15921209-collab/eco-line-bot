@@ -262,7 +262,8 @@ module.exports = async (req, res) => {
   }
 
   try {
-    if (inMemoryNews.length === 0 || Date.now() - lastFetchTime > FETCH_INTERVAL_MS) {
+    const isForce = req.query?.force === '1' || req.query?.refresh === '1';
+    if (isForce || inMemoryNews.length === 0 || Date.now() - lastFetchTime > FETCH_INTERVAL_MS) {
       await refreshAndStoreNews();
     }
 

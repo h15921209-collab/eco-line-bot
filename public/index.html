@@ -274,8 +274,9 @@
           <span class="text-[11px] text-slate-400 font-mono bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
             收錄：<span id="news-total-count" class="text-amber-300 font-bold">--</span> 則核心情報
           </span>
-          <button onclick="loadMacroNews()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 text-[11px]">
-            <span>🔄</span> 重新整理
+          <button id="btn-refresh-news" onclick="loadMacroNews(currentNewsCategory, true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 text-[11px] active:scale-95">
+            <span id="refresh-news-icon">🔄</span>
+            <span id="refresh-news-text">重新整理</span>
           </button>
           <button id="btn-toggle-news" onclick="toggleNewsCollapse()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 hover:text-white border border-slate-700 transition flex items-center gap-1 text-[11px] font-medium active:scale-95">
             <span id="news-toggle-icon">▼</span>
@@ -1086,9 +1087,19 @@
     let currentNewsCategory = 'all';
     let cachedMacroNews = [];
 
-    async function loadMacroNews(cat = currentNewsCategory) {
+    async function loadMacroNews(cat = currentNewsCategory, isManual = false) {
       currentNewsCategory = cat;
       const listEl = document.getElementById('macro-news-list');
+      const refreshBtn = document.getElementById('btn-refresh-news');
+      const refreshIcon = document.getElementById('refresh-news-icon');
+      const refreshText = document.getElementById('refresh-news-text');
+
+      if (isManual && refreshBtn) {
+        refreshBtn.disabled = true;
+        if (refreshIcon) refreshIcon.className = "inline-block animate-spin";
+        if (refreshText) refreshText.innerText = "抓取中...";
+      }
+
       if (listEl && cachedMacroNews.length === 0) {
         listEl.innerHTML = `
           <div class="text-center py-8 text-slate-500 text-xs font-mono">
@@ -1099,19 +1110,29 @@
       }
 
       try {
-        const res = await fetch('/api/news?category=' + encodeURIComponent(cat) + '&t=' + Date.now());
+        const forceParam = isManual ? '&force=1' : '';
+        const res = await fetch('/api/news?category=' + encodeURIComponent(cat) + forceParam + '&t=' + Date.now());
         if (!res.ok) return;
         const data = await res.json();
         if (data.status === 'success') {
           cachedMacroNews = data.news || [];
           const countEl = document.getElementById('news-total-count');
-          if (countEl) countEl.innerText = data.total || cachedMacroNews.length;
+          if (countEl) countEl.innerText = data.totalCount || data.allCount || cachedMacroNews.length;
           renderNewsList();
         }
       } catch (e) {
         console.warn('Load macro news failed:', e);
         if (listEl) {
           listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">暫無最新新聞資料或連線異常，請稍後點擊重新整理。</div>';
+        }
+      } finally {
+        if (isManual && refreshBtn) {
+          if (refreshIcon) refreshIcon.className = "";
+          if (refreshText) refreshText.innerText = "已更新";
+          setTimeout(() => {
+            if (refreshBtn) refreshBtn.disabled = false;
+            if (refreshText) refreshText.innerText = "重新整理";
+          }, 1200);
         }
       }
     }
