@@ -243,12 +243,13 @@ module.exports = async (req, res) => {
   // 特殊處理 2：10Y-2Y 公債殖利率利差 (US10Y - US2Y)
   if (symbol === "SPREAD_10Y2Y" || rawInput.toUpperCase() === "SPREAD" || rawInput.toUpperCase() === "T10Y2Y") {
     try {
+      const spreadInterval = (range === "5d") ? "1d" : interval;
       const [res10, res2] = await Promise.all([
-        fetch(`https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=${interval}&range=${range}`, {
+        fetch(`https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=${spreadInterval}&range=${range}`, {
           headers: { "User-Agent": "Mozilla/5.0" },
           signal: AbortSignal.timeout(4000)
         }).then(r => r.json()),
-        fetch(`https://query1.finance.yahoo.com/v8/finance/chart/2YY%3DF?interval=${interval}&range=${range}`, {
+        fetch(`https://query1.finance.yahoo.com/v8/finance/chart/2YY%3DF?interval=${spreadInterval}&range=${range}`, {
           headers: { "User-Agent": "Mozilla/5.0" },
           signal: AbortSignal.timeout(4000)
         }).then(r => r.json())
@@ -268,7 +269,7 @@ module.exports = async (req, res) => {
           const spread = Number((q10[i] - q2[i]).toFixed(3));
           closes.push(spread);
           timestamps.push(ts10[i]);
-          labels.push(formatDate(ts10[i], range === "5d"));
+          labels.push(formatDate(ts10[i], spreadInterval === "1h"));
         }
       }
 
@@ -322,25 +323,48 @@ module.exports = async (req, res) => {
       signal: AbortSignal.timeout(4000)
     });
 
-    // 若 5d 的 1h 模式失敗，降級為 1d 重新查詢
-    if (!response.ok && interval === "1h") {
+    let data = response.ok ? await response.json() : null;
+    let quoteObj = data?.chart?.result?.[0]?.indicators?.quote?.[0] || {};
+    let rawCloses = quoteObj.close || [];
+    let validCount = rawCloses.filter(c => typeof c === "number" && !isNaN(c) && c > 0).length;
+
+    // 雙重保險防禦 1：若 1h 模式下請求失敗或回傳 0 筆數據 (例如 TIO=F 鐵礦砂、2YY=F 兩年期公債期貨)，自動降級為 1d 日線
+    if (interval === "1h" && (!response.ok || validCount === 0)) {
       interval = "1d";
       fetchUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;
       response = await fetch(fetchUrl, {
         headers: { "User-Agent": "Mozilla/5.0" },
         signal: AbortSignal.timeout(4000)
       });
+      if (response.ok) {
+        data = await response.json();
+        quoteObj = data?.chart?.result?.[0]?.indicators?.quote?.[0] || {};
+        rawCloses = quoteObj.close || [];
+        validCount = rawCloses.filter(c => typeof c === "number" && !isNaN(c) && c > 0).length;
+      }
     }
 
-    if (!response.ok) {
+    // 雙重保險防禦 2：若 5d 日線依然因長假無數據，自 1mo 提取最近 5 天數據備援
+    if (range === "5d" && validCount === 0) {
+      fetchUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1mo`;
+      const fallbackRes = await fetch(fetchUrl, {
+        headers: { "User-Agent": "Mozilla/5.0" },
+        signal: AbortSignal.timeout(4000)
+      });
+      if (fallbackRes.ok) {
+        data = await fallbackRes.json();
+        quoteObj = data?.chart?.result?.[0]?.indicators?.quote?.[0] || {};
+        rawCloses = quoteObj.close || [];
+      }
+    }
+
+    if (!response.ok || !data) {
       return res.status(404).json({ error: `查無標的代碼 ${symbol}` });
     }
 
-    const data = await response.json();
     const meta = data.chart?.result?.[0]?.meta;
-    const timestamps = data.chart?.result?.[0]?.timestamp || [];
-    const quoteObj = data.chart?.result?.[0]?.indicators?.quote?.[0] || {};
-    const rawCloses = quoteObj.close || [];
+    let timestamps = data.chart?.result?.[0]?.timestamp || [];
+    rawCloses = quoteObj.close || [];
 
     const labels = [];
     const closes = [];
@@ -354,6 +378,13 @@ module.exports = async (req, res) => {
         labels.push(formatDate(ts, interval === "1h"));
       }
     });
+
+    // 若為 5d 備援切片，只取最後 5 筆
+    if (range === "5d" && closes.length > 10 && interval === "1d") {
+      closes.splice(0, closes.length - 5);
+      validTimestamps.splice(0, validTimestamps.length - 5);
+      labels.splice(0, labels.length - 5);
+    }
 
     if (!meta || closes.length === 0) {
       return res.status(404).json({ error: `無有效行情數據 ${symbol}` });
