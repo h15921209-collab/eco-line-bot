@@ -691,6 +691,7 @@
     let currentRawReport = "";
     let isSpeaking = false;
     let currentSearchedSymbol = "";
+    let currentTickerDetails = null;
     let currentPortfolioModel = 'standard';
     const DOMAIN_URL = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost'))
       ? window.location.origin
@@ -1411,6 +1412,7 @@
 
         if (res.ok && json.status === 'success') {
           currentSearchedSymbol = json.symbol;
+          currentTickerDetails = json;
           document.getElementById('res-symbol').innerText = json.symbol + ' · ' + json.currency;
           document.getElementById('res-name').innerText = json.name;
           const currSign = (json.currency === 'USD' ? '$' : (json.currency === 'TWD' ? 'NT$ ' : (json.isBps ? '' : '')));
@@ -1589,7 +1591,41 @@
     function askAIForCurrentSymbol() {
       if (!currentSearchedSymbol) return;
       closeSearchModal();
-      quickAsk(`請針對【${currentSearchedSymbol}】結合最新行情走勢、20MA均線位階與全球總體經濟趨勢進行深度策略研報分析`);
+
+      let targetPrompt = `請針對【${currentSearchedSymbol}】結合最新行情走勢、20MA均線位階與全球總體經濟趨勢進行深度策略研報分析`;
+
+      if (currentTickerDetails) {
+        const d = currentTickerDetails;
+        const name = d.name || d.symbol;
+        const currSign = (d.currency === 'USD' ? '$' : (d.currency === 'TWD' ? 'NT$ ' : (d.isBps ? '' : '')));
+        const unitSign = d.isBps ? '%' : '';
+        const priceStr = `${currSign}${d.price}${unitSign}`;
+        const chgSign = d.change >= 0 ? '+' : '';
+        const chgStr = `${chgSign}${d.change} (${chgSign}${d.pctChange}%)`;
+        
+        let maContext = '';
+        if (d.history && Array.isArray(d.history.ma20) && d.history.ma20.length > 0) {
+          const lastMa = d.history.ma20[d.history.ma20.length - 1];
+          if (typeof lastMa === 'number') {
+            const diffPct = (((d.price - lastMa) / lastMa) * 100).toFixed(1);
+            if (d.price >= lastMa) {
+              maContext = `、高於 20MA 月線 (均線 ${currSign}${lastMa.toFixed(2)}${unitSign}) +${diffPct}% 呈現偏多位階`;
+            } else {
+              maContext = `、跌破 20MA 月線 (均線 ${currSign}${lastMa.toFixed(2)}${unitSign}) ${diffPct}% 呈現偏弱整理位階`;
+            }
+          }
+        }
+
+        let rangeContext = '';
+        if (d.rangePctChange !== undefined && d.rangePctChange !== null) {
+          const rSign = d.rangePctChange >= 0 ? '+' : '';
+          rangeContext = `、當前區間波段漲跌 ${rSign}${d.rangePctChange}%`;
+        }
+
+        targetPrompt = `請針對【${name} (${d.symbol})】最新即時報價 ${priceStr}、較昨收 ${chgStr}${maContext}${rangeContext}，結合所屬產業鏈基本面、上下游供需、均線多空防線與全球總體經濟情勢，進行機構級首席策略師深度專題推演`;
+      }
+
+      quickAsk(targetPrompt);
     }
 
     function shareToLine() {

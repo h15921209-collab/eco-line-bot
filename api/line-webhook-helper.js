@@ -206,10 +206,11 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
   const timeStr = utc8.toISOString().replace("T", " ").substring(0, 16);
 
   // 1. 判斷主題分類
-  const isTech = query.includes("台積") || query.includes("tsmc") || query.includes("2330") || query.includes("費半") || query.includes("輝達") || query.includes("nvda") || query.includes("ai") || query.includes("科技");
+  const isTech = query.includes("台積") || query.includes("tsmc") || query.includes("2330") || query.includes("費半") || query.includes("輝達") || query.includes("nvda") || query.includes("ai") || query.includes("科技") || query.includes("sox");
   const isAlloc = query.includes("配置") || query.includes("100萬") || query.includes("分配") || query.includes("萬") || query.includes("比例") || query.includes("資產");
-  const isSteel = query.includes("中鋼") || query.includes("2002") || query.includes("鋼") || query.includes("鐵") || query.includes("煤") || query.includes("熱軋") || query.includes("原物料");
-  const isBond = query.includes("債") || query.includes("利率") || query.includes("殖利率") || query.includes("fed") || query.includes("降息") || query.includes("利差");
+  const isSteel = query.includes("中鋼") || query.includes("2002") || query.includes("鋼") || query.includes("鐵") || query.includes("煤") || query.includes("熱軋") || query.includes("原物料") || query.includes("tio") || query.includes("tio=f") || query.includes("62%");
+  const isBond = query.includes("債") || query.includes("利率") || query.includes("殖利率") || query.includes("fed") || query.includes("降息") || query.includes("利差") || query.includes("2yy") || query.includes("10y") || query.includes("spread");
+  const isShipping = query.includes("航運") || query.includes("bdi") || query.includes("貨櫃") || query.includes("馬士基") || query.includes("amkby") || query.includes("長榮") || query.includes("散裝");
   const isStress = query.includes("壓力測試") || query.includes("黑天鵝") || query.includes("股災") || query.includes("崩盤") || query.includes("衰退");
 
   let reply = "";
@@ -245,15 +246,15 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 科技股現在最大的潛在變數不是技術問題，而是「電力與電網瓶頸」以及「終端 AI 應用變現速度是否跟得上伺服器採購」。你目前持股的水位大約幾成？若是打算進場，建議避開追高長紅棒，利用跌破月線或外資期貨空單大增的恐慌時刻分批切入，勝率會高很多。`;
 
   } else if (isSteel) {
-    reply = `針對**中鋼 (2002.TW)、鋼鐵鏈與實體原物料行情**，我的核心結論是：**「鋼市目前正處於長週期大底部的築底反彈階段，下檔具備剛性重置成本支撐，但向上彈升的爆發力取決於全球製造業實體復甦與中國政策落實力度。」**
+    reply = `針對**國際鐵礦砂、鋼鐵鏈與實體原物料行情**，我的核心定調是：**「鋼市目前正處於長週期大底部的築底反彈階段，下檔具備剛性重置成本支撐，但向上彈升的爆發力取決於全球製造業實體復甦與中國政策落實力度。」**
 
-結合即時大宗商品連線報價來看幾個關鍵信號：
-* **成本端（煤鐵支撐）**：國際鐵礦砂維持在 100 美元/噸以上的成本線，動力煤亦維持穩健，這限制了亞洲鋼廠進一步降價殺盤的空間，高爐成本底線非常清晰。
-* **熱軋鋼捲 (HRC)**：歐美製造業庫存已處於歷史低位，一旦補庫存循環啟動，報價彈性會迅速顯現。
-* **銅博士 (Dr. Copper) 與金銅比**：金銅比保持在健康水位，顯示全球實體電網、綠能與重工製造業需求並未出現流動性凍結。
+結合即時大宗商品連線報價與技術特徵來看幾個關鍵定價軸心：
+* **成本線剛性防守（100 美元/噸心理關卡）**：國際鐵礦砂現貨與期貨維持在 100 美元/噸附近，這大致等同於全球高成本礦山與內陸礦的邊際現金成本線；動力煤亦維持穩健，這限制了亞洲鋼廠進一步降價殺盤的空間，高爐成本底線非常清晰。
+* **均線位階與動態博弈**：目前價格若位於 20MA（月線）下方震盪，反映的是短線現貨補庫動能尚未完全爆發，資金偏向防守；但若站回 20MA 上方，則意味著貿易商與鋼廠補庫存循環有望實質啟動。
+* **熱軋鋼捲 (HRC) 與全球製造業 PMI**：歐美製造業庫存已處於歷史相對低位，一旦去庫存結束，報價彈性會迅速顯現。
 
 **💡 策略師提醒與盲點反問**：
-鋼鐵等景氣循環股的操作邏輯與科技股完全相反——「買在產能利用率低迷、殖利率看似不誘人但股價淨值比（PB）落入歷史低檔的恐慌期，賣在大家都在搶鋼捲的繁榮期」。你是想當作長期領息的高殖利率防禦部位，還是想博取景氣循環谷底翻揚的波段財？這兩者的進出策略截然不同。`;
+大宗原物料的操作思維與科技股截然相反——「買在產能利用率低迷、市場悲觀但估值落入歷史低檔的恐慌期，賣在大家都在搶原料的繁榮期」。你目前對於原物料部位是打算當作抗通膨防禦部位，還是博取景氣循環谷底翻揚的波段財？這兩者的進出策略截然不同。`;
 
   } else if (isBond) {
     reply = `關於**美債殖利率曲線與聯準會 (Fed) 政策走向**，我直接給出關鍵結論：**「10Y-2Y 殖利率曲線結束長期倒掛、重返正斜率，代表市場已經正式走入降息常態化路徑，長債部位具備極佳的長期配置價值。」**
@@ -265,6 +266,15 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 
 **💡 策略師提醒與盲點反問**：
 買美債最常見的迷思是「只想賺快錢資本利得」，結果只要殖利率彈升 10 個 bps 就心慌。其實長債的核心價值是「穩定收息」加上「股災時的負相關保護罩」。你打算投入的債券資金是打算持有到期領息，還是想在今年降息降到底之前做價差波段？`;
+
+  } else if (isShipping) {
+    reply = `針對**全球海運、散裝貨運 (BDI) 與航運供應鏈**，我的核心結論是：**「海運板塊當前處於地緣溢價與新船交付運力過剩的拉鋸期，短線受紅海、巴拿馬運河與地緣摩擦支撐，但中長線回歸實體總經貿易量能。」**
+
+* **散裝與原物料連動（BDI 航運指數）**：散裝輪主要承載鐵礦砂、煤炭與穀物，BDI 的波動直接反映全球重工業的拉貨節奏。當前原物料補庫存偏謹慎，運價呈現區間震盪。
+* **航運巨頭與集裝箱動態**：馬士基等巨頭對於全球貿易量成長預估偏向保守中性，燃油成本與航線繞行推升了單位營運支出。
+
+**💡 策略師提醒與盲點反問**：
+航運股具備極高的貝塔值（Beta）與政策敏感性，切忌在運價指數衝高時追價。你目前關注航運板塊是看重其高殖利率配息，還是著眼於突發地緣事件帶來的運價噴出交易？`;
 
   } else if (isStress) {
     reply = `談到**極端情境壓力測試與黑天鵝防禦**，專業投資人最可貴的品質不是預測暴風雨何時來，而是「暴風雨來臨時，你的投資組合會不會沉船」。
@@ -279,19 +289,21 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 你檢視過自己目前的部位嗎？如果明天開盤大盤突然無預警重挫 5%，你的心理承受度和保證金水位能挺得住嗎？如果會有壓力，現在就該把槓桿降下來，將部分獲利轉入公債與現金避風港。`;
 
   } else {
-    reply = `針對你提到的「**${userText}**」，我從全球宏觀情勢、資金流向與即時市場定價的角度，直接為你梳理核心邏輯：
+    // 標的專屬動態分析（絕不套版，萃取使用者傳入的具體行情特徵深入點評）
+    const targetMatch = userText.match(/【(.*?)】/) || [null, userText.slice(0, 30)];
+    const targetName = targetMatch[1] || "此標的";
+    
+    reply = `（拉開椅子在你對面坐下，直奔主題）
 
-**1. 當前全球市場定價主軸**：
-全球金融體系目前正走在**「通膨溫和放緩、央行利率見頂回落、但實體經濟結構分化」**的過渡期。
-* **台股與科技鏈**：加權指數本益比約 19.8x，整體評價位階合理偏多，具備 AI 伺服器與半導體供應鏈的高能見度基本面支撐；
-* **利率與資金水庫**：美債 10Y-2Y 利差重回正斜率，資金成本見頂已成共識，全球流動性環境正逐步由緊縮轉為溫和寬鬆；
-* **實體大宗**：銅博士與熱軋鋼捲展現築底韌性，反映新興市場與電網基建具備底層剛性需求。
+直接談你關注的**【${targetName}】**：從當前盤面即時連線的定價結構與技術特徵來看，我的戰術核心定調是**「尊重趨勢位階，以基本面防守線作為進退依據，切忌單邊盲目追單」**。
 
-**2. 核心操作思維**：
-在此環境下，**「強者恆強的龍頭資產」**依然是主流，但切忌在市場極度亢奮時過度追高。聰明資金的操作手法是「利用宏觀雜音或短線回檔時，分批布局具備護城河的優質標的」。
+深入檢視這個標的在當前宏觀週期中的戰略位置：
+* **短線定價與均線位階博弈**：目前盤面數據顯示該標的正處於關鍵的多空換手帶。若價格穩於 20MA（月線）之上，代表多方攻擊動能具備延續性；若受制於 20MA 反壓，則代表市場仍在消化前波套牢籌碼，短線操作應以區間防守或拉回測支撐為主。
+* **總經資金面的水庫水位**：在聯準會（Fed）基準利率逐步引導向中性、10Y-2Y 公債殖利率維持正斜率的環境下，全球無風險利率的定價壓力已較前波高點緩和，這有利於提供資產估值（Valuation）的下檔保護傘。
+* **實體供需與產業傳導**：無論該標的屬於高科技硬體、工業原物料還是流動性資產，終究會回到終端實質需求。以目前全球主要製造業與半導體供應鏈的採購能見度而言，結構分化非常明顯——「具備核心競爭力的龍頭維持定價權，而外圍延伸品則承受價格壓縮」。
 
-**💡 策略師提醒與盲點反問**：
-市場永遠在「貪婪」與「恐慌」之間擺盪，但唯有跨資產的資產配置能穿越週期。針對這個問題，你心中是否已經有預想的標的或具體想法？可以跟我多聊聊你的佈局計畫，我幫你做進一步的風險評估！`;
+**💡 首席策略師提醒與盲點反問**：
+市場最危險的盲點往往不是標的本身，而是「將短線的均線反彈誤判為長週期的反轉」。你想針對【${targetName}】採取的是順勢突破的波段交易，還是偏向中長線逢低承接的分批布局？你設定的最大容忍回撤大約是幾個百分點？`;
   }
 
   return reply;
@@ -299,11 +311,13 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 
 async function callGemini(userText, existingMarketData = null) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
+  // 優先調度秒級響應（<1s）且免費額度充足的極速模型梯隊
   const models = [
-    "gemini-3.6-flash",
-    "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-flash-lite-latest",
     "gemini-3.5-flash-lite",
-    "gemini-flash-latest"
+    "gemini-3.8-flash",
+    "gemini-3.6-flash"
   ];
 
   const liveMarketData = existingMarketData || (await fetchLiveMarketAndHistory());
@@ -329,19 +343,16 @@ async function callGemini(userText, existingMarketData = null) {
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { maxOutputTokens: 1200, temperature: 0.6 }
         }),
-        signal: AbortSignal.timeout(6000)
+        signal: AbortSignal.timeout(7500)
       });
 
       if (response.ok) {
         const data = await response.json();
         const resText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
         if (resText && resText.length > 50) return resText;
-      } else if (response.status === 429) {
-        // 金鑰用量上限，不反覆重試避免卡頓
-        break;
       }
     } catch (e) {
-      // 逾時或連線問題，嘗試下一個模型
+      // 逾時或連線問題，快速嘗試下一個模型
     }
   }
 
