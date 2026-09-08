@@ -502,52 +502,113 @@ function isHelpQuery(text) {
   return helpKeywords.some(k => cleaned === k || cleaned.startsWith("help") || cleaned.startsWith("說明"));
 }
 
-// 判斷是否為個人 Google 試算表記錄或試算表研報指令
-function isSheetsCommand(text) {
+const { parseRecordText, addRecord, readRecords } = require('./records');
+
+// 判斷是否為記錄數據指令
+function isRecordCommand(text) {
   const t = text.trim();
-  const isRecord = t.startsWith("記錄") || t.startsWith("紀錄") || t.startsWith("記下") || 
-                   t.startsWith("寫入") || t.startsWith("存入") || t.startsWith("記 ") || 
-                   t.startsWith("記：") || t.startsWith("記:");
-  const isAnalyze = t.includes("分析試算表") || t.includes("試算表研報") || t.includes("分析筆記") ||
-                    t.includes("查試算表") || t.includes("查看試算表");
-  return isRecord || isAnalyze;
+  return t.startsWith("記錄") || t.startsWith("紀錄") || t.startsWith("記下") || 
+         t.startsWith("寫入") || t.startsWith("存入") || t.startsWith("記 ") || 
+         t.startsWith("記：") || t.startsWith("記:");
 }
 
-// 轉發至勝穩個人的 Google Apps Script (GAS) 處理試算表寫入與專屬研報
-async function handleSheetsForwarding(userMsg, event, lineToken, replyToken) {
-  const gasUrl = process.env.GAS_WEBHOOK_URL;
-  if (!gasUrl) {
-    const guideMsg = `💡 【個人 Google 試算表連動提示】\n━━━━━━━━━━━━━━━━━━━━\n` +
-      `偵測到您的試算表記錄指令：「${userMsg}」！\n\n` +
-      `本系統支援將重要總經指標自動登記至您的個人 Google 試算表。\n` +
-      `目前尚未在 Render 後台設定 GAS_WEBHOOK_URL 環境變數。\n\n` +
-      `👉 請依 docs/gas-deployment-guide.md 部署 Google Apps Script 後，在 Render 填入 GAS_WEBHOOK_URL 即可啟用自動記帳入表功能！`;
-    await replyLine(lineToken, replyToken, guideMsg);
+// 判斷是否為分析筆記指令
+function isAnalyzeRecordsCommand(text) {
+  const t = text.trim();
+  return t.includes("分析筆記") || t.includes("分析試算表") || t.includes("試算表研報") || 
+         t.includes("筆記研報") || t.includes("分析記錄");
+}
+
+// 判斷是否為查看歷史筆記指令
+function isViewRecordsCommand(text) {
+  const t = text.trim();
+  return t.includes("查看筆記") || t.includes("歷史筆記") || t.includes("我的筆記") || 
+         t.includes("查筆記") || t.includes("查看記錄") || t.includes("查記錄");
+}
+
+// 處理個人筆記與記帳指令
+async function handlePersonalRecords(userMsg, event, lineToken, replyToken) {
+  // 1. 查看筆記清單
+  if (isViewRecordsCommand(userMsg)) {
+    const records = readRecords();
+    if (records.length === 0) {
+      await replyLine(lineToken, replyToken, "📝 您的個人總經筆記庫目前尚無資料！\n您可以隨時在聊天室輸入如：\n「記錄 CPI 2.9 月增0.1%」\n「記下 鐵礦砂 99.5 美元/噸 高爐成本支撐」\n系統將自動為您歸檔儲存！");
+      return true;
+    }
+
+    const latest = records.slice(0, 6);
+    const listText = latest.map((r, i) => 
+      `${i + 1}. [${r.timestamp.substring(5, 16)}] ${r.metric}: ${r.value} ${r.unit}\n   ${r.tag} ｜ 脈絡: ${r.note || "無"}`
+    ).join("\n\n");
+
+    const reply = `📚 【個人宏觀數據筆記庫 · 最近 ${latest.length} 筆】\n━━━━━━━━━━━━━━━━━━━━\n${listText}\n━━━━━━━━━━━━━━━━━━━━\n💡 累積總數：共 ${records.length} 筆\n💬 輸入「分析筆記」即可由 AI 自動閱讀歷史時序產出專屬研報！\n📱 完整表格與 CSV 下載：${SHORT_WEB_URL}`;
+    await replyLine(lineToken, replyToken, reply);
     return true;
   }
 
-  try {
-    const res = await fetch(gasUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userMsg,
-        replyToken,
-        userId: event.source?.userId,
-        timestamp: event.timestamp
-      }),
-      signal: AbortSignal.timeout(12000)
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      if (data.replyText) {
-        await replyLine(lineToken, replyToken, data.replyText);
-        return true;
-      }
+  // 2. 記錄數據指令
+  if (isRecordCommand(userMsg)) {
+    const parsed = parseRecordText(userMsg);
+    if (!parsed || !parsed.metric || !parsed.value) {
+      await replyLine(lineToken, replyToken, "⚠️ 記帳格式解析未果，請參考格式範例：\n「記錄 CPI 2.9 月增0.1%」或\n「記下 鐵礦砂 99.5 美元/噸 高爐成本線」");
+      return true;
     }
-  } catch (err) {
-    console.error("GAS Forwarding Error:", err);
+
+    const saveRes = addRecord(parsed, "LINE Bot");
+
+    // 若使用者設定了 GAS_WEBHOOK_URL，亦於背景非同步同步轉發一份至 Google 試算表
+    if (process.env.GAS_WEBHOOK_URL) {
+      fetch(process.env.GAS_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userMsg, replyToken, userId: event.source?.userId, timestamp: event.timestamp })
+      }).catch(e => console.error("GAS sync err:", e));
+    }
+
+    const confirmMsg = `✅ 【成功登記至個人宏觀筆記庫】\n━━━━━━━━━━━━━━━━━━━━\n` +
+      `⏱️ 時間：${saveRes.record.timestamp}\n` +
+      `📊 指標：${parsed.metric}\n` +
+      `🔢 數值：${parsed.value} ${parsed.unit || ""}\n` +
+      `📝 脈絡：${parsed.note || "常態追蹤"}\n` +
+      `🏷️ 標籤：${parsed.tag}\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `💡 累積筆記：共 ${saveRes.totalCount} 筆數據\n` +
+      `💬 輸入「分析筆記」即可產出 AI 趨勢分析簡報！\n` +
+      `📱 隨時在網頁端檢視歷史表格或一鍵複製至 Excel / Google 試算表：\n👉 ${SHORT_WEB_URL}`;
+
+    await replyLine(lineToken, replyToken, confirmMsg);
+    return true;
+  }
+
+  // 3. 分析筆記指令（Gemini 讀取個人時序）
+  if (isAnalyzeRecordsCommand(userMsg)) {
+    const records = readRecords();
+    if (records.length === 0) {
+      await replyLine(lineToken, replyToken, "📊 您的個人筆記庫目前尚無數據！\n請先輸入如「記錄 CPI 2.9」累積數據後，即可啟動 Gemini 自動分析！");
+      return true;
+    }
+
+    const sample = records.slice(0, 15);
+    const historyText = sample.map(r => 
+      `• [${r.timestamp}] ${r.metric}：${r.value} ${r.unit} ｜ 脈絡: ${r.note} (${r.tag})`
+    ).join("\n");
+
+    const prompt = `你是頂級宏觀智庫與對沖基金的【資深首席策略分析師】。
+以下是林勝穩（資深產業決策者）個人持續記錄追蹤的真實數據與脈絡歷程：
+
+【個人登記之歷史時序數據庫】：
+${historyText}
+
+請以資深首席策略分析師的真實專業口吻解答：
+★【零預設字句】：開門見山第一句直接切入核心走勢研判與供需因果，嚴禁出現任何「針對你提到的...」、「我為您梳理」等客套廢話！
+★【經驗邏輯穿透】：深究指標背後的供需失衡、上下游傳導阻力與政策意圖，嚴禁動輒給出「股債現金比例」等套路化資產配置！
+★【歷史鏡像即時發想】：由模型在全歷史知識庫中自由發想最貼切的歷史對標切片，自擬專屬標題並剖析同異點！
+★【俐落收尾】：直接以多空風險臨界線或關鍵實體監控指標明確結尾。`;
+
+    const aiReport = await callGemini(prompt);
+    const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
+    await replyLine(lineToken, replyToken, replyBody);
+    return true;
   }
 
   return false;
@@ -596,11 +657,9 @@ module.exports = async (req, res) => {
             continue;
           }
 
-          // 3. 判斷是否為個人 Google 試算表記錄或專屬研報指令（智慧分流轉發）
-          if (isSheetsCommand(userMsg)) {
-            const handled = await handleSheetsForwarding(userMsg, event, lineToken, replyToken);
-            if (handled) continue;
-          }
+          // 3. 判斷是否為個人宏觀數據筆記記錄、查看或專屬研報指令
+          const handledRecord = await handlePersonalRecords(userMsg, event, lineToken, replyToken);
+          if (handledRecord) continue;
 
           // 4. 一般總經諮詢走 Gemini 深度推理
           const aiReport = await callGemini(userMsg);

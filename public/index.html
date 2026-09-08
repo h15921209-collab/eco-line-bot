@@ -465,43 +465,56 @@
           </a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-3">
-          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-amber-500/30">
-            <div class="flex items-center justify-between mb-1.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 my-3">
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-amber-500/30">
+            <div class="flex items-center justify-between mb-1">
               <div class="text-xs text-amber-300 font-bold">📊 1. 【即時快照對比表】</div>
-              <button onclick="copySnapshotFormula()" class="bg-amber-600/30 hover:bg-amber-600/50 active:scale-95 text-amber-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-amber-500/40 transition">
+              <button onclick="copySnapshotFormula()" class="bg-amber-600/30 hover:bg-amber-600/50 active:scale-95 text-amber-300 text-[10px] px-2 py-0.5 rounded-lg border border-amber-500/40 transition">
                 📋 複製
               </button>
             </div>
-            <div class="text-[10px] text-slate-400 mb-1">最新價、昨收價、漲跌額與多週期幅度</div>
-            <div id="sheets-snapshot-box" class="bg-black/60 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-amber-300 break-all select-all">
+            <div class="text-[10px] text-slate-400 mb-1">最新價、昨收價、漲跌額與多週期</div>
+            <div id="sheets-snapshot-box" class="bg-black/60 p-1.5 rounded-lg border border-slate-800 font-mono text-[9px] text-amber-300 break-all select-all">
               =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=snapshot_csv")
             </div>
           </div>
 
-          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-sky-500/30">
-            <div class="flex items-center justify-between mb-1.5">
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-sky-500/30">
+            <div class="flex items-center justify-between mb-1">
               <div class="text-xs text-sky-400 font-bold">📜 2. 【長時序歷史庫】</div>
-              <button onclick="copyFormula()" class="bg-sky-600/30 hover:bg-sky-600/50 active:scale-95 text-sky-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-sky-500/40 transition">
+              <button onclick="copyFormula()" class="bg-sky-600/30 hover:bg-sky-600/50 active:scale-95 text-sky-300 text-[10px] px-2 py-0.5 rounded-lg border border-sky-500/40 transition">
                 📋 複製
               </button>
             </div>
-            <div class="text-[10px] text-slate-400 mb-1">完整 36 欄跨資產長時序序列歷程</div>
-            <div id="sheets-formula-box" class="bg-black/60 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-sky-400 break-all select-all">
+            <div class="text-[10px] text-slate-400 mb-1">完整 36 欄跨資產長時序歷程</div>
+            <div id="sheets-formula-box" class="bg-black/60 p-1.5 rounded-lg border border-slate-800 font-mono text-[9px] text-sky-400 break-all select-all">
               =IMPORTDATA("https://eco-line-assistant.onrender.com/api/collector?format=csv")
             </div>
           </div>
 
-          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/30">
-            <div class="flex items-center justify-between mb-1.5">
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-emerald-500/30">
+            <div class="flex items-center justify-between mb-1">
               <div class="text-xs text-emerald-300 font-bold">📰 3. 【總經新聞歷程庫】</div>
-              <button onclick="copyNewsFormula()" class="bg-emerald-600/30 hover:bg-emerald-600/50 active:scale-95 text-emerald-300 text-[11px] px-2.5 py-0.5 rounded-lg border border-emerald-500/40 transition">
+              <button onclick="copyNewsFormula()" class="bg-emerald-600/30 hover:bg-emerald-600/50 active:scale-95 text-emerald-300 text-[10px] px-2 py-0.5 rounded-lg border border-emerald-500/40 transition">
                 📋 複製
               </button>
             </div>
-            <div class="text-[10px] text-slate-400 mb-1">最新 100 則美歐央行與總經重大情報</div>
-            <div id="sheets-news-box" class="bg-black/60 p-2 rounded-lg border border-slate-800 font-mono text-[10px] text-emerald-300 break-all select-all">
+            <div class="text-[10px] text-slate-400 mb-1">最新 100 則美歐央行重大情報</div>
+            <div id="sheets-news-box" class="bg-black/60 p-1.5 rounded-lg border border-slate-800 font-mono text-[9px] text-emerald-300 break-all select-all">
               =IMPORTDATA("https://eco-line-assistant.onrender.com/api/news?format=csv")
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-purple-500/30">
+            <div class="flex items-center justify-between mb-1">
+              <div class="text-xs text-purple-300 font-bold">📝 4. 【個人筆記歷程庫】</div>
+              <button onclick="copyRecordsFormula()" class="bg-purple-600/30 hover:bg-purple-600/50 active:scale-95 text-purple-300 text-[10px] px-2 py-0.5 rounded-lg border border-purple-500/40 transition">
+                📋 複製
+              </button>
+            </div>
+            <div class="text-[10px] text-slate-400 mb-1">LINE 記帳同步存檔之個人時序庫</div>
+            <div id="sheets-records-box" class="bg-black/60 p-1.5 rounded-lg border border-slate-800 font-mono text-[9px] text-purple-300 break-all select-all">
+              =IMPORTDATA("https://eco-line-assistant.onrender.com/api/records?format=csv")
             </div>
           </div>
         </div>
@@ -528,7 +541,53 @@
             <button onclick="copyAppsScript()" class="w-full bg-amber-600/30 hover:bg-amber-600/50 text-amber-300 py-1.5 rounded-lg text-center font-medium transition text-xs">
               📋 複製 Apps Script 每日自動封存代碼
             </button>
+        </div>
+      </div>
+
+      <!-- 4.5 📝 個人宏觀數據筆記庫 (LINE 記帳與時序資料庫) -->
+      <div id="personal-records-section" class="glass-card p-6 rounded-2xl border-purple-500/30 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-xl">📝</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-base sm:text-lg font-bold text-white">個人宏觀數據筆記庫</h2>
+                <span id="records-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30">0 筆記錄</span>
+              </div>
+              <p class="text-xs text-slate-400">LINE 發送「記錄 CPI 2.9 月增0.1%」自動同步歸檔，支援一鍵匯入 Google 試算表</p>
+            </div>
           </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="copyRecordsFormula()" class="bg-purple-600/25 hover:bg-purple-600/40 text-purple-200 border border-purple-500/40 text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
+              <span>📋</span> 複製試算表公式
+            </button>
+            <a href="/api/records?format=csv" download class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
+              <span>📥</span> 匯出 CSV
+            </a>
+            <button onclick="loadPersonalRecords()" title="重新整理筆記" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-xl transition text-xs">
+              🔄 刷新
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                <th class="pb-2.5 font-medium">記錄時間 (UTC+8)</th>
+                <th class="pb-2.5 font-medium">指標名稱</th>
+                <th class="pb-2.5 font-medium">最新數值</th>
+                <th class="pb-2.5 font-medium">備註與脈絡</th>
+                <th class="pb-2.5 font-medium">分類標籤</th>
+                <th class="pb-2.5 font-medium text-right">來源</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body" class="divide-y divide-slate-900/60 font-mono">
+              <tr>
+                <td colspan="6" class="py-6 text-center text-slate-500">正在連線個人筆記庫...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -1705,10 +1764,14 @@
       if (document.getElementById('sheets-news-box')) {
         document.getElementById('sheets-news-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/news?format=csv")';
       }
+      if (document.getElementById('sheets-records-box')) {
+        document.getElementById('sheets-records-box').innerText = '=IMPORTDATA("' + DOMAIN_URL + '/api/records?format=csv")';
+      }
       updateEventCountdowns();
       loadMacroCalendar('week');
       loadMacroNews('all');
       loadDynamicTopics();
+      loadPersonalRecords();
       await loadTickerData();
       renderLineChart('twii');
       await runAnalysis('全球總體經濟數據深度剖析：通膨指標 (CPI/PCE)、就業市場與聯準會貨幣政策路徑研判');
@@ -1960,6 +2023,44 @@
       const code = document.getElementById('apps-script-code').innerText;
       navigator.clipboard.writeText(code);
       alert('✅ Google Apps Script 每日自動歷史封存腳本已複製！\n請至 Google 試算表 ➔ 擴充功能 ➔ Apps Script 貼上並設定每日觸發！');
+    }
+
+    function copyRecordsFormula() {
+      const txt = '=IMPORTDATA("' + DOMAIN_URL + '/api/records?format=csv")';
+      navigator.clipboard.writeText(txt);
+      alert('✅ 【個人筆記歷程庫公式】已複製！\n請至 Google 試算表 A1 儲存格貼上，即可在試算表中即時同步您的 LINE 記帳歷史數據！');
+    }
+
+    async function loadPersonalRecords() {
+      const tableBody = document.getElementById('records-table-body');
+      const badge = document.getElementById('records-count-badge');
+      if (!tableBody) return;
+
+      try {
+        const res = await fetch('/api/records?t=' + Date.now());
+        const json = await res.json();
+        const records = json.records || [];
+
+        if (badge) badge.innerText = records.length + ' 筆記錄';
+
+        if (records.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">尚無記錄！在 LINE 輸入「記錄 CPI 2.9」立即自動存入！</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = records.map(r => `
+          <tr class="hover:bg-slate-900/40 transition">
+            <td class="py-2.5 text-slate-400 font-mono">${r.timestamp}</td>
+            <td class="py-2.5 text-white font-bold">${r.metric}</td>
+            <td class="py-2.5 text-amber-300 font-mono font-bold">${r.value} <span class="text-[10px] text-slate-400 font-normal">${r.unit || ''}</span></td>
+            <td class="py-2.5 text-slate-300 max-w-xs truncate">${r.note || '--'}</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-300 border border-slate-700">${r.tag}</span></td>
+            <td class="py-2.5 text-right font-mono text-slate-500">${r.source}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="py-4 text-center text-rose-400">載入個人筆記失敗，請點擊刷新重試。</td></tr>';
+      }
     }
 
     fetchInitialReport();
