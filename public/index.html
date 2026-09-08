@@ -48,7 +48,9 @@
           <span class="text-[11px] text-sky-400 block sm:inline sm:ml-2">24H 首席總經門戶</span>
         </div>
       </div>
-      <div class="flex items-center space-x-2">
+        <button onclick="scrollToFridayFinance()" class="text-xs bg-gradient-to-r from-indigo-500/25 to-purple-500/25 hover:from-indigo-500/35 hover:to-purple-500/35 text-indigo-200 border border-indigo-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1 shadow-sm">
+          🇺🇸 <span class="hidden sm:inline">週五</span>財務班
+        </button>
         <button onclick="openSearchModal()" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1">
           🔍 <span class="hidden sm:inline">標的</span>快查
         </button>
@@ -115,6 +117,309 @@
           713.5 (健康景氣)
         </div>
         <div class="text-[9px] text-slate-500 mt-0.5">銅博士強韌製造業需求</div>
+      </div>
+    </div>
+
+    <!-- 🇺🇸 美國整體總經與因果傳導看板 · 週五財務班專題專區 -->
+    <div class="mb-6 p-4 sm:p-6 rounded-2xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-2 border-indigo-500/40 shadow-2xl no-print relative overflow-hidden" id="friday-finance-container">
+      <!-- 裝飾光暈 -->
+      <div class="absolute -top-24 -right-24 w-60 h-60 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-sky-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- 頂部標題列與功能徽章 -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-4 border-b border-slate-800/80">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-base sm:text-xl font-black text-white flex items-center gap-2">
+              <span class="text-2xl">🇺🇸</span> 美國整體總經與因果傳導看板
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+              🎓 週五財務班專案
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+              ⚡ 3 大因果傳導鏈
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+              🔍 數據背馳矛盾
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            穿透美國 6 大支柱指標彼此相互牽引之因果邏輯（就業/通膨 ➔ 利率利差 ➔ 美元/融資成本），揭示背馳矛盾，配備 3 分鐘精準發言稿。
+          </p>
+        </div>
+
+        <!-- 頂部操作按鈕 -->
+        <div class="flex flex-wrap items-center gap-2 flex-shrink-0">
+          <button onclick="generateFridayFinanceSpeech()" id="btn-gen-speech-top" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 hover:from-indigo-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm transition shadow-lg shadow-indigo-500/20 flex items-center gap-1.5 active:scale-95">
+            <span>🎤</span> 一鍵生成 3 分鐘發言稿
+          </button>
+          <button onclick="copyFridaySpeech()" id="btn-copy-speech-top" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+            <span>📋</span> 複製講稿
+          </button>
+          <button onclick="printFridaySpeech()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+            <span>🖨️</span> 列印
+          </button>
+        </div>
+      </div>
+
+      <!-- 第一部分：美國 6 大核心宏觀支柱指標矩陣 -->
+      <div class="mb-5">
+        <div class="text-xs font-bold text-slate-300 mb-2.5 flex items-center gap-1.5">
+          <span class="text-indigo-400">🏛️</span> 1. 美國 6 大支柱即時指標矩陣 (US Macro Pillars)
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+          <!-- 卡片 1: CPI / PCE 通膨 -->
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-amber-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-amber-400/90 font-medium">通膨雙軌 (CPI/PCE)</span>
+              <span class="text-[9px] px-1 rounded bg-amber-500/20 text-amber-300">黏性緩降</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-white font-mono mt-1">
+              3.4% <span class="text-[10px] text-slate-400 font-normal">/ 3.3%</span>
+            </div>
+            <div class="text-[9px] text-slate-400 mt-1 leading-tight">
+              CPI 年增 3.4% ｜ 核心 PCE 3.3%，決定 Fed 限制性降息門檻
+            </div>
+          </div>
+
+          <!-- 卡片 2: 非農就業 / 失業率 -->
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-emerald-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-emerald-400/90 font-medium">就業市場 (NFP/UR)</span>
+              <span class="text-[9px] px-1 rounded bg-emerald-500/20 text-emerald-300">邊際降溫</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-emerald-400 font-mono mt-1">
+              -2.3萬 <span class="text-[10px] text-slate-400 font-normal">/ 4.1%</span>
+            </div>
+            <div class="text-[9px] text-slate-400 mt-1 leading-tight">
+              非農負成長、失業率 4.1%，薪資螺旋增速放緩
+            </div>
+          </div>
+
+          <!-- 卡片 3: 美債 10Y 基準殖利率 -->
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-rose-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-rose-400/90 font-medium">美債 10Y (基準之錨)</span>
+              <span class="text-[9px] px-1 rounded bg-rose-500/20 text-rose-300">高位頑強</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-rose-400 font-mono mt-1" id="ff-us10y">
+              4.784%
+            </div>
+            <div class="text-[9px] text-slate-400 mt-1 leading-tight">
+              財政赤字天量發債，推升期限溢價 (Term Premium)
+            </div>
+          </div>
+
+          <!-- 卡片 4: 美債 2Y 政策敏感殖利率 -->
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-sky-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-sky-400/90 font-medium">美債 2Y (政策錨點)</span>
+              <span class="text-[9px] px-1 rounded bg-sky-500/20 text-sky-300">降息定價</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-sky-400 font-mono mt-1" id="ff-us2y">
+              3.961%
+            </div>
+            <div class="text-[9px] text-slate-400 mt-1 leading-tight">
+              跟隨 Fed 基準利率引導下移，反映寬鬆預期
+            </div>
+          </div>
+
+          <!-- 卡片 5: 10Y-2Y 經典利差 -->
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-indigo-500/40">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-indigo-300 font-medium">10Y-2Y 經典利差</span>
+              <span class="text-[9px] px-1 rounded bg-indigo-500/20 text-indigo-300">熊市走陡</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-indigo-300 font-mono mt-1" id="ff-spread">
+              +0.823% <span class="text-[10px] text-indigo-400 font-normal">(+82.3bps)</span>
+            </div>
+            <div class="text-[9px] text-slate-400 mt-1 leading-tight">
+              結束歷史最長倒掛，正斜率擴大（長端走升快於短端）
+            </div>
+          </div>
+
+          <!-- 卡片 6: 美元指數 DXY ＆ Fed 利率 -->
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-700">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-slate-300 font-medium">美元指數 / Fed 利率</span>
+              <span class="text-[9px] px-1 rounded bg-slate-800 text-slate-300">跨國融資閥門</span>
+            </div>
+            <div class="text-sm sm:text-base font-bold text-white font-mono mt-1" id="ff-dxy">
+              98.75 <span class="text-[10px] text-slate-400 font-normal">/ 3.50%-3.75%</span>
+            </div>
+            <div class="text-[9px] text-slate-400 mt-1 leading-tight">
+              長端利差支撐美元，企業海外借貸與再融資利息緊繃
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二部分：視覺化數據因果傳導鏈路圖 -->
+      <div class="mb-5">
+        <div class="text-xs font-bold text-slate-300 mb-2.5 flex items-center justify-between">
+          <span class="flex items-center gap-1.5">
+            <span class="text-sky-400">⚡</span> 2. 視覺化「數據因果傳導鏈路圖」 (Macro Transmission Map)
+          </span>
+          <span class="text-[10px] text-slate-500">穿透牽引因果 · 拒絕孤立報數字</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <!-- 傳導鏈 A -->
+          <div class="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-emerald-500/40 transition">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80">
+              <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                <span>🔄</span> 傳導鏈 A：實體景氣 ➔ 通膨黏性
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">打開降息空間</span>
+            </div>
+            <div class="space-y-2 text-xs">
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">1</span>
+                <span class="text-slate-300">非農就業增長放緩 (<b class="text-white font-mono">-2.3萬</b>) 與失業率微升至 <b class="text-white font-mono">4.1%</b></span>
+              </div>
+              <div class="text-center text-emerald-500/60 text-[10px]">▼ 傳導至勞動薪資市場</div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">2</span>
+                <span class="text-slate-300">勞動力供需缺口收斂，薪資成長 (Wage Growth) 放緩，壓抑實體消費支出</span>
+              </div>
+              <div class="text-center text-emerald-500/60 text-[10px]">▼ 傳導至核心通膨</div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">3</span>
+                <span class="text-slate-300">核心 PCE 通膨降至 <b class="text-emerald-400 font-mono">3.3%</b>，掃除通膨螺旋擔憂，為 Fed 降息提供實體依據</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 傳導鏈 B -->
+          <div class="p-3.5 rounded-xl bg-slate-950/70 border border-rose-500/30 hover:border-rose-500/60 transition relative">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80">
+              <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                <span>⚡</span> 傳導鏈 B：政策降息 vs 赤字天量發債
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-950/60 text-rose-300 border border-rose-500/40">核心背馳矛盾</span>
+            </div>
+            <div class="space-y-2 text-xs">
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">1</span>
+                <span class="text-slate-300">短端 2Y 利率反映降息定價下滑至 <b class="text-sky-400 font-mono">3.961%</b></span>
+              </div>
+              <div class="text-center text-rose-400 font-bold text-[10px] flex items-center justify-center gap-1">
+                <span>⚡</span> 遭受結構性背馳衝突
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">2</span>
+                <span class="text-slate-300">美財政部天量赤字發售長債，市場索取更高「期限溢價」，10Y 殖利率居高 <b class="text-rose-400 font-mono">4.784%</b></span>
+              </div>
+              <div class="text-center text-rose-500/60 text-[10px]">▼ 導致利差熊市走陡</div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">3</span>
+                <span class="text-slate-300"><b class="text-indigo-300">10Y-2Y 利差大幅擴大至 +82.3 bps</b>：短端降息「未能」有效降低長端實體借貸成本！</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 傳導鏈 C -->
+          <div class="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-sky-500/40 transition">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80">
+              <span class="text-xs font-bold text-sky-400 flex items-center gap-1">
+                <span>🌐</span> 傳導鏈 C：利差 ➔ 美元 ➔ 企業財務
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-950/60 text-sky-300 border border-sky-500/30">實體融資成本</span>
+            </div>
+            <div class="space-y-2 text-xs">
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">1</span>
+                <span class="text-slate-300">10Y 美債高殖利率為美元指數 (<b class="text-white font-mono">98.75</b>) 提供跨國高息安全墊</span>
+              </div>
+              <div class="text-center text-sky-500/60 text-[10px]">▼ 傳導至跨國融資水庫</div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">2</span>
+                <span class="text-slate-300">跨國企業海外美元借貸與展期利息剛性高懸，直接壓抑長期資本支出 (Capex) 擴張</span>
+              </div>
+              <div class="text-center text-sky-500/60 text-[10px]">▼ 傳導至大宗定價與成本</div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">3</span>
+                <span class="text-slate-300">大宗商品（銅、油、煤鐵）流動性承壓，考驗亞洲及製造業高爐成本防線</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三部分：🎤 週五財務班 3 分鐘發言稿行動中樞 -->
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 mb-2 border-b border-slate-800/80">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span class="text-amber-400">🎤</span> 3. 週五財務班 3 分鐘發言稿生成中樞
+            </span>
+            <span class="text-[10px] text-slate-400 hidden sm:inline">（零客套 · 穿透指標因果與矛盾 · 結尾附帶課堂討論題）</span>
+          </div>
+
+          <!-- 主線切換快捷鈕 -->
+          <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+            <button onclick="generateFridayFinanceSpeech('就業降溫 vs 10Y長債赤字發債溢價走陡 之核心背馳矛盾')" class="px-2.5 py-1 rounded-lg bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 border border-indigo-500/30 transition">
+              🔥 主線 1：就業 vs 赤字溢價背馳
+            </button>
+            <button onclick="generateFridayFinanceSpeech('10Y-2Y 利差大幅走陡 (Steepener) 對跨國企業融資與資本支出的真實傳導')" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition">
+              ⚡ 主線 2：利差走陡與企業融資
+            </button>
+            <button onclick="generateFridayFinanceSpeech('降息預期下，為何長天期實體融資成本與美元指數依然居高不下？')" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition">
+              🏛️ 主線 3：長端融資成本下行阻力
+            </button>
+          </div>
+        </div>
+
+        <!-- 發言稿展示卡片 (高對比簡報/演講專用設計) -->
+        <div class="p-4 sm:p-5 rounded-xl bg-slate-950 border border-indigo-500/30 shadow-inner" id="friday-speech-card">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="font-bold text-emerald-400 font-mono" id="speech-topic-tag">【最新發言稿 · 就業冷卻 vs 10Y長端發債溢價背馳】</span>
+              <span class="text-[10px] text-slate-500 font-mono" id="speech-time">即時連線推演</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="copyFridaySpeech()" id="btn-copy-speech" class="px-3 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition flex items-center gap-1">
+                <span>📋</span> 複製講稿
+              </button>
+              <button onclick="printFridaySpeech()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition">
+                <span>🖨️</span> 列印
+              </button>
+            </div>
+          </div>
+
+          <!-- 講稿文字渲染區 (支援 Markdown，字體舒適專為 3 分鐘速讀設計) -->
+          <div id="friday-speech-content" class="prose prose-invert max-w-none text-xs sm:text-sm text-slate-200 leading-relaxed font-sans space-y-3">
+            <p class="text-white font-bold text-sm sm:text-base border-l-4 border-indigo-500 pl-3">
+              美國經濟當前正處於「就業數據失速與長端利率失控」的雙重背馳臨界點，這不僅是聯準會貨幣政策的死穴，更是全球大宗商品與實體產業鏈定價權的重大變數。
+            </p>
+            <p>
+              非農就業連續負增長（-2.3 萬人）伴隨 4.1% 的失業率，顯示勞動力市場結構性聘僱動能降溫；然而 CPI 3.4% 與核心 PCE 3.3% 的黏性，封殺了聯準會激進寬鬆的空間。當前最荒謬的背馳定價在於：<b>2Y 美債殖利率 (3.961%) 領先反映預防性降息，但 10Y 美債殖利率 (4.784%) 卻因財政赤字天量發債帶來的「期限溢價」持續飆升，導致 10Y-2Y 利差大幅走陡至 +82.3 bps</b>。
+            </p>
+            <p>
+              這不是經濟強勁擴張的訊號，而是典型的<b>「熊市走陡 (Bear Steepener)」</b>——市場正對美國財政部無底線的發債規模與長端流動性風險進行強制性重定價。短端降息並未同等緩解長端實體融資成本！長端利差支撐美元指數 (DXY 98.75)，使跨國企業的海外借貸利率與原料採購剛性成本持續高懸。
+            </p>
+            <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs space-y-1.5 my-2">
+              <div class="font-bold text-amber-400">◆ 歷史鏡像：1980 年代初期「沃爾克時刻」後的財政擴張博弈</div>
+              <div class="text-slate-300">
+                • <b>共通點</b>：財政赤字天量發債掩蓋了貨幣政策的寬鬆效果，長債殖利率脫離景氣基本面而由發債供需失衡主導。<br>
+                • <b>本次核心差異</b>：AI 基礎建設帶動結構性電力與機房設備剛性資本支出，使得終端利基需求具備定價權，與 80 年代全面性需求萎縮迥然不同。
+              </div>
+            </div>
+            <div class="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-xs space-y-1.5 my-2">
+              <div class="font-bold text-indigo-300">◆ 💡 財務班課堂主導討論反問（供勝穩提問）：</div>
+              <ol class="list-decimal pl-4 space-y-1 text-slate-300">
+                <li>「若非農就業持續冷卻迫使 Fed 在下半年擴大降息幅度，但在美國財政部每季天量公債標售的壓力下，10 年期基準殖利率與企業 30 年融資成本是否真的下得去？抑或是只會迫使 10Y-2Y 利差被動進一步走陡？」</li>
+                <li>「面對短端利率下行、長端融資成本居高不下的利差陡峭化環境，跨國企業在編列下一年度長期融資與匯率避險策略時，應如何權衡長端發債的利差成本與短端浮動借款的再融資風險？」</li>
+              </ol>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 text-[11px] font-mono text-slate-400 pt-2 border-t border-slate-800/80">
+              <span>【多空防守位階】</span>
+              <span>美元指數 (DXY)：<b class="text-white">98.0 防守線</b></span>
+              <span>10Y-2Y 利差：<b class="text-amber-300">90 bps 警戒線</b>（若突破將引發企業融資成本非線性跳升）</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1836,10 +2141,23 @@
 
         // 3. 利率與利差
         document.getElementById('tick-us10y').innerText = d.us10y.toFixed(3) + '%';
+        if (document.getElementById('ff-us10y') && d.us10y) {
+          document.getElementById('ff-us10y').innerText = d.us10y.toFixed(3) + '%';
+        }
+        if (document.getElementById('ff-us2y') && d.us2y) {
+          document.getElementById('ff-us2y').innerText = d.us2y.toFixed(3) + '%';
+        }
         if (d.spread_10y2y !== undefined) {
           document.getElementById('tick-spread102').innerText = (d.spread_10y2y >= 0 ? '+' : '') + d.spread_10y2y.toFixed(3) + '%';
           const bpsText = (d.spread_10y2y_chg_bps !== undefined) ? ` ｜ 較前日 ${(d.spread_10y2y_chg_bps >= 0 ? '+' : '')}${d.spread_10y2y_chg_bps} bps` : '';
           document.getElementById('radar-spread').innerText = `${(d.spread_10y2y >= 0 ? '+' : '')}${d.spread_10y2y.toFixed(3)}% (${d.spread_10y2y > 0 ? '正斜率' : '倒掛'})${bpsText}`;
+          if (document.getElementById('ff-spread')) {
+            const bpsVal = (d.spread_10y2y * 100).toFixed(1);
+            document.getElementById('ff-spread').innerHTML = `${(d.spread_10y2y >= 0 ? '+' : '')}${d.spread_10y2y.toFixed(3)}% <span class="text-[10px] text-indigo-400 font-normal">(${(d.spread_10y2y >= 0 ? '+' : '')}${bpsVal}bps)</span>`;
+          }
+        }
+        if (document.getElementById('ff-dxy') && d.dxy) {
+          document.getElementById('ff-dxy').innerHTML = `${d.dxy.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">/ 3.50%-3.75%</span>`;
         }
         document.getElementById('tick-usdtwd').innerText = d.usdtwd.toFixed(3);
 
@@ -2061,6 +2379,84 @@
       } catch (e) {
         tableBody.innerHTML = '<tr><td colspan="6" class="py-4 text-center text-rose-400">載入個人筆記失敗，請點擊刷新重試。</td></tr>';
       }
+    }
+
+    let currentFridaySpeechRaw = `美國經濟當前正處於「就業數據失速與長端利率失控」的雙重背馳臨界點，這不僅是聯準會貨幣政策的死穴，更是全球大宗商品與實體產業鏈定價權的重大變數。
+
+非農就業連續負增長（-2.3 萬人）伴隨 4.1% 的失業率，顯示勞動力市場結構性聘僱動能降溫；然而 CPI 3.4% 與核心 PCE 3.3% 的黏性，封殺了聯準會激進寬鬆的空間。當前最荒謬的背馳定價在於：2Y 美債殖利率 (3.961%) 領先反映預防性降息，但 10Y 美債殖利率 (4.784%) 卻因財政赤字天量發債帶來的「期限溢價」持續飆升，導致 10Y-2Y 利差大幅走陡至 +82.3 bps。
+
+這不是經濟強勁擴張的訊號，而是典型的「熊市走陡 (Bear Steepener)」——市場正對美國財政部無底線的發債規模與長端流動性風險進行強制性重定價。短端降息並未同等緩解長端實體融資成本！長端利差支撐美元指數 (DXY 98.75)，使跨國企業的海外借貸利率與原料採購剛性成本持續高懸。
+
+◆ 歷史鏡像：1980 年代初期「沃爾克時刻」後的財政擴張博弈
+• 共通點：財政赤字天量發債掩蓋了貨幣政策的寬鬆效果，長債殖利率脫離景氣基本面而由發債供需失衡主導。
+• 本次核心差異：AI 基礎建設帶動結構性電力與機房設備剛性資本支出，使得終端利基需求具備定價權，與 80 年代全面性需求萎縮迥然不同。
+
+◆ 💡 財務班課堂主導討論反問（供勝穩提問）：
+1. 若非農就業持續冷卻迫使 Fed 在下半年擴大降息幅度，但在美國財政部每季天量公債標售的壓力下，10 年期基準殖利率與企業 30 年融資成本是否真的下得去？抑或是只會迫使 10Y-2Y 利差被動進一步走陡？
+2. 面對短端利率下行、長端融資成本居高不下的利差陡峭化環境，跨國企業在編列下一年度長期融資與匯率避險策略時，應如何權衡長端發債的利差成本與短端浮動借款的再融資風險？
+
+【多空防守位階】
+* 美元指數 (DXY)：98.0 防守線
+* 10Y-2Y 利差：90 bps 警戒線（若突破將引發企業融資成本非線性跳升）`;
+
+    function scrollToFridayFinance() {
+      const el = document.getElementById('friday-finance-container');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function generateFridayFinanceSpeech(customTopic) {
+      const contentBox = document.getElementById('friday-speech-content');
+      const topicTag = document.getElementById('speech-topic-tag');
+      const timeTag = document.getElementById('speech-time');
+      const btnTop = document.getElementById('btn-gen-speech-top');
+
+      const topicText = customTopic || '週五財務班專題發言稿：深度剖析美國總經指標（就業、通膨、美債殖利率曲線、利差與美元指數）之連鎖因果傳導與指標背馳矛盾';
+
+      if (topicTag) topicTag.innerText = '【生成中】' + (customTopic || '就業冷卻 vs 10Y長端發債溢價背馳');
+      if (btnTop) {
+        btnTop.disabled = true;
+        btnTop.innerHTML = '<span>⏳</span> 分析師推演中...';
+      }
+
+      contentBox.innerHTML = `
+        <div class="py-8 text-center text-slate-400">
+          <div class="inline-block animate-spin text-2xl mb-2">⚙️</div>
+          <div class="font-bold text-white text-xs sm:text-sm">正在深度穿透美國 6 大支柱數據因果傳導鏈與指標背馳矛盾...</div>
+          <div class="text-[11px] text-slate-500 mt-1 font-mono">「${topicText}」</div>
+        </div>
+      `;
+
+      try {
+        const res = await fetch('/api/analyze?type=friday_finance&q=' + encodeURIComponent(topicText) + '&t=' + Date.now());
+        const json = await res.json();
+        currentFridaySpeechRaw = json.report || '發言稿生成中，請稍候。';
+
+        if (timeTag) timeTag.innerText = (json.timestamp || '') + ' (UTC+8)';
+        if (topicTag) topicTag.innerText = '【發言稿】' + (customTopic ? customTopic.slice(0, 24) + '...' : '就業冷卻 vs 10Y長端發債溢價背馳');
+
+        contentBox.innerHTML = marked.parse(currentFridaySpeechRaw);
+      } catch (e) {
+        contentBox.innerHTML = '<div class="py-4 text-center text-rose-400">連線推演逾時，請重試或點擊複製預設發言稿。</div>';
+      } finally {
+        if (btnTop) {
+          btnTop.disabled = false;
+          btnTop.innerHTML = '<span>🎤</span> 一鍵生成 3 分鐘發言稿';
+        }
+      }
+    }
+
+    function copyFridaySpeech() {
+      if (!currentFridaySpeechRaw) return;
+      navigator.clipboard.writeText(currentFridaySpeechRaw);
+      const btn = document.getElementById('btn-copy-speech');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>✅</span> 已複製講稿！';
+      setTimeout(() => { if (btn) btn.innerHTML = origText; }, 2000);
+      alert('✅ 【週五財務班 3 分鐘發言稿】已複製到剪貼簿！\n您可以直接在筆記本、手機或 LINE 中開啟使用！');
+    }
+
+    function printFridaySpeech() {
+      window.print();
     }
 
     fetchInitialReport();
