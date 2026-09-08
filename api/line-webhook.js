@@ -27,7 +27,11 @@ const USER_GUIDE_MESSAGE = `📖【宏觀全球智庫 · 總經分析助手使�
 4️⃣ 估值類：「台股加權指數目前本益比估值、殖利率與位階評估」
 5️⃣ 債市類：「美債 10Y 殖利率近期走勢與降息預期」
 
-🌐【3. 專屬手機視覺化圖表門戶（支援語音朗讀 ＆ 匯出 PDF）】
+📝【4. 個人 Google 試算表雲端筆記管家】
+• 記帳：輸入「記錄 CPI 2.9 月增0.1%」或「記下 鐵礦砂 99.5 美元/噸」，自動填寫至您的 Google 試算表！
+• 研報：輸入「分析試算表」，Gemini 自動讀取您記錄的時序數值產出專屬趨勢研報！
+
+🌐【5. 專屬手機視覺化圖表門戶（支援語音朗讀 ＆ 匯出 PDF）】
 點擊下方連結即可在手機上查看全天候動態圖表、配置計算機、代碼快查與語音聽早報：
 👉 ${SHORT_WEB_URL}
 
@@ -498,6 +502,57 @@ function isHelpQuery(text) {
   return helpKeywords.some(k => cleaned === k || cleaned.startsWith("help") || cleaned.startsWith("說明"));
 }
 
+// 判斷是否為個人 Google 試算表記錄或試算表研報指令
+function isSheetsCommand(text) {
+  const t = text.trim();
+  const isRecord = t.startsWith("記錄") || t.startsWith("紀錄") || t.startsWith("記下") || 
+                   t.startsWith("寫入") || t.startsWith("存入") || t.startsWith("記 ") || 
+                   t.startsWith("記：") || t.startsWith("記:");
+  const isAnalyze = t.includes("分析試算表") || t.includes("試算表研報") || t.includes("分析筆記") ||
+                    t.includes("查試算表") || t.includes("查看試算表");
+  return isRecord || isAnalyze;
+}
+
+// 轉發至勝穩個人的 Google Apps Script (GAS) 處理試算表寫入與專屬研報
+async function handleSheetsForwarding(userMsg, event, lineToken, replyToken) {
+  const gasUrl = process.env.GAS_WEBHOOK_URL;
+  if (!gasUrl) {
+    const guideMsg = `💡 【個人 Google 試算表連動提示】\n━━━━━━━━━━━━━━━━━━━━\n` +
+      `偵測到您的試算表記錄指令：「${userMsg}」！\n\n` +
+      `本系統支援將重要總經指標自動登記至您的個人 Google 試算表。\n` +
+      `目前尚未在 Render 後台設定 GAS_WEBHOOK_URL 環境變數。\n\n` +
+      `👉 請依 docs/gas-deployment-guide.md 部署 Google Apps Script 後，在 Render 填入 GAS_WEBHOOK_URL 即可啟用自動記帳入表功能！`;
+    await replyLine(lineToken, replyToken, guideMsg);
+    return true;
+  }
+
+  try {
+    const res = await fetch(gasUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userMsg,
+        replyToken,
+        userId: event.source?.userId,
+        timestamp: event.timestamp
+      }),
+      signal: AbortSignal.timeout(12000)
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data.replyText) {
+        await replyLine(lineToken, replyToken, data.replyText);
+        return true;
+      }
+    }
+  } catch (err) {
+    console.error("GAS Forwarding Error:", err);
+  }
+
+  return false;
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   if (req.method === "GET") {
@@ -541,7 +596,13 @@ module.exports = async (req, res) => {
             continue;
           }
 
-          // 3. 一般總經諮詢走 Gemini 深度推理
+          // 3. 判斷是否為個人 Google 試算表記錄或專屬研報指令（智慧分流轉發）
+          if (isSheetsCommand(userMsg)) {
+            const handled = await handleSheetsForwarding(userMsg, event, lineToken, replyToken);
+            if (handled) continue;
+          }
+
+          // 4. 一般總經諮詢走 Gemini 深度推理
           const aiReport = await callGemini(userMsg);
           const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
 
