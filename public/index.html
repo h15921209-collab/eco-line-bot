@@ -1411,10 +1411,12 @@
 
         // 實際值與狀態
         let actualHtml = '';
-        if (ev.isReleased) {
-          actualHtml = `<span class="font-mono font-bold text-amber-300">${ev.actual}</span> <span class="text-[9px] text-slate-500 bg-slate-900 px-1 py-0.2 rounded ml-1">已發布</span>`;
+        if (ev.isReleased && ev.actual && ev.actual !== '--') {
+          actualHtml = `<span class="font-mono font-bold text-amber-300">${ev.actual}</span> <span class="text-[9px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-1 py-0.2 rounded ml-1 font-sans">已發布</span>`;
+        } else if (ev.status === 'pending_official') {
+          actualHtml = `<span class="font-mono text-slate-500">--</span> <span class="text-[9px] text-amber-400/90 bg-amber-950/60 border border-amber-500/30 px-1.5 py-0.2 rounded ml-1 font-sans">⏳ 官方統計中</span>`;
         } else {
-          actualHtml = `<span class="font-mono text-slate-500">--</span> <span class="text-[9px] text-sky-400/80 bg-sky-950/60 px-1.5 py-0.2 rounded border border-sky-500/20 ml-1">⏳ 待公布</span>`;
+          actualHtml = `<span class="font-mono text-slate-500">--</span> <span class="text-[9px] text-sky-400/80 bg-sky-950/60 border border-sky-500/20 px-1.5 py-0.2 rounded ml-1 font-sans">⏳ 待公布</span>`;
         }
 
         const zebraBg = (idx % 2 === 0) ? 'bg-slate-950/40' : 'bg-slate-900/30';

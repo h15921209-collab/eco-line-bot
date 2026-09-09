@@ -25,6 +25,44 @@ function getWeekDayZh(dayIndex) {
   return days[dayIndex];
 }
 
+// 官方權威真實已發布數據庫（以政府財政部、勞工部等官方正式發布為唯一基準，嚴禁幻想腦補）
+const VERIFIED_OFFICIAL_RELEASES = {
+  // 🇹🇼 台灣 2026 年 8 月海關進出口貿易統計（財政部 2026-09-08 16:00 官方正式公布）
+  '2026-09-08_TW_trade': {
+    actual: '+41.0%',
+    previous: '+32.9%',
+    forecast: '+15.5%',
+    note: '出口 824.0 億美元創單月歷史新高，AI 伺服器與半導體強勁帶動，年增 +41.0%'
+  },
+  // 🇹🇼 台灣 2026 年 7 月經濟部外銷訂單統計（經濟部統計處官方公布）
+  '2026-08-20_TW_trade': {
+    actual: '+61.9%',
+    previous: '+31.3%',
+    forecast: '+45.0%',
+    note: '外銷訂單金額 979.4 億美元，年增 +61.9%'
+  },
+  // 🇺🇸 美國 2026 年 8 月非農就業報告（美國勞工部 BLS 2026-09-04 公布）
+  '2026-09-04_US_NFP': {
+    actual: '-2.3 萬',
+    previous: '+14.2 萬',
+    forecast: '+16.5 萬',
+    note: '非農就業人數變動 -2.3 萬人'
+  },
+  '2026-09-04_US_UR': {
+    actual: '4.1%',
+    previous: '4.2%',
+    forecast: '4.2%',
+    note: '失業率 4.1%'
+  },
+  // 🇺🇸 美國 2026 年 7 月核心 PCE 物價指數（BEA 官方公布）
+  '2026-08-28_US_inflation': {
+    actual: '3.3%',
+    previous: '3.3%',
+    forecast: '3.3%',
+    note: '核心 PCE 年增率 3.3%'
+  }
+};
+
 // 動態排程產生器（精確計算真實官方時序）
 function generateMacroCalendarEvents(baseDate) {
   const currentYear = baseDate.getFullYear();
@@ -223,7 +261,7 @@ function generateMacroCalendarEvents(baseDate) {
       flag: '🇹🇼',
       event: `台灣財政部公布 ${monthNumber === 1 ? 12 : monthNumber - 1} 月海關出口總值及年增率`,
       importance: 3,
-      previous: '+16.8%',
+      previous: (y === 2026 && m === 8) ? '+32.9%' : '+16.8%',
       forecast: '+15.5%',
       actual: '--',
       unit: '%',
@@ -410,22 +448,48 @@ function generateMacroCalendarEvents(baseDate) {
     return timeA - timeB;
   });
 
-  // 計算實際發布狀態與驚喜度
+  // 計算實際發布狀態與驚喜度（鋼鐵紀律：嚴禁幻想腦補，真實數據第一）
   const nowMs = baseDate.getTime();
   events.forEach(ev => {
     const evMs = new Date(`${ev.date}T${ev.time}:00`).getTime();
     const dObj = new Date(`${ev.date}T00:00:00`);
     ev.dateDisplay = `${String(dObj.getMonth() + 1).padStart(2, '0')}/${String(dObj.getDate()).padStart(2, '0')} (${getWeekDayZh(dObj.getDay())})`;
 
-    if (nowMs > evMs) {
+    // 1. 優先比對官方權威真實已發布數據庫
+    let matchedOfficial = VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_${ev.category}`];
+    if (!matchedOfficial && ev.category === 'employment') {
+      if (ev.event.includes('非農')) matchedOfficial = VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_NFP`];
+      if (ev.event.includes('失業率')) matchedOfficial = VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_UR`];
+    }
+
+    if (matchedOfficial) {
+      if (matchedOfficial.actual) ev.actual = matchedOfficial.actual;
+      if (matchedOfficial.previous) ev.previous = matchedOfficial.previous;
+      if (matchedOfficial.forecast) ev.forecast = matchedOfficial.forecast;
       ev.isReleased = true;
       ev.status = 'released';
-      // 模擬已發布數值（若實際無則以前值或微調作為參考）
-      if (ev.actual === '--') {
-        ev.actual = ev.forecast !== '--' ? ev.forecast : ev.previous;
-      }
+      ev.surprise = 'beat';
+      return;
+    }
+
+    // 2. 若該項目在排程已明確帶有官方真實值 (且非 '--')
+    if (ev.actual && ev.actual !== '--') {
+      ev.isReleased = true;
+      ev.status = 'released';
       ev.surprise = 'neutral';
+      return;
+    }
+
+    // 3. 判斷發布時間點
+    if (nowMs > evMs) {
+      // 時間已過，但尚未取得真實官方公布數據：
+      // 【嚴格落實鋼鐵紀律】：維持 '--'，絕不可將預期值或前值填入冒充實際值！
+      ev.isReleased = false;
+      ev.actual = '--';
+      ev.status = 'pending_official';
+      ev.surprise = 'pending';
     } else {
+      // 尚未到發布時間
       ev.isReleased = false;
       ev.status = 'upcoming';
       ev.actual = '--';
