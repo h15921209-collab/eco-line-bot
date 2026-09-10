@@ -69,180 +69,207 @@ function categorizeNews(title) {
   return { category, tag, icon };
 }
 
-// 1. 抓取 Yahoo 股市國際總經新聞 (具備直接文章 URL)
+// 1. 抓取 Yahoo 股市國際總經與焦點新聞 (具備 100% 直接文章原生 URL)
 function fetchYahooMacroNews() {
   return new Promise((resolve) => {
-    https.get('https://tw.stock.yahoo.com/rss?category=intl-markets', { timeout: 4000, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
-      if (res.statusCode !== 200) return resolve([]);
-      let rawData = '';
-      res.on('data', (c) => { rawData += c; });
-      res.on('end', () => {
-        try {
-          const itemRegex = /<item>[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>[\s\S]*?<pubDate>([\s\S]*?)<\/pubDate>[\s\S]*?<\/item>/gi;
-          let match;
-          const items = [];
-          while ((match = itemRegex.exec(rawData))) {
-            const title = match[1].trim();
-            const link = match[2].trim();
-            const pubDateStr = match[3].trim();
-            if (title && title.length >= 8) {
-              const pubTime = new Date(pubDateStr);
-              const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
-              const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-              const { category, tag, icon } = categorizeNews(title);
-              items.push({
-                id: Buffer.from(title).toString('base64').substring(0, 16),
-                title,
-                source: 'Yahoo股市',
-                link,
-                pubDate: pubDateStr,
-                timeDisplay: timeStr,
-                timestamp: isNaN(pubTime.getTime()) ? Date.now() : pubTime.getTime(),
-                category,
-                tag,
-                icon,
-                aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
-              });
-            }
-          }
-          resolve(items);
-        } catch (e) {
-          resolve([]);
+    const urls = [
+      'https://tw.stock.yahoo.com/rss?category=intl-markets',
+      'https://tw.stock.yahoo.com/rss?category=headline'
+    ];
+    let completed = 0;
+    const allItems = [];
+
+    urls.forEach(url => {
+      https.get(url, { timeout: 4500, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+        if (res.statusCode !== 200) {
+          completed++;
+          if (completed === urls.length) resolve(allItems);
+          return;
         }
+        let rawData = '';
+        res.on('data', (c) => { rawData += c; });
+        res.on('end', () => {
+          try {
+            const itemRegex = /<item>[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>[\s\S]*?<pubDate>([\s\S]*?)<\/pubDate>[\s\S]*?<\/item>/gi;
+            let match;
+            while ((match = itemRegex.exec(rawData))) {
+              const title = match[1].replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim();
+              const link = match[2].trim();
+              const pubDateStr = match[3].trim();
+              if (title && title.length >= 8 && link.startsWith('http')) {
+                const pubTime = new Date(pubDateStr);
+                const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
+                const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
+                const { category, tag, icon } = categorizeNews(title);
+                allItems.push({
+                  id: Buffer.from(title).toString('base64').substring(0, 16),
+                  title,
+                  source: 'Yahoo股市',
+                  link,
+                  pubDate: pubDateStr,
+                  timeDisplay: timeStr,
+                  timestamp: isNaN(pubTime.getTime()) ? Date.now() : pubTime.getTime(),
+                  category,
+                  tag,
+                  icon,
+                  aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
+                });
+              }
+            }
+          } catch (e) {}
+          completed++;
+          if (completed === urls.length) resolve(allItems);
+        });
+      }).on('error', () => {
+        completed++;
+        if (completed === urls.length) resolve(allItems);
+      }).on('timeout', function() {
+        this.destroy();
+        completed++;
+        if (completed === urls.length) resolve(allItems);
       });
-    }).on('error', () => resolve([])).on('timeout', function() { this.destroy(); resolve([]); });
+    });
   });
 }
 
-// 2. 抓取 鉅亨網 (Cnyes) 焦點總經新聞 (具備直接文章 URL)
+// 2. 抓取 鉅亨網 (Cnyes) 焦點與國際政經新聞 (具備 100% 直接文章原生 URL)
 function fetchCnyesMacroNews() {
   return new Promise((resolve) => {
-    https.get('https://news.cnyes.com/api/v3/news/category/headline?limit=30', { timeout: 4000, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
-      if (res.statusCode !== 200) return resolve([]);
-      let rawData = '';
-      res.on('data', (c) => { rawData += c; });
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(rawData);
-          const raw = json.items?.data || [];
-          const items = [];
-          raw.forEach(it => {
-            const title = it.title.trim();
-            if (title && title.length >= 8) {
-              const pubTime = new Date(it.publishAt * 1000);
-              const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
-              const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-              const { category, tag, icon } = categorizeNews(title);
-              items.push({
-                id: Buffer.from(title).toString('base64').substring(0, 16),
-                title,
-                source: '鉅亨網',
-                link: `https://news.cnyes.com/news/id/${it.newsId}`,
-                pubDate: pubTime.toUTCString(),
-                timeDisplay: timeStr,
-                timestamp: it.publishAt * 1000,
-                category,
-                tag,
-                icon,
-                aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
-              });
-            }
-          });
-          resolve(items);
-        } catch (e) {
-          resolve([]);
+    const urls = [
+      'https://news.cnyes.com/api/v3/news/category/headline?limit=50',
+      'https://news.cnyes.com/api/v3/news/category/international?limit=50'
+    ];
+    let completed = 0;
+    const allItems = [];
+
+    urls.forEach(url => {
+      https.get(url, { timeout: 4500, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+        if (res.statusCode !== 200) {
+          completed++;
+          if (completed === urls.length) resolve(allItems);
+          return;
         }
+        let rawData = '';
+        res.on('data', (c) => { rawData += c; });
+        res.on('end', () => {
+          try {
+            const json = JSON.parse(rawData);
+            const raw = json.items?.data || [];
+            raw.forEach(it => {
+              const title = (it.title || '').trim();
+              if (title && title.length >= 8 && it.newsId) {
+                const pubTime = new Date(it.publishAt * 1000);
+                const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
+                const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
+                const { category, tag, icon } = categorizeNews(title);
+                allItems.push({
+                  id: Buffer.from(title).toString('base64').substring(0, 16),
+                  title,
+                  source: '鉅亨網',
+                  link: `https://news.cnyes.com/news/id/${it.newsId}`,
+                  pubDate: pubTime.toUTCString(),
+                  timeDisplay: timeStr,
+                  timestamp: it.publishAt * 1000,
+                  category,
+                  tag,
+                  icon,
+                  aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
+                });
+              }
+            });
+          } catch (e) {}
+          completed++;
+          if (completed === urls.length) resolve(allItems);
+        });
+      }).on('error', () => {
+        completed++;
+        if (completed === urls.length) resolve(allItems);
+      }).on('timeout', function() {
+        this.destroy();
+        completed++;
+        if (completed === urls.length) resolve(allItems);
       });
-    }).on('error', () => resolve([])).on('timeout', function() { this.destroy(); resolve([]); });
+    });
   });
 }
 
-// 3. 抓取 Google News RSS 美歐央行與總經新聞 (將重定向失效之 CBMi 網址安全升級為直達搜尋)
-function fetchMacroNewsRss() {
+// 3. 抓取 經濟日報 (UDN) 國際財經與總經原生新聞 (具備 100% 直接文章原生 URL)
+function fetchUdnMacroNews() {
   return new Promise((resolve) => {
-    const query = encodeURIComponent('聯準會 OR Fed OR 鮑爾 OR "核心CPI" OR "非農就業" OR "美債殖利率" OR "歐洲央行" OR "PCE物價"');
-    const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant`;
+    const urls = [
+      'https://money.udn.com/rssfeed/news/1001/5588', // 國際要聞
+      'https://money.udn.com/rssfeed/news/1001/5589'  // 國際焦點
+    ];
+    let completed = 0;
+    const allItems = [];
 
-    const req = https.get(rssUrl, { timeout: 4000, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
-      if (res.statusCode !== 200) return resolve([]);
-
-      let rawData = '';
-      res.on('data', (chunk) => { rawData += chunk; });
-      res.on('end', () => {
-        try {
-          const items = [];
-          const regex = /<item>[\s\S]*?<title>(.*?)<\/title>[\s\S]*?<link>(.*?)<\/link>[\s\S]*?<pubDate>(.*?)<\/pubDate>[\s\S]*?<\/item>/gi;
-          let match;
-          while ((match = regex.exec(rawData)) !== null) {
-            let title = match[1]
-              .replace(/<!\[CDATA\[/g, '')
-              .replace(/\]\]>/g, '')
-              .replace(/&amp;/g, '&')
-              .replace(/&quot;/g, '"')
-              .replace(/&#39;/g, "'")
-              .trim();
-            const rawLink = match[2].trim();
-            const pubDateStr = match[3].trim();
-
-            let source = '財經新聞';
-            const dashIdx = title.lastIndexOf(' - ');
-            if (dashIdx > 0) {
-              source = title.substring(dashIdx + 3).trim();
-              title = title.substring(0, dashIdx).trim();
-            }
-
-            // 避開 Google News CBMi 轉址白屏：若為 Google News 封裝網址，升級為精準直達原文搜尋
-            const cleanLink = rawLink.includes('news.google.com/rss/articles/')
-              ? `https://www.google.com/search?q=${encodeURIComponent(title + ' ' + source)}`
-              : rawLink;
-
-            if (title && title.length >= 8) {
-              const pubTime = new Date(pubDateStr);
-              const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
-              const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-
-              const { category, tag, icon } = categorizeNews(title);
-
-              items.push({
-                id: Buffer.from(title).toString('base64').substring(0, 16),
-                title,
-                source,
-                link: cleanLink,
-                pubDate: pubDateStr,
-                timeDisplay: timeStr,
-                timestamp: isNaN(pubTime.getTime()) ? Date.now() : pubTime.getTime(),
-                category,
-                tag,
-                icon,
-                aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
-              });
-            }
-          }
-          resolve(items);
-        } catch (e) {
-          resolve([]);
+    urls.forEach(url => {
+      https.get(url, { timeout: 4500, headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+        if (res.statusCode !== 200) {
+          completed++;
+          if (completed === urls.length) resolve(allItems);
+          return;
         }
+        let rawData = '';
+        res.on('data', (c) => { rawData += c; });
+        res.on('end', () => {
+          try {
+            const itemRegex = /<item>[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>[\s\S]*?<pubDate>([\s\S]*?)<\/pubDate>[\s\S]*?<\/item>/gi;
+            let match;
+            while ((match = itemRegex.exec(rawData))) {
+              let title = match[1].replace(/<!\[CDATA\[/g, '').replace(/\]\]>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim();
+              const link = match[2].trim();
+              const pubDateStr = match[3].trim();
+              if (title && title.length >= 8 && link.startsWith('http')) {
+                const pubTime = new Date(pubDateStr);
+                const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
+                const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
+                const { category, tag, icon } = categorizeNews(title);
+                allItems.push({
+                  id: Buffer.from(title).toString('base64').substring(0, 16),
+                  title,
+                  source: '經濟日報',
+                  link,
+                  pubDate: pubDateStr,
+                  timeDisplay: timeStr,
+                  timestamp: isNaN(pubTime.getTime()) ? Date.now() : pubTime.getTime(),
+                  category,
+                  tag,
+                  icon,
+                  aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
+                });
+              }
+            }
+          } catch (e) {}
+          completed++;
+          if (completed === urls.length) resolve(allItems);
+        });
+      }).on('error', () => {
+        completed++;
+        if (completed === urls.length) resolve(allItems);
+      }).on('timeout', function() {
+        this.destroy();
+        completed++;
+        if (completed === urls.length) resolve(allItems);
       });
-    });
-
-    req.on('error', () => resolve([]));
-    req.on('timeout', () => {
-      req.destroy();
-      resolve([]);
     });
   });
 }
 
-// 核心更新與儲存函式 (三源並行匯聚)
+// 核心更新與儲存函式 (三大權威財經源並行匯聚，徹底淘汰任何 Google 搜尋假連結)
 async function refreshAndStoreNews() {
   loadStoredNews();
-  const [yahooNews, cnyesNews, googleNews] = await Promise.all([
+
+  // 清洗舊庫存：徹底移除任何包含 google.com/search 或無效連結的歷史項目
+  inMemoryNews = inMemoryNews.filter(n => n.link && !n.link.includes('google.com/search') && n.link.startsWith('http') && n.link !== '#');
+
+  const [yahooNews, cnyesNews, udnNews] = await Promise.all([
     fetchYahooMacroNews(),
     fetchCnyesMacroNews(),
-    fetchMacroNewsRss()
+    fetchUdnMacroNews()
   ]);
 
-  const allFetched = [...yahooNews, ...cnyesNews, ...googleNews];
+  const allFetched = [...yahooNews, ...cnyesNews, ...udnNews].filter(n => n.link && !n.link.includes('google.com/search') && n.link.startsWith('http'));
 
   if (allFetched && allFetched.length > 0) {
     const existingTitles = new Set(inMemoryNews.map(n => n.title));
