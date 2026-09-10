@@ -26,6 +26,17 @@
     .prose-custom strong { color: #38bdf8; }
     html { scroll-behavior: smooth; }
 
+    @keyframes pulseBar {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+    .viz-bar-playing {
+      animation: pulseBar 0.8s ease-in-out infinite alternate !important;
+    }
+    .viz-bar-playing:nth-child(2) { animation-delay: 0.15s !important; }
+    .viz-bar-playing:nth-child(3) { animation-delay: 0.3s !important; }
+    .viz-bar-playing:nth-child(4) { animation-delay: 0.45s !important; }
+
     @media print {
       body { background-color: #ffffff !important; color: #000000 !important; }
       nav, #user-guide, .lg\\:col-span-4, #btn-submit, #query-input, .no-print { display: none !important; }
@@ -694,6 +705,72 @@
           </div>
         </div>
 
+        <!-- 🎙️ Bloomberg Podcast 頂級神經擬真語音廣播控制列 (no-print) -->
+        <div id="voice-broadcast-bar" class="mb-5 p-4 rounded-xl bg-gradient-to-r from-slate-900/95 via-indigo-950/40 to-slate-900/95 border border-indigo-500/30 shadow-lg flex flex-col gap-3 no-print">
+          <div class="flex flex-wrap items-center justify-between gap-2.5">
+            <!-- 主播切換與狀態 -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+                <span class="text-indigo-400">🎙️</span> AI 擬真主播：
+              </span>
+              <div class="inline-flex p-0.5 rounded-lg bg-slate-950/80 border border-slate-800">
+                <button id="btn-anchor-female" onclick="setAnchor('female')" class="px-2.5 py-1 text-xs rounded-md font-medium transition bg-indigo-600 text-white shadow-sm flex items-center gap-1">
+                  <span>👩</span> 曉臻 <span class="text-[10px] opacity-75 hidden sm:inline">(知性女聲)</span>
+                </button>
+                <button id="btn-anchor-male" onclick="setAnchor('male')" class="px-2.5 py-1 text-xs rounded-md font-medium transition text-slate-400 hover:text-white flex items-center gap-1">
+                  <span>👨</span> 雲哲 <span class="text-[10px] opacity-75 hidden sm:inline">(權威男聲)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 語速切換 -->
+            <div class="flex items-center gap-1.5 text-xs text-slate-400">
+              <span class="hidden sm:inline">語速：</span>
+              <div class="inline-flex p-0.5 rounded-lg bg-slate-950/80 border border-slate-800">
+                <button onclick="setSpeechRate(1.0)" id="rate-10" class="px-2 py-0.5 text-xs rounded font-medium transition bg-slate-800 text-sky-400 font-mono font-bold">1.0x</button>
+                <button onclick="setSpeechRate(1.25)" id="rate-125" class="px-2 py-0.5 text-xs rounded font-medium transition text-slate-400 hover:text-white font-mono">1.25x</button>
+                <button onclick="setSpeechRate(1.5)" id="rate-15" class="px-2 py-0.5 text-xs rounded font-medium transition text-slate-400 hover:text-white font-mono">1.5x</button>
+                <button onclick="setSpeechRate(2.0)" id="rate-20" class="px-2 py-0.5 text-xs rounded font-medium transition text-slate-400 hover:text-white font-mono">2.0x</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 播放控制、音頻波形與進度 -->
+          <div class="flex items-center gap-3 pt-1 border-t border-slate-800/60">
+            <!-- 播放/暫停鍵 -->
+            <button id="btn-main-play" onclick="toggleSpeech()" class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 hover:from-indigo-400 hover:to-sky-400 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-indigo-500/25 active:scale-95 transition shrink-0" title="播放 / 暫停">
+              <span id="main-play-icon">▶</span>
+            </button>
+            <button id="btn-main-stop" onclick="stopSpeech()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 flex items-center justify-center text-xs transition shrink-0" title="停止朗讀">
+              ⏹
+            </button>
+
+            <!-- 波形動畫與狀態提示 -->
+            <div class="flex-1 min-w-0 flex flex-col justify-center gap-1">
+              <div class="flex items-center justify-between text-xs">
+                <span id="speech-status-text" class="text-slate-300 font-medium truncate flex items-center gap-2">
+                  <span>點擊播放聆聽財經主播深度研報導讀</span>
+                </span>
+                <span id="speech-progress-text" class="text-slate-400 font-mono text-[11px] shrink-0">0 / 0 句</span>
+              </div>
+              
+              <!-- 語音進度條與波形棒 -->
+              <div class="flex items-center gap-2">
+                <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden relative cursor-pointer group" onclick="seekSpeech(event)" id="speech-progress-bar-bg" title="點擊跳轉進度">
+                  <div id="speech-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-sky-400 rounded-full w-0 transition-all duration-300"></div>
+                </div>
+                <!-- 視覺動態波形 -->
+                <div class="flex items-end gap-0.5 h-3.5 shrink-0" id="audio-visualizer" title="音頻波形">
+                  <div class="w-1 bg-indigo-500/50 rounded-full h-1 transition-all viz-bar"></div>
+                  <div class="w-1 bg-sky-500/50 rounded-full h-1.5 transition-all viz-bar"></div>
+                  <div class="w-1 bg-indigo-400/50 rounded-full h-2 transition-all viz-bar"></div>
+                  <div class="w-1 bg-sky-400/50 rounded-full h-1 transition-all viz-bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 研報正文 -->
         <div id="report-content" class="prose-custom text-slate-300 leading-relaxed">
           <div class="animate-pulse flex space-y-3 flex-col py-6">
@@ -711,7 +788,7 @@
               📲 分享至 LINE
             </button>
             <button onclick="toggleSpeech()" class="text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 font-medium">
-              <span id="speech-icon">🔊</span> <span id="speech-text">語音朗讀</span>
+              <span id="card-speech-icon">🔊</span> <span id="card-speech-text">語音朗讀</span>
             </button>
             <button onclick="exportReportPDF()" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1 font-medium">
               📥 匯出 PDF
@@ -1053,7 +1130,6 @@
   <script>
     let lineChart = null;
     let currentRawReport = "";
-    let isSpeaking = false;
     let currentSearchedSymbol = "";
     let currentTickerDetails = null;
     let currentPortfolioModel = 'standard';
@@ -2048,26 +2124,345 @@
       window.print();
     }
 
-    function toggleSpeech() {
-      if (!('speechSynthesis' in window)) return alert('您的瀏覽器不支援語音朗讀功能！');
-      if (isSpeaking) {
-        window.speechSynthesis.cancel();
-        isSpeaking = false;
-        document.getElementById('speech-icon').innerText = '🔊';
-        document.getElementById('speech-text').innerText = '語音朗讀';
+    // =========================================================================
+    // 🎙️ 旗艦級 Neural 擬真雙主播語音朗讀系統 (Bloomberg Podcast Style)
+    // =========================================================================
+    let currentAnchor = 'female'; // 'female' (曉臻) | 'male' (雲哲)
+    let speechRate = 1.0;
+    let speechSentences = [];
+    let currentSentenceIdx = 0;
+    let isSpeaking = false;
+    let isPaused = false;
+    let cachedVoices = [];
+
+    function initVoices() {
+      if (!('speechSynthesis' in window)) return;
+      cachedVoices = window.speechSynthesis.getVoices();
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = initVoices;
+      initVoices();
+    }
+
+    // 挑選最佳自然語音 (Microsoft Edge Natural / Google / Apple Siri 優先)
+    function pickBestVoice(anchorType) {
+      if (!cachedVoices || cachedVoices.length === 0) {
+        initVoices();
+      }
+      const voices = cachedVoices || [];
+      
+      if (anchorType === 'female') {
+        // 1. 微軟 Edge 台灣女自然語音 (HsiaoChen / HsiaoYu)
+        let v = voices.find(x => /HsiaoChen/i.test(x.name));
+        if (v) return { voice: v, pitch: 1.0 };
+        v = voices.find(x => /HsiaoYu/i.test(x.name));
+        if (v) return { voice: v, pitch: 1.0 };
+        // 2. 台灣中文 Natural / Online 語音
+        v = voices.find(x => (x.lang === 'zh-TW' || x.lang === 'zh_TW') && /natural|online/i.test(x.name));
+        if (v) return { voice: v, pitch: 1.0 };
+        // 3. iOS / macOS 繁體女聲 (Meijia, Siri, Tingting)
+        v = voices.find(x => /Meijia|Tingting|Siri/i.test(x.name) && /zh/i.test(x.lang));
+        if (v) return { voice: v, pitch: 1.0 };
+        // 4. Google 國語 (台灣)
+        v = voices.find(x => /Google/i.test(x.name) && (x.lang === 'zh-TW' || x.lang === 'zh_TW'));
+        if (v) return { voice: v, pitch: 1.05 };
+        // 5. 任何 zh-TW 語音
+        v = voices.find(x => x.lang === 'zh-TW' || x.lang === 'zh_TW');
+        if (v) return { voice: v, pitch: 1.05 };
+        // 6. 任何中文語音
+        v = voices.find(x => /zh/i.test(x.lang));
+        return { voice: v || null, pitch: 1.05 };
+      } else {
+        // 男主播 (雲哲)
+        // 1. 微軟 Edge 台灣男自然語音 (YunJhe)
+        let v = voices.find(x => /YunJhe/i.test(x.name));
+        if (v) return { voice: v, pitch: 0.95 };
+        // 2. 包含 Male 或 男 的台灣語音
+        v = voices.find(x => (x.lang === 'zh-TW' || x.lang === 'zh_TW') && /male|男|Kangkang/i.test(x.name));
+        if (v) return { voice: v, pitch: 0.95 };
+        // 3. 微軟中文男聲 (Yunxi, Yunjian)
+        v = voices.find(x => /Yunxi|Yunjian/i.test(x.name));
+        if (v) return { voice: v, pitch: 0.95 };
+        // 4. 其它繁中語音（稍微壓低 pitch 0.88 營造權威男聲磁性）
+        v = voices.find(x => x.lang === 'zh-TW' || x.lang === 'zh_TW');
+        if (v) return { voice: v, pitch: 0.88 };
+        // 5. 其它中文語音
+        v = voices.find(x => /zh/i.test(x.lang));
+        return { voice: v || null, pitch: 0.88 };
+      }
+    }
+
+    // 財經專屬智慧口語化清洗引擎
+    function polishFinanceSpeechText(raw) {
+      if (!raw) return '';
+      let t = raw;
+      // 1. 優先處理 Markdown 連結與圖片
+      t = t.replace(/!\[.*?\]\(.*?\)/g, '');
+      t = t.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+      t = t.replace(/https?:\/\/\S+/g, '');
+      
+      // 2. 表格線與表頭過濾
+      t = t.replace(/\|[\s\-\:\+\|]+\|/g, '');
+      t = t.replace(/^[\|\s]+(指標|項目|資產|標的|名稱|類別)[\s\|]+.*$/gm, '');
+      t = t.replace(/\|/g, '，');
+      
+      // 3. 移除 markdown 標題與格式符號
+      t = t.replace(/^#+\s+/gm, '');
+      t = t.replace(/[\*\_`~]/g, '');
+      
+      // 4. 財經標的與關鍵指標口語化
+      t = t.replace(/10Y-2Y/gi, '十年期與兩年期美債利差');
+      t = t.replace(/10Y-3M/gi, '十年期與三個月期美債利差');
+      t = t.replace(/US10Y/gi, '美國十年期公債殖利率');
+      t = t.replace(/US2Y/gi, '美國兩年期公債殖利率');
+      t = t.replace(/TWII/gi, '台股加權指數');
+      t = t.replace(/SOX/gi, '費城半導體指數');
+      t = t.replace(/SPX|S&P\s*500/gi, '標普五百指數');
+      t = t.replace(/DJI/gi, '道瓊工業指數');
+      t = t.replace(/TSMC/gi, '台積電');
+      t = t.replace(/\b2330\b/g, '台積電');
+      t = t.replace(/NVDA/gi, '輝達');
+      t = t.replace(/DXY/gi, '美元指數');
+      t = t.replace(/USDTWD/gi, '美元兌台幣匯率');
+      t = t.replace(/VIX/gi, '恐慌指數');
+      t = t.replace(/BDRY/gi, '波羅的海乾散貨指數');
+      t = t.replace(/HRC/gi, '熱軋鋼捲');
+      t = t.replace(/CSC/gi, '中鋼');
+      
+      // 5. 利差基點口語化
+      t = t.replace(/\+([0-9\.]+)\s*(bps|bp|基點)/gi, '擴大$1個基點');
+      t = t.replace(/\-([0-9\.]+)\s*(bps|bp|基點)/gi, '縮小$1個基點');
+      t = t.replace(/([0-9\.]+)\s*(bps|bp|基點)/gi, '$1個基點');
+      
+      // 6. 漲跌與百分比口語化
+      t = t.replace(/\+([0-9\.]+)\%/g, '上漲百分之$1');
+      t = t.replace(/\-([0-9\.]+)\%/g, '下跌百分之$1');
+      t = t.replace(/([0-9\.]+)\%/g, '百分之$1');
+      
+      // 結構與標題優化
+      t = t.replace(/【(.*?)】/g, '。為您摘要$1。');
+      t = t.replace(/[💡🚀📊🏛️⚡📈🎯⚠️🔍📋📲📥]/g, '');
+      
+      // 標點符號整理
+      t = t.replace(/[\r\n]+/g, '。');
+      t = t.replace(/[\t\s]+/g, ' ');
+      t = t.replace(/。+/g, '。');
+      t = t.replace(/[，、]{2,}/g, '，');
+      return t.trim();
+    }
+
+    // 將長文切割為短句數組（徹底杜絕瀏覽器超時中斷）
+    function splitTextToSentences(text) {
+      if (!text) return [];
+      const rawSentences = text.split(/([。！？\n]+)/);
+      const res = [];
+      let cur = '';
+      for (let i = 0; i < rawSentences.length; i++) {
+        const part = rawSentences[i].trim();
+        if (!part) continue;
+        if (/^[。！？\n]+$/.test(part)) {
+          cur += part;
+          if (cur.length >= 10 || i === rawSentences.length - 1) {
+            res.push(cur);
+            cur = '';
+          }
+        } else {
+          if (cur.length > 60) {
+            res.push(cur + '。');
+            cur = part;
+          } else {
+            cur += (cur ? '，' : '') + part;
+          }
+        }
+      }
+      if (cur.trim()) res.push(cur);
+      return res.filter(s => s.replace(/^[。！？，\s]+|[。！？，\s]+$/g, '').length > 0);
+    }
+
+    // 播放指定句子
+    function playSentence(idx) {
+      if (!('speechSynthesis' in window)) return;
+      if (idx < 0 || idx >= speechSentences.length) {
+        stopSpeech();
         return;
       }
-      if (!currentRawReport) return;
-      const cleanText = currentRawReport.replace(/[\#\*\_\`\•\—\-\[\]\(\)]/g, ' ').replace(/https?:\/\/\S+/g, '');
-      const utter = new SpeechSynthesisUtterance(cleanText);
-      utter.lang = 'zh-TW';
-      utter.rate = 1.05;
-      utter.onend = () => { isSpeaking = false; document.getElementById('speech-icon').innerText = '🔊'; document.getElementById('speech-text').innerText = '語音朗讀'; };
-      utter.onerror = () => { isSpeaking = false; document.getElementById('speech-icon').innerText = '🔊'; document.getElementById('speech-text').innerText = '語音朗讀'; };
-      window.speechSynthesis.speak(utter);
+      currentSentenceIdx = idx;
       isSpeaking = true;
-      document.getElementById('speech-icon').innerText = '⏸️';
-      document.getElementById('speech-text').innerText = '暫停朗讀';
+      isPaused = false;
+      updateSpeechUI();
+
+      window.speechSynthesis.cancel();
+
+      const text = speechSentences[idx];
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'zh-TW';
+      utter.rate = speechRate;
+
+      const pick = pickBestVoice(currentAnchor);
+      if (pick.voice) {
+        utter.voice = pick.voice;
+      }
+      utter.pitch = pick.pitch || 1.0;
+
+      utter.onend = () => {
+        if (!isSpeaking || isPaused) return;
+        if (currentSentenceIdx + 1 < speechSentences.length) {
+          playSentence(currentSentenceIdx + 1);
+        } else {
+          stopSpeech();
+        }
+      };
+
+      utter.onerror = (e) => {
+        console.warn('Speech queue step:', e);
+        if (!isSpeaking || isPaused) return;
+        if (currentSentenceIdx + 1 < speechSentences.length) {
+          playSentence(currentSentenceIdx + 1);
+        } else {
+          stopSpeech();
+        }
+      };
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    // 總控：切換播放 / 暫停
+    function toggleSpeech() {
+      if (!('speechSynthesis' in window)) return alert('您的瀏覽器不支援語音朗讀功能！');
+      
+      if (isSpeaking) {
+        if (isPaused) {
+          isPaused = false;
+          playSentence(currentSentenceIdx);
+        } else {
+          isPaused = true;
+          window.speechSynthesis.cancel();
+          updateSpeechUI();
+        }
+        return;
+      }
+
+      if (!currentRawReport) return alert('研報尚未生成，請稍候再點擊朗讀！');
+      
+      const clean = polishFinanceSpeechText(currentRawReport);
+      speechSentences = splitTextToSentences(clean);
+      if (speechSentences.length === 0) return alert('未取得可朗讀的研報內文！');
+      
+      currentSentenceIdx = 0;
+      playSentence(0);
+    }
+
+    // 停止朗讀
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      isSpeaking = false;
+      isPaused = false;
+      currentSentenceIdx = 0;
+      updateSpeechUI();
+    }
+
+    // 重設研報語音狀態
+    function resetSpeechState() {
+      stopSpeech();
+      speechSentences = [];
+      const statusText = document.getElementById('speech-status-text');
+      if (statusText) statusText.innerText = '研報已就緒，點擊播放聆聽主播導讀';
+    }
+
+    // 設定主播
+    function setAnchor(type) {
+      currentAnchor = type;
+      const btnF = document.getElementById('btn-anchor-female');
+      const btnM = document.getElementById('btn-anchor-male');
+      if (type === 'female') {
+        if (btnF) btnF.className = 'px-2.5 py-1 text-xs rounded-md font-medium transition bg-indigo-600 text-white shadow-sm flex items-center gap-1';
+        if (btnM) btnM.className = 'px-2.5 py-1 text-xs rounded-md font-medium transition text-slate-400 hover:text-white flex items-center gap-1';
+      } else {
+        if (btnM) btnM.className = 'px-2.5 py-1 text-xs rounded-md font-medium transition bg-indigo-600 text-white shadow-sm flex items-center gap-1';
+        if (btnF) btnF.className = 'px-2.5 py-1 text-xs rounded-md font-medium transition text-slate-400 hover:text-white flex items-center gap-1';
+      }
+      if (isSpeaking && !isPaused) {
+        playSentence(currentSentenceIdx);
+      }
+    }
+
+    // 設定語速
+    function setSpeechRate(rate) {
+      speechRate = rate;
+      ['10', '125', '15', '20'].forEach(k => {
+        const b = document.getElementById('rate-' + k);
+        if (b) b.className = 'px-2 py-0.5 text-xs rounded font-medium transition text-slate-400 hover:text-white font-mono';
+      });
+      const activeKey = rate === 1.0 ? '10' : (rate === 1.25 ? '125' : (rate === 1.5 ? '15' : '20'));
+      const activeBtn = document.getElementById('rate-' + activeKey);
+      if (activeBtn) {
+        activeBtn.className = 'px-2 py-0.5 text-xs rounded font-medium transition bg-slate-800 text-sky-400 font-mono font-bold';
+      }
+      if (isSpeaking && !isPaused) {
+        playSentence(currentSentenceIdx);
+      }
+    }
+
+    // 點擊進度條跳轉
+    function seekSpeech(event) {
+      if (!speechSentences || speechSentences.length === 0) return;
+      const bar = document.getElementById('speech-progress-bar-bg');
+      if (!bar) return;
+      const rect = bar.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      const targetIdx = Math.min(speechSentences.length - 1, Math.floor(ratio * speechSentences.length));
+      playSentence(targetIdx);
+    }
+
+    // 更新 UI 狀態
+    function updateSpeechUI() {
+      const playIcon = document.getElementById('main-play-icon');
+      const statusText = document.getElementById('speech-status-text');
+      const progressText = document.getElementById('speech-progress-text');
+      const progressBar = document.getElementById('speech-progress-bar');
+      const topIcon = document.getElementById('speech-icon');
+      const topText = document.getElementById('speech-text');
+      const cardIcon = document.getElementById('card-speech-icon');
+      const cardText = document.getElementById('card-speech-text');
+      const vizBars = document.querySelectorAll('.viz-bar');
+
+      const total = speechSentences.length || 0;
+      const cur = isSpeaking ? currentSentenceIdx + 1 : 0;
+      const pct = total > 0 ? Math.round((cur / total) * 100) : 0;
+
+      if (progressBar) progressBar.style.width = `${pct}%`;
+      if (progressText) progressText.innerText = `${cur} / ${total} 句 (${pct}%)`;
+
+      if (isSpeaking && !isPaused) {
+        if (playIcon) playIcon.innerText = '⏸';
+        if (statusText) statusText.innerHTML = `<span class="text-indigo-400 font-bold">● 正在播報：</span><span class="text-slate-200">${currentAnchor === 'female' ? '👩 曉臻' : '👨 雲哲'} 主播為您朗讀深度研報</span>`;
+        if (topIcon) topIcon.innerText = '⏸️';
+        if (topText) topText.innerText = '暫停朗讀';
+        if (cardIcon) cardIcon.innerText = '⏸️';
+        if (cardText) cardText.innerText = '暫停朗讀';
+        vizBars.forEach(b => b.classList.add('viz-bar-playing'));
+      } else if (isSpeaking && isPaused) {
+        if (playIcon) playIcon.innerText = '▶';
+        if (statusText) statusText.innerHTML = `<span class="text-amber-400 font-bold">❚❚ 已暫停：</span><span class="text-slate-300">點擊繼續聆聽（第 ${cur} 句）</span>`;
+        if (topIcon) topIcon.innerText = '▶️';
+        if (topText) topText.innerText = '繼續朗讀';
+        if (cardIcon) cardIcon.innerText = '▶️';
+        if (cardText) cardText.innerText = '繼續朗讀';
+        vizBars.forEach(b => b.classList.remove('viz-bar-playing'));
+      } else {
+        if (playIcon) playIcon.innerText = '▶';
+        if (statusText) statusText.innerText = '點擊播放聆聽財經主播深度研報導讀';
+        if (topIcon) topIcon.innerText = '🔊';
+        if (topText) topText.innerText = '語音朗讀';
+        if (cardIcon) cardIcon.innerText = '🔊';
+        if (cardText) cardText.innerText = '語音朗讀';
+        if (progressBar) progressBar.style.width = '0%';
+        if (progressText) progressText.innerText = '0 / 0 句';
+        vizBars.forEach(b => b.classList.remove('viz-bar-playing'));
+      }
     }
 
     async function loadDynamicTopics() {
@@ -2302,6 +2697,7 @@
     }
 
     async function runAnalysis(queryText) {
+      stopSpeech();
       const reportBox = document.getElementById('report-content');
       const btn = document.getElementById('btn-submit');
       btn.disabled = true;
@@ -2324,6 +2720,7 @@
         document.getElementById('report-title').innerText = '【研報主題】' + queryText;
 
         reportBox.innerHTML = marked.parse(currentRawReport);
+        resetSpeechState();
       } catch (e) {
         reportBox.innerHTML = '<div class="text-red-400 py-6">連線分析逾時，請點擊上方重新整理。</div>';
       } finally {
