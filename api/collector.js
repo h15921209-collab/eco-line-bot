@@ -73,7 +73,17 @@ async function fetchAssetHistory(asset) {
       prevPrice: 124.00,
       firstPrice: 121.5,
       chg: 0.50,
+      chg_1d: 0.50,
+      chg_5d: Number((liveCoal - 123.8).toFixed(2)),
+      chg_1m: Number((liveCoal - 121.5).toFixed(2)),
+      chg_ytd: Number((liveCoal - 122.0).toFixed(2)),
+      chg_1y: Number((liveCoal - 120.0).toFixed(2)),
       pct: 0.40,
+      pct_1d: 0.40,
+      pct_5d: 0.57,
+      pct_1m: 2.47,
+      pct_ytd: 2.05,
+      pct_1y: 3.75,
       datePriceMap: dateMap,
       fallbackHistory: coalHistory
     };
@@ -162,6 +172,12 @@ async function fetchAssetHistory(asset) {
       const pct_ytd = ytdQuote > 0 ? Number((((curPrice - ytdQuote) / ytdQuote) * 100).toFixed(2)) : 0;
       const pct_1y = p1y > 0 ? Number((((curPrice - p1y) / p1y) * 100).toFixed(2)) : 0;
 
+      const chg_1d = Number(chg.toFixed(asset.dec));
+      const chg_5d = p5d !== undefined ? Number((curPrice - p5d).toFixed(asset.dec)) : 0;
+      const chg_1m = p1m !== undefined ? Number((curPrice - p1m).toFixed(asset.dec)) : 0;
+      const chg_ytd = ytdQuote !== undefined ? Number((curPrice - ytdQuote).toFixed(asset.dec)) : 0;
+      const chg_1y = p1y !== undefined ? Number((curPrice - p1y).toFixed(asset.dec)) : 0;
+
       const datePriceMap = {};
       let firstPrice = curPrice;
       ts.forEach((t, idx) => {
@@ -187,6 +203,11 @@ async function fetchAssetHistory(asset) {
         prevPrice: Number(prev.toFixed(asset.dec)),
         firstPrice,
         chg: Number(chg.toFixed(asset.dec)),
+        chg_1d,
+        chg_5d,
+        chg_1m,
+        chg_ytd,
+        chg_1y,
         pct,
         pct_1d,
         pct_5d,
@@ -206,7 +227,17 @@ async function fetchAssetHistory(asset) {
     prevPrice: asset.defaultVal,
     firstPrice: asset.defaultVal,
     chg: 0,
+    chg_1d: 0,
+    chg_5d: 0,
+    chg_1m: 0,
+    chg_ytd: 0,
+    chg_1y: 0,
     pct: 0,
+    pct_1d: 0,
+    pct_5d: 0,
+    pct_1m: 0,
+    pct_ytd: 0,
+    pct_1y: 0,
     datePriceMap: {}
   };
 }
@@ -319,6 +350,13 @@ module.exports = async (req, res) => {
     latestSnapshot[`${r.key}_pct_1m`] = r.pct_1m !== undefined ? r.pct_1m : r.pct;
     latestSnapshot[`${r.key}_pct_ytd`] = r.pct_ytd !== undefined ? r.pct_ytd : r.pct;
     latestSnapshot[`${r.key}_pct_1y`] = r.pct_1y !== undefined ? r.pct_1y : r.pct;
+
+    latestSnapshot[`${r.key}_chg`] = r.chg;
+    latestSnapshot[`${r.key}_chg_1d`] = r.chg_1d !== undefined ? r.chg_1d : r.chg;
+    latestSnapshot[`${r.key}_chg_5d`] = r.chg_5d !== undefined ? r.chg_5d : r.chg;
+    latestSnapshot[`${r.key}_chg_1m`] = r.chg_1m !== undefined ? r.chg_1m : r.chg;
+    latestSnapshot[`${r.key}_chg_ytd`] = r.chg_ytd !== undefined ? r.chg_ytd : r.chg;
+    latestSnapshot[`${r.key}_chg_1y`] = r.chg_1y !== undefined ? r.chg_1y : r.chg;
   });
 
   // 衍生指標注入 Snapshot
@@ -339,11 +377,17 @@ module.exports = async (req, res) => {
   const curAdrInTwd = (curTsmAdr * curTwd) / 5;
   latestSnapshot.tsmc_adr_premium = curTsmc > 0 ? Number((((curAdrInTwd - curTsmc) / curTsmc) * 100).toFixed(2)) : 10.45;
 
-  // 計算衍生指標之「前日比較基準」與變動量
+  // 計算衍生指標之「各週期比較基準」與變動量 (1D, 5D, 1M, YTD, 1Y)
   const prevRow = historyRows.length >= 2 ? historyRows[historyRows.length - 2] : null;
+  const row5d = historyRows.length >= 6 ? historyRows[historyRows.length - 6] : historyRows[0];
+  const row1m = historyRows.length >= 21 ? historyRows[historyRows.length - 21] : historyRows[0];
+  const row1y = historyRows.length > 0 ? historyRows[0] : null;
+
   if (prevRow) {
     const spreadChgBps = Number(((latestSnapshot.spread_10y2y - prevRow.spread_10y2y) * 100).toFixed(1));
     latestSnapshot.spread_10y2y_chg_bps = spreadChgBps;
+    latestSnapshot.spread_10y2y_chg_bps_1d = spreadChgBps;
+    latestSnapshot.spread_10y2y_chg_1d = Number((latestSnapshot.spread_10y2y - prevRow.spread_10y2y).toFixed(3));
     latestSnapshot.spread_10y2y_prev = prevRow.spread_10y2y;
 
     const adrChgPct = Number((latestSnapshot.tsmc_adr_premium - prevRow.tsmc_adr_premium).toFixed(2));
@@ -353,6 +397,19 @@ module.exports = async (req, res) => {
     const gcChg = Number((latestSnapshot.gold_copper_ratio - prevRow.gold_copper_ratio).toFixed(1));
     latestSnapshot.gold_copper_ratio_chg = gcChg;
     latestSnapshot.gold_copper_ratio_prev = prevRow.gold_copper_ratio;
+  }
+
+  if (row5d) {
+    latestSnapshot.spread_10y2y_chg_bps_5d = Number(((latestSnapshot.spread_10y2y - row5d.spread_10y2y) * 100).toFixed(1));
+    latestSnapshot.spread_10y2y_chg_5d = Number((latestSnapshot.spread_10y2y - row5d.spread_10y2y).toFixed(3));
+  }
+  if (row1m) {
+    latestSnapshot.spread_10y2y_chg_bps_1m = Number(((latestSnapshot.spread_10y2y - row1m.spread_10y2y) * 100).toFixed(1));
+    latestSnapshot.spread_10y2y_chg_1m = Number((latestSnapshot.spread_10y2y - row1m.spread_10y2y).toFixed(3));
+  }
+  if (row1y) {
+    latestSnapshot.spread_10y2y_chg_bps_1y = Number(((latestSnapshot.spread_10y2y - row1y.spread_10y2y) * 100).toFixed(1));
+    latestSnapshot.spread_10y2y_chg_1y = Number((latestSnapshot.spread_10y2y - row1y.spread_10y2y).toFixed(3));
   }
 
   // 4-A. 即時快照對比表 CSV
