@@ -63,6 +63,26 @@ const VERIFIED_OFFICIAL_RELEASES = {
   }
 };
 
+// 官方排程權威日曆校準表 (BLS / BEA / Census / Fed 官方發布日曆，嚴格校準真實公布日)
+const OFFICIAL_CALENDAR_SCHEDULES = {
+  // 2026 年 8 月份數據（2026 年 9 月發布）
+  '2026-09': {
+    cpiDate: '2026-09-11',    // 美國勞工部 BLS 官方公布 8 月 CPI：2026 年 9 月 11 日 (週五) 20:30 (本週重磅焦點！)
+    ppiDate: '2026-09-10',    // 美國勞工部 BLS 官方公布 8 月 PPI：2026 年 9 月 10 日 (週四) 20:30
+    retailDate: '2026-09-16', // 美國人口普查局 Census 官方公布 8 月零售銷售：2026 年 9 月 16 日 (週三) 20:30
+    pceDate: '2026-09-30',    // 美國經濟分析局 BEA 官方公布 8 月 PCE：2026 年 9 月 30 日 (週三) 20:30
+    fomcDate: '2026-09-17'    // 聯準會 FOMC 利率決議：2026 年 9 月 17 日 (週四) 02:00
+  },
+  // 2026 年 9 月份數據（2026 年 10 月發布）
+  '2026-10': {
+    cpiDate: '2026-10-14',    // BLS 官方公布 9 月 CPI：2026 年 10 月 14 日 (週三) 20:30
+    ppiDate: '2026-10-15',    // BLS 官方公布 9 月 PPI：2026 年 10 月 15 日 (週四) 20:30
+    retailDate: '2026-10-15', // Census 官方公布 9 月零售銷售：2026 年 10 月 15 日 (週四) 20:30
+    pceDate: '2026-10-30',    // BEA 官方公布 9 月 PCE：2026 年 10 月 30 日 (週五) 20:30
+    fomcDate: '2026-10-29'    // FOMC 利率決議：2026 年 10 月 29 日 (週四) 02:00
+  }
+};
+
 // 動態排程產生器（精確計算真實官方時序）
 function generateMacroCalendarEvents(baseDate) {
   const currentYear = baseDate.getFullYear();
@@ -153,12 +173,19 @@ function generateMacroCalendarEvents(baseDate) {
       aiPrompt: '美國 ISM 製造業 PMI 與新訂單減庫存指標對全球製造業補庫存週期的研判'
     });
 
-    // 3. 🇺🇸 美國 - CPI 通膨年增率 ＆ 核心 CPI (每月 11~13 號 20:30) ⭐⭐⭐
-    const cpiDate = new Date(y, m, 12);
-    if (cpiDate.getDay() === 0) cpiDate.setDate(cpiDate.getDate() + 2);
-    if (cpiDate.getDay() === 6) cpiDate.setDate(cpiDate.getDate() + 3);
+    const ymKey = `${y}-${String(m + 1).padStart(2, '0')}`;
+    const officialSched = OFFICIAL_CALENDAR_SCHEDULES[ymKey];
+
+    // 3. 🇺🇸 美國 - CPI 通膨年增率 ＆ 核心 CPI (官方排程發布：2026-09-11 週五 20:30) ⭐⭐⭐
+    let cpiDateStr = officialSched?.cpiDate;
+    if (!cpiDateStr) {
+      const cpiDate = new Date(y, m, 12);
+      if (cpiDate.getDay() === 0) cpiDate.setDate(cpiDate.getDate() + 2);
+      if (cpiDate.getDay() === 6) cpiDate.setDate(cpiDate.getDate() + 2);
+      cpiDateStr = formatDateStr(cpiDate);
+    }
     events.push({
-      date: formatDateStr(cpiDate),
+      date: cpiDateStr,
       time: '20:30',
       country: 'US',
       countryName: '美國',
@@ -173,7 +200,7 @@ function generateMacroCalendarEvents(baseDate) {
       aiPrompt: '美國核心 CPI 與住房通膨 (Shelter) 下行速度對聯準會降息終點利率定價的推演'
     });
     events.push({
-      date: formatDateStr(cpiDate),
+      date: cpiDateStr,
       time: '20:30',
       country: 'US',
       countryName: '美國',
@@ -188,13 +215,16 @@ function generateMacroCalendarEvents(baseDate) {
       aiPrompt: '美國總體 CPI 年率變動對美債殖利率曲線與國際美元指數的傳導影響'
     });
 
-    // 4. 🇺🇸 美國 - PPI 生產者物價指數 (CPI 隔天 20:30) ⭐⭐
-    const ppiDate = new Date(cpiDate);
-    ppiDate.setDate(ppiDate.getDate() + 1);
-    if (ppiDate.getDay() === 6) ppiDate.setDate(ppiDate.getDate() + 2);
-    if (ppiDate.getDay() === 0) ppiDate.setDate(ppiDate.getDate() + 1);
+    // 4. 🇺🇸 美國 - PPI 生產者物價指數 (官方排程發布：2026-09-10 週四 20:30) ⭐⭐
+    let ppiDateStr = officialSched?.ppiDate;
+    if (!ppiDateStr) {
+      const ppiDate = new Date(y, m, 13);
+      if (ppiDate.getDay() === 6) ppiDate.setDate(ppiDate.getDate() + 2);
+      if (ppiDate.getDay() === 0) ppiDate.setDate(ppiDate.getDate() + 1);
+      ppiDateStr = formatDateStr(ppiDate);
+    }
     events.push({
-      date: formatDateStr(ppiDate),
+      date: ppiDateStr,
       time: '20:30',
       country: 'US',
       countryName: '美國',
@@ -209,12 +239,16 @@ function generateMacroCalendarEvents(baseDate) {
       aiPrompt: '美國 PPI 物價向後續 PCE 通膨傳導之實證關係分析'
     });
 
-    // 5. 🇺🇸 美國 - 零售銷售月率 (Retail Sales，每月 15~17 號 20:30) ⭐⭐⭐
-    const retailDate = new Date(y, m, 16);
-    if (retailDate.getDay() === 0) retailDate.setDate(retailDate.getDate() + 1);
-    if (retailDate.getDay() === 6) retailDate.setDate(retailDate.getDate() + 2);
+    // 5. 🇺🇸 美國 - 零售銷售月率 (Retail Sales，官方排程發布：2026-09-16 20:30) ⭐⭐⭐
+    let retailDateStr = officialSched?.retailDate;
+    if (!retailDateStr) {
+      const retailDate = new Date(y, m, 16);
+      if (retailDate.getDay() === 0) retailDate.setDate(retailDate.getDate() + 1);
+      if (retailDate.getDay() === 6) retailDate.setDate(retailDate.getDate() + 2);
+      retailDateStr = formatDateStr(retailDate);
+    }
     events.push({
-      date: formatDateStr(retailDate),
+      date: retailDateStr,
       time: '20:30',
       country: 'US',
       countryName: '美國',
@@ -229,25 +263,27 @@ function generateMacroCalendarEvents(baseDate) {
       aiPrompt: '美國實質個人消費動能與零售銷售數據對經濟軟著陸與消費韌性之解讀'
     });
 
-    // 6. 🇺🇸 美國 - 核心 PCE 物價指數 (每月最後一個週五 20:30) ⭐⭐⭐
-    const lastFridayPce = getNthWeekdayOfMonth(y, m, 5, 4);
-    if (lastFridayPce) {
-      events.push({
-        date: formatDateStr(lastFridayPce),
-        time: '20:30',
-        country: 'US',
-        countryName: '美國',
-        flag: '🇺🇸',
-        event: `美國 ${monthNumber === 1 ? 12 : monthNumber - 1} 月核心 PCE 物價指數年率 (Fed 最青睞指標)`,
-        importance: 3,
-        previous: '2.6%',
-        forecast: '2.6%',
-        actual: '--',
-        unit: '%',
-        category: 'inflation',
-        aiPrompt: '聯準會最青睞之核心 PCE 通膨年率是否持續朝 2% 目標收斂深度評估'
-      });
+    // 6. 🇺🇸 美國 - 核心 PCE 物價指數 (官方排程發布：2026-09-30 20:30) ⭐⭐⭐
+    let pceDateStr = officialSched?.pceDate;
+    if (!pceDateStr) {
+      const lastFridayPce = getNthWeekdayOfMonth(y, m, 5, 4);
+      pceDateStr = lastFridayPce ? formatDateStr(lastFridayPce) : `${y}-${String(m + 1).padStart(2, '0')}-28`;
     }
+    events.push({
+      date: pceDateStr,
+      time: '20:30',
+      country: 'US',
+      countryName: '美國',
+      flag: '🇺🇸',
+      event: `美國 ${monthNumber === 1 ? 12 : monthNumber - 1} 月核心 PCE 物價指數年率 (Fed 最青睞指標)`,
+      importance: 3,
+      previous: '2.6%',
+      forecast: '2.6%',
+      actual: '--',
+      unit: '%',
+      category: 'inflation',
+      aiPrompt: '聯準會最青睞之核心 PCE 通膨年率是否持續朝 2% 目標收斂深度評估'
+    });
 
     // 7. 🇹🇼 台灣 - 海關出口貿易統計 (每月 7~9 號 16:00) ⭐⭐⭐
     const twExportDate = new Date(y, m, 8);
