@@ -1,0 +1,80 @@
+{
+  "lastSyncTime": "2026-09-11 08:33:07",
+  "lastSyncTimestamp": 1789086787863,
+  "source": "官方發布日曆 (BLS / BEA / Census / Fed / 財政部) 雙軌校正",
+  "status": "healthy",
+  "calibratedSchedules": {
+    "2026-09": {
+      "cpiDate": "2026-09-11",
+      "ppiDate": "2026-09-10",
+      "retailDate": "2026-09-16",
+      "pceDate": "2026-09-30",
+      "fomcDate": "2026-09-17"
+    },
+    "2026-10": {
+      "cpiDate": "2026-10-14",
+      "ppiDate": "2026-10-15",
+      "retailDate": "2026-10-15",
+      "pceDate": "2026-10-30",
+      "fomcDate": "2026-10-29"
+    }
+  },
+  "verifiedReleases": {
+    "2026-09-08_TW_trade": {
+      "actual": "+41.0%",
+      "previous": "+32.9%",
+      "forecast": "+15.5%",
+      "note": "台灣財政部正式發布：出口 824.0 億美元創歷史單月新高，年增 +41.0%"
+    },
+    "2026-08-20_TW_trade": {
+      "actual": "+61.9%",
+      "previous": "+31.3%",
+      "forecast": "+45.0%",
+      "note": "經濟部統計處發布：外銷訂單 979.4 億美元，年增 +61.9%"
+    },
+    "2026-09-04_US_NFP": {
+      "actual": "-2.3 萬",
+      "previous": "+14.2 萬",
+      "forecast": "+16.5 萬",
+      "note": "美國勞工部 BLS 正式發布：非農就業增長放緩轉負"
+    },
+    "2026-09-04_US_UR": {
+      "actual": "4.1%",
+      "previous": "4.2%",
+      "forecast": "4.2%",
+      "note": "美國勞工部 BLS 正式發布：失業率 4.1%"
+    },
+    "2026-09-10_US_inflation": {
+      "actual": "PPI +5.4% (月增 +0.4%)",
+      "previous": "2.4%",
+      "forecast": "2.5%",
+      "note": "美國勞工部 BLS 9/10 20:30 正式發布：最終需求 PPI 月增 0.4%、年增 5.4%"
+    },
+    "2026-08-28_US_inflation": {
+      "actual": "3.3%",
+      "previous": "3.3%",
+      "forecast": "3.3%",
+      "note": "BEA 正式公布：7 月核心 PCE 年增率 3.3%"
+    }
+  },
+  "upcomingHighlights": [
+    {
+      "indicator": "美國 8 月 CPI 通膨年率",
+      "date": "2026-09-11 20:30",
+      "importance": 3,
+      "note": "明日週五晚間重磅公布，直接影響聯準會降息與週五財務班研討"
+    },
+    {
+      "indicator": "美國 8 月 零售銷售 (恐怖數據)",
+      "date": "2026-09-16 20:30",
+      "importance": 3,
+      "note": "檢驗實體消費動能與軟著陸韌性"
+    },
+    {
+      "indicator": "聯準會 FOMC 利率決議",
+      "date": "2026-09-17 02:00",
+      "importance": 3,
+      "note": "發布經濟預測摘要 (SEP) 與最新點陣圖 (Dot Plot)"
+    }
+  ]
+}

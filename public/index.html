@@ -438,11 +438,20 @@
     <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-slate-900/95 border border-slate-800 no-print shadow-xl" id="macro-calendar-container">
       <!-- 頂部：標題、倒數徽章與資訊 -->
       <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3.5 border-b border-slate-800/80">
-        <div class="flex items-center gap-2.5">
+        <div class="flex flex-wrap items-center gap-2.5">
           <span class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
             <span class="text-sky-400 text-lg">📅</span> 全球總經每週大事行事曆
           </span>
           <span class="text-[11px] text-slate-400 font-normal hidden sm:inline">（比照財經M平方標準 · 官方即時排程與預期對比）</span>
+          <!-- 官方排程校驗狀態徽章與立即校正鈕 -->
+          <span id="calendar-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>官方排程已校驗</span>
+          </span>
+          <button id="btn-sync-calendar" onclick="syncCalendarNow()" title="比照 BLS / BEA / Fed / 財政部官方發布日曆即時校準排程" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border border-slate-700 transition flex items-center gap-1 text-[11px] active:scale-95">
+            <span id="sync-calendar-icon">🔄</span>
+            <span id="sync-calendar-text">校正</span>
+          </button>
         </div>
 
         <!-- 3 大重磅事件快速倒數膠囊 -->
@@ -1442,10 +1451,62 @@
             }
           }
 
+          // 更新官方排程校驗狀態徽章
+          if (data.syncInfo) {
+            const badgeEl = document.getElementById('calendar-sync-badge');
+            if (badgeEl) {
+              const syncTimeStr = data.syncInfo.lastSyncTime ? data.syncInfo.lastSyncTime.split(' ')[1]?.slice(0, 5) : '';
+              badgeEl.innerHTML = `
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>官方排程已校驗 ${syncTimeStr ? `(${syncTimeStr})` : ''}</span>
+              `;
+            }
+          }
+
           renderCalendarTable();
         }
       } catch (e) {
         console.warn('Load calendar error:', e);
+      }
+    }
+
+    async function syncCalendarNow() {
+      const icon = document.getElementById('sync-calendar-icon');
+      const text = document.getElementById('sync-calendar-text');
+      const badge = document.getElementById('calendar-sync-badge');
+      if (icon) icon.classList.add('animate-spin');
+      if (text) text.innerText = '校正中';
+      if (badge) {
+        badge.innerHTML = `
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+          <span>連線官方日曆校準中...</span>
+        `;
+        badge.className = "px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-950/80 text-amber-300 border border-amber-500/30 flex items-center gap-1";
+      }
+
+      try {
+        const res = await fetch('/api/calendar-sync', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          if (badge) {
+            badge.className = "px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 flex items-center gap-1";
+          }
+          await loadMacroCalendar(currentCalendarPeriod);
+        } else {
+          throw new Error(data.message || '校正失敗');
+        }
+      } catch (err) {
+        console.error('Calendar sync error:', err);
+        if (badge) {
+          badge.innerHTML = `
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+            <span>校正異常</span>
+          `;
+          badge.className = "px-2 py-0.5 rounded-full text-[10px] font-mono bg-rose-950/80 text-rose-300 border border-rose-500/30 flex items-center gap-1";
+        }
+      } finally {
+        if (icon) icon.classList.remove('animate-spin');
+        if (text) text.innerText = '校正';
       }
     }
 

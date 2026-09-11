@@ -29,6 +29,7 @@ const morningBroadcastHandler = require('./api/morning-broadcast');
 const alertCheckHandler = require('./api/alert-check');
 const topicsHandler = require('./api/topics');
 const calendarHandler = require('./api/calendar');
+const calendarSyncModule = require('./api/calendar-sync');
 const newsHandler = require('./api/news');
 const recordsHandler = require('./api/records');
 
@@ -40,6 +41,7 @@ app.all('/api/analyze', (req, res) => analyzeHandler(req, res));
 app.all('/api/records', (req, res) => recordsHandler(req, res));
 app.all('/api/topics', (req, res) => topicsHandler(req, res));
 app.all('/api/calendar', (req, res) => calendarHandler(req, res));
+app.all('/api/calendar-sync', (req, res) => calendarSyncModule(req, res));
 app.all('/api/news', (req, res) => newsHandler(req, res));
 app.all('/api/morning-broadcast', (req, res) => morningBroadcastHandler(req, res));
 app.all('/api/cron-daily', (req, res) => morningBroadcastHandler(req, res));
@@ -66,4 +68,9 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`🌐 環境: ${process.env.NODE_ENV || 'production'}`);
   console.log(`⏰ 時間: ${new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })} (台北時間)`);
   console.log(`====================================================`);
+  try {
+    calendarSyncModule.setupCalendarCronTimer();
+  } catch (err) {
+    console.error('Failed to setup calendar cron timer:', err);
+  }
 });

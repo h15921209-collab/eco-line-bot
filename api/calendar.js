@@ -25,6 +25,16 @@ function getWeekDayZh(dayIndex) {
   return days[dayIndex];
 }
 
+const calendarSync = require('./calendar-sync');
+
+function getCalibratedData() {
+  try {
+    return calendarSync.loadCalibratedCalendarData();
+  } catch (e) {
+    return null;
+  }
+}
+
 // 官方權威真實已發布數據庫（以政府財政部、勞工部等官方正式發布為唯一基準，嚴禁幻想腦補）
 const VERIFIED_OFFICIAL_RELEASES = {
   // 🇹🇼 台灣 2026 年 8 月海關進出口貿易統計（財政部 2026-09-08 16:00 官方正式公布）
@@ -88,6 +98,10 @@ function generateMacroCalendarEvents(baseDate) {
   const currentYear = baseDate.getFullYear();
   const currentMonth = baseDate.getMonth(); // 0-indexed
   const events = [];
+
+  const calibrated = getCalibratedData();
+  const schedules = (calibrated && calibrated.calibratedSchedules) ? calibrated.calibratedSchedules : OFFICIAL_CALENDAR_SCHEDULES;
+  const verifiedReleases = (calibrated && calibrated.verifiedReleases) ? calibrated.verifiedReleases : VERIFIED_OFFICIAL_RELEASES;
 
   // 輔助：尋找某月份第 N 個特定星期幾（例如：每月第 1 個週五 = 非農）
   function getNthWeekdayOfMonth(year, month, targetDayOfWeek, nth) {
@@ -174,7 +188,7 @@ function generateMacroCalendarEvents(baseDate) {
     });
 
     const ymKey = `${y}-${String(m + 1).padStart(2, '0')}`;
-    const officialSched = OFFICIAL_CALENDAR_SCHEDULES[ymKey];
+    const officialSched = schedules[ymKey] || OFFICIAL_CALENDAR_SCHEDULES[ymKey];
 
     // 3. 🇺🇸 美國 - CPI 通膨年增率 ＆ 核心 CPI (官方排程發布：2026-09-11 週五 20:30) ⭐⭐⭐
     let cpiDateStr = officialSched?.cpiDate;
@@ -492,10 +506,10 @@ function generateMacroCalendarEvents(baseDate) {
     ev.dateDisplay = `${String(dObj.getMonth() + 1).padStart(2, '0')}/${String(dObj.getDate()).padStart(2, '0')} (${getWeekDayZh(dObj.getDay())})`;
 
     // 1. 優先比對官方權威真實已發布數據庫
-    let matchedOfficial = VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_${ev.category}`];
+    let matchedOfficial = verifiedReleases[`${ev.date}_${ev.country}_${ev.category}`] || VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_${ev.category}`];
     if (!matchedOfficial && ev.category === 'employment') {
-      if (ev.event.includes('非農')) matchedOfficial = VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_NFP`];
-      if (ev.event.includes('失業率')) matchedOfficial = VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_UR`];
+      if (ev.event.includes('非農')) matchedOfficial = verifiedReleases[`${ev.date}_${ev.country}_NFP`] || VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_NFP`];
+      if (ev.event.includes('失業率')) matchedOfficial = verifiedReleases[`${ev.date}_${ev.country}_UR`] || VERIFIED_OFFICIAL_RELEASES[`${ev.date}_${ev.country}_UR`];
     }
 
     if (matchedOfficial) {
@@ -563,13 +577,24 @@ function getMonthRange(refDate) {
   return { start, end };
 }
 
-module.exports = async (req, res) => {
+const calendarHandler = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // 支援隨需手動或定時刷新 ?sync=1
+  if (req.query?.sync === '1') {
+    try {
+      await calendarSync.runCalendarSync();
+      cachedCalendarData = null;
+      lastCacheTime = 0;
+    } catch (e) {
+      console.warn('Sync on calendar request failed:', e);
+    }
   }
 
   const now = getUtc8Now();
@@ -607,10 +632,11 @@ module.exports = async (req, res) => {
       filteredEvents = allEvents.filter(ev => ev.date >= monStr && ev.date <= sunStr);
     }
 
-    // 計算頂部 3 大倒數事件即時狀態
-    const fomcEvent = allEvents.find(ev => ev.category === 'central_bank' && ev.country === 'US' && ev.isReleased === false);
-    const cpiEvent = allEvents.find(ev => ev.category === 'inflation' && ev.country === 'US' && ev.event.includes('CPI') && ev.isReleased === false);
-    const taifexEvent = allEvents.find(ev => ev.category === 'derivatives' && ev.country === 'TW' && ev.isReleased === false);
+    // 計算頂部 3 大倒數事件即時狀態（抓取今天或未來最近一期）
+    const todayStr = formatDateStr(now);
+    const fomcEvent = allEvents.find(ev => ev.category === 'central_bank' && ev.country === 'US' && ev.date >= todayStr);
+    const cpiEvent = allEvents.find(ev => ev.category === 'inflation' && ev.country === 'US' && ev.event.includes('CPI') && ev.date >= todayStr);
+    const taifexEvent = allEvents.find(ev => ev.category === 'derivatives' && ev.country === 'TW' && ev.date >= todayStr);
 
     const calcDays = (targetDateStr) => {
       if (!targetDateStr) return '--';
@@ -622,6 +648,8 @@ module.exports = async (req, res) => {
       return `倒數 ${diffDays} 天`;
     };
 
+    const currentCalibrated = getCalibratedData();
+
     return res.status(200).json({
       status: 'success',
       period,
@@ -629,6 +657,11 @@ module.exports = async (req, res) => {
       currentTime: formatDateStr(now) + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
       totalCount: filteredEvents.length,
       events: filteredEvents,
+      syncInfo: {
+        lastSyncTime: currentCalibrated?.lastSyncTime || '即時校驗',
+        status: currentCalibrated?.status || 'verified',
+        source: currentCalibrated?.source || '官方發布日曆 (BLS / BEA / Fed / 財政部)'
+      },
       countdowns: {
         fomc: {
           label: fomcEvent ? `${fomcEvent.dateDisplay} ${fomcEvent.time}` : '2026-09-17 02:00',
@@ -651,4 +684,10 @@ module.exports = async (req, res) => {
       error: error.message
     });
   }
+};
+
+module.exports = calendarHandler;
+module.exports.invalidateCache = () => {
+  cachedCalendarData = null;
+  lastCacheTime = 0;
 };
