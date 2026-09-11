@@ -1,5 +1,184 @@
 const https = require('https');
 
+// FRED API 專屬配置與連線引擎 (聖路易斯聯準會官方數據接口)
+const FRED_API_KEY = process.env.FRED_API_KEY || 'dcff7ea3f437478ce4bcdae455964da4';
+let cachedFredTrends = null;
+let lastFredSyncTime = 0;
+const FRED_CACHE_TTL_MS = 60 * 60 * 1000; // 1 小時快取
+
+function fetchFredObservations(seriesId, limit = 25) {
+  return new Promise((resolve, reject) => {
+    const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
+    const req = https.get(url, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          resolve(json.observations || []);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(8000, () => {
+      req.destroy();
+      reject(new Error('FRED timeout'));
+    });
+  });
+}
+
+// 動態從 FRED 抓取並組裝美國核心指標最新 6 期走勢 (2026 當年度最新數據)
+async function syncFredLiveTrends() {
+  if (cachedFredTrends && (Date.now() - lastFredSyncTime < FRED_CACHE_TTL_MS)) {
+    return cachedFredTrends;
+  }
+
+  try {
+    const trends = {};
+
+    // 1. 🇺🇸 CPI 通膨年增率 (CPIAUCSL)
+    try {
+      const cpiObs = await fetchFredObservations('CPIAUCSL', 25);
+      const validCpi = cpiObs.filter(o => o.value && o.value !== '.');
+      if (validCpi.length >= 18) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const cur = parseFloat(validCpi[i].value);
+          const prev = parseFloat(validCpi[i + 12].value);
+          const yoy = Number((((cur - prev) / prev) * 100).toFixed(1));
+          const [y, m] = validCpi[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy });
+        }
+        const diff = (history[history.length - 1].val - history[0].val).toFixed(1);
+        trends['US_CPI'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
+          summary: `FRED最新 ${history[history.length - 1].label} ${history[history.length - 1].val}% (${diff >= 0 ? '+' : ''}${diff}%)`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED CPI error:', e.message); }
+
+    // 2. 🇺🇸 核心 CPI 通膨年增率 (CPILFESL)
+    try {
+      const coreObs = await fetchFredObservations('CPILFESL', 25);
+      const validCore = coreObs.filter(o => o.value && o.value !== '.');
+      if (validCore.length >= 18) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const cur = parseFloat(validCore[i].value);
+          const prev = parseFloat(validCore[i + 12].value);
+          const yoy = Number((((cur - prev) / prev) * 100).toFixed(1));
+          const [y, m] = validCore[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy });
+        }
+        const diff = (history[history.length - 1].val - history[0].val).toFixed(1);
+        trends['US_CORE_CPI'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
+          summary: `FRED核心 ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED Core CPI error:', e.message); }
+
+    // 3. 🇺🇸 失業率 (UNRATE)
+    try {
+      const urObs = await fetchFredObservations('UNRATE', 10);
+      const validUr = urObs.filter(o => o.value && o.value !== '.');
+      if (validUr.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m] = validUr[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validUr[i].value) });
+        }
+        trends['US_UR'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          summary: `FRED最新 ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED UNRATE error:', e.message); }
+
+    // 4. 🇺🇸 季調後非農就業人口變動 (PAYEMS)
+    try {
+      const nfpObs = await fetchFredObservations('PAYEMS', 10);
+      const validNfp = nfpObs.filter(o => o.value && o.value !== '.');
+      if (validNfp.length >= 7) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const cur = parseFloat(validNfp[i].value);
+          const prev = parseFloat(validNfp[i + 1].value);
+          const diff = Number(((cur - prev) / 10).toFixed(1));
+          const [y, m] = validNfp[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: diff });
+        }
+        trends['US_NFP'] = {
+          unit: '萬人',
+          trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
+          summary: `FRED最新 ${history[history.length - 1].label} ${history[history.length - 1].val}萬`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED NFP error:', e.message); }
+
+    // 5. 🇺🇸 核心 PCE 物價指數 (PCEPILFE)
+    try {
+      const pceObs = await fetchFredObservations('PCEPILFE', 25);
+      const validPce = pceObs.filter(o => o.value && o.value !== '.');
+      if (validPce.length >= 18) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const cur = parseFloat(validPce[i].value);
+          const prev = parseFloat(validPce[i + 12].value);
+          const yoy = Number((((cur - prev) / prev) * 100).toFixed(1));
+          const [y, m] = validPce[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy });
+        }
+        trends['US_PCE'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val <= 2.5 ? 'down' : 'neutral',
+          summary: `FRED核心PCE ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED PCE error:', e.message); }
+
+    // 6. 🇺🇸 聯邦基金有效基準利率 (FEDFUNDS)
+    try {
+      const fedObs = await fetchFredObservations('FEDFUNDS', 10);
+      const validFed = fedObs.filter(o => o.value && o.value !== '.');
+      if (validFed.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m] = validFed[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validFed[i].value) });
+        }
+        trends['US_FOMC'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'neutral',
+          summary: `基準利率 ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED FEDFUNDS error:', e.message); }
+
+    if (Object.keys(trends).length > 0) {
+      cachedFredTrends = trends;
+      lastFredSyncTime = Date.now();
+      console.log(`✅ [FRED API] 成功同步 ${Object.keys(trends).length} 項美國最新 2026 官方指標時序！`);
+    }
+
+    return cachedFredTrends || {};
+  } catch (err) {
+    console.error('[FRED API] 全量同步失敗:', err.message);
+    return cachedFredTrends || {};
+  }
+}
+
 // 記憶體快取（30 分鐘有效）
 let cachedCalendarData = null;
 let lastCacheTime = 0;
@@ -345,6 +524,17 @@ function attachEventSparkline(ev) {
     if (name.includes('ECB') || name.includes('歐洲央行') || name.includes('利率')) trendKey = 'EU_ECB';
   } else if (ev.country === 'JP') {
     if (name.includes('BOJ') || name.includes('日本央行') || name.includes('利率')) trendKey = 'JP_BOJ';
+  }
+
+  // 優先檢驗動態 FRED 即時官方走勢庫
+  if (trendKey && cachedFredTrends && cachedFredTrends[trendKey]) {
+    const t = cachedFredTrends[trendKey];
+    ev.history = t.history;
+    ev.trendDir = t.trendDir;
+    ev.trendSummary = t.summary;
+    ev.unit = ev.unit || t.unit;
+    ev.source = 'FRED (聖路易斯聯準會即時官方)';
+    return;
   }
 
   if (trendKey && HISTORICAL_INDICATOR_TRENDS[trendKey]) {
@@ -883,6 +1073,13 @@ const calendarHandler = async (req, res) => {
   const period = req.query?.period || 'week'; // 'week' | 'next_week' | 'month'
 
   try {
+    // 自動同步 FRED 官方 2026 最新時序
+    try {
+      await syncFredLiveTrends();
+    } catch (e) {
+      console.warn('Sync FRED live trends warning:', e.message);
+    }
+
     let allEvents = cachedCalendarData;
     if (!allEvents || (Date.now() - lastCacheTime > CACHE_TTL_MS)) {
       allEvents = generateMacroCalendarEvents(now);

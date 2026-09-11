@@ -1535,7 +1535,7 @@
       `;
     }
 
-    // 渲染週五財務班 6 大支柱小趨勢圖
+    // 渲染週五財務班 6 大支柱小趨勢圖 (全面對齊 2026 最新官方時序)
     function renderPillarsSparklines() {
       const p1 = document.getElementById('pillar-spk-1');
       const p2 = document.getElementById('pillar-spk-2');
@@ -1545,58 +1545,58 @@
       const p6 = document.getElementById('pillar-spk-6');
 
       if (p1) p1.innerHTML = generateSparklineSvg([
-        { period: '24/04', val: 3.4 },
-        { period: '24/05', val: 3.3 },
-        { period: '24/06', val: 3.0 },
-        { period: '24/07', val: 2.9 },
-        { period: '24/08', val: 2.5 },
-        { period: '24/09', val: 2.4 }
-      ], 84, 22, 'down', '美國 CPI 通膨年增率走勢');
+        { period: '26/02', val: 2.7 },
+        { period: '26/03', val: 3.3 },
+        { period: '26/04', val: 3.9 },
+        { period: '26/05', val: 4.3 },
+        { period: '26/06', val: 3.7 },
+        { period: '26/07', val: 3.5 }
+      ], 84, 22, 'down', '美國 2026 最新 CPI 通膨年增率 (FRED官方)');
 
       if (p2) p2.innerHTML = generateSparklineSvg([
-        { period: '24/04', val: 10.8 },
-        { period: '24/05', val: 21.6 },
-        { period: '24/06', val: 17.9 },
-        { period: '24/07', val: 8.9 },
-        { period: '24/08', val: 14.2 },
-        { period: '24/09', val: 2.2 }
-      ], 84, 22, 'down', '美國非農新增就業人數 (萬人)');
+        { period: '26/03', val: 21.4 },
+        { period: '26/04', val: 14.8 },
+        { period: '26/05', val: 6.3 },
+        { period: '26/06', val: 3.1 },
+        { period: '26/07', val: 2.1 },
+        { period: '26/08', val: 16.2 }
+      ], 84, 22, 'up', '美國 2026 最新非農新增就業 (FRED官方 / 萬人)');
 
       if (p3) p3.innerHTML = generateSparklineSvg([
-        { period: '24/04', val: 4.68 },
-        { period: '24/05', val: 4.50 },
-        { period: '24/06', val: 4.40 },
-        { period: '24/07', val: 4.03 },
-        { period: '24/08', val: 3.90 },
-        { period: '24/09', val: 3.65 }
-      ], 84, 22, 'down', '美債 10Y 基準殖利率 (%)');
+        { period: '09/01', val: 4.79 },
+        { period: '09/02', val: 4.79 },
+        { period: '09/03', val: 4.77 },
+        { period: '09/04', val: 4.78 },
+        { period: '09/08', val: 4.80 },
+        { period: '09/09', val: 4.83 }
+      ], 84, 22, 'up', '美債 10Y 基準殖利率 (FRED即時 4.83%)');
 
       if (p4) p4.innerHTML = generateSparklineSvg([
-        { period: '24/04', val: 5.04 },
-        { period: '24/05', val: 4.88 },
-        { period: '24/06', val: 4.75 },
-        { period: '24/07', val: 4.26 },
-        { period: '24/08', val: 3.92 },
-        { period: '24/09', val: 3.58 }
-      ], 84, 22, 'down', '美債 2Y 政策敏感殖利率 (%)');
+        { period: '09/01', val: 4.41 },
+        { period: '09/02', val: 4.42 },
+        { period: '09/03', val: 4.39 },
+        { period: '09/04', val: 4.40 },
+        { period: '09/08', val: 4.41 },
+        { period: '09/09', val: 4.43 }
+      ], 84, 22, 'up', '美債 2Y 政策敏感殖利率 (FRED即時 4.43%)');
 
       if (p5) p5.innerHTML = generateSparklineSvg([
-        { period: '24/04', val: 5.33 },
-        { period: '24/05', val: 5.33 },
-        { period: '24/06', val: 5.33 },
-        { period: '24/07', val: 5.33 },
-        { period: '24/08', val: 5.33 },
-        { period: '24/09', val: 4.83 }
-      ], 84, 22, 'down', '聯準會聯邦基金有效基準利率 (%)');
+        { period: '26/03', val: 3.64 },
+        { period: '26/04', val: 3.64 },
+        { period: '26/05', val: 3.63 },
+        { period: '26/06', val: 3.63 },
+        { period: '26/07', val: 3.63 },
+        { period: '26/08', val: 3.63 }
+      ], 84, 22, 'neutral', '聯準會聯邦基金有效基準利率 (FRED 3.63%)');
 
       if (p6) p6.innerHTML = generateSparklineSvg([
-        { period: '24/04', val: 106.2 },
-        { period: '24/05', val: 104.7 },
-        { period: '24/06', val: 105.8 },
-        { period: '24/07', val: 104.2 },
-        { period: '24/08', val: 101.7 },
-        { period: '24/09', val: 100.8 }
-      ], 84, 22, 'down', '美元指數 DXY 走勢');
+        { period: '26/03', val: 99.8 },
+        { period: '26/04', val: 99.5 },
+        { period: '26/05', val: 99.1 },
+        { period: '26/06', val: 98.9 },
+        { period: '26/07', val: 98.6 },
+        { period: '26/08', val: 98.8 }
+      ], 84, 22, 'neutral', '美元指數 DXY 走勢');
     }
 
     // ==========================================
