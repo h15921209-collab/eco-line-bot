@@ -37,6 +37,63 @@ function saveNewsToStorage(newsList) {
   }
 }
 
+// 自動辨識新聞提及之關鍵總經指標代碼 (供多維指標研討室與 AI 連動調用)
+function extractRelatedIndicators(title) {
+  const t = title.toLowerCase();
+  const indicators = [];
+
+  // 通膨相關
+  if (/cpi|消費者物價|物價指數/.test(t)) {
+    indicators.push('US_CPI');
+    if (/核心/.test(t)) indicators.push('US_CORE_CPI');
+  }
+  if (/pce|個人消費支出/.test(t)) indicators.push('US_PCE');
+  if (/ppi|生產者物價/.test(t)) indicators.push('US_PPI');
+
+  // 就業與消費
+  if (/非農|非農業就業|就業人口|新增就業/.test(t)) indicators.push('US_NFP');
+  if (/失業率|初領失業|請領失業|勞動力/.test(t)) indicators.push('US_UR');
+  if (/零售銷售|消費者支出|零售額/.test(t)) indicators.push('US_RETAIL');
+
+  // 利率與債券
+  if (/聯準會|fed|鮑爾|fomc|降息|升息|利率決策|點陣圖|基準利率/.test(t)) {
+    indicators.push('US_FOMC');
+    indicators.push('US_2Y');
+  }
+  if (/美債|公債|國債|殖利率|10y|長天期債|長債/.test(t)) indicators.push('US_10Y');
+  if (/2y|短天期債|短債/.test(t)) indicators.push('US_2Y');
+  if (/利差|倒掛|走陡|殖利率曲線|steepener/.test(t)) indicators.push('US_SPREAD');
+  if (/美元指數|dxy|美元走勢/.test(t)) indicators.push('MARKET_DXY');
+
+  // 貿易與製造業
+  if (/出口|外銷訂單|進出口|出超/.test(t)) indicators.push('TW_EXPORT');
+  if (/pmi|採購經理人|製造業指數/.test(t)) indicators.push('CN_PMI');
+
+  // 大宗原物料
+  if (/鐵礦砂|鐵礦石|高爐|煉鋼|熱軋/.test(t)) indicators.push('COMMODITY_IRON_ORE');
+  if (/煤炭|動力煤|焦煤/.test(t)) indicators.push('COMMODITY_COAL');
+  if (/銅|銅價|銅博士/.test(t)) indicators.push('COMMODITY_COPPER');
+  if (/原油|油價|wti|布蘭特/.test(t)) indicators.push('COMMODITY_OIL');
+  if (/黃金|金價|金銀比/.test(t)) indicators.push('COMMODITY_GOLD');
+
+  // 科技與股市
+  if (/台積電|tsmc|晶圓代工/.test(t)) indicators.push('MARKET_TSMC');
+  if (/輝達|nvidia|ai晶片|gpu/.test(t)) indicators.push('MARKET_NVDA');
+  if (/費城半導體|費半|半導體指數/.test(t)) indicators.push('MARKET_SOX');
+  if (/台股|加權指數|台指期/.test(t)) indicators.push('MARKET_TAIEX');
+  if (/vix|恐慌指數|恐慌情緒/.test(t)) indicators.push('MARKET_VIX');
+
+  // 若無特定匹配，依央行或通膨主題預設關聯
+  if (indicators.length === 0) {
+    if (/fed|聯準會|央行/.test(t)) indicators.push('US_FOMC', 'US_10Y');
+    else if (/通膨|物價/.test(t)) indicators.push('US_CPI');
+    else if (/就業|工資/.test(t)) indicators.push('US_NFP');
+    else indicators.push('US_10Y', 'MARKET_TAIEX');
+  }
+
+  return Array.from(new Set(indicators));
+}
+
 // 自動判斷美歐央行與總經分類及標籤
 function categorizeNews(title) {
   const t = title.toLowerCase();
@@ -66,7 +123,8 @@ function categorizeNews(title) {
     icon = '🇪🇺';
   }
 
-  return { category, tag, icon };
+  const relatedIndicators = extractRelatedIndicators(title);
+  return { category, tag, icon, relatedIndicators };
 }
 
 // 1. 抓取 Yahoo 股市國際總經與焦點新聞 (具備 100% 直接文章原生 URL)
@@ -100,7 +158,7 @@ function fetchYahooMacroNews() {
                 const pubTime = new Date(pubDateStr);
                 const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
                 const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-                const { category, tag, icon } = categorizeNews(title);
+                const { category, tag, icon, relatedIndicators } = categorizeNews(title);
                 allItems.push({
                   id: Buffer.from(title).toString('base64').substring(0, 16),
                   title,
@@ -112,6 +170,7 @@ function fetchYahooMacroNews() {
                   category,
                   tag,
                   icon,
+                  relatedIndicators,
                   aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
                 });
               }
@@ -161,7 +220,7 @@ function fetchCnyesMacroNews() {
                 const pubTime = new Date(it.publishAt * 1000);
                 const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
                 const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-                const { category, tag, icon } = categorizeNews(title);
+                const { category, tag, icon, relatedIndicators } = categorizeNews(title);
                 allItems.push({
                   id: Buffer.from(title).toString('base64').substring(0, 16),
                   title,
@@ -173,6 +232,7 @@ function fetchCnyesMacroNews() {
                   category,
                   tag,
                   icon,
+                  relatedIndicators,
                   aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
                 });
               }
@@ -224,7 +284,7 @@ function fetchUdnMacroNews() {
                 const pubTime = new Date(pubDateStr);
                 const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
                 const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-                const { category, tag, icon } = categorizeNews(title);
+                const { category, tag, icon, relatedIndicators } = categorizeNews(title);
                 allItems.push({
                   id: Buffer.from(title).toString('base64').substring(0, 16),
                   title,
@@ -236,6 +296,7 @@ function fetchUdnMacroNews() {
                   category,
                   tag,
                   icon,
+                  relatedIndicators,
                   aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
                 });
               }
@@ -377,7 +438,7 @@ function convertNewsToCsv(newsList) {
   return '\uFEFF' + rows.join('\r\n');
 }
 
-module.exports = async (req, res) => {
+async function newsHandler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -394,10 +455,17 @@ module.exports = async (req, res) => {
 
     const format = req.query?.format;
     const category = req.query?.category || 'all';
+    const indicatorQuery = req.query?.indicator;
 
     let filtered = inMemoryNews;
     if (category !== 'all') {
       filtered = filtered.filter(n => n.category === category);
+    }
+
+    // 依指定總經指標代碼過濾（支援多指標逗號分隔，如 ?indicator=US_CPI,US_10Y）
+    if (indicatorQuery) {
+      const targetList = indicatorQuery.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+      filtered = filtered.filter(n => Array.isArray(n.relatedIndicators) && n.relatedIndicators.some(ind => targetList.includes(ind)));
     }
 
     // CSV 匯出（供 Google 試算表 =IMPORTDATA 調用）
@@ -414,6 +482,7 @@ module.exports = async (req, res) => {
       totalCount: filtered.length,
       allCount: inMemoryNews.length,
       category,
+      indicator: indicatorQuery || null,
       lastUpdated: new Date(lastFetchTime).toISOString(),
       news: filtered
     });
@@ -426,4 +495,18 @@ module.exports = async (req, res) => {
   }
 };
 
+// 依指定總經指標群組獲取關聯重大新聞（供多維指標研討室與 AI 連動調用）
+function getNewsForIndicators(indicators, limit = 5) {
+  if (!Array.isArray(indicators) || indicators.length === 0) return inMemoryNews.slice(0, limit);
+  const target = indicators.map(s => s.trim().toUpperCase());
+  const matched = inMemoryNews.filter(n => Array.isArray(n.relatedIndicators) && n.relatedIndicators.some(i => target.includes(i)));
+  if (matched.length >= limit) return matched.slice(0, limit);
+  const matchedIds = new Set(matched.map(n => n.id));
+  const remaining = inMemoryNews.filter(n => !matchedIds.has(n.id));
+  return [...matched, ...remaining].slice(0, limit);
+}
+
+module.exports = newsHandler;
 module.exports.getLatestMacroNews = getLatestMacroNews;
+module.exports.getNewsForIndicators = getNewsForIndicators;
+module.exports.extractRelatedIndicators = extractRelatedIndicators;

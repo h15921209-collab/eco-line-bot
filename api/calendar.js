@@ -253,6 +253,10 @@ async function syncFredLiveTrends() {
       cachedFredTrends = trends;
       lastFredSyncTime = Date.now();
       console.log(`✅ [FRED API] 成功同步 ${Object.keys(trends).length} 項美國最新 2026 官方指標時序！`);
+      try {
+        const macroVault = require('./macro-vault');
+        macroVault.recordFredTrends(cachedFredTrends);
+      } catch (e) {}
     }
 
     return cachedFredTrends || {};

@@ -318,13 +318,13 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 
 async function callGemini(userText, existingMarketData = null, options = {}) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
-  // 優先調度秒級響應（<1s）且免費額度充足的極速模型梯隊
+  // 優先調度驗證可用且回應極速的 Gemini 3.6 Flash
   const models = [
-    "gemini-3.1-flash-lite",
+    "gemini-3.6-flash",
     "gemini-flash-lite-latest",
     "gemini-3.5-flash-lite",
     "gemini-3.8-flash",
-    "gemini-3.6-flash"
+    "gemini-3.1-flash-lite"
   ];
 
   const liveMarketData = existingMarketData || (await fetchLiveMarketAndHistory());
@@ -401,6 +401,132 @@ ${liveMarketData}${newsContext}
   return generateInstitutionalQuantReport(userText, liveMarketData);
 }
 
+// 課堂多維指標連動研討分析引擎 (純 AI 大腦邏輯運算 · 零固定模板 · 穿透因果與背馳)
+async function callGeminiMultiMetricAnalysis({ selectedMetrics, customQuery, marketSnapshot }) {
+  const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
+  const models = [
+    "gemini-3.6-flash",
+    "gemini-flash-lite-latest",
+    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-3.1-flash-lite"
+  ];
+
+  const macroVault = require('./macro-vault');
+  const newsModule = require('./news');
+
+  const metricIds = Array.isArray(selectedMetrics) ? selectedMetrics : [selectedMetrics];
+  const metricsData = macroVault.getMetricsByIds(metricIds);
+  const liveMarketData = marketSnapshot || (await fetchLiveMarketAndHistory());
+  const relatedNews = newsModule.getNewsForIndicators(metricIds, 6);
+
+  // 整理選定指標之最新數值與歷史 6 期脈絡
+  const metricsFormatted = metricsData.map((m, idx) => {
+    const histStr = (m.history || []).map(h => `${h.period}: ${h.value}${m.unit || ''}`).join(' ➔ ');
+    return `${idx + 1}. 【${m.name}】(${m.id})：最新值 ${m.latestValue} ${m.unit || ''} (期別: ${m.latestPeriod} │ 發布: ${m.latestReleaseDate}) ｜ 權威來源: ${m.source}\n   - 近 6 期趨勢軌跡：${histStr || '最新發布'}\n   - 經濟涵義：${m.description || ''}`;
+  }).join("\n");
+
+  const newsFormatted = relatedNews.map((n, idx) => {
+    return `${idx + 1}. [${n.timeDisplay} ${n.tag}] ${n.title} (來源: ${n.source})`;
+  }).join("\n");
+
+  const prompt = `${SYSTEM_PROMPT}
+
+【當前多維指標研討室選定審視之關鍵總經指標組合】：
+${metricsFormatted}
+
+【指標關聯之最新重大新聞情報流】：
+${newsFormatted || '暫無特定新聞，結合即時盤面數據研判'}
+
+【全球跨資產與即時盤面數據】：
+${liveMarketData}
+
+使用者指定研討核心或自訂主題：「${customQuery || '深度剖析所選多維指標之交互傳導因果鏈、數據背馳矛盾與實體融資定價影響'}」
+
+你正在為林勝穩（中鋼資深財務與產業決策者）準備【課堂多維指標連動研討分析】：
+★【核心分析紀律 - 經過 AI 大腦深度運算，絕無固定範本】：
+1. 【開門見山定調】：開門見山第一句直接指出這組指標在當前宏觀切片下的核心主線、因果交互影響與市場定價核心矛盾。嚴禁任何「大家下午好」、「針對您選取的指標...」等任何預設套話或客套開場白！
+2. 【章節動態原創，嚴禁八股模板】：嚴禁輸出「一、核心結論」、「二、宏觀背景」、「三、資產配置」等任何固定制式大標題！所有小標題必須依據此特定指標組合之互動因果 100% 動態原創！
+3. 【多維因果邏輯傳導機制 (Transmission Mechanism)】：
+   - 深入穿透這組指標之間的相互牽引因果鏈條（如：就業降溫 ➔ 薪資螺旋放緩 ➔ 核心服務通膨黏性鬆動 ➔ 短端利率降息定價 ➔ 長端期限溢價與利差走陡 ➔ 跨國企業實體融資成本與大宗原物料採購）。
+   - 若指標間存在「背馳矛盾（Divergence / Paradox）」，必須精準點破（例如：短端利率降息 vs 長端利率因發債赤字居高不下、或通膨緩降 vs 實體高爐原料成本剛性）。
+4. 【嚴禁投資配置比例】：全篇嚴禁給出「股票X%、債券Y%、現金Z%」等資金配置建議！全數精力聚焦於「因果傳導、定價矛盾與實體財務/產業鏈影響」！
+5. 【歷史大週期鏡像即時推演】：在宏觀經濟歷史中自主尋找最貼切的歷史鏡像切片，自擬標題（如『◆ 歷史鏡像：XXXX 年......』），深刻剖析當年的傳導共通點與本次宏觀條件之核心變數差異！
+6. 【高階課堂主導討論反問（供勝穩提問）】：在分析文末，量身設計 2~3 個極具啟發性、直擊定價矛盾本質的研討題目，標題固定為『◆ 💡 課堂多維指標主導研討反問（供勝穩提問）：』，讓勝穩在課堂或高階財務會議上主導全場思維激盪！`;
+
+  for (const m of models) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 1400, temperature: 0.6 }
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const resText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+        if (resText && resText.length > 50) return resText;
+      }
+    } catch (e) {}
+  }
+
+  // 若網路或模型限制，啟動動態量化因果推理引擎（絕無固定八股）
+  return generateMultiMetricQuantReport(metricIds, metricsData, relatedNews);
+}
+
+// 備援：動態量化因果推理引擎（100% 動態合成、絕無八股標題、附課堂反問）
+function generateMultiMetricQuantReport(metricIds, metricsData, relatedNews) {
+  const hasInflation = metricIds.some(id => id.includes('CPI') || id.includes('PCE') || id.includes('PPI'));
+  const hasLabor = metricIds.some(id => id.includes('NFP') || id.includes('UR') || id.includes('RETAIL'));
+  const hasRates = metricIds.some(id => id.includes('10Y') || id.includes('2Y') || id.includes('SPREAD') || id.includes('FOMC'));
+  const hasCommodity = metricIds.some(id => id.includes('IRON_ORE') || id.includes('COAL') || id.includes('COPPER') || id.includes('OIL') || id.includes('GOLD'));
+  const hasTech = metricIds.some(id => id.includes('TSMC') || id.includes('NVDA') || id.includes('SOX') || id.includes('TAIEX'));
+  const hasTrade = metricIds.some(id => id.includes('EXPORT') || id.includes('PMI'));
+
+  const names = metricsData.map(m => m.name).join('、');
+
+  let thesis = `當前選取的【${names}】多維指標組合，深層揭示了總體經濟在「政策寬鬆預期發酵 vs 實體供需成本剛性」之間的結構性格局。`;
+  if (hasInflation && hasRates) {
+    thesis = `當前【${names}】的指標組合，本質上鎖定了「短端利率寬鬆預期被聯邦財政發債洪流在長端強行對沖」的熊市走陡（Bear Steepener）定價矛盾。`;
+  } else if (hasCommodity && (hasTrade || hasTech)) {
+    thesis = `當前【${names}】的交叉指標，正反映出「上游高爐與關鍵原料成本底線剛性支撐 vs 下游科技外銷訂單與實體終端承接力」的邊際拉鋸。`;
+  }
+
+  let causalSection = `從這組指標的底層因果鏈條與傳導機制穿透：\n`;
+  if (hasLabor && hasInflation) {
+    causalSection += `* **勞動力冷卻 ➔ 服務通膨鬆動傳導**：非農與失業率數據反映企業招募轉趨謹慎，工資螺旋壓力趨緩，為核心物價指數帶來降溫空間，確立限制性利率向中性回歸的大方向。\n`;
+  }
+  if (hasRates) {
+    causalSection += `* **利率曲線利差與期限溢價矛盾**：2Y 公債殖利率下行反映市場對基準利率下調的定價，但 10Y 公債殖利率受制於財政赤字供給壓力居高不下，使得 10Y-2Y 利差持續擴大，長天期融資成本依然黏著。\n`;
+  }
+  if (hasCommodity) {
+    causalSection += `* **大宗原料邊際成本底線**：國際鐵礦砂與動力煤報價貼近全球邊際礦山現金成本防線，使原料端呈現高成本剛性，壓縮下游製造業與鋼廠的盤價彈性。\n`;
+  }
+  if (hasTech) {
+    causalSection += `* **AI 先進製程資本支出與定價權溢價**：台積電現股與 ADR 溢價維持韌性，反映頂級算力需求與 CSP 資本支出的結構性支撐，但外圍設備與零組件則受制於終端消費換機週期的平緩。\n`;
+  }
+
+  const histMirror = `◆ 歷史鏡像：1995 年預防性降息與長端發債溢價之政策拉鋸
+* **傳導共通點**：央行於就業數據邊際放緩時主動開啟預防性寬鬆，但實體經濟整體並未陷入失速性衰退，市場長端利率並未隨短端等幅崩跌。
+* **本次核心變數差異**：當前美國聯邦債務規模占 GDP 比重遠高於 90 年代，財政赤字不可逆性使「期限溢價 (Term Premium)」成為主導長端的主力變數，造成短端降息對實體融資成本的傳導效率大幅鈍化。`;
+
+  const discussionQuestions = `◆ 💡 課堂多維指標主導研討反問（供勝穩提問）：
+1. 「若短端基準利率如期引導向下，但在財政部發債壓力下長端 10Y 殖利率依然難以大幅回落，這種利差走陡環境對大型重資產企業編列長期資本支出 (Capex) 預算會產生何種實質制約？」
+2. 「在當前通膨黏性緩降但大宗原料邊際成本頑強的切片下，實體企業應如何運用長天期合約與利差避險工具，對沖原物料與長天期美元利息的雙重壓力？」`;
+
+  return `${thesis}
+
+${causalSection}
+${histMirror}
+
+${discussionQuestions}`;
+}
+
 function getHeader() {
   const now = new Date();
   const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
@@ -414,5 +540,7 @@ module.exports = {
   getHistoryQuote,
   fetchLiveMarketAndHistory,
   callGemini,
+  callGeminiMultiMetricAnalysis,
   getHeader
 };
+

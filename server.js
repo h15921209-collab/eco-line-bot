@@ -32,6 +32,7 @@ const calendarHandler = require('./api/calendar');
 const calendarSyncModule = require('./api/calendar-sync');
 const newsHandler = require('./api/news');
 const recordsHandler = require('./api/records');
+const macroVaultHandler = require('./api/macro-vault');
 
 // 註冊 API 路由
 app.all('/api/line-webhook', (req, res) => lineWebhookHandler(req, res));
@@ -39,6 +40,7 @@ app.all('/api/collector', (req, res) => collectorHandler(req, res));
 app.all('/api/quote', (req, res) => quoteHandler(req, res));
 app.all('/api/analyze', (req, res) => analyzeHandler(req, res));
 app.all('/api/records', (req, res) => recordsHandler(req, res));
+app.all('/api/macro-vault', (req, res) => macroVaultHandler(req, res));
 app.all('/api/topics', (req, res) => topicsHandler(req, res));
 app.all('/api/calendar', (req, res) => calendarHandler(req, res));
 app.all('/api/calendar-sync', (req, res) => calendarSyncModule(req, res));

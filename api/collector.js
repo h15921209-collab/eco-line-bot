@@ -549,6 +549,12 @@ module.exports = async (req, res) => {
     history_table: historyRows
   };
 
+  // 自動歸檔實時市場行情至總經數據庫 (Macro Vault)
+  try {
+    const macroVault = require('./macro-vault');
+    macroVault.recordCollectorSnapshot(latestSnapshot);
+  } catch (e) {}
+
   // 寫入 120 秒記憶體快取
   cachedCollectorPayload = {
     snapshotCsv,

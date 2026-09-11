@@ -707,13 +707,115 @@
     <!-- 核心全寬布局架構 (Full-Width Layout) -->
     <div class="space-y-6">
 
+      <!-- 🎓 課堂多維指標連動研討室 (Classroom Multi-Metric Studio) -->
+      <div class="p-5 sm:p-7 rounded-2xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-2 border-sky-500/40 shadow-2xl no-print relative overflow-hidden" id="multi-metric-studio-container">
+        <!-- 裝飾光暈 -->
+        <div class="absolute -top-20 -right-20 w-56 h-56 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- 頂部標題與核心導覽 -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-4 border-b border-slate-800/80">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-base sm:text-xl font-black text-white flex items-center gap-2">
+                <span class="text-2xl">🎓</span> 課堂多維指標連動研討室 (Classroom Multi-Metric Studio)
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                🧠 跨指標傳導因果穿透
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                ⚡ 零固定模板 · 純 AI 大腦
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">
+              自由多選 2~8 項關鍵總經數據與大宗指標，即時串聯重大新聞情報流，由 Gemini 3.6 Flash 大腦深度演算傳導鏈條、數據背馳矛盾與課堂研討題目。
+            </p>
+          </div>
+
+          <!-- 一鍵操作鈕 -->
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <span id="selected-metrics-counter-badge" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/40">
+              已選取 5 項指標
+            </span>
+            <button onclick="resetSelectedMetrics()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition border border-slate-700">
+              重設
+            </button>
+          </div>
+        </div>
+
+        <!-- 快捷教案組合 (4 大課堂熱門研討組合) -->
+        <div class="mb-5 p-3 rounded-xl bg-slate-950/70 border border-slate-800">
+          <div class="text-[11px] font-bold text-slate-300 mb-2 flex items-center gap-1">
+            <span class="text-amber-400">💡</span> 一鍵載入課堂研討教案組合：
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+            <button onclick="loadLessonPreset('lesson1')" class="text-left p-2.5 rounded-lg bg-slate-900/80 hover:bg-slate-800/90 border border-indigo-500/30 hover:border-indigo-400 transition group">
+              <div class="font-bold text-indigo-300 group-hover:text-indigo-200 flex items-center justify-between">
+                <span>🎓 教案 1：通膨黏性 vs 熊市走陡</span>
+                <span class="text-[10px] text-indigo-400">5項</span>
+              </div>
+              <div class="text-[10px] text-slate-400 mt-0.5">CPI + 核心CPI + 10Y/2Y美債 + 利差</div>
+            </button>
+            <button onclick="loadLessonPreset('lesson2')" class="text-left p-2.5 rounded-lg bg-slate-900/80 hover:bg-slate-800/90 border border-emerald-500/30 hover:border-emerald-400 transition group">
+              <div class="font-bold text-emerald-300 group-hover:text-emerald-200 flex items-center justify-between">
+                <span>🎓 教案 2：降息預期 vs AI 資本支出</span>
+                <span class="text-[10px] text-emerald-400">5項</span>
+              </div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Fed基準 + 2Y美債 + 輝達 + 費半 + 台積電</div>
+            </button>
+            <button onclick="loadLessonPreset('lesson3')" class="text-left p-2.5 rounded-lg bg-slate-900/80 hover:bg-slate-800/90 border border-amber-500/30 hover:border-amber-400 transition group">
+              <div class="font-bold text-amber-300 group-hover:text-amber-200 flex items-center justify-between">
+                <span>🎓 教案 3：高爐原料成本剛性 vs 外銷出口</span>
+                <span class="text-[10px] text-amber-400">4項</span>
+              </div>
+              <div class="text-[10px] text-slate-400 mt-0.5">鐵礦砂 + 動力煤 + 台灣出口 + 中國PMI</div>
+            </button>
+            <button onclick="loadLessonPreset('lesson4')" class="text-left p-2.5 rounded-lg bg-slate-900/80 hover:bg-slate-800/90 border border-sky-500/30 hover:border-sky-400 transition group">
+              <div class="font-bold text-sky-300 group-hover:text-sky-200 flex items-center justify-between">
+                <span>🎓 教案 4：勞動力降溫 vs 服務業物價</span>
+                <span class="text-[10px] text-sky-400">4項</span>
+              </div>
+              <div class="text-[10px] text-slate-400 mt-0.5">非農就業 + 失業率 + 核心PCE + 美元指數</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6 大類別指標多選面板 (24+ 宏觀指標) -->
+        <div class="mb-5 space-y-3" id="metric-selection-groups">
+          <!-- 由 renderMetricStudio() 動態產出 -->
+        </div>
+
+        <!-- 連動重大新聞即時情報流 (Linked Macro News) -->
+        <div class="mb-5 p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80" id="linked-news-wrapper">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs">
+            <div class="flex items-center gap-1.5 text-slate-300 font-bold">
+              <span class="text-sky-400">📡</span> 與選定指標高度關聯之即時情報流 (Linked News Stream)
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono" id="linked-news-status">動態過濾中...</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs" id="linked-news-items-grid">
+            <div class="text-slate-500 py-2">正在依據選定指標檢索最新即時新聞...</div>
+          </div>
+        </div>
+
+        <!-- 底部啟動 AI 大腦推理按鈕與自訂主題輸入 -->
+        <div class="pt-3 border-t border-slate-800 flex flex-col sm:flex-row gap-2.5">
+          <input type="text" id="multi-metric-custom-note" placeholder="可選：輸入課堂指定觀察視角（如：探討發債期限溢價如何制約企業融資？或高爐現金成本防線）"
+            class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 shadow-inner font-sans">
+          <button onclick="runMultiMetricAnalysis()" id="btn-run-multi-metric"
+            class="bg-gradient-to-r from-sky-500 via-indigo-600 to-emerald-500 hover:from-sky-400 hover:to-emerald-400 text-slate-950 font-black px-6 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg shadow-sky-500/20 whitespace-nowrap active:scale-95 flex items-center justify-center gap-2">
+            <span>🧠</span> 啟動 AI 大腦深入邏輯推理
+          </button>
+        </div>
+      </div>
+
       <!-- 1. 線上即時提問區 (Full Width) -->
       <div class="glass-card p-4 sm:p-6 rounded-2xl neon-border no-print shadow-xl">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-sm sm:text-base font-bold text-white flex items-center">
             <span class="mr-2">💬</span> 首席分析師在線即時提問
           </h2>
-          <span class="text-[11px] text-sky-400 font-mono bg-sky-950/60 px-2 py-0.5 rounded-lg border border-sky-500/30">Google Gemini 3.5 旗艦策略大腦</span>
+          <span class="text-[11px] text-sky-400 font-mono bg-sky-950/60 px-2 py-0.5 rounded-lg border border-sky-500/30">Google Gemini 3.6 Flash 旗艦策略大腦</span>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-2.5">
@@ -972,50 +1074,91 @@
         </div>
       </div>
 
-      <!-- 4.5 📝 個人宏觀數據筆記庫 (LINE 記帳與時序資料庫) -->
-      <div id="personal-records-section" class="glass-card p-6 rounded-2xl border-purple-500/30 shadow-xl">
+      <!-- 4.5 ⚡ 總經數據自動歸檔庫 ＆ 📝 個人筆記庫 -->
+      <div id="data-vault-and-records-section" class="glass-card p-6 rounded-2xl border-sky-500/30 shadow-xl">
+        <!-- 頁籤切換中樞 -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-xl">📝</div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="text-base sm:text-lg font-bold text-white">個人宏觀數據筆記庫</h2>
-                <span id="records-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30">0 筆記錄</span>
-              </div>
-              <p class="text-xs text-slate-400">LINE 發送「記錄 CPI 2.9 月增0.1%」自動同步歸檔，支援一鍵匯入 Google 試算表</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <button onclick="copyRecordsFormula()" class="bg-purple-600/25 hover:bg-purple-600/40 text-purple-200 border border-purple-500/40 text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
-              <span>📋</span> 複製試算表公式
+          <div class="flex items-center space-x-2">
+            <button onclick="switchVaultTab('vault')" id="tab-btn-vault" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-sky-500/20 text-sky-300 border border-sky-500/40 flex items-center gap-1.5">
+              <span>⚡</span> 總經數據自動歸檔庫 (Macro Vault)
             </button>
-            <a href="/api/records?format=csv" download class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
-              <span>📥</span> 匯出 CSV
+            <button onclick="switchVaultTab('notes')" id="tab-btn-notes" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800 flex items-center gap-1.5">
+              <span>📝</span> 個人筆記歷程庫 (Personal Notes)
+            </button>
+          </div>
+
+          <!-- 右側動態操作按鈕 -->
+          <div class="flex items-center gap-2 flex-wrap" id="vault-action-buttons">
+            <button onclick="copyVaultFormula()" id="btn-vault-formula" class="bg-sky-600/25 hover:bg-sky-600/40 text-sky-200 border border-sky-500/40 text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
+              <span>📋</span> 複製 Vault 試算表公式
+            </button>
+            <a id="btn-vault-csv" href="/api/macro-vault?format=csv" download class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
+              <span>📥</span> 匯出 Vault CSV
             </a>
-            <button onclick="loadPersonalRecords()" title="重新整理筆記" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-xl transition text-xs">
+            <button onclick="refreshCurrentVaultTab()" title="重新整理" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-xl transition text-xs">
               🔄 刷新
             </button>
           </div>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead>
-              <tr class="border-b border-slate-800 text-slate-400 font-mono">
-                <th class="pb-2.5 font-medium">記錄時間 (UTC+8)</th>
-                <th class="pb-2.5 font-medium">指標名稱</th>
-                <th class="pb-2.5 font-medium">最新數值</th>
-                <th class="pb-2.5 font-medium">備註與脈絡</th>
-                <th class="pb-2.5 font-medium">分類標籤</th>
-                <th class="pb-2.5 font-medium text-right">來源</th>
-              </tr>
-            </thead>
-            <tbody id="records-table-body" class="divide-y divide-slate-900/60 font-mono">
-              <tr>
-                <td colspan="6" class="py-6 text-center text-slate-500">正在連線個人筆記庫...</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- 視圖 1: 總經數據自動歸檔庫表格 (Macro Vault) -->
+        <div id="view-macro-vault" class="block">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3 text-xs text-slate-400">
+            <div>
+              自動記錄並歸檔官方權威總經指標（FRED / BLS / BEA / 財政部），含最新發布日期與 6 期時序走勢：
+              <span id="vault-summary-badge" class="ml-1 text-sky-400 font-bold font-mono">24 項指標</span>
+            </div>
+            <div class="text-[11px] font-mono text-slate-500" id="vault-last-updated">更新時間：載入中</div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                  <th class="pb-2.5 font-medium">指標代碼 / 名稱</th>
+                  <th class="pb-2.5 font-medium">類別</th>
+                  <th class="pb-2.5 font-medium">最新數值</th>
+                  <th class="pb-2.5 font-medium">所屬期別</th>
+                  <th class="pb-2.5 font-medium">發布日期</th>
+                  <th class="pb-2.5 font-medium">官方權威來源</th>
+                  <th class="pb-2.5 font-medium text-right">近6期趨勢 (Sparkline)</th>
+                </tr>
+              </thead>
+              <tbody id="macro-vault-table-body" class="divide-y divide-slate-900/60 font-mono">
+                <tr>
+                  <td colspan="7" class="py-6 text-center text-slate-500">正在連線總經數據自動歸檔庫...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 視圖 2: 個人宏觀數據筆記庫 (Personal Notes) -->
+        <div id="view-personal-notes" class="hidden">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3 text-xs text-slate-400">
+            <div>
+              LINE 發送「記錄 CPI 2.9 月增0.1%」自動同步歸檔至雲端筆記庫：
+              <span id="records-count-badge" class="ml-1 px-2 py-0.5 rounded-full text-[11px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30">0 筆記錄</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                  <th class="pb-2.5 font-medium">記錄時間 (UTC+8)</th>
+                  <th class="pb-2.5 font-medium">指標名稱</th>
+                  <th class="pb-2.5 font-medium">最新數值</th>
+                  <th class="pb-2.5 font-medium">備註與脈絡</th>
+                  <th class="pb-2.5 font-medium">分類標籤</th>
+                  <th class="pb-2.5 font-medium text-right">來源</th>
+                </tr>
+              </thead>
+              <tbody id="records-table-body" class="divide-y divide-slate-900/60 font-mono">
+                <tr>
+                  <td colspan="6" class="py-6 text-center text-slate-500">正在連線個人筆記庫...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -2802,9 +2945,12 @@
       }
       updateEventCountdowns();
       renderPillarsSparklines();
+      renderMetricStudio();
+      fetchLinkedNewsForStudio();
       loadMacroCalendar('week');
       loadMacroNews('all');
       loadDynamicTopics();
+      loadMacroVaultData();
       loadPersonalRecords();
       await loadTickerData();
       renderLineChart('twii');
@@ -3188,6 +3334,399 @@
 
     function printFridaySpeech() {
       window.print();
+    }
+
+    // ==========================================
+    // 🎓 課堂多維指標連動研討室 (Classroom Studio) 核心引擎
+    // ==========================================
+    const STUDIO_METRIC_CATEGORIES = [
+      {
+        id: 'inflation',
+        name: '📊 通膨雙軌 (Inflation)',
+        color: 'amber',
+        metrics: [
+          { id: 'US_CPI', name: 'CPI 年增率', unit: '%', val: 3.4, period: '7月', release: '08/12' },
+          { id: 'US_CORE_CPI', name: '核心 CPI 年率', unit: '%', val: 3.3, period: '7月', release: '08/12' },
+          { id: 'US_PCE', name: '核心 PCE 年率', unit: '%', val: 3.3, period: '7月', release: '08/28' },
+          { id: 'US_PPI', name: 'PPI 出廠物價', unit: '%', val: 2.8, period: '7月', release: '08/14' }
+        ]
+      },
+      {
+        id: 'labor',
+        name: '💼 就業與消費 (Labor & Demand)',
+        color: 'emerald',
+        metrics: [
+          { id: 'US_NFP', name: '非農就業變動', unit: '萬人', val: -2.3, period: '8月', release: '09/04' },
+          { id: 'US_UR', name: '官方失業率', unit: '%', val: 4.1, period: '8月', release: '09/04' },
+          { id: 'US_RETAIL', name: '零售銷售月增', unit: '%', val: 0.5, period: '7月', release: '08/15' }
+        ]
+      },
+      {
+        id: 'monetary',
+        name: '🏛️ 利率與利差 (Yield Curve & Fed)',
+        color: 'rose',
+        metrics: [
+          { id: 'US_FOMC', name: 'Fed 基準利率', unit: '%', val: 3.65, period: '8月', release: '09/01' },
+          { id: 'US_10Y', name: '10Y 美債殖利率', unit: '%', val: 4.704, period: '9月', release: '09/11' },
+          { id: 'US_2Y', name: '2Y 美債殖利率', unit: '%', val: 3.961, period: '9月', release: '09/11' },
+          { id: 'US_SPREAD', name: '10Y-2Y 經典利差', unit: '%', val: 0.743, period: '9月', release: '09/11' },
+          { id: 'MARKET_DXY', name: '美元指數 (DXY)', unit: '點', val: 98.75, period: '9月', release: '09/11' }
+        ]
+      },
+      {
+        id: 'trade',
+        name: '🚢 貿易與外銷 (Trade & Manufacturing)',
+        color: 'indigo',
+        metrics: [
+          { id: 'TW_EXPORT', name: '台灣出口年增率', unit: '%', val: 18.5, period: '8月', release: '09/08' },
+          { id: 'CN_PMI', name: '中國官方製造業PMI', unit: '點', val: 49.4, period: '8月', release: '08/31' }
+        ]
+      },
+      {
+        id: 'commodity',
+        name: '🏭 大宗與重工原料 (Commodities & Industry)',
+        color: 'yellow',
+        metrics: [
+          { id: 'COMMODITY_IRON_ORE', name: '鐵礦砂現貨 62%', unit: '$/噸', val: 95.34, period: '9月', release: '09/11' },
+          { id: 'COMMODITY_COAL', name: '國際動力煤', unit: '$/噸', val: 124.5, period: '9月', release: '09/11' },
+          { id: 'COMMODITY_COPPER', name: '國際銅博士', unit: '$/磅', val: 6.604, period: '9月', release: '09/11' },
+          { id: 'COMMODITY_OIL', name: '紐約輕原油', unit: '$/桶', val: 85.69, period: '9月', release: '09/11' },
+          { id: 'COMMODITY_GOLD', name: '國際黃金現貨', unit: '$/oz', val: 4712.3, period: '9月', release: '09/11' }
+        ]
+      },
+      {
+        id: 'equity',
+        name: '🚀 科技權值與情緒 (Tech & Sentiment)',
+        color: 'sky',
+        metrics: [
+          { id: 'MARKET_TSMC', name: '台積電 (2330)', unit: '元', val: 2365, period: '9月', release: '09/11' },
+          { id: 'MARKET_NVDA', name: '輝達 (NVDA)', unit: '$', val: 208.48, period: '9月', release: '09/11' },
+          { id: 'MARKET_SOX', name: '費城半導體', unit: '點', val: 11423.2, period: '9月', release: '09/11' },
+          { id: 'MARKET_TAIEX', name: '台股加權指數', unit: '點', val: 44369, period: '9月', release: '09/11' },
+          { id: 'MARKET_VIX', name: 'VIX 恐慌指數', unit: '點', val: 15.85, period: '9月', release: '09/11' }
+        ]
+      }
+    ];
+
+    let selectedStudioMetricIds = new Set(['US_CPI', 'US_CORE_CPI', 'US_10Y', 'US_2Y', 'US_SPREAD']);
+
+    function renderMetricStudio() {
+      const container = document.getElementById('metric-selection-groups');
+      if (!container) return;
+
+      container.innerHTML = STUDIO_METRIC_CATEGORIES.map(cat => {
+        const buttonsHtml = cat.metrics.map(m => {
+          const isSelected = selectedStudioMetricIds.has(m.id);
+          const activeClasses = isSelected
+            ? 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold border-sky-400 shadow-md scale-[1.02]'
+            : 'bg-slate-950/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:bg-slate-900';
+          const checkIcon = isSelected ? '✓ ' : '';
+          return `
+            <button onclick="toggleStudioMetric('${m.id}')" id="studio-btn-${m.id}"
+              class="px-2.5 py-1.5 rounded-xl text-xs border transition flex items-center justify-between gap-1.5 ${activeClasses}">
+              <span class="flex items-center gap-1 truncate">
+                <span class="text-[11px] font-mono text-amber-300">${checkIcon}</span>
+                <span class="truncate">${m.name}</span>
+              </span>
+              <span class="font-mono text-[11px] opacity-90 ml-1 shrink-0 text-amber-300">
+                ${m.val}${m.unit || ''}
+              </span>
+            </button>
+          `;
+        }).join('');
+
+        return `
+          <div class="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/80">
+            <div class="text-[11px] font-bold text-slate-400 mb-1.5 flex items-center justify-between">
+              <span>${cat.name}</span>
+              <span class="text-[10px] text-slate-500 font-mono">${cat.metrics.length} 項</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+              ${buttonsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateStudioUI();
+    }
+
+    function toggleStudioMetric(id) {
+      if (selectedStudioMetricIds.has(id)) {
+        selectedStudioMetricIds.delete(id);
+      } else {
+        selectedStudioMetricIds.add(id);
+      }
+      renderMetricStudio();
+      fetchLinkedNewsForStudio();
+    }
+
+    function resetSelectedMetrics() {
+      selectedStudioMetricIds.clear();
+      renderMetricStudio();
+      fetchLinkedNewsForStudio();
+    }
+
+    function loadLessonPreset(key) {
+      if (key === 'lesson1') {
+        selectedStudioMetricIds = new Set(['US_CPI', 'US_CORE_CPI', 'US_10Y', 'US_2Y', 'US_SPREAD']);
+        document.getElementById('multi-metric-custom-note').value = '課堂教案 1 研討：通膨黏性與財政赤字發債溢價如何主導 10Y-2Y 熊市走陡？';
+      } else if (key === 'lesson2') {
+        selectedStudioMetricIds = new Set(['US_FOMC', 'US_2Y', 'MARKET_NVDA', 'MARKET_SOX', 'MARKET_TSMC']);
+        document.getElementById('multi-metric-custom-note').value = '課堂教案 2 研討：短端預防性降息預期與 AI 先進製程資本支出擴張之連鎖傳導';
+      } else if (key === 'lesson3') {
+        selectedStudioMetricIds = new Set(['COMMODITY_IRON_ORE', 'COMMODITY_COAL', 'TW_EXPORT', 'CN_PMI']);
+        document.getElementById('multi-metric-custom-note').value = '課堂教案 3 研討：高爐鐵礦砂與焦煤現金成本剛性，對下游鋼品出口與製造業 PMI 之制約';
+      } else if (key === 'lesson4') {
+        selectedStudioMetricIds = new Set(['US_NFP', 'US_UR', 'US_PCE', 'US_CPI', 'MARKET_DXY']);
+        document.getElementById('multi-metric-custom-note').value = '課堂教案 4 研討：勞動力市場降溫是否足以瓦解服務業通膨黏性與美元指數支撐？';
+      }
+      renderMetricStudio();
+      fetchLinkedNewsForStudio();
+    }
+
+    function updateStudioUI() {
+      const counterBadge = document.getElementById('selected-metrics-counter-badge');
+      if (counterBadge) {
+        const count = selectedStudioMetricIds.size;
+        counterBadge.innerText = `已選取 ${count} 項指標`;
+        if (count >= 2 && count <= 8) {
+          counterBadge.className = 'px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/40';
+        } else if (count === 0) {
+          counterBadge.className = 'px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700';
+        } else {
+          counterBadge.className = 'px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
+        }
+      }
+    }
+
+    async function fetchLinkedNewsForStudio() {
+      const grid = document.getElementById('linked-news-items-grid');
+      const status = document.getElementById('linked-news-status');
+      if (!grid) return;
+
+      const indicators = Array.from(selectedStudioMetricIds);
+      if (status) status.innerText = `關聯 ${indicators.length} 項指標`;
+
+      try {
+        const indicatorParam = indicators.join(',');
+        const res = await fetch('/api/news?indicator=' + encodeURIComponent(indicatorParam) + '&limit=4&t=' + Date.now());
+        const json = await res.json();
+        const newsList = (json.news || []).slice(0, 4);
+
+        if (newsList.length === 0) {
+          grid.innerHTML = '<div class="text-slate-500 py-3 col-span-2 text-center">暫無特定指標標籤新聞，已結合即時總經盤面進行全景分析。</div>';
+          return;
+        }
+
+        grid.innerHTML = newsList.map(n => `
+          <div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-sky-500/40 transition flex flex-col justify-between gap-1.5">
+            <div>
+              <div class="flex items-center justify-between gap-1 text-[10px] text-slate-400 mb-1">
+                <span class="px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/30 font-bold">${n.tag}</span>
+                <span class="font-mono text-slate-500">${n.timeDisplay} ｜ ${n.source}</span>
+              </div>
+              <a href="${n.link}" target="_blank" rel="noopener noreferrer" class="font-medium text-white hover:text-sky-300 transition text-xs line-clamp-2 leading-snug">
+                ${n.title}
+              </a>
+            </div>
+            <div class="flex items-center justify-between text-[10px] pt-1 border-t border-slate-800/60 text-slate-500">
+              <span>相關指標：${(n.relatedIndicators || []).slice(0, 3).join(', ') || '全球總經'}</span>
+              <a href="${n.link}" target="_blank" class="text-sky-400 hover:underline">原文 ➔</a>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        grid.innerHTML = '<div class="text-slate-500 py-2 col-span-2">檢索重大新聞中...</div>';
+      }
+    }
+
+    async function runMultiMetricAnalysis() {
+      if (selectedStudioMetricIds.size === 0) {
+        alert('請至少勾選 1~2 項指標以啟動 AI 大腦深度邏輯推理！');
+        return;
+      }
+      stopSpeech();
+      const reportBox = document.getElementById('report-content');
+      const btn = document.getElementById('btn-run-multi-metric');
+      const customNote = document.getElementById('multi-metric-custom-note').value.trim();
+      const metricsArr = Array.from(selectedStudioMetricIds);
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> AI 大腦深度推演中...';
+
+      const metricsNames = metricsArr.join('、');
+      reportBox.innerHTML = `
+        <div class="py-12 text-center text-slate-400">
+          <div class="inline-block animate-spin text-3xl mb-3">⚙️</div>
+          <div class="font-medium text-white text-base">正在由 Gemini 3.6 Flash 大腦深度演算 ${metricsArr.length} 項指標傳導鏈條與背馳矛盾...</div>
+          <div class="text-xs text-sky-400 mt-2 font-mono">已鎖定指標：${metricsNames}</div>
+          <div class="text-[11px] text-slate-500 mt-1">零固定模板 · 原創標題推演 · 課堂研討反問生成中</div>
+        </div>
+      `;
+
+      // 滾動至研報區域
+      const reportSection = document.getElementById('printable-report-area');
+      if (reportSection) reportSection.scrollIntoView({ behavior: 'smooth' });
+
+      try {
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            selectedMetrics: metricsArr,
+            q: customNote || `課堂多維指標連動研討：【${metricsNames}】傳導機制與定價矛盾`
+          })
+        });
+        const data = await res.json();
+        currentRawReport = data.report || '無研報內容';
+        document.getElementById('report-time').innerText = (data.timestamp || '') + ' (UTC+8)';
+        document.getElementById('report-title').innerText = '【課堂多維指標研討】' + (customNote || metricsNames);
+
+        reportBox.innerHTML = marked.parse(currentRawReport);
+        resetSpeechState();
+      } catch (e) {
+        reportBox.innerHTML = '<div class="text-rose-400 py-6 text-center">連線推演逾時，請重試或刷新頁面。</div>';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🧠</span> 啟動 AI 大腦深入邏輯推理';
+      }
+    }
+
+    // ==========================================
+    // ⚡ 總經數據自動歸檔庫 (Macro Vault) 顯示與公式
+    // ==========================================
+    function switchVaultTab(tab) {
+      const viewVault = document.getElementById('view-macro-vault');
+      const viewNotes = document.getElementById('view-personal-notes');
+      const tabBtnVault = document.getElementById('tab-btn-vault');
+      const tabBtnNotes = document.getElementById('tab-btn-notes');
+      const btnFormula = document.getElementById('btn-vault-formula');
+      const btnCsv = document.getElementById('btn-vault-csv');
+
+      if (tab === 'vault') {
+        if (viewVault) viewVault.classList.remove('hidden');
+        if (viewNotes) viewNotes.classList.add('hidden');
+        if (tabBtnVault) {
+          tabBtnVault.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-sky-500/20 text-sky-300 border border-sky-500/40 flex items-center gap-1.5';
+        }
+        if (tabBtnNotes) {
+          tabBtnNotes.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800 flex items-center gap-1.5';
+        }
+        if (btnFormula) {
+          btnFormula.setAttribute('onclick', 'copyVaultFormula()');
+          btnFormula.innerHTML = '<span>📋</span> 複製 Vault 試算表公式';
+        }
+        if (btnCsv) {
+          btnCsv.setAttribute('href', '/api/macro-vault?format=csv');
+          btnCsv.innerHTML = '<span>📥</span> 匯出 Vault CSV';
+        }
+      } else {
+        if (viewVault) viewVault.classList.add('hidden');
+        if (viewNotes) viewNotes.classList.remove('hidden');
+        if (tabBtnNotes) {
+          tabBtnNotes.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-1.5';
+        }
+        if (tabBtnVault) {
+          tabBtnVault.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800 flex items-center gap-1.5';
+        }
+        if (btnFormula) {
+          btnFormula.setAttribute('onclick', 'copyRecordsFormula()');
+          btnFormula.innerHTML = '<span>📋</span> 複製筆記試算表公式';
+        }
+        if (btnCsv) {
+          btnCsv.setAttribute('href', '/api/records?format=csv');
+          btnCsv.innerHTML = '<span>📥</span> 匯出筆記 CSV';
+        }
+      }
+    }
+
+    function refreshCurrentVaultTab() {
+      const viewVault = document.getElementById('view-macro-vault');
+      if (viewVault && !viewVault.classList.contains('hidden')) {
+        loadMacroVaultData();
+      } else {
+        loadPersonalRecords();
+      }
+    }
+
+    function copyVaultFormula() {
+      const txt = '=IMPORTDATA("' + DOMAIN_URL + '/api/macro-vault?format=csv")';
+      navigator.clipboard.writeText(txt);
+      alert('✅ 【總經數據自動歸檔庫公式】已複製！\n請至 Google 試算表 A1 儲存格貼上，即可直接調用全量 24 大官方指標與最新發布歷史數據！');
+    }
+
+    async function loadMacroVaultData() {
+      const tableBody = document.getElementById('macro-vault-table-body');
+      const badge = document.getElementById('vault-summary-badge');
+      const timeTag = document.getElementById('vault-last-updated');
+      if (!tableBody) return;
+
+      try {
+        const res = await fetch('/api/macro-vault?t=' + Date.now());
+        const json = await res.json();
+        const metrics = json.metricsArray || Object.values(json.metrics || {});
+
+        if (badge) badge.innerText = metrics.length + ' 項指標';
+        if (timeTag) timeTag.innerText = '更新時間：' + (json.lastUpdated ? new Date(json.lastUpdated).toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei' }) : '即時校驗');
+
+        if (metrics.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500">數據庫同步中...</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = metrics.map(m => {
+          const hist = m.history || [];
+          const sparklineHtml = generateMiniSparklineSvg(hist.map(h => h.value));
+          return `
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="py-2.5">
+                <div class="text-white font-bold">${m.name}</div>
+                <div class="text-[10px] text-slate-500 font-mono">${m.id}</div>
+              </td>
+              <td class="py-2.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-sky-300 border border-slate-700">${m.categoryZh || m.category}</span>
+              </td>
+              <td class="py-2.5 text-amber-300 font-mono font-bold text-sm">
+                ${m.latestValue} <span class="text-[10px] text-slate-400 font-normal">${m.unit || ''}</span>
+              </td>
+              <td class="py-2.5 text-slate-300 font-mono">${m.latestPeriod || '--'}</td>
+              <td class="py-2.5 text-emerald-400 font-mono">${m.latestReleaseDate || '--'}</td>
+              <td class="py-2.5 text-slate-400 text-[11px]">${m.source}</td>
+              <td class="py-2.5 text-right font-mono">${sparklineHtml}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        tableBody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-rose-400">載入總經歸檔庫失敗，請重試。</td></tr>';
+      }
+    }
+
+    function generateMiniSparklineSvg(values) {
+      if (!Array.isArray(values) || values.length < 2) {
+        return '<span class="text-slate-600 text-[10px]">--</span>';
+      }
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const range = (max - min) === 0 ? 1 : (max - min);
+      const width = 64;
+      const height = 18;
+      const step = width / (values.length - 1);
+
+      const points = values.map((v, i) => {
+        const x = Number((i * step).toFixed(1));
+        const y = Number((height - 2 - ((v - min) / range) * (height - 4)).toFixed(1));
+        return `${x},${y}`;
+      }).join(' ');
+
+      const isUp = values[values.length - 1] >= values[0];
+      const strokeColor = isUp ? '#34d399' : '#f87171';
+
+      return `
+        <svg width="${width}" height="${height}" class="inline-block align-middle">
+          <polyline fill="none" stroke="${strokeColor}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" points="${points}" />
+        </svg>
+      `;
     }
 
     fetchInitialReport();
