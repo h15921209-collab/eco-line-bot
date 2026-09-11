@@ -51,11 +51,13 @@ async function syncFredLiveTrends() {
           const [y, m] = validCpi[i].date.split('-');
           history.unshift({ label: `${parseInt(m)}月`, val: yoy });
         }
-        const diff = (history[history.length - 1].val - history[0].val).toFixed(1);
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
         trends['US_CPI'] = {
           unit: '%',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
-          summary: `FRED最新 ${history[history.length - 1].label} ${history[history.length - 1].val}% (${diff >= 0 ? '+' : ''}${diff}%)`,
+          latestReleaseDate: '08/12',
+          summary: `FRED ${lastLbl} ${lastVal}% │ 08/12`,
           history
         };
       }
@@ -74,11 +76,13 @@ async function syncFredLiveTrends() {
           const [y, m] = validCore[i].date.split('-');
           history.unshift({ label: `${parseInt(m)}月`, val: yoy });
         }
-        const diff = (history[history.length - 1].val - history[0].val).toFixed(1);
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
         trends['US_CORE_CPI'] = {
           unit: '%',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
-          summary: `FRED核心 ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          latestReleaseDate: '08/12',
+          summary: `FRED核心 ${lastLbl} ${lastVal}% │ 08/12`,
           history
         };
       }
@@ -94,10 +98,13 @@ async function syncFredLiveTrends() {
           const [y, m] = validUr[i].date.split('-');
           history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validUr[i].value) });
         }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
         trends['US_UR'] = {
           unit: '%',
           trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
-          summary: `FRED最新 ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          latestReleaseDate: '09/04',
+          summary: `FRED ${lastLbl} ${lastVal}% │ 09/04`,
           history
         };
       }
@@ -116,10 +123,13 @@ async function syncFredLiveTrends() {
           const [y, m] = validNfp[i].date.split('-');
           history.unshift({ label: `${parseInt(m)}月`, val: diff });
         }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
         trends['US_NFP'] = {
           unit: '萬人',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
-          summary: `FRED最新 ${history[history.length - 1].label} ${history[history.length - 1].val}萬`,
+          latestReleaseDate: '09/04',
+          summary: `FRED ${lastLbl} ${lastVal}萬 │ 09/04`,
           history
         };
       }
@@ -138,10 +148,13 @@ async function syncFredLiveTrends() {
           const [y, m] = validPce[i].date.split('-');
           history.unshift({ label: `${parseInt(m)}月`, val: yoy });
         }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
         trends['US_PCE'] = {
           unit: '%',
           trendDir: history[history.length - 1].val <= 2.5 ? 'down' : 'neutral',
-          summary: `FRED核心PCE ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          latestReleaseDate: '08/28',
+          summary: `BEA核心 ${lastLbl} ${lastVal}% │ 08/28`,
           history
         };
       }
@@ -157,14 +170,84 @@ async function syncFredLiveTrends() {
           const [y, m] = validFed[i].date.split('-');
           history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validFed[i].value) });
         }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
         trends['US_FOMC'] = {
           unit: '%',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'neutral',
-          summary: `基準利率 ${history[history.length - 1].label} ${history[history.length - 1].val}%`,
+          latestReleaseDate: '09/01',
+          summary: `Fed基準 ${lastLbl} ${lastVal}% │ 09/01`,
           history
         };
       }
     } catch (e) { console.warn('FRED FEDFUNDS error:', e.message); }
+
+    // 7. 🇺🇸 美債 10 年期基準殖利率 (DGS10)
+    try {
+      const dgs10Obs = await fetchFredObservations('DGS10', 10);
+      const validDgs10 = dgs10Obs.filter(o => o.value && o.value !== '.');
+      if (validDgs10.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m, d] = validDgs10[i].date.split('-');
+          history.unshift({ label: `${m}/${d}`, val: parseFloat(validDgs10[i].value) });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastDate = history[history.length - 1].label;
+        trends['US_10Y'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: lastDate,
+          summary: `FRED 10Y ${lastVal}% │ ${lastDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED DGS10 error:', e.message); }
+
+    // 8. 🇺🇸 美債 2 年期政策敏感殖利率 (DGS2)
+    try {
+      const dgs2Obs = await fetchFredObservations('DGS2', 10);
+      const validDgs2 = dgs2Obs.filter(o => o.value && o.value !== '.');
+      if (validDgs2.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m, d] = validDgs2[i].date.split('-');
+          history.unshift({ label: `${m}/${d}`, val: parseFloat(validDgs2[i].value) });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastDate = history[history.length - 1].label;
+        trends['US_2Y'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: lastDate,
+          summary: `FRED 2Y ${lastVal}% │ ${lastDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED DGS2 error:', e.message); }
+
+    // 9. 🇺🇸 美債 10Y-2Y 經典利差 (Spread)
+    if (trends['US_10Y'] && trends['US_2Y']) {
+      const hist10 = trends['US_10Y'].history;
+      const hist2 = trends['US_2Y'].history;
+      const spreadHist = [];
+      const minLen = Math.min(hist10.length, hist2.length);
+      for (let i = 0; i < minLen; i++) {
+        const val10 = hist10[hist10.length - minLen + i].val;
+        const val2 = hist2[hist2.length - minLen + i].val;
+        const lbl = hist10[hist10.length - minLen + i].label;
+        spreadHist.push({ label: lbl, val: Number((val10 - val2).toFixed(3)) });
+      }
+      const lastSpread = spreadHist[spreadHist.length - 1].val;
+      const lastDate = spreadHist[spreadHist.length - 1].label;
+      trends['US_SPREAD'] = {
+        unit: '%',
+        trendDir: lastSpread > spreadHist[0].val ? 'up' : 'down',
+        latestReleaseDate: lastDate,
+        summary: `利差 ${(lastSpread >= 0 ? '+' : '')}${lastSpread}% │ ${lastDate}`,
+        history: spreadHist
+      };
+    }
 
     if (Object.keys(trends).length > 0) {
       cachedFredTrends = trends;
@@ -278,7 +361,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_CPI': {
     unit: '%',
     trendDir: 'down',
-    summary: '6期持續降溫 (-1.0%)',
+    latestReleaseDate: '09/11',
+    summary: 'BLS 8月 2.5% │ 09/11',
     history: [
       { label: '3月', val: 3.5 },
       { label: '4月', val: 3.4 },
@@ -292,7 +376,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_CORE_CPI': {
     unit: '%',
     trendDir: 'down',
-    summary: '高檔收斂 (-0.6%)',
+    latestReleaseDate: '09/11',
+    summary: 'BLS核心 8月 3.2% │ 09/11',
     history: [
       { label: '3月', val: 3.8 },
       { label: '4月', val: 3.6 },
@@ -306,7 +391,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_NFP': {
     unit: '萬人',
     trendDir: 'down',
-    summary: '增長放緩轉負',
+    latestReleaseDate: '09/04',
+    summary: 'BLS 8月 -2.3萬 │ 09/04',
     history: [
       { label: '3月', val: 31.0 },
       { label: '4月', val: 21.6 },
@@ -320,7 +406,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_UR': {
     unit: '%',
     trendDir: 'up',
-    summary: '緩步走升 (+0.3%)',
+    latestReleaseDate: '09/04',
+    summary: 'BLS 8月 4.1% │ 09/04',
     history: [
       { label: '3月', val: 3.8 },
       { label: '4月', val: 3.9 },
@@ -334,7 +421,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_ISM': {
     unit: '',
     trendDir: 'down',
-    summary: '收縮區間震盪',
+    latestReleaseDate: '09/01',
+    summary: 'ISM 8月 47.2 │ 09/01',
     history: [
       { label: '3月', val: 50.3 },
       { label: '4月', val: 49.2 },
@@ -348,7 +436,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_PPI': {
     unit: '%',
     trendDir: 'neutral',
-    summary: '中樞持穩 2.4%',
+    latestReleaseDate: '09/10',
+    summary: 'BLS 8月 2.4% │ 09/10',
     history: [
       { label: '3月', val: 2.1 },
       { label: '4月', val: 2.3 },
@@ -362,7 +451,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_RETAIL': {
     unit: '%',
     trendDir: 'neutral',
-    summary: '消費保持韌性',
+    latestReleaseDate: '09/16',
+    summary: '商務部 8月 0.1% │ 09/16',
     history: [
       { label: '3月', val: 0.6 },
       { label: '4月', val: -0.2 },
@@ -376,7 +466,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_PCE': {
     unit: '%',
     trendDir: 'down',
-    summary: '朝 2% 目標收斂',
+    latestReleaseDate: '08/28',
+    summary: 'BEA 7月 2.6% │ 08/28',
     history: [
       { label: '3月', val: 2.8 },
       { label: '4月', val: 2.8 },
@@ -390,7 +481,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'TW_EXPORT': {
     unit: '%',
     trendDir: 'up',
-    summary: 'AI強勁拉動 (+41.0%)',
+    latestReleaseDate: '09/08',
+    summary: '財政部 8月 +41% │ 09/08',
     history: [
       { label: '3月', val: 12.9 },
       { label: '4月', val: 3.5 },
@@ -404,7 +496,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'TW_ORDERS': {
     unit: '%',
     trendDir: 'up',
-    summary: '訂單爆發年增 61.9%',
+    latestReleaseDate: '08/20',
+    summary: '經濟部 7月 +62% │ 08/20',
     history: [
       { label: '2月', val: -10.4 },
       { label: '3月', val: 1.2 },
@@ -418,7 +511,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'CN_PMI': {
     unit: '',
     trendDir: 'down',
-    summary: '景氣低位築底',
+    latestReleaseDate: '08/31',
+    summary: '統計局 8月 49.1 │ 08/31',
     history: [
       { label: '3月', val: 50.8 },
       { label: '4月', val: 50.4 },
@@ -432,7 +526,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'CN_CPI': {
     unit: '%',
     trendDir: 'up',
-    summary: '微幅溫和回升',
+    latestReleaseDate: '09/09',
+    summary: '統計局 8月 0.6% │ 09/09',
     history: [
       { label: '3月', val: 0.1 },
       { label: '4月', val: 0.3 },
@@ -446,7 +541,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'US_FOMC': {
     unit: '%',
     trendDir: 'down',
-    summary: '啟動預防性降息',
+    latestReleaseDate: '08/01',
+    summary: 'Fed 7月 5.50% │ 08/01',
     history: [
       { label: '1月', val: 5.50 },
       { label: '3月', val: 5.50 },
@@ -460,7 +556,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'EU_ECB': {
     unit: '%',
     trendDir: 'down',
-    summary: '步入降息循環',
+    latestReleaseDate: '07/18',
+    summary: 'ECB 7月 4.25% │ 07/18',
     history: [
       { label: '1月', val: 4.50 },
       { label: '3月', val: 4.50 },
@@ -474,7 +571,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'JP_BOJ': {
     unit: '%',
     trendDir: 'up',
-    summary: '告別負利率轉升息',
+    latestReleaseDate: '07/31',
+    summary: '日銀 7月 0.25% │ 07/31',
     history: [
       { label: '1月', val: -0.10 },
       { label: '3月', val: 0.00 },
@@ -488,7 +586,8 @@ const HISTORICAL_INDICATOR_TRENDS = {
   'TW_TAIFEX': {
     unit: '點',
     trendDir: 'up',
-    summary: '多頭格局波段墊高',
+    latestReleaseDate: '08/19',
+    summary: '期交所 8月 24100 │ 08/19',
     history: [
       { label: '3月', val: 20200 },
       { label: '4月', val: 20400 },
@@ -532,6 +631,7 @@ function attachEventSparkline(ev) {
     ev.history = t.history;
     ev.trendDir = t.trendDir;
     ev.trendSummary = t.summary;
+    ev.latestReleaseDate = t.latestReleaseDate;
     ev.unit = ev.unit || t.unit;
     ev.source = 'FRED (聖路易斯聯準會即時官方)';
     return;
@@ -542,6 +642,7 @@ function attachEventSparkline(ev) {
     ev.history = t.history;
     ev.trendDir = t.trendDir;
     ev.trendSummary = t.summary;
+    ev.latestReleaseDate = t.latestReleaseDate;
     ev.unit = ev.unit || t.unit;
   } else {
     // 通用動態生成：確保「所有數據 100% 都有微型趨勢圖」
@@ -558,7 +659,9 @@ function attachEventSparkline(ev) {
       { label: '預期', val: Number(fVal.toFixed(1)) }
     ];
     ev.trendDir = dir;
-    ev.trendSummary = dir === 'up' ? '溫和回升' : '逐步走緩';
+    const relDate = ev.date ? ev.date.substring(5).replace('-', '/') : '前期';
+    ev.latestReleaseDate = relDate;
+    ev.trendSummary = (dir === 'up' ? '溫和回升' : '逐步走緩') + ` │ ${relDate}`;
   }
 }
 
@@ -1130,12 +1233,14 @@ const calendarHandler = async (req, res) => {
     const currentCalibrated = getCalibratedData();
 
     return res.status(200).json({
+      success: true,
       status: 'success',
       period,
       range: rangeDescription,
       currentTime: formatDateStr(now) + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
       totalCount: filteredEvents.length,
       events: filteredEvents,
+      fredTrends: cachedFredTrends || {},
       syncInfo: {
         lastSyncTime: currentCalibrated?.lastSyncTime || '即時校驗',
         status: currentCalibrated?.status || 'verified',

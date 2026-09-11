@@ -489,12 +489,46 @@ module.exports = async (req, res) => {
   const coalAsset = assetResults.find(a => a.key === 'coal');
   const coalHist = coalAsset?.fallbackHistory || historyRows.slice(-10).map(r => r.coal || 124.50);
 
+  // 構建 24 大跨資產標的近 7 日收盤價 Sparkline 時序庫 (含日期與真實價格)
+  const sparklines_7d = {};
+  const recent7Rows = historyRows.slice(-7);
+  ASSETS.forEach(a => {
+    sparklines_7d[a.key] = recent7Rows.map(r => ({
+      label: r.date ? r.date.substring(5).replace('-', '/') : '當期',
+      val: r[a.key] !== undefined ? r[a.key] : a.defaultVal
+    }));
+  });
+
+  // 衍生指標 7 日 Sparkline 時序
+  sparklines_7d['spread_10y2y'] = recent7Rows.map(r => ({
+    label: r.date ? r.date.substring(5).replace('-', '/') : '當期',
+    val: r.spread_10y2y !== undefined ? r.spread_10y2y : 0.743
+  }));
+  sparklines_7d['tsmc_adr_premium'] = recent7Rows.map(r => ({
+    label: r.date ? r.date.substring(5).replace('-', '/') : '當期',
+    val: r.tsmc_adr_premium !== undefined ? r.tsmc_adr_premium : 10.45
+  }));
+  sparklines_7d['gold_copper_ratio'] = recent7Rows.map(r => ({
+    label: r.date ? r.date.substring(5).replace('-', '/') : '當期',
+    val: r.gold_copper_ratio !== undefined ? r.gold_copper_ratio : 713.5
+  }));
+
+  // 動力煤平滑時序補強
+  if (coalAsset?.fallbackHistory && coalAsset.fallbackHistory.length >= 7) {
+    const last7Coal = coalAsset.fallbackHistory.slice(-7);
+    sparklines_7d['coal'] = recent7Rows.map((r, idx) => ({
+      label: r.date ? r.date.substring(5).replace('-', '/') : '當期',
+      val: last7Coal[idx] || last7Coal[last7Coal.length - 1]
+    }));
+  }
+
   const jsonData = {
     status: 'success',
     timestamp: timeStr,
     totalHistoricalDays: historyRows.length,
     data: {
       ...latestSnapshot,
+      sparklines_7d,
       history: {
         labels: historyRows.slice(-10).map(r => r.date.substring(5)),
         twii: historyRows.slice(-10).map(r => r.twii),
