@@ -354,3 +354,20 @@ function callGeminiApi(promptText) {
 
   return "⚠️ 連線 Gemini 分析逾時或配額限制，請稍後再試。";
 }
+
+/**
+ * ==============================================================================
+ * 🌟 24H 外部免費防休眠心跳觸發器 (Render Keep-Alive Trigger)
+ * 可在 Google Apps Script 控制台新增「時間驅動」觸發器（每 10 分鐘或每 15 分鐘執行一次）
+ * Google 雲端將自動定時發送探測請求，徹底防止 Render 免費版睡眠，達成 0 延遲秒開！
+ * ==============================================================================
+ */
+function keepRenderAwake() {
+  const targetUrl = "https://eco-line-assistant.onrender.com/health";
+  try {
+    const response = UrlFetchApp.fetch(targetUrl, { muteHttpExceptions: true });
+    Logger.log("Render Keep-Alive Status: " + response.getResponseCode());
+  } catch (err) {
+    Logger.log("Keep-Alive Error: " + err.message);
+  }
+}

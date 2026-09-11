@@ -60,6 +60,36 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
+// Render 免費版 24H 防休眠保活心跳（每 10 分鐘自主向外部公開網址發送 Health 探測，突破 15 分鐘無請求休眠機制）
+function startKeepAlive() {
+  const PING_INTERVAL_MS = 10 * 60 * 1000; // 每 10 分鐘（Render 15 分鐘無流量休眠）
+  const rawUrl = process.env.RENDER_EXTERNAL_URL || 'https://eco-line-assistant.onrender.com';
+  const targetUrl = rawUrl.replace(/\/$/, '') + '/health';
+
+  console.log(`🛡️ [Keep-Alive] 24H 在線守護引擎已啟動 (每 10 分鐘自動心跳探測: ${targetUrl})`);
+
+  // 伺服器啟動 15 秒後先執行第一次自我探測
+  setTimeout(async () => {
+    try {
+      const res = await fetch(targetUrl);
+      console.log(`💓 [Keep-Alive] 初始在線心跳探測成功: HTTP ${res.status}`);
+    } catch (err) {
+      console.warn(`💓 [Keep-Alive] 初始心跳警告:`, err.message);
+    }
+  }, 15 * 1000);
+
+  // 定期每 10 分鐘循環心跳探測
+  setInterval(async () => {
+    try {
+      const res = await fetch(targetUrl);
+      const timeStr = new Date().toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei' });
+      console.log(`💓 [Keep-Alive] 24H 在線心跳維持成功: HTTP ${res.status} (${timeStr})`);
+    } catch (err) {
+      console.warn(`💓 [Keep-Alive] 心跳探測警告:`, err.message);
+    }
+  }, PING_INTERVAL_MS);
+}
+
 // 啟動 HTTP 伺服器
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`====================================================`);
@@ -72,5 +102,10 @@ app.listen(PORT, '0.0.0.0', () => {
     calendarSyncModule.setupCalendarCronTimer();
   } catch (err) {
     console.error('Failed to setup calendar cron timer:', err);
+  }
+  try {
+    startKeepAlive();
+  } catch (err) {
+    console.error('Failed to start keep-alive:', err);
   }
 });
