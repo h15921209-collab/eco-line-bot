@@ -259,7 +259,7 @@ function sendCollectorResponse(req, res, payload) {
   return res.status(200).json(payload.jsonData);
 }
 
-module.exports = async (req, res) => {
+async function collectorHandler(req, res) {
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -571,4 +571,19 @@ module.exports = async (req, res) => {
   }
   return res.status(500).json({ status: 'error', message: err.message });
 }
+}
+
+module.exports = collectorHandler;
+module.exports.fetchCollectorSnapshot = async (force = false) => {
+  let snapshotResult = null;
+  const mockReq = { query: { force: force ? '1' : '0' } };
+  const mockRes = {
+    setHeader: () => {},
+    status: () => ({
+      json: (data) => { snapshotResult = data?.data; },
+      send: () => {}
+    })
+  };
+  await collectorHandler(mockReq, mockRes);
+  return snapshotResult;
 };

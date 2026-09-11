@@ -1,6 +1,6 @@
 {
   "name": "eco-line-bot",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "宏觀全球智庫 · 24H 首席總經分析助手與跨資產配置戰略系統",
   "main": "server.js",
   "scripts": {

@@ -452,9 +452,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_CPI', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: fredTrends.US_CPI.latestPeriod || (last.period || `2026-${last.label}`),
       releaseDate: fredTrends.US_CPI.latestReleaseDate || '08/12',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_CPI.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_CPI.latestReleaseDate }))
     });
   }
 
@@ -464,9 +464,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_CORE_CPI', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: fredTrends.US_CORE_CPI.latestPeriod || (last.period || `2026-${last.label}`),
       releaseDate: fredTrends.US_CORE_CPI.latestReleaseDate || '08/12',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_CORE_CPI.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_CORE_CPI.latestReleaseDate }))
     });
   }
 
@@ -476,9 +476,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_UR', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: fredTrends.US_UR.latestPeriod || (last.period || `2026-${last.label}`),
       releaseDate: fredTrends.US_UR.latestReleaseDate || '09/04',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_UR.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_UR.latestReleaseDate }))
     });
   }
 
@@ -488,9 +488,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_NFP', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: fredTrends.US_NFP.latestPeriod || (last.period || `2026-${last.label}`),
       releaseDate: fredTrends.US_NFP.latestReleaseDate || '09/04',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_NFP.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_NFP.latestReleaseDate }))
     });
   }
 
@@ -500,9 +500,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_PCE', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: fredTrends.US_PCE.latestPeriod || (last.period || `2026-${last.label}`),
       releaseDate: fredTrends.US_PCE.latestReleaseDate || '08/28',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_PCE.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_PCE.latestReleaseDate }))
     });
   }
 
@@ -512,9 +512,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_FOMC', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: fredTrends.US_FOMC.latestPeriod || (last.period || `2026-${last.label}`),
       releaseDate: fredTrends.US_FOMC.latestReleaseDate || '09/01',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_FOMC.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_FOMC.latestReleaseDate }))
     });
   }
 
@@ -604,6 +604,55 @@ function recordCollectorSnapshot(latestSnapshot) {
   if (latestSnapshot.vix) {
     recordMacroMetric('MARKET_VIX', { value: latestSnapshot.vix, period: periodStr, releaseDate: dateStr });
   }
+  saveVaultToDisk(true);
+}
+
+// 內部記憶體同步鎖與快取計時
+let isSyncing = false;
+let lastFullSyncTime = 0;
+const VAULT_SYNC_TTL_MS = 60 * 1000; // 60 秒主動同步快取閥值
+
+// 主動全量同步（串聯 Yahoo 即時行情與 FRED 官方總經數據）
+async function syncLiveVaultData(force = false) {
+  const now = Date.now();
+  if (!force && (now - lastFullSyncTime < VAULT_SYNC_TTL_MS)) {
+    return initOrLoadVault();
+  }
+  if (isSyncing) return initOrLoadVault();
+  isSyncing = true;
+
+  try {
+    // 1. 同步 Yahoo 即時市場跨資產行情 (TSMC, NVDA, US10Y, US2Y, Gold, Oil, etc.)
+    try {
+      const collector = require('./collector');
+      if (typeof collector.fetchCollectorSnapshot === 'function') {
+        const snap = await collector.fetchCollectorSnapshot(force);
+        if (snap) recordCollectorSnapshot(snap);
+      }
+    } catch (e) {
+      console.warn('[Macro Vault] 即時行情同步警告:', e.message);
+    }
+
+    // 2. 同步 FRED 官方宏觀指標 (CPI, Core CPI, Core PCE, NFP, UR, Fed Rate, etc.)
+    try {
+      const calendar = require('./calendar');
+      if (typeof calendar.syncFredLiveTrends === 'function') {
+        const fredTrends = await calendar.syncFredLiveTrends();
+        if (fredTrends) recordFredTrends(fredTrends);
+      }
+    } catch (e) {
+      console.warn('[Macro Vault] FRED 官方數據同步警告:', e.message);
+    }
+
+    lastFullSyncTime = Date.now();
+    saveVaultToDisk(true);
+  } catch (err) {
+    console.warn('[Macro Vault] 全量數據同步警告:', err.message);
+  } finally {
+    isSyncing = false;
+  }
+
+  return initOrLoadVault();
 }
 
 // 取得指標詳細數據（供 AI 研討室或 Prompt 連動使用）
@@ -649,6 +698,11 @@ async function macroVaultHandler(req, res) {
   }
 
   try {
+    const isRefresh = req.query?.refresh === '1' || req.query?.force === '1';
+    if (isRefresh || (Date.now() - lastFullSyncTime > VAULT_SYNC_TTL_MS) || !inMemoryVault) {
+      await syncLiveVaultData(isRefresh);
+    }
+
     const vault = initOrLoadVault();
     const format = req.query?.format;
 
@@ -699,6 +753,7 @@ async function macroVaultHandler(req, res) {
 
 module.exports = macroVaultHandler;
 module.exports.initOrLoadVault = initOrLoadVault;
+module.exports.syncLiveVaultData = syncLiveVaultData;
 module.exports.recordMacroMetric = recordMacroMetric;
 module.exports.recordFredTrends = recordFredTrends;
 module.exports.recordCollectorSnapshot = recordCollectorSnapshot;

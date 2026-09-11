@@ -110,4 +110,18 @@ app.listen(PORT, '0.0.0.0', () => {
   } catch (err) {
     console.error('Failed to start keep-alive:', err);
   }
+
+  // 伺服器冷啟動：立即非同步觸發總經數據庫全量主動校準與落盤
+  setTimeout(async () => {
+    try {
+      console.log('⚡ [Macro Vault] 正在執行伺服器冷啟動全量總經與即時行情主動校準...');
+      const macroVault = require('./api/macro-vault');
+      if (typeof macroVault.syncLiveVaultData === 'function') {
+        await macroVault.syncLiveVaultData(true);
+        console.log('✅ [Macro Vault] 伺服器冷啟動：24 大指標即時行情已全量校準並持久化歸檔！');
+      }
+    } catch (e) {
+      console.warn('[Macro Vault] 冷啟動校準警告:', e.message);
+    }
+  }, 2000);
 });

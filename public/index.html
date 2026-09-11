@@ -3644,7 +3644,7 @@
     function refreshCurrentVaultTab() {
       const viewVault = document.getElementById('view-macro-vault');
       if (viewVault && !viewVault.classList.contains('hidden')) {
-        loadMacroVaultData();
+        loadMacroVaultData(true);
       } else {
         loadPersonalRecords();
       }
@@ -3656,18 +3656,43 @@
       alert('✅ 【總經數據自動歸檔庫公式】已複製！\n請至 Google 試算表 A1 儲存格貼上，即可直接調用全量 24 大官方指標與最新發布歷史數據！');
     }
 
-    async function loadMacroVaultData() {
+    async function loadMacroVaultData(force = false) {
       const tableBody = document.getElementById('macro-vault-table-body');
       const badge = document.getElementById('vault-summary-badge');
       const timeTag = document.getElementById('vault-last-updated');
       if (!tableBody) return;
 
       try {
-        const res = await fetch('/api/macro-vault?t=' + Date.now());
+        const url = force ? '/api/macro-vault?refresh=1&t=' + Date.now() : '/api/macro-vault?t=' + Date.now();
+        const res = await fetch(url);
         const json = await res.json();
         const metrics = json.metricsArray || Object.values(json.metrics || {});
 
-        if (badge) badge.innerText = metrics.length + ' 項指標';
+        // 動態雙向綁定回課堂研討室 (Classroom Studio) 24 項按鈕標籤與數值
+        if (json.metrics && typeof json.metrics === 'object') {
+          STUDIO_METRIC_CATEGORIES.forEach(cat => {
+            cat.metrics.forEach(m => {
+              if (json.metrics[m.id]) {
+                const liveM = json.metrics[m.id];
+                if (liveM.latestValue !== undefined && liveM.latestValue !== null) {
+                  m.val = liveM.latestValue;
+                }
+                if (liveM.latestPeriod) {
+                  m.period = liveM.latestPeriod.replace('2026-', '') + (liveM.latestPeriod.includes('月') ? '' : '月');
+                }
+                if (liveM.latestReleaseDate) {
+                  m.release = liveM.latestReleaseDate;
+                }
+                if (liveM.unit) {
+                  m.unit = liveM.unit;
+                }
+              }
+            });
+          });
+          renderMetricStudio();
+        }
+
+        if (badge) badge.innerText = metrics.length + ' 項指標 (即時同步)';
         if (timeTag) timeTag.innerText = '更新時間：' + (json.lastUpdated ? new Date(json.lastUpdated).toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei' }) : '即時校驗');
 
         if (metrics.length === 0) {

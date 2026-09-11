@@ -40,24 +40,28 @@ async function syncFredLiveTrends() {
 
     // 1. 🇺🇸 CPI 通膨年增率 (CPIAUCSL)
     try {
-      const cpiObs = await fetchFredObservations('CPIAUCSL', 25);
+      const cpiObs = await fetchFredObservations('CPIAUCSL', 30);
       const validCpi = cpiObs.filter(o => o.value && o.value !== '.');
-      if (validCpi.length >= 18) {
+      if (validCpi.length >= 14) {
         const history = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < Math.min(6, validCpi.length); i++) {
           const cur = parseFloat(validCpi[i].value);
-          const prev = parseFloat(validCpi[i + 12].value);
+          const [y, m, day] = validCpi[i].date.split('-');
+          const targetPrevDate = `${parseInt(y) - 1}-${m}-${day}`;
+          const prevItem = validCpi.find(o => o.date === targetPrevDate);
+          const prev = prevItem ? parseFloat(prevItem.value) : (validCpi[i + 12] ? parseFloat(validCpi[i + 12].value) : cur);
           const yoy = Number((((cur - prev) / prev) * 100).toFixed(1));
-          const [y, m] = validCpi[i].date.split('-');
-          history.unshift({ label: `${parseInt(m)}月`, val: yoy });
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy, period: `${y}-${m}` });
         }
         const lastVal = history[history.length - 1].val;
         const lastLbl = history[history.length - 1].label;
+        const relDate = validCpi[0].realtime_start ? validCpi[0].realtime_start.substring(5).replace('-', '/') : '08/12';
         trends['US_CPI'] = {
           unit: '%',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
-          latestReleaseDate: '08/12',
-          summary: `FRED ${lastLbl} ${lastVal}% │ 08/12`,
+          latestReleaseDate: relDate,
+          latestPeriod: validCpi[0].date.substring(0, 7),
+          summary: `FRED ${lastLbl} ${lastVal}% │ ${relDate}`,
           history
         };
       }
@@ -65,24 +69,28 @@ async function syncFredLiveTrends() {
 
     // 2. 🇺🇸 核心 CPI 通膨年增率 (CPILFESL)
     try {
-      const coreObs = await fetchFredObservations('CPILFESL', 25);
+      const coreObs = await fetchFredObservations('CPILFESL', 30);
       const validCore = coreObs.filter(o => o.value && o.value !== '.');
-      if (validCore.length >= 18) {
+      if (validCore.length >= 14) {
         const history = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < Math.min(6, validCore.length); i++) {
           const cur = parseFloat(validCore[i].value);
-          const prev = parseFloat(validCore[i + 12].value);
+          const [y, m, day] = validCore[i].date.split('-');
+          const targetPrevDate = `${parseInt(y) - 1}-${m}-${day}`;
+          const prevItem = validCore.find(o => o.date === targetPrevDate);
+          const prev = prevItem ? parseFloat(prevItem.value) : (validCore[i + 12] ? parseFloat(validCore[i + 12].value) : cur);
           const yoy = Number((((cur - prev) / prev) * 100).toFixed(1));
-          const [y, m] = validCore[i].date.split('-');
-          history.unshift({ label: `${parseInt(m)}月`, val: yoy });
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy, period: `${y}-${m}` });
         }
         const lastVal = history[history.length - 1].val;
         const lastLbl = history[history.length - 1].label;
+        const relDate = validCore[0].realtime_start ? validCore[0].realtime_start.substring(5).replace('-', '/') : '08/12';
         trends['US_CORE_CPI'] = {
           unit: '%',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
-          latestReleaseDate: '08/12',
-          summary: `FRED核心 ${lastLbl} ${lastVal}% │ 08/12`,
+          latestReleaseDate: relDate,
+          latestPeriod: validCore[0].date.substring(0, 7),
+          summary: `FRED核心 ${lastLbl} ${lastVal}% │ ${relDate}`,
           history
         };
       }
@@ -96,15 +104,17 @@ async function syncFredLiveTrends() {
         const history = [];
         for (let i = 0; i < 6; i++) {
           const [y, m] = validUr[i].date.split('-');
-          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validUr[i].value) });
+          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validUr[i].value), period: `${y}-${m}` });
         }
         const lastVal = history[history.length - 1].val;
         const lastLbl = history[history.length - 1].label;
+        const relDate = validUr[0].realtime_start ? validUr[0].realtime_start.substring(5).replace('-', '/') : '09/04';
         trends['US_UR'] = {
           unit: '%',
           trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
-          latestReleaseDate: '09/04',
-          summary: `FRED ${lastLbl} ${lastVal}% │ 09/04`,
+          latestReleaseDate: relDate,
+          latestPeriod: validUr[0].date.substring(0, 7),
+          summary: `FRED ${lastLbl} ${lastVal}% │ ${relDate}`,
           history
         };
       }
@@ -121,15 +131,17 @@ async function syncFredLiveTrends() {
           const prev = parseFloat(validNfp[i + 1].value);
           const diff = Number(((cur - prev) / 10).toFixed(1));
           const [y, m] = validNfp[i].date.split('-');
-          history.unshift({ label: `${parseInt(m)}月`, val: diff });
+          history.unshift({ label: `${parseInt(m)}月`, val: diff, period: `${y}-${m}` });
         }
         const lastVal = history[history.length - 1].val;
         const lastLbl = history[history.length - 1].label;
+        const relDate = validNfp[0].realtime_start ? validNfp[0].realtime_start.substring(5).replace('-', '/') : '09/04';
         trends['US_NFP'] = {
           unit: '萬人',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'up',
-          latestReleaseDate: '09/04',
-          summary: `FRED ${lastLbl} ${lastVal}萬 │ 09/04`,
+          latestReleaseDate: relDate,
+          latestPeriod: validNfp[0].date.substring(0, 7),
+          summary: `FRED ${lastLbl} ${lastVal}萬 │ ${relDate}`,
           history
         };
       }
@@ -137,24 +149,28 @@ async function syncFredLiveTrends() {
 
     // 5. 🇺🇸 核心 PCE 物價指數 (PCEPILFE)
     try {
-      const pceObs = await fetchFredObservations('PCEPILFE', 25);
+      const pceObs = await fetchFredObservations('PCEPILFE', 30);
       const validPce = pceObs.filter(o => o.value && o.value !== '.');
-      if (validPce.length >= 18) {
+      if (validPce.length >= 14) {
         const history = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < Math.min(6, validPce.length); i++) {
           const cur = parseFloat(validPce[i].value);
-          const prev = parseFloat(validPce[i + 12].value);
+          const [y, m, day] = validPce[i].date.split('-');
+          const targetPrevDate = `${parseInt(y) - 1}-${m}-${day}`;
+          const prevItem = validPce.find(o => o.date === targetPrevDate);
+          const prev = prevItem ? parseFloat(prevItem.value) : (validPce[i + 12] ? parseFloat(validPce[i + 12].value) : cur);
           const yoy = Number((((cur - prev) / prev) * 100).toFixed(1));
-          const [y, m] = validPce[i].date.split('-');
-          history.unshift({ label: `${parseInt(m)}月`, val: yoy });
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy, period: `${y}-${m}` });
         }
         const lastVal = history[history.length - 1].val;
         const lastLbl = history[history.length - 1].label;
+        const relDate = validPce[0].realtime_start ? validPce[0].realtime_start.substring(5).replace('-', '/') : '08/28';
         trends['US_PCE'] = {
           unit: '%',
           trendDir: history[history.length - 1].val <= 2.5 ? 'down' : 'neutral',
-          latestReleaseDate: '08/28',
-          summary: `BEA核心 ${lastLbl} ${lastVal}% │ 08/28`,
+          latestReleaseDate: relDate,
+          latestPeriod: validPce[0].date.substring(0, 7),
+          summary: `BEA核心 ${lastLbl} ${lastVal}% │ ${relDate}`,
           history
         };
       }
@@ -1275,6 +1291,7 @@ const calendarHandler = async (req, res) => {
 };
 
 module.exports = calendarHandler;
+module.exports.syncFredLiveTrends = syncFredLiveTrends;
 module.exports.invalidateCache = () => {
   cachedCalendarData = null;
   lastCacheTime = 0;
