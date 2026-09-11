@@ -1506,16 +1506,19 @@
 
       const gradId = 'spk-grad-' + Math.random().toString(36).substring(2, 9);
       
-      // 組裝 6 期 Tooltip 字串
+      // 組裝 6 期 Tooltip 字串（支援 label 與 period 雙規格）
       const tooltipText = history.map(item => {
         if (typeof item === 'object' && item !== null) {
-          return `${item.period}: ${item.val}`;
+          const lbl = item.label || item.period || '期別';
+          return `${lbl}: ${item.val}`;
         }
         return `${item}`;
       }).join(' ➔ ');
 
+      const safeTitle = (title ? String(title).replace(/"/g, '&quot;') + ' | ' : '') + '近 6 期：' + tooltipText.replace(/"/g, '&quot;');
+
       return `
-        <div class="inline-flex items-center justify-center relative group cursor-pointer" title="${title ? title + ' | ' : ''}近 6 期：${tooltipText}">
+        <div class="inline-flex items-center justify-center relative group cursor-pointer" title="${safeTitle}">
           <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" class="overflow-visible block">
             <defs>
               <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
