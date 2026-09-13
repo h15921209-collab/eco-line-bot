@@ -80,6 +80,129 @@
 
   <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 sm:mt-6">
 
+    <!-- 🐂 華爾街公牛 · 總經景氣大漫遊 (Hero 迎賓寬景動態畫卷) -->
+    <div id="macro-bull-bike-hero-container" class="mb-5 rounded-2xl bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border border-indigo-500/30 shadow-2xl overflow-hidden no-print relative">
+      <!-- 頂部輕巧資訊與工具列 -->
+      <div class="px-4 py-2.5 bg-slate-900/80 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-base">🐂</span>
+          <span class="font-black text-white tracking-wide">華爾街公牛 · 總經景氣大漫遊</span>
+          <span class="hidden sm:inline text-[11px] text-slate-400 font-mono">Macro Cycle 2D-IK Rider</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- 即時市場驅動狀態膠囊 -->
+          <span id="bull-status-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5 transition">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="bull-status-text">即時數據連動中...</span>
+          </span>
+          <!-- 紐約證交所開盤敲鐘按鈕 -->
+          <button onclick="if(window.MacroBullEngine) window.MacroBullEngine.playNYSEBell()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px]" title="點擊敲響紐約證交所開盤金屬鐘聲">
+            <span>🔔</span> 敲鐘
+          </button>
+          <!-- 收合/展開切換鈕 -->
+          <button onclick="if(window.MacroBullEngine) window.MacroBullEngine.toggleCollapse()" id="btn-toggle-bull-hero" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium transition text-[11px] flex items-center gap-1">
+            <span id="bull-toggle-icon">🔼</span> <span id="bull-toggle-text">收合</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SVG 畫卷展示區域 (點擊可觸發敲鐘) -->
+      <div id="bull-hero-canvas-wrap" class="relative w-full cursor-pointer select-none transition-all duration-300 overflow-hidden" style="max-height: 290px;" onclick="if(window.MacroBullEngine) window.MacroBullEngine.playNYSEBell()" title="點擊公牛或畫面可觸發開盤敲鐘聲！">
+        <svg id="bull-hero-svg" viewBox="0 0 1000 280" class="w-full h-auto block" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="sky-grad-day" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0284c7" />
+              <stop offset="50%" stop-color="#38bdf8" />
+              <stop offset="85%" stop-color="#bae6fd" />
+              <stop offset="100%" stop-color="#f0f9ff" />
+            </linearGradient>
+            <linearGradient id="sky-grad-sunset" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#312e81" />
+              <stop offset="35%" stop-color="#701a75" />
+              <stop offset="65%" stop-color="#c2410c" />
+              <stop offset="90%" stop-color="#ea580c" />
+              <stop offset="100%" stop-color="#fde047" />
+            </linearGradient>
+            <linearGradient id="sky-grad-night" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#020617" />
+              <stop offset="50%" stop-color="#090d16" />
+              <stop offset="85%" stop-color="#0f172a" />
+              <stop offset="100%" stop-color="#1e1b4b" />
+            </linearGradient>
+            <linearGradient id="headlight-cone" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#fef08a" stop-opacity="0.85" />
+              <stop offset="50%" stop-color="#fef9c3" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#fef9c3" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="gold-bar-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fef08a" />
+              <stop offset="50%" stop-color="#f59e0b" />
+              <stop offset="100%" stop-color="#b45309" />
+            </linearGradient>
+            <linearGradient id="cash-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#86efac" />
+              <stop offset="100%" stop-color="#15803d" />
+            </linearGradient>
+            <linearGradient id="chip-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22c55e" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </linearGradient>
+            <radialGradient id="lamp-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fef08a" stop-opacity="0.8" />
+              <stop offset="70%" stop-color="#fde047" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="#fde047" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <!-- 1. 天空底層 -->
+          <rect id="svg-sky-bg" x="0" y="0" width="1000" height="235" fill="url(#sky-grad-day)" />
+
+          <!-- 2. 天文體 (太陽 / 月亮 / 星星) -->
+          <g id="svg-celestial-group">
+            <g id="svg-sun" transform="translate(840, 50)">
+              <circle cx="0" cy="0" r="28" fill="#fef08a" opacity="0.3" filter="blur(6px)" />
+              <circle cx="0" cy="0" r="20" fill="#fbbf24" />
+              <circle cx="0" cy="0" r="15" fill="#fef08a" />
+            </g>
+            <g id="svg-moon" transform="translate(840, 50)" opacity="0">
+              <circle cx="0" cy="0" r="18" fill="#e2e8f0" />
+              <circle cx="6" cy="-4" r="15" fill="#0f172a" />
+            </g>
+            <g id="svg-stars" opacity="0"></g>
+          </g>
+
+          <!-- 3. 雲層 (視差漂移) -->
+          <g id="svg-clouds-layer"></g>
+
+          <!-- 4. 宏觀資產熱氣球 ($, €, Au) -->
+          <g id="svg-balloons-layer"></g>
+
+          <!-- 5. 華爾街金融天際線大廈 -->
+          <g id="svg-skyline-layer"></g>
+
+          <!-- 6. 綠紅 K 線山脈 (Candlestick Mountains) -->
+          <g id="svg-candlestick-layer"></g>
+
+          <!-- 7. 護欄與街燈 -->
+          <g id="svg-guardrail-layer"></g>
+          <g id="svg-streetlamps-layer"></g>
+
+          <!-- 8. 柏油路面與虛線標線 -->
+          <g id="svg-road-layer">
+            <rect x="0" y="235" width="1000" height="45" fill="#1e293b" />
+            <rect x="0" y="235" width="1000" height="3" fill="#475569" />
+            <g id="svg-lane-markers"></g>
+          </g>
+
+          <!-- 9. 車頭大燈光錐 (夜間投射至地面) -->
+          <polygon id="svg-headlight-beam" points="615,138 1000,95 1000,280 615,145" fill="url(#headlight-cone)" opacity="0" />
+
+          <!-- 10. 華爾街公牛與自行車本體 (2-Bone IK) -->
+          <g id="svg-bull-bike-group"></g>
+        </svg>
+      </div>
+    </div>
+
     <!-- 08:30 定時推播 ＆ 公告列 -->
     <div class="mb-5 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 shadow-lg no-print">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
@@ -3065,6 +3188,11 @@
         cachedTickerData = d;
         renderHeatmap();
 
+        // 7. 同步連動頂部華爾街公牛踩踏速度與天氣光影
+        if (window.MacroBullEngine) {
+          window.MacroBullEngine.syncWithMarketData(d);
+        }
+
       } catch (e) {
         console.error('Ticker fetch error:', e);
       }
@@ -3756,5 +3884,8 @@
 
     fetchInitialReport();
   </script>
+
+  <!-- 🐂 華爾街公牛 2D-IK 物理與視差動畫引擎 -->
+  <script src="/macro-bull-bike.js"></script>
 </body>
 </html>

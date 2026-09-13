@@ -1,8 +1,9 @@
-const CACHE_NAME = 'eco-macro-cache-v2';
+const CACHE_NAME = 'eco-macro-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/macro-bull-bike.js'
 ];
 
 self.addEventListener('install', (event) => {
