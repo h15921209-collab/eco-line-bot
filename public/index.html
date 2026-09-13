@@ -95,9 +95,9 @@
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span id="bull-status-text">即時數據連動中...</span>
           </span>
-          <!-- 紐約證交所開盤敲鐘按鈕 -->
-          <button onclick="if(window.MacroBullEngine) window.MacroBullEngine.playNYSEBell()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px]" title="點擊敲響紐約證交所開盤金屬鐘聲">
-            <span>🔔</span> 敲鐘
+          <!-- 紐約證交所開盤敲鐘 & 3秒 Turbo 狂飆按鈕 -->
+          <button onclick="if(window.MacroBullEngine) window.MacroBullEngine.triggerTurboBoost()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px]" title="點擊敲響紐約證交所開盤鐘聲並啟動 3 秒 Turbo 狂飆！">
+            <span>🔔</span> 敲鐘·Turbo
           </button>
           <!-- 收合/展開切換鈕 -->
           <button onclick="if(window.MacroBullEngine) window.MacroBullEngine.toggleCollapse()" id="btn-toggle-bull-hero" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium transition text-[11px] flex items-center gap-1">
@@ -106,8 +106,8 @@
         </div>
       </div>
 
-      <!-- SVG 畫卷展示區域 (點擊可觸發敲鐘) -->
-      <div id="bull-hero-canvas-wrap" class="relative w-full cursor-pointer select-none transition-all duration-300 overflow-hidden" style="max-height: 290px;" onclick="if(window.MacroBullEngine) window.MacroBullEngine.playNYSEBell()" title="點擊公牛或畫面可觸發開盤敲鐘聲！">
+      <!-- SVG 畫卷展示區域 (點擊可觸發敲鐘與 3秒 Turbo 狂飆) -->
+      <div id="bull-hero-canvas-wrap" class="relative w-full cursor-pointer select-none transition-all duration-300 overflow-hidden" style="max-height: 290px;" onclick="if(window.MacroBullEngine) window.MacroBullEngine.triggerTurboBoost()" title="點擊公牛或畫面可觸發開盤敲鐘與 3 秒 Turbo 狂飆！">
         <svg id="bull-hero-svg" viewBox="0 0 1000 280" class="w-full h-auto block" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="sky-grad-day" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -151,6 +151,25 @@
               <stop offset="0%" stop-color="#fef08a" stop-opacity="0.8" />
               <stop offset="70%" stop-color="#fde047" stop-opacity="0.25" />
               <stop offset="100%" stop-color="#fde047" stop-opacity="0" />
+            </radialGradient>
+            <!-- 🐂 牛角金色光暈濾鏡 -->
+            <filter id="horn-glow-filter" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3.5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <!-- 🕶️ 墨鏡刀鋒反光裁剪遮罩 -->
+            <clipPath id="sunglasses-clip">
+              <polygon points="520,89 548,89 545,97 522,96" />
+            </clipPath>
+            <!-- 🪙 金幣金屬光澤漸層 -->
+            <radialGradient id="coin-radial" cx="35%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#fffbeb" />
+              <stop offset="40%" stop-color="#fbbf24" />
+              <stop offset="85%" stop-color="#f59e0b" />
+              <stop offset="100%" stop-color="#b45309" />
             </radialGradient>
           </defs>
 
@@ -197,8 +216,17 @@
           <!-- 9. 車頭大燈光錐 (夜間投射至地面) -->
           <polygon id="svg-headlight-beam" points="615,138 1000,95 1000,280 615,145" fill="url(#headlight-cone)" opacity="0" />
 
-          <!-- 10. 華爾街公牛與自行車本體 (2-Bone IK) -->
+          <!-- 10. 暴富噴射流：金幣與百元美鈔粒子層 (在車身後方) -->
+          <g id="svg-particles-wealth"></g>
+
+          <!-- 11. 地面輪胎摩擦火星粒子層 -->
+          <g id="svg-particles-sparks"></g>
+
+          <!-- 12. 華爾街公牛與自行車本體 (2-Bone IK) -->
           <g id="svg-bull-bike-group"></g>
+
+          <!-- 13. 牛鼻高壓蒸氣噴霧層 (頭部前方) -->
+          <g id="svg-particles-steam"></g>
         </svg>
       </div>
     </div>

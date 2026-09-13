@@ -1,11 +1,13 @@
 /**
- * 🐂 華爾街公牛 · 總經景氣大漫遊 (Macro Cycle 2D-IK Rider Engine)
+ * 🐂 華爾街公牛 · 總經景氣大漫遊 (Macro Cycle 2D-IK Rider Engine v2.6.0)
  * 核心特性：
  * 1. 2-Bone IK (雙關節逆運動學) 實時幾何求解公牛腿部踩踏運動軌跡
- * 2. 多層次經濟視差滾動 (天空/熱氣球/金融天際線/K線山脈/護欄/道路)
- * 3. 純自動市場數據驅動 (VIX 與大盤連動自動調節車速、天空光影與夜間車燈)
- * 4. 車前籃裝載金條、百元美鈔、輝達 AI 晶片 (顛簸物理微動)
- * 5. Web Audio API 紐約證交所開盤金屬敲鐘音效合成 (零外部資源依賴)
+ * 2. 暴富動態粒子系統 (後輪濺射火星、金幣 🪙、百元美鈔 💵 向上向後拋飛噴發)
+ * 3. 霸氣頭部面部動態 (牛角金光脈衝、踩踏高壓牛鼻白煙蒸氣、墨鏡動漫刀鋒銳利閃光)
+ * 4. 點擊「3 秒 Turbo 爆發狂飆」互動加速機制 (45 km/h + 火山噴發粒子 + 開盤鐘聲)
+ * 5. 多層次經濟視差滾動 (天空/熱氣球/金融天際線/K線山脈/護欄/道路)
+ * 6. 純自動市場數據驅動 (VIX 與大盤連動自動調節車速、天空光影與夜間車燈)
+ * 7. Web Audio API 紐約證交所開盤金屬敲鐘音效合成 (零外部資源依賴)
  */
 
 (function() {
@@ -22,6 +24,22 @@
     isCollapsed: false,
     lastFrameTime: 0,
     animFrameId: null,
+
+    // Turbo & 特效互動狀態
+    isTurbo: false,
+    turboTimer: 0,
+    glintTimer: 0,
+    glintActive: false,
+    glintProgress: 0,
+    wealthSpawnTimer: 0,
+    lastNostrilPuffSign: 0,
+
+    // 粒子系統池
+    particles: {
+      sparks: [],
+      wealth: [],
+      steam: []
+    },
 
     // 配置參數
     config: {
@@ -97,7 +115,7 @@
 
       // 預設套用牛市狂飆
       this.setMode('bull_sprint', '系統啟動：牛市狂飆 (32 km/h) · 實時動態');
-      console.log('🐂 [Macro Bull Engine] 華爾街公牛 2D-IK 景氣大漫遊引擎已啟動！');
+      console.log('🐂 [Macro Bull Engine v2.6.0] 華爾街公牛極致動態畫卷與粒子引擎已啟動！');
     },
 
     // 2-Bone IK 逆運動學幾何求解器
@@ -248,105 +266,128 @@
           { x: 95, open: 165, close: 155, high: 150, low: 170, green: true },
           { x: 115, open: 155, close: 162, high: 152, low: 168, green: false },
           { x: 135, open: 162, close: 150, high: 145, low: 165, green: true },
-          { x: 155, open: 150, close: 142, high: 136, low: 155, green: true },
-          { x: 175, open: 142, close: 152, high: 140, low: 158, green: false },
-          { x: 195, open: 152, close: 145, high: 140, low: 156, green: true },
-          { x: 215, open: 145, close: 135, high: 130, low: 150, green: true },
-          { x: 235, open: 135, close: 144, high: 132, low: 148, green: false },
-          { x: 255, open: 144, close: 156, high: 140, low: 160, green: false },
-          { x: 275, open: 156, close: 150, high: 145, low: 162, green: true },
-          { x: 295, open: 150, close: 140, high: 135, low: 154, green: true },
-          { x: 315, open: 140, close: 132, high: 126, low: 145, green: true },
-          { x: 335, open: 132, close: 142, high: 128, low: 146, green: false },
-          { x: 355, open: 142, close: 135, high: 130, low: 148, green: true },
-          { x: 375, open: 135, close: 125, high: 120, low: 140, green: true },
-          { x: 395, open: 125, close: 134, high: 122, low: 138, green: false },
-          { x: 620, open: 140, close: 130, high: 124, low: 145, green: true },
-          { x: 640, open: 130, close: 122, high: 116, low: 135, green: true },
-          { x: 660, open: 122, close: 132, high: 118, low: 136, green: false },
-          { x: 680, open: 132, close: 125, high: 120, low: 138, green: true },
-          { x: 700, open: 125, close: 118, high: 112, low: 130, green: true },
-          { x: 720, open: 118, close: 128, high: 115, low: 132, green: false },
-          { x: 740, open: 128, close: 120, high: 114, low: 134, green: true },
-          { x: 760, open: 120, close: 112, high: 106, low: 125, green: true },
-          { x: 780, open: 112, close: 122, high: 108, low: 126, green: false },
-          { x: 800, open: 122, close: 115, high: 110, low: 128, green: true },
-          { x: 820, open: 115, close: 105, high: 100, low: 120, green: true },
-          { x: 840, open: 105, close: 115, high: 102, low: 118, green: false },
-          { x: 860, open: 115, close: 108, high: 104, low: 120, green: true },
-          { x: 880, open: 108, close: 98, high: 92, low: 114, green: true },
-          { x: 900, open: 98, close: 108, high: 95, low: 112, green: false },
-          { x: 920, open: 108, close: 100, high: 96, low: 114, green: true },
-          { x: 940, open: 100, close: 92, high: 88, low: 106, green: true },
-          { x: 960, open: 92, close: 102, high: 90, low: 106, green: false },
-          { x: 980, open: 102, close: 95, high: 90, low: 108, green: true }
+          { x: 155, open: 150, close: 142, high: 138, low: 155, green: true },
+          { x: 175, open: 142, close: 135, high: 130, low: 145, green: true },
+          { x: 195, open: 135, close: 142, high: 132, low: 148, green: false },
+          { x: 215, open: 142, close: 130, high: 125, low: 145, green: true },
+          { x: 235, open: 130, close: 120, high: 115, low: 132, green: true },
+          { x: 255, open: 120, close: 126, high: 118, low: 130, green: false },
+          { x: 275, open: 126, close: 115, high: 110, low: 128, green: true },
+          { x: 295, open: 115, close: 105, high: 100, low: 120, green: true },
+          { x: 315, open: 105, close: 112, high: 102, low: 118, green: false },
+          { x: 335, open: 112, close: 100, high: 95, low: 115, green: true },
+          { x: 355, open: 100, close: 92, high: 88, low: 105, green: true },
+          { x: 375, open: 92, close: 98, high: 90, low: 102, green: false },
+          { x: 395, open: 98, close: 88, high: 82, low: 102, green: true },
+          { x: 415, open: 88, close: 80, high: 75, low: 92, green: true },
+          { x: 435, open: 80, close: 85, high: 78, low: 90, green: false },
+          { x: 455, open: 85, close: 76, high: 70, low: 88, green: true },
+          { x: 475, open: 76, close: 68, high: 62, low: 80, green: true },
+          { x: 495, open: 68, close: 74, high: 65, low: 78, green: false },
+          { x: 515, open: 74, close: 62, high: 58, low: 76, green: true },
+          { x: 535, open: 62, close: 54, high: 48, low: 65, green: true },
+          { x: 555, open: 54, close: 60, high: 52, low: 64, green: false },
+          { x: 575, open: 60, close: 50, high: 45, low: 62, green: true },
+          { x: 595, open: 50, close: 42, high: 38, low: 55, green: true },
+          { x: 615, open: 42, close: 48, high: 40, low: 52, green: false },
+          { x: 635, open: 48, close: 40, high: 35, low: 50, green: true },
+          { x: 655, open: 40, close: 34, high: 28, low: 44, green: true },
+          { x: 675, open: 34, close: 39, high: 32, low: 42, green: false },
+          { x: 695, open: 39, close: 30, high: 25, low: 42, green: true },
+          { x: 715, open: 30, close: 24, high: 20, low: 34, green: true },
+          { x: 735, open: 24, close: 28, high: 22, low: 32, green: false },
+          { x: 755, open: 28, close: 20, high: 16, low: 30, green: true },
+          { x: 775, open: 20, close: 15, high: 12, low: 24, green: true },
+          { x: 795, open: 15, close: 22, high: 14, low: 25, green: false },
+          { x: 815, open: 22, close: 14, high: 10, low: 24, green: true },
+          { x: 835, open: 14, close: 10, high: 6, low: 18, green: true },
+          { x: 855, open: 10, close: 16, high: 8, low: 19, green: false },
+          { x: 875, open: 16, close: 8, high: 5, low: 18, green: true },
+          { x: 895, open: 8, close: 5, high: 2, low: 12, green: true },
+          { x: 915, open: 5, close: 11, high: 4, low: 14, green: false },
+          { x: 935, open: 11, close: 4, high: 1, low: 13, green: true },
+          { x: 955, open: 4, close: 2, high: 0, low: 8, green: true }
         ];
 
         candles.forEach(c => {
           const color = c.green ? '#10b981' : '#ef4444';
           const top = Math.min(c.open, c.close);
-          const height = Math.max(3, Math.abs(c.open - c.close));
-          kHtml += `<line x1="${c.x + 4}" y1="${c.high}" x2="${c.x + 4}" y2="${c.low}" stroke="${color}" stroke-width="1.2" opacity="0.65" />`;
-          kHtml += `<rect x="${c.x}" y="${top}" width="8" height="${height}" fill="${color}" opacity="0.7" rx="1" />`;
+          const height = Math.max(Math.abs(c.open - c.close), 3);
+          kHtml += `
+            <line x1="${c.x}" y1="${c.high}" x2="${c.x}" y2="${c.low}" stroke="${color}" stroke-width="1.2" opacity="0.6" />
+            <rect x="${c.x - 4.5}" y="${top}" width="9" height="${height}" fill="${color}" opacity="0.5" rx="0.8" />
+          `;
         });
         candleLayer.innerHTML = kHtml;
       }
 
       // 6. 護欄與街燈
-      const guardLayer = document.getElementById('svg-guardrail-layer');
-      if (guardLayer && guardLayer.children.length === 0) {
-        let gHtml = '<line x1="0" y1="233" x2="1000" y2="233" stroke="#475569" stroke-width="2.5" />';
-        for (let i = 0; i < 25; i++) {
-          const px = i * 40 + 10;
-          gHtml += `<line x1="${px}" y1="233" x2="${px}" y2="242" stroke="#64748b" stroke-width="2.5" />`;
+      const guardrailLayer = document.getElementById('svg-guardrail-layer');
+      if (guardrailLayer && guardrailLayer.children.length === 0) {
+        let railHtml = `
+          <line x1="0" y1="215" x2="1000" y2="215" stroke="#475569" stroke-width="3" />
+          <line x1="0" y1="223" x2="1000" y2="223" stroke="#475569" stroke-width="2.5" />
+        `;
+        for (let x = 10; x < 1000; x += 35) {
+          railHtml += `<line x1="${x}" y1="215" x2="${x}" y2="235" stroke="#334155" stroke-width="2.5" />`;
         }
-        guardLayer.innerHTML = gHtml;
+        guardrailLayer.innerHTML = railHtml;
       }
 
-      const lampLayer = document.getElementById('svg-streetlamps-layer');
-      if (lampLayer && lampLayer.children.length === 0) {
-        let lHtml = '';
-        [150, 480, 810].forEach(lx => {
-          lHtml += `
-            <g class="street-lamp-group" transform="translate(${lx}, 235)">
-              <line x1="0" y1="0" x2="0" y2="-65" stroke="#334155" stroke-width="3" />
-              <path d="M 0,-65 Q 12,-72 20,-68" fill="none" stroke="#334155" stroke-width="2.5" />
-              <circle cx="20" cy="-68" r="4.5" fill="#fef08a" />
-              <circle class="lamp-glow-bulb" cx="20" cy="-68" r="28" fill="url(#lamp-glow)" opacity="0" />
+      const streetlampsLayer = document.getElementById('svg-streetlamps-layer');
+      if (streetlampsLayer && streetlampsLayer.children.length === 0) {
+        let lampsHtml = '';
+        const lampPositions = [70, 290, 510, 730, 950];
+        lampPositions.forEach(x => {
+          lampsHtml += `
+            <g transform="translate(${x}, 160)">
+              <line x1="0" y1="0" x2="0" y2="75" stroke="#64748b" stroke-width="3" />
+              <path d="M 0,0 Q 8,-12 18,-10" fill="none" stroke="#64748b" stroke-width="2.5" />
+              <circle cx="18" cy="-10" r="3" fill="#e2e8f0" />
+              <!-- 夜間光暈 -->
+              <circle cx="18" cy="-10" r="28" fill="url(#lamp-glow)" class="lamp-glow-bulb" opacity="0" />
+              <circle cx="18" cy="-10" r="4.5" fill="#fef08a" class="lamp-glow-bulb" opacity="0" />
             </g>
           `;
         });
-        lampLayer.innerHTML = lHtml;
+        streetlampsLayer.innerHTML = lampsHtml;
       }
     },
 
-    // 建立自行車與公牛向量圖形實體
+    // 構建自行車與公牛向量本體 (含 2-Bone IK 節點、金色光暈、墨鏡反光)
     initBicycleAndBullSvg: function() {
-      const g = document.getElementById('svg-bull-bike-group');
-      if (!g) return;
+      const group = document.getElementById('svg-bull-bike-group');
+      if (!group) return;
 
       const c = this.config;
-      g.innerHTML = `
-        <!-- 自行車後輪 (420, 205) -->
+
+      group.innerHTML = `
+        <!-- 後車輪 (組裝在背景層) -->
         <g id="bike-rear-wheel">
-          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="${c.wheelRadius}" fill="#0f172a" stroke="#475569" stroke-width="3" />
-          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="${c.wheelRadius - 4}" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="${c.wheelRadius}" fill="#0f172a" stroke="#475569" stroke-width="4.5" />
+          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="${c.wheelRadius - 4}" fill="none" stroke="#94a3b8" stroke-width="2" />
           <g id="rear-wheel-spokes"></g>
-          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="6" fill="#38bdf8" />
+          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="6" fill="#64748b" />
+          <circle cx="${c.rearWheelCenter.x}" cy="${c.rearWheelCenter.y}" r="2.5" fill="#cbd5e1" />
         </g>
 
-        <!-- 自行車前輪 (590, 205) -->
+        <!-- 前車輪 -->
         <g id="bike-front-wheel">
-          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="${c.wheelRadius}" fill="#0f172a" stroke="#475569" stroke-width="3" />
-          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="${c.wheelRadius - 4}" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="${c.wheelRadius}" fill="#0f172a" stroke="#475569" stroke-width="4.5" />
+          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="${c.wheelRadius - 4}" fill="none" stroke="#94a3b8" stroke-width="2" />
           <g id="front-wheel-spokes"></g>
-          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="6" fill="#38bdf8" />
+          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="6" fill="#64748b" />
+          <circle cx="${c.frontWheelCenter.x}" cy="${c.frontWheelCenter.y}" r="2.5" fill="#cbd5e1" />
         </g>
 
-        <!-- 左腿 (遠端腿部 - 較深陰影色，Phase +180度) -->
-        <g id="bull-leg-left" opacity="0.8">
-          <line id="leg-thigh-left" x1="460" y1="142" x2="490" y2="175" stroke="#0f2238" stroke-width="8" stroke-linecap="round" />
-          <line id="leg-shin-left" x1="490" y1="175" x2="480" y2="205" stroke="#0f2238" stroke-width="6.5" stroke-linecap="round" />
+        <!-- 傳動鏈條與飛輪 -->
+        <line x1="${c.rearWheelCenter.x}" y1="${c.rearWheelCenter.y - 7}" x2="${c.crankCenter.x}" y2="${c.crankCenter.y - 12}" stroke="#475569" stroke-width="2" />
+        <line x1="${c.rearWheelCenter.x}" y1="${c.rearWheelCenter.y + 7}" x2="${c.crankCenter.x}" y2="${c.crankCenter.y + 12}" stroke="#475569" stroke-width="2" />
+
+        <!-- 左腿 (遠端背景腿部 - 暗色，Phase 180度，2-Bone IK) -->
+        <g id="bull-leg-left">
+          <line id="leg-thigh-left" x1="460" y1="142" x2="480" y2="180" stroke="#0f2338" stroke-width="8" stroke-linecap="round" />
+          <line id="leg-shin-left" x1="480" y1="180" x2="485" y2="205" stroke="#0f2338" stroke-width="6.5" stroke-linecap="round" />
           <line id="leg-crank-left" x1="495" y1="205" x2="480" y2="205" stroke="#64748b" stroke-width="3" stroke-linecap="round" />
           <rect id="leg-foot-left" x="473" y="202" width="16" height="5" rx="1.5" fill="#451a03" />
         </g>
@@ -439,13 +480,32 @@
           <path d="M 536,104 Q 542,107 547,104" fill="none" stroke="#451a03" stroke-width="1.5" stroke-linecap="round" />
           <circle cx="538" cy="101" r="1.2" fill="#451a03" />
           <circle cx="544" cy="101" r="1.2" fill="#451a03" />
+
+          <!-- 🐂 牛角金色微光光暈 (Golden Horn Aura) -->
+          <g id="bull-horns-aura">
+            <path d="M 522,84 Q 518,65 504,58 Q 514,70 524,80 Z" fill="none" stroke="#fef08a" stroke-width="4.5" filter="url(#horn-glow-filter)" opacity="0.75" />
+            <path d="M 534,83 Q 542,64 558,58 Q 548,70 536,81 Z" fill="none" stroke="#fef08a" stroke-width="4.5" filter="url(#horn-glow-filter)" opacity="0.75" />
+          </g>
+
           <!-- 帥氣牛角 (金黃色漸變角尖) -->
           <path d="M 522,84 Q 518,65 504,58 Q 514,70 524,80 Z" fill="#f59e0b" stroke="#b45309" stroke-width="1" />
           <path d="M 534,83 Q 542,64 558,58 Q 548,70 536,81 Z" fill="#f59e0b" stroke="#b45309" stroke-width="1" />
-          <!-- 帥氣黑超墨鏡 (Cool Sunglasses) -->
-          <path d="M 520,89 L 548,89 L 545,97 L 522,96 Z" fill="#020617" stroke="#38bdf8" stroke-width="1" rx="1.5" />
-          <line x1="524" y1="91" x2="534" y2="91" stroke="#38bdf8" stroke-width="1" stroke-linecap="round" opacity="0.8" />
-          <line x1="538" y1="91" x2="544" y2="91" stroke="#38bdf8" stroke-width="1" stroke-linecap="round" opacity="0.8" />
+
+          <!-- 🕶️ 帥氣黑超墨鏡 (Cool Sunglasses) 與動漫刀鋒反光 -->
+          <g id="bull-sunglasses-wrap">
+            <path d="M 520,89 L 548,89 L 545,97 L 522,96 Z" fill="#020617" stroke="#38bdf8" stroke-width="1" rx="1.5" />
+            <line x1="524" y1="91" x2="534" y2="91" stroke="#38bdf8" stroke-width="1" stroke-linecap="round" opacity="0.8" />
+            <line x1="538" y1="91" x2="544" y2="91" stroke="#38bdf8" stroke-width="1" stroke-linecap="round" opacity="0.8" />
+            <!-- 動漫刀鋒銳利閃光 (Clipped by #sunglasses-clip) -->
+            <g clip-path="url(#sunglasses-clip)">
+              <g id="sunglasses-glint" transform="translate(510, 0)" opacity="0">
+                <polygon points="0,85 5,85 11,101 6,101" fill="#ffffff" opacity="0.95" />
+                <polygon points="8,85 10,85 14,101 12,101" fill="#ffffff" opacity="0.6" />
+                <!-- 十字星芒反光點 -->
+                <polygon points="5,93 7,90 9,93 12,94 9,95 7,98 5,95 2,94" fill="#ffffff" />
+              </g>
+            </g>
+          </g>
         </g>
 
         <!-- 右腿 (近端主腿部 - 亮色，Phase 0度，2-Bone IK) -->
@@ -470,23 +530,17 @@
 
       let rHtml = '';
       let fHtml = '';
-      const spokeCount = 12;
-      const r = c.wheelRadius - 4;
-
+      const spokeCount = 10;
       for (let i = 0; i < spokeCount; i++) {
-        const ang = this.wheelAngle + (i * Math.PI * 2) / spokeCount;
-        const cos = Math.cos(ang);
-        const sin = Math.sin(ang);
+        const a = this.wheelAngle + (i * Math.PI * 2) / spokeCount;
+        const rx = c.rearWheelCenter.x + (c.wheelRadius - 5) * Math.cos(a);
+        const ry = c.rearWheelCenter.y + (c.wheelRadius - 5) * Math.sin(a);
+        rHtml += `<line x1="${c.rearWheelCenter.x}" y1="${c.rearWheelCenter.y}" x2="${rx.toFixed(1)}" y2="${ry.toFixed(1)}" stroke="#cbd5e1" stroke-width="1.2" opacity="0.75" />`;
 
-        const rx2 = c.rearWheelCenter.x + r * cos;
-        const ry2 = c.rearWheelCenter.y + r * sin;
-        rHtml += `<line x1="${c.rearWheelCenter.x}" y1="${c.rearWheelCenter.y}" x2="${rx2}" y2="${ry2}" stroke="#64748b" stroke-width="1" opacity="0.75" />`;
-
-        const fx2 = c.frontWheelCenter.x + r * cos;
-        const fy2 = c.frontWheelCenter.y + r * sin;
-        fHtml += `<line x1="${c.frontWheelCenter.x}" y1="${c.frontWheelCenter.y}" x2="${fx2}" y2="${fy2}" stroke="#64748b" stroke-width="1" opacity="0.75" />`;
+        const fx = c.frontWheelCenter.x + (c.wheelRadius - 5) * Math.cos(a);
+        const fy = c.frontWheelCenter.y + (c.wheelRadius - 5) * Math.sin(a);
+        fHtml += `<line x1="${c.frontWheelCenter.x}" y1="${c.frontWheelCenter.y}" x2="${fx.toFixed(1)}" y2="${fy.toFixed(1)}" stroke="#cbd5e1" stroke-width="1.2" opacity="0.75" />`;
       }
-
       rearSpokes.innerHTML = rHtml;
       frontSpokes.innerHTML = fHtml;
     },
@@ -510,9 +564,256 @@
       self.animFrameId = requestAnimationFrame(loop);
     },
 
+    // 觸發 3 秒 Turbo 爆發加速
+    triggerTurboBoost: function() {
+      this.playNYSEBell();
+      this.isTurbo = true;
+      this.turboTimer = 3.0; // 3 秒極限狂飆
+      this.targetSpeedKmH = 45; // 飆速至 45 km/h
+
+      this.triggerGlint();
+
+      // 火山爆發式拋發金幣美鈔與火花
+      for (let i = 0; i < 6; i++) {
+        this.spawnWealthParticle(true);
+      }
+      for (let i = 0; i < 15; i++) {
+        this.spawnSpark(true);
+      }
+      this.spawnSteamPuffs();
+
+      // 更新頂部狀態膠囊
+      const badge = document.getElementById('bull-status-badge');
+      const text = document.getElementById('bull-status-text');
+      if (badge && text) {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-black bg-gradient-to-r from-red-500/40 via-amber-500/40 to-red-500/40 text-amber-200 border border-amber-400 flex items-center gap-1.5 shadow-lg shadow-amber-500/30 animate-pulse transition';
+        text.innerText = '🔥 TURBO 爆發狂飆 (45 km/h)';
+      }
+    },
+
+    // 觸發墨鏡動漫刀鋒反光
+    triggerGlint: function() {
+      this.glintActive = true;
+      this.glintProgress = 0;
+    },
+
+    // 更新墨鏡閃光
+    updateGlint: function(dt) {
+      if (!this.glintActive) {
+        this.glintTimer += dt;
+        if (this.glintTimer > 4.2) {
+          this.triggerGlint();
+        }
+      } else {
+        this.glintProgress += dt * 2.6; // 約 0.38 秒完成一次快速刀鋒掠過
+        const glintEl = document.getElementById('sunglasses-glint');
+        if (glintEl) {
+          if (this.glintProgress <= 1.0) {
+            // 從 510 快速劃到 555
+            const gx = 510 + this.glintProgress * 45;
+            const alpha = Math.sin(this.glintProgress * Math.PI);
+            glintEl.setAttribute('transform', `translate(${gx.toFixed(1)}, 0)`);
+            glintEl.setAttribute('opacity', (alpha * 0.95).toFixed(2));
+          } else {
+            glintEl.setAttribute('opacity', '0');
+            this.glintActive = false;
+            this.glintTimer = 0;
+          }
+        }
+      }
+    },
+
+    // 更新牛角金光脈衝
+    updateAura: function(currentTime) {
+      const aura = document.getElementById('bull-horns-aura');
+      if (!aura) return;
+      const base = this.isTurbo ? 0.8 : 0.45;
+      const freq = this.isTurbo ? 0.015 : 0.005;
+      const op = base + 0.35 * Math.sin(currentTime * freq);
+      aura.setAttribute('opacity', op.toFixed(2));
+    },
+
+    // 生成後輪火星粒子
+    spawnSpark: function(isBurst) {
+      const vxBase = isBurst ? -(70 + Math.random() * 110) : -(50 + Math.random() * 80) * (this.speedKmH / 25);
+      const vyBase = isBurst ? -(35 + Math.random() * 65) : -(20 + Math.random() * 50);
+
+      this.particles.sparks.push({
+        x: 420 + (Math.random() - 0.5) * 6,
+        y: 238 + Math.random() * 2,
+        vx: vxBase,
+        vy: vyBase,
+        r: 1.2 + Math.random() * 1.6,
+        color: ['#fbbf24', '#fef08a', '#34d399', '#ffffff'][Math.floor(Math.random() * 4)],
+        life: 0.25 + Math.random() * 0.25,
+        maxLife: 0.5
+      });
+    },
+
+    // 生成暴富金幣與美鈔粒子
+    spawnWealthParticle: function(isBurst) {
+      const isCoin = Math.random() > 0.35;
+      const vxBase = isBurst ? -(85 + Math.random() * 125) : -(65 + Math.random() * 95) * (this.speedKmH / 25);
+      const vyBase = isBurst ? -(95 + Math.random() * 115) : -(75 + Math.random() * 85);
+
+      this.particles.wealth.push({
+        type: isCoin ? 'coin' : 'bill',
+        x: 420 + (Math.random() - 0.5) * 12,
+        y: 222 + (Math.random() - 0.5) * 8,
+        vx: vxBase,
+        vy: vyBase,
+        rot: Math.random() * 360,
+        omega: (Math.random() - 0.5) * 14,
+        spinPhase: Math.random() * Math.PI,
+        life: 0.85 + Math.random() * 0.4,
+        maxLife: 1.25
+      });
+    },
+
+    // 生成牛鼻高壓蒸氣
+    spawnSteamPuffs: function() {
+      const headBob = Math.sin(this.crankAngle * 2) * 1.5;
+      // 左鼻孔與右鼻孔位置
+      this.particles.steam.push({
+        x: 538,
+        y: 101 + headBob,
+        vx: 22 + Math.random() * 16,
+        vy: -10 + Math.random() * 12,
+        r: 2.2,
+        maxR: 9.5,
+        life: 0.55,
+        maxLife: 0.55
+      });
+      this.particles.steam.push({
+        x: 545,
+        y: 101 + headBob,
+        vx: 26 + Math.random() * 16,
+        vy: -12 + Math.random() * 12,
+        r: 2.2,
+        maxR: 9.5,
+        life: 0.55,
+        maxLife: 0.55
+      });
+    },
+
+    // 更新並渲染所有粒子群
+    updateParticles: function(dt, currentTime) {
+      // 1. 火星生成
+      if (this.speedKmH > 10) {
+        const sparkCount = this.isTurbo ? 3 : (this.speedKmH > 26 ? 2 : 1);
+        for (let i = 0; i < sparkCount; i++) {
+          if (Math.random() > 0.3) this.spawnSpark(false);
+        }
+      }
+
+      // 2. 暴富金幣美鈔生成
+      this.wealthSpawnTimer += dt;
+      const wealthInterval = this.isTurbo ? 0.12 : (this.speedKmH > 28 ? 0.36 : (this.speedKmH > 18 ? 0.72 : 1.4));
+      if (this.wealthSpawnTimer >= wealthInterval) {
+        this.wealthSpawnTimer = 0;
+        this.spawnWealthParticle(false);
+      }
+
+      // 3. 牛鼻噴氣生成 (下踏行程觸發)
+      const curSign = Math.sin(this.crankAngle) > 0 ? 1 : -1;
+      if (curSign !== this.lastNostrilPuffSign) {
+        this.lastNostrilPuffSign = curSign;
+        this.spawnSteamPuffs();
+      }
+
+      // 4. 更新火星池
+      const sparksLayer = document.getElementById('svg-particles-sparks');
+      if (sparksLayer) {
+        let sHtml = '';
+        for (let i = this.particles.sparks.length - 1; i >= 0; i--) {
+          const p = this.particles.sparks[i];
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vy += 280 * dt; // 重力
+          p.life -= dt;
+          if (p.life <= 0 || p.y > 275) {
+            this.particles.sparks.splice(i, 1);
+            continue;
+          }
+          const alpha = (p.life / p.maxLife);
+          sHtml += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="${p.color}" opacity="${alpha.toFixed(2)}" />`;
+        }
+        sparksLayer.innerHTML = sHtml;
+      }
+
+      // 5. 更新暴富池 (金幣 🪙 & 美鈔 💵)
+      const wealthLayer = document.getElementById('svg-particles-wealth');
+      if (wealthLayer) {
+        let wHtml = '';
+        for (let i = this.particles.wealth.length - 1; i >= 0; i--) {
+          const p = this.particles.wealth[i];
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vy += 220 * dt; // 重力
+          p.rot += p.omega * 60 * dt;
+          p.spinPhase += 8 * dt;
+          p.life -= dt;
+          if (p.life <= 0 || p.y > 278) {
+            this.particles.wealth.splice(i, 1);
+            continue;
+          }
+          const alpha = Math.min(1, p.life / (p.maxLife * 0.4));
+          if (p.type === 'coin') {
+            const sx = Math.cos(p.spinPhase).toFixed(2);
+            wHtml += `
+              <g transform="translate(${p.x.toFixed(1)}, ${p.y.toFixed(1)}) rotate(${p.rot.toFixed(1)}) scale(${sx}, 1)" opacity="${alpha.toFixed(2)}">
+                <circle r="5" fill="url(#coin-radial)" stroke="#fef08a" stroke-width="0.8" />
+                <text x="0" y="2" font-size="5" font-weight="900" fill="#78350f" text-anchor="middle" font-family="sans-serif">$</text>
+              </g>
+            `;
+          } else {
+            wHtml += `
+              <g transform="translate(${p.x.toFixed(1)}, ${p.y.toFixed(1)}) rotate(${p.rot.toFixed(1)})" opacity="${alpha.toFixed(2)}">
+                <rect x="-7.5" y="-4" width="15" height="8" rx="1" fill="#15803d" stroke="#86efac" stroke-width="0.8" />
+                <circle cx="0" cy="0" r="2" fill="#86efac" opacity="0.6" />
+                <text x="0" y="1.5" font-size="3.5" font-weight="900" fill="#ffffff" text-anchor="middle" font-family="monospace">$100</text>
+              </g>
+            `;
+          }
+        }
+        wealthLayer.innerHTML = wHtml;
+      }
+
+      // 6. 更新蒸氣池
+      const steamLayer = document.getElementById('svg-particles-steam');
+      if (steamLayer) {
+        let stHtml = '';
+        for (let i = this.particles.steam.length - 1; i >= 0; i--) {
+          const p = this.particles.steam[i];
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.r += (p.maxR - 2.2) * (dt / p.maxLife);
+          p.life -= dt;
+          if (p.life <= 0) {
+            this.particles.steam.splice(i, 1);
+            continue;
+          }
+          const alpha = (p.life / p.maxLife) * 0.72;
+          stHtml += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="#f8fafc" opacity="${alpha.toFixed(2)}" filter="blur(1px)" />`;
+        }
+        steamLayer.innerHTML = stHtml;
+      }
+    },
+
     // 物理運動學與視差步進
     updatePhysics: function(dt, currentTime) {
-      this.speedKmH += (this.targetSpeedKmH - this.speedKmH) * Math.min(dt * 3, 1);
+      // 1. Turbo 狀態計時與回歸
+      if (this.isTurbo) {
+        this.turboTimer -= dt;
+        if (this.turboTimer <= 0) {
+          this.isTurbo = false;
+          this.targetSpeedKmH = this.MODES[this.mode].targetSpeed;
+          this.setMode(this.mode); // 自動恢復模式原設定與狀態徽章
+        }
+      }
+
+      // 平滑速度過渡
+      this.speedKmH += (this.targetSpeedKmH - this.speedKmH) * Math.min(dt * 3.5, 1);
 
       const angularSpeed = (this.speedKmH / 32) * 8.2;
       this.crankAngle += angularSpeed * dt;
@@ -534,18 +835,18 @@
       const soleR = document.getElementById('leg-sole-right');
 
       if (thighR && shinR && crankR && footR && soleR) {
-        thighR.setAttribute('x2', rightIK.kneeX);
-        thighR.setAttribute('y2', rightIK.kneeY);
-        shinR.setAttribute('x1', rightIK.kneeX);
-        shinR.setAttribute('y1', rightIK.kneeY);
-        shinR.setAttribute('x2', rightIK.footX);
-        shinR.setAttribute('y2', rightIK.footY);
-        crankR.setAttribute('x2', rightIK.footX);
-        crankR.setAttribute('y2', rightIK.footY);
-        footR.setAttribute('x', rightIK.footX - 9);
-        footR.setAttribute('y', rightIK.footY - 3);
-        soleR.setAttribute('x', rightIK.footX - 9);
-        soleR.setAttribute('y', rightIK.footY + 2);
+        thighR.setAttribute('x2', rightIK.kneeX.toFixed(1));
+        thighR.setAttribute('y2', rightIK.kneeY.toFixed(1));
+        shinR.setAttribute('x1', rightIK.kneeX.toFixed(1));
+        shinR.setAttribute('y1', rightIK.kneeY.toFixed(1));
+        shinR.setAttribute('x2', rightIK.footX.toFixed(1));
+        shinR.setAttribute('y2', rightIK.footY.toFixed(1));
+        crankR.setAttribute('x2', rightIK.footX.toFixed(1));
+        crankR.setAttribute('y2', rightIK.footY.toFixed(1));
+        footR.setAttribute('x', (rightIK.footX - 9).toFixed(1));
+        footR.setAttribute('y', (rightIK.footY - 3).toFixed(1));
+        soleR.setAttribute('x', (rightIK.footX - 9).toFixed(1));
+        soleR.setAttribute('y', (rightIK.footY + 2).toFixed(1));
       }
 
       // 3. 2-Bone IK 計算左腿 (相位 +PI)
@@ -560,16 +861,16 @@
       const footL = document.getElementById('leg-foot-left');
 
       if (thighL && shinL && crankL && footL) {
-        thighL.setAttribute('x2', leftIK.kneeX);
-        thighL.setAttribute('y2', leftIK.kneeY);
-        shinL.setAttribute('x1', leftIK.kneeX);
-        shinL.setAttribute('y1', leftIK.kneeY);
-        shinL.setAttribute('x2', leftIK.footX);
-        shinL.setAttribute('y2', leftIK.footY);
-        crankL.setAttribute('x2', leftIK.footX);
-        crankL.setAttribute('y2', leftIK.footY);
-        footL.setAttribute('x', leftIK.footX - 8);
-        footL.setAttribute('y', leftIK.footY - 2.5);
+        thighL.setAttribute('x2', leftIK.kneeX.toFixed(1));
+        thighL.setAttribute('y2', leftIK.kneeY.toFixed(1));
+        shinL.setAttribute('x1', leftIK.kneeX.toFixed(1));
+        shinL.setAttribute('y1', leftIK.kneeY.toFixed(1));
+        shinL.setAttribute('x2', leftIK.footX.toFixed(1));
+        shinL.setAttribute('y2', leftIK.footY.toFixed(1));
+        crankL.setAttribute('x2', leftIK.footX.toFixed(1));
+        crankL.setAttribute('y2', leftIK.footY.toFixed(1));
+        footL.setAttribute('x', (leftIK.footX - 8).toFixed(1));
+        footL.setAttribute('y', (leftIK.footY - 2.5).toFixed(1));
       }
 
       // 4. 車輪輻條旋轉更新
@@ -584,61 +885,66 @@
         const endY = 126 + wave1;
         const midX = 480 - (this.speedKmH / 32) * 8;
         const midY = 132 + wave2;
-        tie.setAttribute('d', `M 514,120 Q ${midX},${midY} ${endX},${endY} Q ${midX + 5},${midY + 4} 516,125 Z`);
+        tie.setAttribute('d', `M 514,120 Q ${midX.toFixed(1)},${midY.toFixed(1)} ${endX.toFixed(1)},${endY.toFixed(1)} Q ${(midX + 5).toFixed(1)},${(midY + 4).toFixed(1)} 516,125 Z`);
       }
 
       // 6. 車籃寶物微幅彈跳
       const treasures = document.getElementById('basket-treasures');
       if (treasures) {
         const bounce = Math.sin(this.crankAngle * 2) * (this.speedKmH / 32) * 2.2;
-        treasures.setAttribute('transform', `translate(0, ${bounce})`);
+        treasures.setAttribute('transform', `translate(0, ${bounce.toFixed(1)})`);
       }
 
       // 7. 公牛頭部隨踩踏微幅點頭
       const head = document.getElementById('bull-head-group');
       if (head) {
         const headBob = Math.sin(this.crankAngle * 2) * 1.5;
-        head.setAttribute('transform', `translate(0, ${headBob})`);
+        head.setAttribute('transform', `translate(0, ${headBob.toFixed(1)})`);
       }
 
-      // 8. 視差捲動：柏油路白色虛線標線 (Modulo 70)
+      // 8. 視覺特效更新 (牛角金光脈衝、墨鏡閃光、粒子池)
+      this.updateAura(currentTime);
+      this.updateGlint(dt);
+      this.updateParticles(dt, currentTime);
+
+      // 9. 視差捲動：柏油路白色虛線標線 (Modulo 70)
       const laneMarkers = document.getElementById('svg-lane-markers');
       if (laneMarkers) {
         const markerOffset = (this.distanceTraveled * 1.0) % 70;
         let lmHtml = '';
         for (let x = -70; x < 1070; x += 70) {
           const rx = x - markerOffset;
-          lmHtml += `<rect x="${rx}" y="258" width="42" height="4" rx="2" fill="#f8fafc" opacity="0.95" />`;
+          lmHtml += `<rect x="${rx.toFixed(1)}" y="258" width="42" height="4" rx="2" fill="#f8fafc" opacity="0.95" />`;
         }
         laneMarkers.innerHTML = lmHtml;
       }
 
-      // 9. 視差捲動：K線山脈 (速度 0.45x)
+      // 10. 視差捲動：K線山脈 (速度 0.45x)
       const candleLayer = document.getElementById('svg-candlestick-layer');
       if (candleLayer) {
         const kOffset = (this.distanceTraveled * 0.45) % 960;
-        candleLayer.setAttribute('transform', `translate(-${kOffset}, 0)`);
+        candleLayer.setAttribute('transform', `translate(-${kOffset.toFixed(1)}, 0)`);
       }
 
-      // 10. 視差捲動：天際線大廈群 (速度 0.22x)
+      // 11. 視差捲動：天際線大廈群 (速度 0.22x)
       const skylineLayer = document.getElementById('svg-skyline-layer');
       if (skylineLayer) {
         const sOffset = (this.distanceTraveled * 0.22) % 960;
-        skylineLayer.setAttribute('transform', `translate(-${sOffset}, 0)`);
+        skylineLayer.setAttribute('transform', `translate(-${sOffset.toFixed(1)}, 0)`);
       }
 
-      // 11. 視差捲動：雲層與熱氣球 (速度 0.08x 與 0.12x)
+      // 12. 視差捲動：雲層與熱氣球 (速度 0.08x 與 0.12x)
       const cloudsLayer = document.getElementById('svg-clouds-layer');
       if (cloudsLayer) {
         const cOffset = (this.distanceTraveled * 0.08) % 960;
-        cloudsLayer.setAttribute('transform', `translate(-${cOffset}, 0)`);
+        cloudsLayer.setAttribute('transform', `translate(-${cOffset.toFixed(1)}, 0)`);
       }
 
       const balloonsLayer = document.getElementById('svg-balloons-layer');
       if (balloonsLayer) {
         const bOffset = (this.distanceTraveled * 0.12) % 960;
         const bBob = Math.sin(currentTime * 0.002) * 5;
-        balloonsLayer.setAttribute('transform', `translate(-${bOffset}, ${bBob})`);
+        balloonsLayer.setAttribute('transform', `translate(-${bOffset.toFixed(1)}, ${bBob.toFixed(1)})`);
       }
     },
 
@@ -647,7 +953,9 @@
       const mode = this.MODES[modeKey];
       if (!mode) return;
       this.mode = modeKey;
-      this.targetSpeedKmH = mode.targetSpeed;
+      if (!this.isTurbo) {
+        this.targetSpeedKmH = mode.targetSpeed;
+      }
 
       const skyBg = document.getElementById('svg-sky-bg');
       if (skyBg) skyBg.setAttribute('fill', mode.skyFill);
@@ -667,32 +975,48 @@
       const lamps = document.querySelectorAll('.lamp-glow-bulb');
       lamps.forEach(l => l.setAttribute('opacity', mode.lampGlowOpacity));
 
-      const badge = document.getElementById('bull-status-badge');
-      const text = document.getElementById('bull-status-text');
-      if (badge && text) {
-        badge.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border flex items-center gap-1.5 transition ${mode.badgeClass}`;
-        text.innerText = customStatusText || `即時數據：${mode.name} (${mode.targetSpeed} km/h)`;
+      if (!this.isTurbo) {
+        const badge = document.getElementById('bull-status-badge');
+        const text = document.getElementById('bull-status-text');
+        if (badge && text) {
+          badge.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold border flex items-center gap-1.5 transition ${mode.badgeClass}`;
+          text.innerText = customStatusText || `即時數據：${mode.name} (${mode.targetSpeed} km/h)`;
+        }
       }
     },
 
     // 依據首頁真實市場行情數據自動對齊 (Pure Data-Driven)
     syncWithMarketData: function(data) {
       if (!data) return;
-      const vix = typeof data.vix === 'number' ? data.vix : 17.3;
-      const twiiPct = typeof data.twii_pct === 'number' ? data.twii_pct : 0.5;
 
-      if (vix > 24 || twiiPct < -1.0) {
-        const reason = vix > 24 ? `恐慌 VIX ${vix.toFixed(1)} 高企` : `大盤承壓 ${twiiPct.toFixed(2)}%`;
-        this.setMode('risk_off', `🔴 即時數據驅動：避險防禦 (10 km/h) · ${reason}`);
-      } else if (vix >= 18 || twiiPct < 0) {
-        this.setMode('cruise', `🟡 即時數據驅動：軟著陸巡航 (20 km/h) · VIX ${vix.toFixed(1)} 盤整`);
+      let vixVal = null;
+      let twiiChg = 0;
+      let soxChg = 0;
+
+      if (data.vix && data.vix.price) {
+        vixVal = parseFloat(data.vix.price);
+      }
+      if (data.twii && data.twii.changePct) {
+        twiiChg = parseFloat(data.twii.changePct);
+      }
+      if (data.sox && data.sox.changePct) {
+        soxChg = parseFloat(data.sox.changePct);
+      }
+
+      // 決策邏輯
+      if (vixVal !== null && vixVal >= 25) {
+        this.setMode('risk_off', `即時行情：避險防禦 (VIX ${vixVal.toFixed(1)} > 25 · 10 km/h)`);
+      } else if (vixVal !== null && vixVal < 18 && (twiiChg >= 0 || soxChg >= 0)) {
+        this.setMode('bull_sprint', `即時行情：牛市狂飆 (VIX ${vixVal.toFixed(1)} · 32 km/h)`);
+      } else if (twiiChg < -1.5) {
+        this.setMode('risk_off', `即時行情：避險防禦 (台股下挫 ${twiiChg.toFixed(2)}% · 10 km/h)`);
       } else {
-        const sign = twiiPct >= 0 ? '+' : '';
-        this.setMode('bull_sprint', `🟢 即時數據驅動：牛市狂飆 (32 km/h) · 台股 ${sign}${twiiPct.toFixed(2)}% · VIX ${vix.toFixed(1)}`);
+        const vixStr = vixVal ? `VIX ${vixVal.toFixed(1)}` : '平穩';
+        this.setMode('cruise', `即時行情：軟著陸巡航 (${vixStr} · 20 km/h)`);
       }
     },
 
-    // 紐約證交所開盤敲鐘聲 (Web Audio API 合成經典金屬開盤鐘聲)
+    // Web Audio API 合成紐約證交所 (NYSE) 開盤金屬敲鐘聲
     playNYSEBell: function() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -720,6 +1044,7 @@
           osc.stop(now + 2.5);
         });
 
+        // 敲鐘時公牛短暫仰頭霸氣點頭
         const head = document.getElementById('bull-head-group');
         if (head) {
           head.setAttribute('transform', 'scale(1.08) translate(-40, -10)');
