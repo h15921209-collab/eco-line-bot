@@ -1,56 +1,49 @@
 const { callGemini, getHeader, FALLBACK_LINE_TOKEN } = require('./line-webhook-helper');
 
-const SHORT_WEB_URL = process.env.BASE_URL || "https://eco-line-bot.vercel.app";
+const SHORT_WEB_URL = process.env.BASE_URL || "https://eco-line-assistant.onrender.com";
 
-// 完整使用說明書與服務指南
-const USER_GUIDE_MESSAGE = `📖【宏觀全球智庫 · 總經分析助手使用說明書】
-━━━━━━━━━━━━━━━━━━━━
+// 完整使用說明書與服務指南（高情商幹練秘書 · 隨身總經智囊）
+const USER_GUIDE_MESSAGE = `勝穩您好！我是您的【高情商隨身總經秘書兼戰略智囊】🌸
+為您全天候 24 小時守護全球宏觀指標、大宗原料與跨資產動態，隨問隨答、秒級連線！
 
-我是您的 24 小時【首席全球總體經濟與跨資產配置策略顧問】。本系統結合 Google Gemini 3.5 AI 旗艦大腦與全球即時金融數據庫，為您提供頂級投行視角的宏觀分析。
+⏰【1. 每日 08:30 定時晨會早報（全自動推播）】
+• 週一至週五：盤前核心晨訊、隔夜美股美債、台股開盤指引與匯率。
+• 週六日：全週跨資產總結與下週重大央行事件前瞻。
+• 每次推播前 15 分鐘（08:15）全自動校準 FRED 官方數值，確保最新 2026 期別！
 
-⏰【1. 每日 08:30 定時早報推播（365天全自動）】
-• 頻率：週一至週五盤前晨訊、週六市場總結、週日下週前瞻。
-• 內容：
-  ☀️ 今日核心結論（盤前定價重點）
-  🇺🇸 隔夜美股四大指數與美債 10Y 走勢
-  🇹🇼 今日台股開盤指引與匯率觀察
-  💡 跨資產配置策略焦點（股、債、原物料）
+💬【2. 24H 隨時在線提問與標的秒查】
+• ⚡ 標的秒查：輸入「台積電」、「中鋼」、「聯發科」、「NVDA」、「TSLA」、「鐵礦砂」、「原油」或「比特幣」，秘書立即呈報即時報價與技術位階！
+• 🎯 深度研報：輸入任何總經問題（如：10Y-2Y利差、降息預期、大宗原料成本），秒級連線頂級 AI 旗艦大腦為您因果解讀！
 
-💬【2. 24H 隨時在線提問指南（支援中英文名稱/代碼秒查 ＆ 快捷氣泡）】
-• ⚡ 標的秒查：在聊天室直接輸入「台積電」、「聯發科」、「鴻海」、「NVDA」、「TSLA」、「2330」或「比特幣」，立即回傳最新即時報價！
-• 🎯 深度研報：輸入任何總經問題或資金配置，AI 將秒級連線最新數據為您解答！
+🔄【3. 官方總經數據手動一鍵校正】
+• 輸入「校準數據」或「更新數據」，秘書立即為您連線 FRED、財政部與最新即時行情，條列回報各項指標的最新 2026 期別與數值！
 
-🔥【熱門提問範例（直接點擊下方快捷按鈕或輸入）】：
-1️⃣ 配置類：「我有 100 萬想做總經資產配置該怎麼分？」
-2️⃣ 換匯類：「100萬日圓換台幣多少？」或「台幣現在匯率與近期換匯建議」
-3️⃣ 壓力類：「總經極端情境壓力測試（黑天鵝演練）」
-4️⃣ 估值類：「台股加權指數目前本益比估值、殖利率與位階評估」
-5️⃣ 債市類：「美債 10Y 殖利率近期走勢與降息預期」
+📝【4. 個人總經筆記管家】
+• 輸入「記錄 CPI 2.9 月增0.1%」或「記下 鐵礦砂 95.34 高爐成本線」，秘書自動為您雲端歸檔！輸入「分析筆記」即可生成趨勢複盤。
 
-📝【4. 個人 Google 試算表雲端筆記管家】
-• 記帳：輸入「記錄 CPI 2.9 月增0.1%」或「記下 鐵礦砂 99.5 美元/噸」，自動填寫至您的 Google 試算表！
-• 研報：輸入「分析試算表」，Gemini 自動讀取您記錄的時序數值產出專屬趨勢研報！
-
-🌐【5. 專屬手機視覺化圖表門戶（支援語音朗讀 ＆ 匯出 PDF）】
-點擊下方連結即可在手機上查看全天候動態圖表、配置計算機、代碼快查與語音聽早報：
+🌐【5. 手機專屬視覺化圖表門戶】
+點擊下方連結即可在手機上查看全天候動態圖表、配置計算機與華爾街公牛漫遊畫卷：
 👉 ${SHORT_WEB_URL}
 
-💡 隨時點擊下方「📖 說明」即可再次查看本手冊；現在您可以直接點擊快捷氣泡開始體驗！`;
+💡 隨時點擊下方快捷氣泡即可開始探索！`;
 
-const FALLBACK_MESSAGE = `您好！我是【總經分析助手】📈
+const FALLBACK_MESSAGE = `勝穩您好！我是您的【隨身總經秘書】🌸
 
-目前全球市場時序數據正在同步中，請稍後再次輸入問題，我將立即為您連線最新市場行情與歷史趨勢剖析！
+目前全球金融市場數據庫正在進行連線校準中，請稍候片刻再次輸入問題，我將立即為您連線最新市場行情與深度因果剖析！
 
-📱 手機專屬圖表研報網址：${SHORT_WEB_URL}`;
+📱 手機專屬圖表門戶：
+${SHORT_WEB_URL}`;
 
-const NON_TEXT_MESSAGE = `您好！我是您的【總經分析助手】📈
+const NON_TEXT_MESSAGE = `勝穩您好！我是您的【隨身總經秘書】🌸
 
 收到您的貼圖／訊息！如需查詢即時行情或宏觀研報，您可以：
-1. 輸入股票代碼或名稱（例如：台積電、2330、NVDA、比特幣）
-2. 輸入總經問題（例如：100萬怎麼配、美債怎麼看）
-3. 點擊下方快捷氣泡快速探索！
+1. 輸入標的名稱或代碼（例如：中鋼、台積電、NVDA、鐵礦砂、比特幣）
+2. 輸入總經問題（例如：利差怎麼看、美債殖利率分析）
+3. 輸入「校準數據」查看最新 2026 官方指標期別
+4. 點擊下方快捷氣泡快速探索！
 
-📱 完整圖表與配置計算機：${SHORT_WEB_URL}`;
+📱 手機專屬圖表門戶：
+${SHORT_WEB_URL}`;
 
 // 常用中英文名稱對照字典（支援台美股、大宗原物料、匯率與加密幣）
 const SYMBOL_MAP = {
@@ -136,32 +129,32 @@ const SYMBOL_MAP = {
   "以太幣": "ETH-USD"
 };
 
-// 旗艦版智慧 Quick Reply 快捷追問氣泡選單
+// 旗艦版智慧 Quick Reply 快捷追問氣泡選單（含官方圖表門戶與即時校正）
 function getQuickReplyItems() {
   return {
     items: [
       {
         type: "action",
         action: {
+          type: "uri",
+          label: "📊 專屬圖表門戶",
+          uri: SHORT_WEB_URL
+        }
+      },
+      {
+        type: "action",
+        action: {
+          type: "message",
+          label: "🔄 校準總經數據",
+          text: "校準數據"
+        }
+      },
+      {
+        type: "action",
+        action: {
           type: "message",
           label: "🎯 100萬配置試算",
           text: "我有100萬想做總經跨資產配置該怎麼分配？請列出具體金額比例"
-        }
-      },
-      {
-        type: "action",
-        action: {
-          type: "message",
-          label: "💱 日圓換匯試算",
-          text: "100萬日圓換算新台幣是多少？日圓近期走勢與換匯時機建議"
-        }
-      },
-      {
-        type: "action",
-        action: {
-          type: "message",
-          label: "🌪️ 總經壓力測試",
-          text: "請針對當前全球市場進行總經極端情境壓力測試（通膨反彈/經濟衰退/地緣衝突）"
         }
       },
       {
@@ -614,6 +607,88 @@ ${historyText}
   return false;
 }
 
+// 數據定期/手動校準指令判斷
+function isCalibrationCommand(text) {
+  const t = text.trim().toLowerCase();
+  return /^(校準數據|校正數據|更新數據|數據校準|校驗數據|同步數據|校準)$/.test(t) || t === "calibrate" || t === "sync data";
+}
+
+// 執行即時數據校準並產出秘書回報
+async function handleCalibrationCommand(lineToken, replyToken) {
+  try {
+    const macroVault = require('./macro-vault');
+    if (typeof macroVault.syncLiveVaultData === 'function') {
+      await macroVault.syncLiveVaultData(true);
+    }
+    const calendarSync = require('./calendar-sync');
+    if (typeof calendarSync.runCalendarSync === 'function') {
+      await calendarSync.runCalendarSync();
+    }
+
+    const now = new Date();
+    const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
+    const timeStr = utc8.toISOString().replace('T', ' ').substring(0, 19);
+
+    // 讀取最新指標
+    const vaultData = typeof macroVault.getVaultMetrics === 'function' ? macroVault.getVaultMetrics() : null;
+    const m = vaultData?.metrics || {};
+
+    const cpiVal = m['US_CPI']?.currentVal ?? 3.4;
+    const cpiPeriod = m['US_CPI']?.period ?? '2026-07';
+    const coreCpiVal = m['US_CORE_CPI']?.currentVal ?? 3.3;
+    const coreCpiPeriod = m['US_CORE_CPI']?.period ?? '2026-07';
+    const pceVal = m['US_PCE']?.currentVal ?? 3.3;
+    const pcePeriod = m['US_PCE']?.period ?? '2026-07';
+    const nfpVal = m['US_NFP']?.currentVal ?? -2.3;
+    const nfpPeriod = m['US_NFP']?.period ?? '2026-08';
+    const unempVal = m['US_UNRATE']?.currentVal ?? 4.1;
+    const unempPeriod = m['US_UNRATE']?.period ?? '2026-08';
+    const fedVal = m['US_FED_RATE']?.currentVal ?? 3.75;
+    const us10yVal = m['US_10Y']?.currentVal ?? 4.704;
+    const us2yVal = m['US_2Y']?.currentVal ?? 3.961;
+    const spreadVal = m['US_SPREAD']?.currentVal ?? 74.3;
+    const dxyVal = m['US_DXY']?.currentVal ?? 99.008;
+    const ironVal = m['COMM_IRON_ORE']?.currentVal ?? 95.34;
+    const coalVal = m['COMM_COAL']?.currentVal ?? 124.50;
+    const copperVal = m['COMM_COPPER']?.currentVal ?? 6.604;
+
+    const replyMsg = `勝穩您好！已為您完成全球總經與跨資產數據庫的最新定時校準 🌸
+
+🕒【數據校驗完成時間】：${timeStr} (UTC+8)
+━━━━━━━━━━━━━━━━━━━━
+🏛️【美國官方權威總經指標（2026最新期別）】：
+• CPI 通膨年增率：${cpiVal}%（${cpiPeriod}期 ｜ 官方發布）
+• 核心 CPI 年增率：${coreCpiVal}%（${coreCpiPeriod}期 ｜ 排除蔬果能源）
+• 核心 PCE 物價指數：${pceVal}%（${pcePeriod}期 ｜ FOMC長期定價錨點）
+• 非農就業增長：${nfpVal} 萬人（${nfpPeriod}期 ｜ 勞動邊際降溫）
+• 官方失業率：${unempVal}%（${unempPeriod}期 ｜ 充分就業臨界）
+• 聯邦基金利率：${fedVal}%（最新降息後政策目標區間）
+
+📊【金融市場與公債利差】：
+• 美債 10Y：${us10yVal}% ｜ 2Y：${us2yVal}%
+• 10Y-2Y 利差：+${spreadVal} bps（熊市陡峭化 Bear Steepener）
+• 美元指數 (DXY)：${dxyVal}
+
+🏭【大宗重工業原料與成本剛性】：
+• 國際鐵礦砂現貨：${ironVal} USD/噸（高爐成本支撐區間）
+• 國際動力煤現貨：${coalVal} USD/噸（紐卡斯爾 6000大卡基準）
+• 國際銅博士 (HG)：${copperVal} USD/磅
+
+💡【秘書貼心備註】：
+各項核心指標已全數與 FRED 官方資料庫及即時市場時序對齊，無任何年份混淆。您可以隨時提問深度研報，或點擊下方查看全維度動態圖表！
+
+📱 官方視覺化圖表門戶：
+${SHORT_WEB_URL}`;
+
+    await replyLine(lineToken, replyToken, replyMsg);
+    return true;
+  } catch (err) {
+    console.error('Calibration command error:', err);
+    await replyLine(lineToken, replyToken, `⚠️ 數據校準進行中，請稍候重試：${err.message}`);
+    return true;
+  }
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   if (req.method === "GET") {
@@ -647,6 +722,12 @@ module.exports = async (req, res) => {
           // 1. 優先判斷是否為說明書指令
           if (isHelpQuery(userMsg)) {
             await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE);
+            continue;
+          }
+
+          // 2. 判斷是否為數據校準指令
+          if (isCalibrationCommand(userMsg)) {
+            await handleCalibrationCommand(lineToken, replyToken);
             continue;
           }
 

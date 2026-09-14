@@ -110,6 +110,11 @@ app.listen(PORT, '0.0.0.0', () => {
   } catch (err) {
     console.error('Failed to start keep-alive:', err);
   }
+  try {
+    setupDailyCalibrationTimer();
+  } catch (err) {
+    console.error('Failed to setup daily calibration timer:', err);
+  }
 
   // 伺服器冷啟動：立即非同步觸發總經數據庫全量主動校準與落盤
   setTimeout(async () => {
@@ -125,3 +130,33 @@ app.listen(PORT, '0.0.0.0', () => {
     }
   }, 2000);
 });
+
+// 每日 08:15 晨會前自動全量數據校準計時器
+let lastCalibratedDate = '';
+function setupDailyCalibrationTimer() {
+  console.log('⏰ [Daily-Calibrate] 每日 08:15 晨會前全量總經數據自動校準守護進程已啟動');
+  setInterval(async () => {
+    try {
+      const nowTaipei = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+      const dateStr = nowTaipei.toISOString().substring(0, 10);
+      const hour = nowTaipei.getHours();
+      const min = nowTaipei.getMinutes();
+      // 每天 08:15 ~ 08:20 區間觸發一次校準
+      if (hour === 8 && min >= 15 && min <= 20 && lastCalibratedDate !== dateStr) {
+        lastCalibratedDate = dateStr;
+        console.log(`⏰ [Daily-Calibrate] 正在執行每日 08:15 總經數據定時全量校準 (${dateStr})...`);
+        const macroVault = require('./api/macro-vault');
+        if (typeof macroVault.syncLiveVaultData === 'function') {
+          await macroVault.syncLiveVaultData(true);
+        }
+        const calendarSync = require('./api/calendar-sync');
+        if (typeof calendarSync.runCalendarSync === 'function') {
+          await calendarSync.runCalendarSync();
+        }
+        console.log('✅ [Daily-Calibrate] 每日 08:15 數據校準與期別落盤成功！');
+      }
+    } catch (e) {
+      console.error('[Daily-Calibrate] 定時校準檢查錯誤:', e);
+    }
+  }, 60 * 1000);
+}
