@@ -36,6 +36,7 @@ const macroVaultHandler = require('./api/macro-vault');
 
 // 註冊 API 路由
 app.all('/api/line-webhook', (req, res) => lineWebhookHandler(req, res));
+app.all('/callback', (req, res) => lineWebhookHandler(req, res));
 app.all('/api/collector', (req, res) => collectorHandler(req, res));
 app.all('/api/quote', (req, res) => quoteHandler(req, res));
 app.all('/api/analyze', (req, res) => analyzeHandler(req, res));
