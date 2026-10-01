@@ -22,14 +22,17 @@ class EconomicAIAnalyzer:
         import requests
         headers = {"Content-Type": "application/json"}
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
-        models = ["gemini-flash-lite-latest", "gemini-flash-latest", "gemini-3.6-flash", "gemini-1.5-flash", "gemini-pro-latest"]
+        models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-flash-8b"]
         for m in models:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={self.api_key}"
             try:
-                res = requests.post(url, headers=headers, json=payload, timeout=25)
+                res = requests.post(url, headers=headers, json=payload, timeout=10)
                 if res.status_code == 200:
                     data = res.json()
                     return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                elif res.status_code in (401, 403):
+                    logger.warning(f"Gemini API key unauthorized ({res.status_code}), stopping retries.")
+                    break
             except Exception as e:
                 logger.warning(f"Model {m} failed: {e}")
         return ""

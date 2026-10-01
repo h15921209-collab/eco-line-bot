@@ -318,13 +318,11 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 
 async function callGemini(userText, existingMarketData = null, options = {}) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
-  // 優先調度驗證可用且回應極速的 Gemini 3.6 Flash
+  // 優先調度官方穩定旗艦與高頻響應模型
   const models = [
-    "gemini-3.6-flash",
-    "gemini-flash-lite-latest",
-    "gemini-3.5-flash-lite",
-    "gemini-3.8-flash",
-    "gemini-3.1-flash-lite"
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b"
   ];
 
   const liveMarketData = existingMarketData || (await fetchLiveMarketAndHistory());
@@ -384,13 +382,18 @@ ${liveMarketData}${newsContext}
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { maxOutputTokens: 1200, temperature: 0.6 }
         }),
-        signal: AbortSignal.timeout(7500)
+        signal: AbortSignal.timeout(3500)
       });
 
       if (response.ok) {
         const data = await response.json();
         const resText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
         if (resText && resText.length > 50) return resText;
+      } else {
+        if (response.status === 401 || response.status === 403) {
+          console.warn(`[Gemini API] 金鑰未授權 (${response.status})，秒級無縫切換至首席量化策略引擎`);
+          break;
+        }
       }
     } catch (e) {
       // 逾時或連線問題，快速嘗試下一個模型
@@ -405,11 +408,9 @@ ${liveMarketData}${newsContext}
 async function callGeminiMultiMetricAnalysis({ selectedMetrics, customQuery, marketSnapshot }) {
   const apiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
   const models = [
-    "gemini-3.6-flash",
-    "gemini-flash-lite-latest",
-    "gemini-3.5-flash-lite",
-    "gemini-3.8-flash",
-    "gemini-3.1-flash-lite"
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b"
   ];
 
   const macroVault = require('./macro-vault');
@@ -464,13 +465,18 @@ ${liveMarketData}
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { maxOutputTokens: 1400, temperature: 0.6 }
         }),
-        signal: AbortSignal.timeout(8000)
+        signal: AbortSignal.timeout(3500)
       });
 
       if (response.ok) {
         const data = await response.json();
         const resText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
         if (resText && resText.length > 50) return resText;
+      } else {
+        if (response.status === 401 || response.status === 403) {
+          console.warn(`[Gemini Multi-Metric] 金鑰未授權 (${response.status})，秒級無縫切換至多維量化引擎`);
+          break;
+        }
       }
     } catch (e) {}
   }

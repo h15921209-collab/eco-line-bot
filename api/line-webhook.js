@@ -456,7 +456,27 @@ function safeTruncate(str, maxLen = 4800) {
   return chars.slice(0, maxLen).join('') + "\n\n⋯（摘要截斷，請點上方連結查看完整版）";
 }
 
-async function replyLine(lineToken, replyToken, messageOrText) {
+async function pushLine(lineToken, toUserId, messageObj) {
+  if (!toUserId) return;
+  try {
+    const res = await fetch("https://api.line.me/v2/bot/message/push", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${lineToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: toUserId,
+        messages: [messageObj]
+      })
+    });
+    console.log(`[LINE Fail-Safe Push] Status: ${res.status}`);
+  } catch (err) {
+    console.error("[LINE Fail-Safe Push Error]:", err.message);
+  }
+}
+
+async function replyLine(lineToken, replyToken, messageOrText, targetUserId = null) {
   let messageObj;
   if (typeof messageOrText === 'object' && messageOrText !== null) {
     messageObj = {
@@ -473,17 +493,40 @@ async function replyLine(lineToken, replyToken, messageOrText) {
     };
   }
   
-  return fetch("https://api.line.me/v2/bot/message/reply", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${lineToken}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      replyToken: replyToken,
-      messages: [messageObj]
-    })
-  });
+  try {
+    const res = await fetch("https://api.line.me/v2/bot/message/reply", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${lineToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        replyToken: replyToken,
+        messages: [messageObj]
+      })
+    });
+
+    if (res.ok) {
+      console.log(`[LINE Reply] 回覆成功 (Status 200)`);
+      return;
+    }
+
+    const errText = await res.text();
+    console.warn(`[LINE Reply Warning] 回覆端點非 200 (Status ${res.status}): ${errText}`);
+
+    // 若 replyToken 逾時 (400 Invalid reply token) 或失敗，無縫降級為 Push 訊息主動推送
+    const recipientId = targetUserId || process.env.ADMIN_LINE_USER_ID || "Ucb8aeb027ccd188cb285ebb9307168f7";
+    if (res.status === 400 && recipientId) {
+      console.log(`[LINE Fail-Safe] 偵測到 replyToken 逾時失效，啟動 Push 主動推送至: ${recipientId}`);
+      await pushLine(lineToken, recipientId, messageObj);
+    }
+  } catch (err) {
+    console.error("[LINE Reply Error] 連線異常:", err.message);
+    const recipientId = targetUserId || process.env.ADMIN_LINE_USER_ID || "Ucb8aeb027ccd188cb285ebb9307168f7";
+    if (recipientId) {
+      await pushLine(lineToken, recipientId, messageObj);
+    }
+  }
 }
 
 function isHelpQuery(text) {
@@ -520,12 +563,12 @@ function isViewRecordsCommand(text) {
 }
 
 // 處理個人筆記與記帳指令
-async function handlePersonalRecords(userMsg, event, lineToken, replyToken) {
+async function handlePersonalRecords(userMsg, event, lineToken, replyToken, targetUserId = null) {
   // 1. 查看筆記清單
   if (isViewRecordsCommand(userMsg)) {
     const records = readRecords();
     if (records.length === 0) {
-      await replyLine(lineToken, replyToken, "📝 您的個人總經筆記庫目前尚無資料！\n您可以隨時在聊天室輸入如：\n「記錄 CPI 2.9 月增0.1%」\n「記下 鐵礦砂 99.5 美元/噸 高爐成本支撐」\n系統將自動為您歸檔儲存！");
+      await replyLine(lineToken, replyToken, "📝 您的個人總經筆記庫目前尚無資料！\n您可以隨時在聊天室輸入如：\n「記錄 CPI 2.9 月增0.1%」\n「記下 鐵礦砂 99.5 美元/噸 高爐成本支撐」\n系統將自動為您歸檔儲存！", targetUserId);
       return true;
     }
 
@@ -535,7 +578,7 @@ async function handlePersonalRecords(userMsg, event, lineToken, replyToken) {
     ).join("\n\n");
 
     const reply = `📚 【個人宏觀數據筆記庫 · 最近 ${latest.length} 筆】\n━━━━━━━━━━━━━━━━━━━━\n${listText}\n━━━━━━━━━━━━━━━━━━━━\n💡 累積總數：共 ${records.length} 筆\n💬 輸入「分析筆記」即可由 AI 自動閱讀歷史時序產出專屬研報！\n📱 完整表格與 CSV 下載：${SHORT_WEB_URL}`;
-    await replyLine(lineToken, replyToken, reply);
+    await replyLine(lineToken, replyToken, reply, targetUserId);
     return true;
   }
 
@@ -543,7 +586,7 @@ async function handlePersonalRecords(userMsg, event, lineToken, replyToken) {
   if (isRecordCommand(userMsg)) {
     const parsed = parseRecordText(userMsg);
     if (!parsed || !parsed.metric || !parsed.value) {
-      await replyLine(lineToken, replyToken, "⚠️ 記帳格式解析未果，請參考格式範例：\n「記錄 CPI 2.9 月增0.1%」或\n「記下 鐵礦砂 99.5 美元/噸 高爐成本線」");
+      await replyLine(lineToken, replyToken, "⚠️ 記帳格式解析未果，請參考格式範例：\n「記錄 CPI 2.9 月增0.1%」或\n「記下 鐵礦砂 99.5 美元/噸 高爐成本線」", targetUserId);
       return true;
     }
 
@@ -569,7 +612,7 @@ async function handlePersonalRecords(userMsg, event, lineToken, replyToken) {
       `💬 輸入「分析筆記」即可產出 AI 趨勢分析簡報！\n` +
       `📱 隨時在網頁端檢視歷史表格或一鍵複製至 Excel / Google 試算表：\n👉 ${SHORT_WEB_URL}`;
 
-    await replyLine(lineToken, replyToken, confirmMsg);
+    await replyLine(lineToken, replyToken, confirmMsg, targetUserId);
     return true;
   }
 
@@ -577,7 +620,7 @@ async function handlePersonalRecords(userMsg, event, lineToken, replyToken) {
   if (isAnalyzeRecordsCommand(userMsg)) {
     const records = readRecords();
     if (records.length === 0) {
-      await replyLine(lineToken, replyToken, "📊 您的個人筆記庫目前尚無數據！\n請先輸入如「記錄 CPI 2.9」累積數據後，即可啟動 Gemini 自動分析！");
+      await replyLine(lineToken, replyToken, "📊 您的個人筆記庫目前尚無數據！\n請先輸入如「記錄 CPI 2.9」累積數據後，即可啟動 Gemini 自動分析！", targetUserId);
       return true;
     }
 
@@ -600,7 +643,7 @@ ${historyText}
 
     const aiReport = await callGemini(prompt);
     const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
-    await replyLine(lineToken, replyToken, replyBody);
+    await replyLine(lineToken, replyToken, replyBody, targetUserId);
     return true;
   }
 
@@ -614,7 +657,7 @@ function isCalibrationCommand(text) {
 }
 
 // 執行即時數據校準並產出秘書回報
-async function handleCalibrationCommand(lineToken, replyToken) {
+async function handleCalibrationCommand(lineToken, replyToken, targetUserId = null) {
   try {
     const macroVault = require('./macro-vault');
     if (typeof macroVault.syncLiveVaultData === 'function') {
@@ -680,11 +723,11 @@ async function handleCalibrationCommand(lineToken, replyToken) {
 📱 官方視覺化圖表門戶：
 ${SHORT_WEB_URL}`;
 
-    await replyLine(lineToken, replyToken, replyMsg);
+    await replyLine(lineToken, replyToken, replyMsg, targetUserId);
     return true;
   } catch (err) {
     console.error('Calibration command error:', err);
-    await replyLine(lineToken, replyToken, `⚠️ 數據校準進行中，請稍候重試：${err.message}`);
+    await replyLine(lineToken, replyToken, `⚠️ 數據校準進行中，請稍候重試：${err.message}`, targetUserId);
     return true;
   }
 }
@@ -708,9 +751,10 @@ module.exports = async (req, res) => {
     for (const event of events) {
       const replyToken = event.replyToken;
       if (!replyToken) continue;
+      const targetUserId = event.source?.userId || "Ucb8aeb027ccd188cb285ebb9307168f7";
 
       if (event.type === "follow") {
-        await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE);
+        await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE, targetUserId);
         continue;
       }
 
@@ -721,35 +765,35 @@ module.exports = async (req, res) => {
 
           // 1. 優先判斷是否為說明書指令
           if (isHelpQuery(userMsg)) {
-            await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE);
+            await replyLine(lineToken, replyToken, USER_GUIDE_MESSAGE, targetUserId);
             continue;
           }
 
           // 2. 判斷是否為數據校準指令
           if (isCalibrationCommand(userMsg)) {
-            await handleCalibrationCommand(lineToken, replyToken);
+            await handleCalibrationCommand(lineToken, replyToken, targetUserId);
             continue;
           }
 
           // 2. 判斷是否為純代碼/常用中文名稱查詢（例如 台積電, 聯發科, NVDA, TSLA, 2330, BTC），若是則秒級回傳報價
           const quickQuote = await tryFetchStockQuote(userMsg);
           if (quickQuote) {
-            await replyLine(lineToken, replyToken, quickQuote);
+            await replyLine(lineToken, replyToken, quickQuote, targetUserId);
             continue;
           }
 
           // 3. 判斷是否為個人宏觀數據筆記記錄、查看或專屬研報指令
-          const handledRecord = await handlePersonalRecords(userMsg, event, lineToken, replyToken);
+          const handledRecord = await handlePersonalRecords(userMsg, event, lineToken, replyToken, targetUserId);
           if (handledRecord) continue;
 
           // 4. 一般總經諮詢走 Gemini 深度推理
           const aiReport = await callGemini(userMsg);
           const replyBody = aiReport ? (getHeader() + aiReport) : FALLBACK_MESSAGE;
 
-          await replyLine(lineToken, replyToken, replyBody);
+          await replyLine(lineToken, replyToken, replyBody, targetUserId);
         } else {
           // 非文字訊息（貼圖、圖片、語音等），禮貌回覆導引
-          await replyLine(lineToken, replyToken, NON_TEXT_MESSAGE);
+          await replyLine(lineToken, replyToken, NON_TEXT_MESSAGE, targetUserId);
         }
       }
     }
