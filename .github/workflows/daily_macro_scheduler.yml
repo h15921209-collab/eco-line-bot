@@ -1,0 +1,39 @@
+name: Daily Macro Calibration & Broadcast Scheduler
+
+on:
+  schedule:
+    # 08:15 Taipei (UTC 00:15) - 晨會盤前全量總經與即時行情強制校準
+    - cron: '15 0 * * *'
+    # 08:30 Taipei (UTC 00:30) - 晨會總經早報 / 週末週報自動推播
+    - cron: '30 0 * * *'
+    # 21:45 Taipei (UTC 13:45) - 晚間美歐盤中校準與重大數據 (CPI/非農) 發布檢測
+    - cron: '45 13 * * *'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to trigger: calibrate | broadcast | evening | all'
+        required: true
+        default: 'calibrate'
+
+jobs:
+  run-scheduled-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Macro Tasks
+        run: |
+          HOUR=$(date -u +%H)
+          MIN=$(date -u +%M)
+          echo "Current UTC Time: $HOUR:$MIN"
+          
+          if [ "${{ github.event.inputs.action }}" = "broadcast" ] || [ "$MIN" = "30" ]; then
+            echo "📢 正在觸發 08:30 晨會早報推播..."
+            curl -sS --max-time 60 "https://eco-line-assistant.onrender.com/api/morning-broadcast" || true
+          elif [ "${{ github.event.inputs.action }}" = "evening" ] || [ "$HOUR" = "13" ]; then
+            echo "🌙 正在觸發 21:45 晚間總經校準與重大數據發布巡檢..."
+            curl -sS --max-time 60 "https://eco-line-assistant.onrender.com/api/macro-vault?refresh=1" || true
+            curl -sS --max-time 60 "https://eco-line-assistant.onrender.com/api/alert-check?checkRelease=1" || true
+          else
+            echo "⚡ 正在觸發 08:15 晨會前全量總經與即時行情強制校準..."
+            curl -sS --max-time 60 "https://eco-line-assistant.onrender.com/api/macro-vault?refresh=1" || true
+            curl -sS --max-time 60 "https://eco-line-assistant.onrender.com/api/calendar" || true
+          fi

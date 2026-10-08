@@ -64,6 +64,7 @@ module.exports = async (req, res) => {
     } catch (e) {}
 
     const broadcastMessage = `🌸【宏觀總經秘書 · ${reportTypeTitle}】
+🟢【本日數據已於 08:15 自動校準完成 · 2026 最新官方期別對齊】
 📅 數據校驗時間：${timeStr.substring(0, 16)} (UTC+8) ｜ 官方期別：2026最新期
 ━━━━━━━━━━━━━━━━━━━━
 

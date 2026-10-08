@@ -59,6 +59,95 @@ async function fetchSingleQuote(sym) {
 module.exports = async (req, res) => {
   const lineToken = process.env.LINE_CHANNEL_ACCESS_TOKEN || FALLBACK_LINE_TOKEN;
   const forceBroadcast = req.query.force === 'true';
+  const checkRelease = req.query?.checkRelease === '1' || req.query?.checkRelease === 'true';
+
+  // 晚間 21:45 專屬：全量數據校準 ＋ 僅在有 CPI/非農新期別發布時才推播通知
+  if (checkRelease) {
+    const fs = require('fs');
+    const path = require('path');
+    const RELEASE_RECORD_FILE = path.join(__dirname, '..', 'data', 'last_notified_release.json');
+    let lastNotified = {};
+    try {
+      if (fs.existsSync(RELEASE_RECORD_FILE)) {
+        lastNotified = JSON.parse(fs.readFileSync(RELEASE_RECORD_FILE, 'utf8'));
+      }
+    } catch (e) {}
+
+    const macroVault = require('./macro-vault');
+    const oldVault = macroVault.initOrLoadVault();
+    const oldCpiPeriod = oldVault?.metrics?.US_CPI?.latestPeriod || '2026-08';
+    const oldNfpPeriod = oldVault?.metrics?.US_NFP?.latestPeriod || '2026-08';
+
+    await macroVault.syncLiveVaultData(true);
+    const newVault = macroVault.initOrLoadVault();
+    const newCpi = newVault?.metrics?.US_CPI;
+    const newNfp = newVault?.metrics?.US_NFP;
+
+    const newReleases = [];
+    if (newCpi && newCpi.latestPeriod !== (lastNotified.US_CPI || oldCpiPeriod)) {
+      newReleases.push({
+        name: '美國 CPI 通膨年增率',
+        period: newCpi.latestPeriod,
+        val: newCpi.latestValue,
+        unit: '%',
+        source: newCpi.source
+      });
+      lastNotified.US_CPI = newCpi.latestPeriod;
+    }
+
+    if (newNfp && newNfp.latestPeriod !== (lastNotified.US_NFP || oldNfpPeriod)) {
+      newReleases.push({
+        name: '美國季調後非農就業變動',
+        period: newNfp.latestPeriod,
+        val: newNfp.latestValue,
+        unit: '萬人',
+        source: newNfp.source
+      });
+      lastNotified.US_NFP = newNfp.latestPeriod;
+    }
+
+    try {
+      fs.writeFileSync(RELEASE_RECORD_FILE, JSON.stringify(lastNotified, null, 2), 'utf8');
+    } catch (e) {}
+
+    if (newReleases.length > 0) {
+      const nowUtc8 = new Date(Date.now() + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+      let releaseMsg = `🔔【重磅總經數據官方最新發布快訊 · 宏觀總經秘書】\n📅 捕獲時間：${nowUtc8} (台北時間)\n━━━━━━━━━━━━━━━━━━━━\n🏛️ 官方剛公布最新期別指標：\n\n`;
+      for (const r of newReleases) {
+        releaseMsg += `• 【${r.name}】\n  ↳ 最新期別：${r.period}期\n  ↳ 官方公布值：${r.val} ${r.unit} (${r.source})\n\n`;
+      }
+      releaseMsg += `━━━━━━━━━━━━━━━━━━━━\n💡 秘書已將最新數值歸檔入庫，明日 08:30 晨會早報將為您帶來完整深度因果解析！\n📱 點此在手機開啟即時圖表門戶：\n${SHORT_WEB_URL}`;
+
+      const targetUserId = process.env.ADMIN_LINE_USER_ID || "Ucb8aeb027ccd188cb285ebb9307168f7";
+      try {
+        await fetch("https://api.line.me/v2/bot/message/push", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${lineToken}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            to: targetUserId,
+            messages: [{ type: "text", text: releaseMsg }]
+          })
+        });
+      } catch (err) {
+        console.error("Release push error:", err);
+      }
+
+      return res.status(200).json({
+        status: "success",
+        action: "release_alert_sent",
+        newReleases
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      action: "silent_sync_completed",
+      message: "夜間校準完成，無新期別重大數據發布，保持靜默。"
+    });
+  }
 
   const triggeredAlerts = [];
   const inspectedData = [];
