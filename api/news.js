@@ -94,6 +94,56 @@ function extractRelatedIndicators(title) {
   return Array.from(new Set(indicators));
 }
 
+// 嚴格過濾無關雜訊、社會事件與政治口水，僅保留真正宏觀、金融、大宗原料與半導體財經新聞
+function isRelevantMacroNews(title) {
+  if (!title || typeof title !== 'string') return false;
+  const t = title.toLowerCase();
+
+  // 1. 黑名單排除過濾
+  const blacklistRegex = /盜古墓|古墓|違建|頂樓加蓋|陽台外推|夾層|騎樓|殺人|車禍|性侵|詐騙|吸毒|毒品|偷竊|竊盜|打架|火警|火災|八卦|藝人|緋聞|戀情|婚姻|出軌|分居|國台辦|政治攻防|選戰|候選人|網紅|正妹|自拍|樂透|威力彩|大樂透|星座|運勢|命理|鄉民|網友|討教|狠酸|爆廢|爆料|dcard|ptt|開箱/;
+  if (blacklistRegex.test(t)) return false;
+
+  // 2. 總經、央行、大宗原料、債券、利率、半導體或實體產業關鍵字白名單
+  const macroKeywordsRegex = /fed|聯準會|降息|升息|利率|公債|美債|國債|殖利率|利差|通膨|cpi|pce|ppi|物價|非農|就業|失業|薪資|工資|美元|dxy|匯率|台幣|出口|外銷|進出口|貿易|鋼鐵|高爐|鐵礦|熱軋|中鋼|動力煤|煤炭|銅價|銅博士|原油|油價|wti|布蘭特|金價|黃金|台積電|tsmc|晶圓|半導體|費半|sox|輝達|nvidia|ai晶片|伺服器|資本支出|capex|大盤|加權|台股|美股|標普|那斯達克|道瓊|央行|ecb|歐洲央行|pmi|opec|減產|增產|關稅|制裁|柴油|天然氣|航運|bdi|散裝|貨櫃|融資|借貸/;
+  return macroKeywordsRegex.test(t);
+}
+
+// 根據新聞內容生成一針見血的秘書總經傳導短評
+function generateNewsCommentary(title) {
+  const t = title.toLowerCase();
+  if (/鐵礦|鋼鐵|高爐|熱軋|中鋼/.test(t)) {
+    return '高爐原料端邊際現金成本形成剛性底線，關注亞洲鋼廠開工率與下游實體需求承接力。';
+  }
+  if (/煤炭|動力煤|焦煤/.test(t)) {
+    return '煤焦報價直接錨定鋼廠高爐冶煉成本線，原料剛性限制了成品盤價進一步折讓空間。';
+  }
+  if (/原油|油價|柴油|能源|天然氣|opec/.test(t)) {
+    return '大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。';
+  }
+  if (/台積電|tsmc|半導體|晶片|輝達|nvidia|費半/.test(t)) {
+    return '先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。';
+  }
+  if (/聯準會|fed|鮑爾|降息|升息|fomc/.test(t)) {
+    return '牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。';
+  }
+  if (/cpi|pce|ppi|通膨|物價/.test(t)) {
+    return '通膨黏性緩解進程直接決定限制性利率退場斜率，為跨資產長天期估值提供下檔保護。';
+  }
+  if (/非農|就業|失業|薪資|勞動力/.test(t)) {
+    return '勞動市場供需缺口收斂壓制工資螺旋上漲動能，奠定貨幣政策轉向中性的實體數據基礎。';
+  }
+  if (/美債|公債|殖利率|利差|10y|2y/.test(t)) {
+    return '財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。';
+  }
+  if (/美元|匯率|台幣|外銷|出口|貿易/.test(t)) {
+    return '美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。';
+  }
+  if (/銅|金屬|銅博士/.test(t)) {
+    return '銅博士報價高度敏銳反映全球製造業實體資本開支，為宏觀景氣邊際榮枯先行指標。';
+  }
+  return '隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。';
+}
+
 // 自動判斷美歐央行與總經分類及標籤
 function categorizeNews(title) {
   const t = title.toLowerCase();
@@ -101,11 +151,27 @@ function categorizeNews(title) {
   let tag = '#全球總經';
   let icon = '🌐';
 
-  if (/聯準會|fed|鮑爾|fomc|降息|升息|利率決策|點陣圖/.test(t)) {
+  if (/鐵礦|鋼鐵|高爐|熱軋|中鋼|煤炭|動力煤|焦煤/.test(t)) {
+    category = 'steel';
+    tag = '#大宗重工';
+    icon = '🏭';
+  } else if (/原油|油價|wti|布蘭特|柴油|天然氣|opec/.test(t)) {
+    category = 'energy';
+    tag = '#能源原油';
+    icon = '🛢️';
+  } else if (/台積電|tsmc|晶圓|半導體|費半|sox|輝達|nvidia|ai/.test(t)) {
+    category = 'tech';
+    tag = '#科技半導體';
+    icon = '💎';
+  } else if (/美元|匯率|台幣|出口|外銷|進出口|貿易|關稅/.test(t)) {
+    category = 'trade';
+    tag = '#外銷匯率';
+    icon = '💱';
+  } else if (/聯準會|fed|鮑爾|fomc|降息|升息|利率決策|點陣圖/.test(t)) {
     category = 'fed';
     tag = '#Fed聯準會';
     icon = '🏛️';
-  } else if (/cpi|pce|通膨|物價|通縮|生活成本/.test(t)) {
+  } else if (/cpi|pce|ppi|通膨|物價|通縮|生活成本/.test(t)) {
     category = 'cpi';
     tag = '#CPI通膨';
     icon = '📊';
@@ -124,7 +190,8 @@ function categorizeNews(title) {
   }
 
   const relatedIndicators = extractRelatedIndicators(title);
-  return { category, tag, icon, relatedIndicators };
+  const commentary = generateNewsCommentary(title);
+  return { category, tag, icon, relatedIndicators, commentary };
 }
 
 // 1. 抓取 Yahoo 股市國際總經與焦點新聞 (具備 100% 直接文章原生 URL)
@@ -155,10 +222,11 @@ function fetchYahooMacroNews() {
               const link = match[2].trim();
               const pubDateStr = match[3].trim();
               if (title && title.length >= 8 && link.startsWith('http')) {
+                if (!isRelevantMacroNews(title)) continue;
                 const pubTime = new Date(pubDateStr);
                 const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
                 const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-                const { category, tag, icon, relatedIndicators } = categorizeNews(title);
+                const { category, tag, icon, relatedIndicators, commentary } = categorizeNews(title);
                 allItems.push({
                   id: Buffer.from(title).toString('base64').substring(0, 16),
                   title,
@@ -171,6 +239,7 @@ function fetchYahooMacroNews() {
                   tag,
                   icon,
                   relatedIndicators,
+                  commentary,
                   aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
                 });
               }
@@ -217,10 +286,11 @@ function fetchCnyesMacroNews() {
             raw.forEach(it => {
               const title = (it.title || '').trim();
               if (title && title.length >= 8 && it.newsId) {
+                if (!isRelevantMacroNews(title)) return;
                 const pubTime = new Date(it.publishAt * 1000);
                 const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
                 const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-                const { category, tag, icon, relatedIndicators } = categorizeNews(title);
+                const { category, tag, icon, relatedIndicators, commentary } = categorizeNews(title);
                 allItems.push({
                   id: Buffer.from(title).toString('base64').substring(0, 16),
                   title,
@@ -233,6 +303,7 @@ function fetchCnyesMacroNews() {
                   tag,
                   icon,
                   relatedIndicators,
+                  commentary,
                   aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
                 });
               }
@@ -281,10 +352,11 @@ function fetchUdnMacroNews() {
               const link = match[2].trim();
               const pubDateStr = match[3].trim();
               if (title && title.length >= 8 && link.startsWith('http')) {
+                if (!isRelevantMacroNews(title)) continue;
                 const pubTime = new Date(pubDateStr);
                 const utc8Time = new Date(pubTime.getTime() + (pubTime.getTimezoneOffset() + 480) * 60000);
                 const timeStr = `${String(utc8Time.getMonth() + 1).padStart(2, '0')}/${String(utc8Time.getDate()).padStart(2, '0')} ${String(utc8Time.getHours()).padStart(2, '0')}:${String(utc8Time.getMinutes()).padStart(2, '0')}`;
-                const { category, tag, icon, relatedIndicators } = categorizeNews(title);
+                const { category, tag, icon, relatedIndicators, commentary } = categorizeNews(title);
                 allItems.push({
                   id: Buffer.from(title).toString('base64').substring(0, 16),
                   title,
@@ -297,6 +369,7 @@ function fetchUdnMacroNews() {
                   tag,
                   icon,
                   relatedIndicators,
+                  commentary,
                   aiPrompt: `請針對最新重大總經與央行新聞「${title}」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響`
                 });
               }
@@ -321,8 +394,15 @@ function fetchUdnMacroNews() {
 async function refreshAndStoreNews() {
   loadStoredNews();
 
-  // 清洗舊庫存：徹底移除任何包含 google.com/search 或無效連結的歷史項目
-  inMemoryNews = inMemoryNews.filter(n => n.link && !n.link.includes('google.com/search') && n.link.startsWith('http') && n.link !== '#');
+  // 清洗舊庫存：徹底移除任何包含 google.com/search 或無效連結的歷史項目，且排除非宏觀雜訊
+  inMemoryNews = inMemoryNews.filter(n => n.link && !n.link.includes('google.com/search') && n.link.startsWith('http') && n.link !== '#' && isRelevantMacroNews(n.title));
+  
+  // 補齊可能缺失之秘書短評
+  inMemoryNews.forEach(n => {
+    if (!n.commentary) {
+      n.commentary = generateNewsCommentary(n.title);
+    }
+  });
 
   const [yahooNews, cnyesNews, udnNews] = await Promise.all([
     fetchYahooMacroNews(),
@@ -330,7 +410,7 @@ async function refreshAndStoreNews() {
     fetchUdnMacroNews()
   ]);
 
-  const allFetched = [...yahooNews, ...cnyesNews, ...udnNews].filter(n => n.link && !n.link.includes('google.com/search') && n.link.startsWith('http'));
+  const allFetched = [...yahooNews, ...cnyesNews, ...udnNews].filter(n => n.link && !n.link.includes('google.com/search') && n.link.startsWith('http') && isRelevantMacroNews(n.title));
 
   if (allFetched && allFetched.length > 0) {
     const existingTitles = new Set(inMemoryNews.map(n => n.title));
@@ -510,3 +590,5 @@ module.exports = newsHandler;
 module.exports.getLatestMacroNews = getLatestMacroNews;
 module.exports.getNewsForIndicators = getNewsForIndicators;
 module.exports.extractRelatedIndicators = extractRelatedIndicators;
+module.exports.refreshAndStoreNews = refreshAndStoreNews;
+module.exports.isRelevantMacroNews = isRelevantMacroNews;

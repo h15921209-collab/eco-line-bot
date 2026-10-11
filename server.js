@@ -116,6 +116,11 @@ app.listen(PORT, '0.0.0.0', () => {
   } catch (err) {
     console.error('Failed to setup daily calibration timer:', err);
   }
+  try {
+    setupDailyBroadcastTimer();
+  } catch (err) {
+    console.error('Failed to setup daily broadcast timer:', err);
+  }
 
   // 伺服器冷啟動：立即非同步觸發總經數據庫全量主動校準與落盤
   setTimeout(async () => {
@@ -161,3 +166,38 @@ function setupDailyCalibrationTimer() {
     }
   }, 60 * 1000);
 }
+
+// 每日 08:30 晨會早報 / 週末 09:00 週報全自動推播守護進程
+let lastBroadcastDate = '';
+function setupDailyBroadcastTimer() {
+  console.log('⏰ [Daily-Broadcast] 每日 08:30 晨會早報 / 週末 09:00 週報全自動推播守護進程已啟動');
+  setInterval(async () => {
+    try {
+      const nowTaipei = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+      const dateStr = nowTaipei.toISOString().substring(0, 10);
+      const dayOfWeek = nowTaipei.getDay(); // 0=週日, 6=週六, 1-5=平日
+      const hour = nowTaipei.getHours();
+      const min = nowTaipei.getMinutes();
+
+      const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+      const targetHour = isWeekend ? 9 : 8;
+      const targetMin = isWeekend ? 0 : 30;
+
+      // 檢查是否到達推播時間窗口 (平日 08:30~08:35, 週末 09:00~09:05)
+      if (hour === targetHour && min >= targetMin && min <= targetMin + 5 && lastBroadcastDate !== dateStr) {
+        lastBroadcastDate = dateStr;
+        console.log(`🚀 [Daily-Broadcast] 到達指定時間 (${dateStr} ${hour}:${min})，正在自動觸發晨報/週報推播...`);
+        const morningBroadcast = require('./api/morning-broadcast');
+        if (typeof morningBroadcast === 'function') {
+          await morningBroadcast({}, {
+            status: () => ({ json: () => {} })
+          });
+          console.log(`✅ [Daily-Broadcast] 晨報/週報全自動推播完成 (${dateStr})！`);
+        }
+      }
+    } catch (e) {
+      console.error('[Daily-Broadcast] 定時推播錯誤:', e);
+    }
+  }, 60 * 1000);
+}
+

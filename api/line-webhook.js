@@ -532,10 +532,23 @@ async function replyLine(lineToken, replyToken, messageOrText, targetUserId = nu
 function isHelpQuery(text) {
   const helpKeywords = [
     "說明", "使用說明", "說明書", "指南", "手冊", "help", "menu", "選單",
-    "早報", "功能", "教學", "?", "？", "怎麼用", "指令", "如何使用"
+    "功能", "教學", "?", "？", "怎麼用", "指令", "如何使用"
   ];
   const cleaned = text.toLowerCase().trim();
   return helpKeywords.some(k => cleaned === k || cleaned.startsWith("help") || cleaned.startsWith("說明"));
+}
+
+// 判斷是否為即時早報/週報指令
+function isReportCommand(text) {
+  const t = text.trim().toLowerCase();
+  return /^(早報|晨報|總經早報|今日早報|晨會早報|開盤早報|盤前早報|週報|週末週報|最新早報)$/.test(t) ||
+         t === "report" || t === "morning" || t === "daily";
+}
+
+// 判斷是否為即時查看重大權威財經新聞指令
+function isNewsCommand(text) {
+  const t = text.trim().toLowerCase();
+  return /^(新聞|總經新聞|財經新聞|最新新聞|重大新聞|頭條|即時新聞)$/.test(t) || t === "news";
 }
 
 const { parseRecordText, addRecord, readRecords } = require('./records');
@@ -775,7 +788,41 @@ module.exports = async (req, res) => {
             continue;
           }
 
-          // 2. 判斷是否為純代碼/常用中文名稱查詢（例如 台積電, 聯發科, NVDA, TSLA, 2330, BTC），若是則秒級回傳報價
+          // 3. 判斷是否為即時調用早報/週報指令
+          if (isReportCommand(userMsg)) {
+            try {
+              const { generateMorningReport } = require('./morning-broadcast');
+              const { safeMessage } = await generateMorningReport();
+              await replyLine(lineToken, replyToken, safeMessage, targetUserId);
+            } catch (err) {
+              await replyLine(lineToken, replyToken, `⚠️ 晨報生成中，請稍候重試：${err.message}`, targetUserId);
+            }
+            continue;
+          }
+
+          // 4. 判斷是否為即時查看權威財經新聞指令
+          if (isNewsCommand(userMsg)) {
+            try {
+              const newsModule = require('./news');
+              const topNews = await newsModule.getLatestMacroNews(4);
+              const selectedNews = (topNews || []).filter(n => n.title && n.link && n.link.startsWith('http')).slice(0, 4);
+              if (selectedNews.length === 0) {
+                await replyLine(lineToken, replyToken, '📰 目前最新總經重大新聞同步中，請稍候再試或直接輸入「早報」查看今日開盤指引！', targetUserId);
+              } else {
+                const listText = selectedNews.map((n, i) => {
+                  const commentLine = n.commentary ? `\n   ↳ 💡 秘書短評：${n.commentary}` : '';
+                  return `${i + 1}. ${n.icon || '📌'} ${n.title} (${n.source})\n   🔗 閱讀原文：${n.link}${commentLine}`;
+                }).join('\n\n');
+                const reply = `📰【全球總經與大宗原料 · 即時權威頭條】\n🟢【100% 權威財經媒體 · 零雜訊過濾】\n━━━━━━━━━━━━━━━━━━━━\n\n${listText}\n\n━━━━━━━━━━━━━━━━━━━━\n💡 輸入「早報」查看今日開盤指引與完整數據儀表板\n📱 手機圖表門戶：${SHORT_WEB_URL}`;
+                await replyLine(lineToken, replyToken, reply, targetUserId);
+              }
+            } catch (err) {
+              await replyLine(lineToken, replyToken, `⚠️ 新聞加載中，請稍候重試：${err.message}`, targetUserId);
+            }
+            continue;
+          }
+
+          // 5. 判斷是否為純代碼/常用中文名稱查詢（例如 台積電, 聯發科, NVDA, TSLA, 2330, BTC），若是則秒級回傳報價
           const quickQuote = await tryFetchStockQuote(userMsg);
           if (quickQuote) {
             await replyLine(lineToken, replyToken, quickQuote, targetUserId);
