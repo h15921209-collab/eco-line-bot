@@ -26,14 +26,14 @@ async function generateMorningReport() {
   ]);
 
   // A. 官方指標 (FRED 最新官方期別)
-  const cpi = vault?.metrics?.US_CPI || { latestValue: 3.4, latestPeriod: '2026-08', latestReleaseDate: '09/11' };
-  const coreCpi = vault?.metrics?.US_CORE_CPI || { latestValue: 3.3, latestPeriod: '2026-08', latestReleaseDate: '09/11' };
+  const cpi = vault?.metrics?.US_CPI || { latestValue: 3.7, latestPeriod: '2026-09', latestReleaseDate: '10/14' };
+  const coreCpi = vault?.metrics?.US_CORE_CPI || { latestValue: 2.6, latestPeriod: '2026-09', latestReleaseDate: '10/14' };
   const nfp = vault?.metrics?.US_NFP || { latestValue: 2.9, latestPeriod: '2026-09', latestReleaseDate: '10/02' };
   const ur = vault?.metrics?.US_UR || { latestValue: 4.2, latestPeriod: '2026-09', latestReleaseDate: '10/05' };
 
   // B. 市場即時行情
-  const us10y = snapshot?.us10y !== undefined ? Number(snapshot.us10y).toFixed(3) : '5.244';
-  const us2y = snapshot?.us2y !== undefined ? Number(snapshot.us2y).toFixed(3) : '4.422';
+  const us10y = snapshot?.us10y !== undefined ? Number(snapshot.us10y).toFixed(3) : '5.190';
+  const us2y = snapshot?.us2y !== undefined ? Number(snapshot.us2y).toFixed(3) : '4.750';
   const spread = snapshot?.spread_10y2y !== undefined 
     ? Number(snapshot.spread_10y2y).toFixed(3) 
     : (Number(us10y) - Number(us2y)).toFixed(3);
@@ -41,23 +41,23 @@ async function generateMorningReport() {
   const spreadSign = Number(spread) >= 0 ? '+' : '';
   const spreadText = `${spreadSign}${spreadBps} bps (${spreadSign}${spread}%)`;
 
-  const dxy = snapshot?.dxy !== undefined ? Number(snapshot.dxy).toFixed(2) : '99.01';
-  const usdtwd = snapshot?.usdtwd !== undefined ? Number(snapshot.usdtwd).toFixed(3) : '31.916';
+  const dxy = snapshot?.dxy !== undefined ? Number(snapshot.dxy).toFixed(2) : '101.97';
+  const usdtwd = snapshot?.usdtwd !== undefined ? Number(snapshot.usdtwd).toFixed(3) : '32.323';
 
-  const ironOre = snapshot?.iron_ore !== undefined ? Number(snapshot.iron_ore).toFixed(2) : '90.68';
+  const ironOre = snapshot?.iron_ore !== undefined ? Number(snapshot.iron_ore).toFixed(2) : '90.74';
   const coal = snapshot?.coal !== undefined ? Number(snapshot.coal).toFixed(2) : '124.50';
-  const oil = snapshot?.oil !== undefined ? Number(snapshot.oil).toFixed(2) : '91.85';
-  const copper = snapshot?.copper !== undefined ? Number(snapshot.copper).toFixed(3) : '6.604';
+  const oil = snapshot?.oil !== undefined ? Number(snapshot.oil).toFixed(2) : '93.99';
+  const copper = snapshot?.copper !== undefined ? Number(snapshot.copper).toFixed(3) : '6.611';
 
   const ironStatus = Number(ironOre) < 95 
     ? '⚠️ 跌破 95~100 邊際現金成本線' 
     : (Number(ironOre) <= 100 ? '⚓ 處於 95~100 邊際現金成本區間' : '堅挺於邊際成本線上方');
 
-  const tsmc = snapshot?.tsmc !== undefined ? Number(snapshot.tsmc).toLocaleString() : '2,550';
-  const tsmcAdrPrem = snapshot?.tsmc_adr_premium !== undefined ? Number(snapshot.tsmc_adr_premium).toFixed(2) : '13.47';
-  const nvda = snapshot?.nvda !== undefined ? Number(snapshot.nvda).toFixed(2) : '229.28';
-  const sox = snapshot?.sox !== undefined ? Number(snapshot.sox).toFixed(1) : '11,423.2';
-  const twii = snapshot?.twii !== undefined ? Number(snapshot.twii).toLocaleString() : '44,369';
+  const tsmc = snapshot?.tsmc !== undefined ? Number(snapshot.tsmc).toLocaleString() : '2,440';
+  const tsmcAdrPrem = snapshot?.tsmc_adr_premium !== undefined ? Number(snapshot.tsmc_adr_premium).toFixed(2) : '13.93';
+  const nvda = snapshot?.nvda !== undefined ? Number(snapshot.nvda).toFixed(2) : '221.30';
+  const sox = snapshot?.sox !== undefined ? Number(snapshot.sox).toFixed(1) : '11,684.4';
+  const twii = snapshot?.twii !== undefined ? Number(snapshot.twii).toLocaleString() : '47,227';
 
   // 2. 組裝最新總經與產業數據儀表板
   const dashboardBlock = `📊【今日最新總經與產業數據儀表板】

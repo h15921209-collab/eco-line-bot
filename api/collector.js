@@ -3,25 +3,25 @@ const path = require('path');
 
 const ASSETS = [
   // 1. 科技與全球核心股指
-  { key: 'twii', sym: '^TWII', header: 'TAIEX', dec: 0, defaultVal: 44369 },
-  { key: 'tsmc', sym: '2330.TW', header: 'TSMC', dec: 1, defaultVal: 2365 },
-  { key: 'tsm_adr', sym: 'TSM', header: 'TSM_ADR', dec: 2, defaultVal: 410.12 },
+  { key: 'twii', sym: '^TWII', header: 'TAIEX', dec: 0, defaultVal: 47227 },
+  { key: 'tsmc', sym: '2330.TW', header: 'TSMC', dec: 1, defaultVal: 2440 },
+  { key: 'tsm_adr', sym: 'TSM', header: 'TSM_ADR', dec: 2, defaultVal: 430.00 },
   { key: 'sox', sym: '^SOX', header: 'SOX', dec: 1, defaultVal: 11423.2 },
-  { key: 'nvda', sym: 'NVDA', header: 'NVDA', dec: 2, defaultVal: 208.48 },
+  { key: 'nvda', sym: 'NVDA', header: 'NVDA', dec: 2, defaultVal: 221.30 },
   { key: 'sp500', sym: '^GSPC', header: 'SP500', dec: 1, defaultVal: 7652.9 },
   { key: 'nasdaq', sym: '^IXIC', header: 'NASDAQ', dec: 1, defaultVal: 25980.2 },
   { key: 'dji', sym: '^DJI', header: 'DJI', dec: 1, defaultVal: 53417.2 },
   // 2. 公債利率、利差與美元
-  { key: 'us10y', sym: '^TNX', header: 'US10Y', dec: 3, defaultVal: 4.704 },
-  { key: 'us2y', sym: '2YY=F', header: 'US2Y', dec: 3, defaultVal: 3.961 },
+  { key: 'us10y', sym: '^TNX', header: 'US10Y', dec: 3, defaultVal: 5.190 },
+  { key: 'us2y', sym: '2YY=F', header: 'US2Y', dec: 3, defaultVal: 4.750 },
   { key: 'us3m', sym: '^IRX', header: 'US3M', dec: 3, defaultVal: 3.703 },
-  { key: 'dxy', sym: 'DX-Y.NYB', header: 'DXY', dec: 3, defaultVal: 99.008 },
+  { key: 'dxy', sym: 'DX-Y.NYB', header: 'DXY', dec: 3, defaultVal: 101.97 },
   // 3. 貴金屬與工業金屬
-  { key: 'gold', sym: 'GC=F', header: 'Gold', dec: 1, defaultVal: 4712.3 },
-  { key: 'silver', sym: 'SI=F', header: 'Silver', dec: 2, defaultVal: 68.36 },
-  { key: 'copper', sym: 'HG=F', header: 'Copper', dec: 3, defaultVal: 6.604 },
-  // 4. 重工業大宗原物料（鐵礦砂 95.34 美元/噸、國際動力煤 124.50 美元/噸）
-  { key: 'iron_ore', sym: 'TIO=F', header: 'IronOre', dec: 2, defaultVal: 95.34 },
+  { key: 'gold', sym: 'GC=F', header: 'Gold', dec: 1, defaultVal: 4168.4 },
+  { key: 'silver', sym: 'SI=F', header: 'Silver', dec: 2, defaultVal: 50.80 },
+  { key: 'copper', sym: 'HG=F', header: 'Copper', dec: 3, defaultVal: 6.611 },
+  // 4. 重工業大宗原物料（鐵礦砂 90.74 美元/噸、國際動力煤 124.50 美元/噸）
+  { key: 'iron_ore', sym: 'TIO=F', header: 'IronOre', dec: 2, defaultVal: 90.74 },
   { key: 'coal', sym: 'COAL_BENCHMARK', header: 'Coal', dec: 2, defaultVal: 124.50 },
   { key: 'hrc', sym: 'HRC=F', header: 'HRC_Steel', dec: 1, defaultVal: 1244.0 },
   // 5. 鋼鐵產業龍頭與散裝乾貨海運
@@ -30,14 +30,14 @@ const ASSETS = [
   { key: 'tungho', sym: '2006.TW', header: 'TungHo', dec: 2, defaultVal: 81.60 },
   { key: 'bdry', sym: 'BDRY', header: 'BDI_BDRY', dec: 2, defaultVal: 16.14 },
   // 6. 能源、海運供應鏈與農糧
-  { key: 'oil', sym: 'CL=F', header: 'Oil', dec: 2, defaultVal: 85.69 },
+  { key: 'oil', sym: 'CL=F', header: 'Oil', dec: 2, defaultVal: 93.99 },
   { key: 'natgas', sym: 'NG=F', header: 'NatGas', dec: 3, defaultVal: 2.814 },
   { key: 'maersk', sym: 'AMKBY', header: 'Maersk', dec: 2, defaultVal: 17.44 },
   { key: 'soybean', sym: 'ZS=F', header: 'Soybean', dec: 1, defaultVal: 1223.75 },
   // 7. 外匯與市場情緒
-  { key: 'usdtwd', sym: 'TWD=X', header: 'USDTWD', dec: 3, defaultVal: 31.873 },
+  { key: 'usdtwd', sym: 'TWD=X', header: 'USDTWD', dec: 3, defaultVal: 32.323 },
   { key: 'usdkrw', sym: 'KRW=X', header: 'USDKRW', dec: 2, defaultVal: 1381.98 },
-  { key: 'vix', sym: '^VIX', header: 'VIX', dec: 2, defaultVal: 15.85 },
+  { key: 'vix', sym: '^VIX', header: 'VIX', dec: 2, defaultVal: 16.87 },
   // 8. 數位資產與全球投機流動性
   { key: 'btc', sym: 'BTC-USD', header: 'Bitcoin', dec: 0, defaultVal: 88500 }
 ];

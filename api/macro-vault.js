@@ -13,9 +13,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '通膨指標',
     unit: '%',
     source: 'FRED (CPIAUCSL)',
-    defaultVal: 3.4,
-    defaultPeriod: '2026-07',
-    defaultRelease: '08/12',
+    defaultVal: 3.7,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/14',
     description: '衡量美國城市消費者日常生活商品與服務之整體物價年變動率'
   },
   'US_CORE_CPI': {
@@ -25,9 +25,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '通膨指標',
     unit: '%',
     source: 'FRED (CPILFESL)',
-    defaultVal: 3.3,
-    defaultPeriod: '2026-07',
-    defaultRelease: '08/12',
+    defaultVal: 2.6,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/14',
     description: '排除波動劇烈之食品與能源項，反映物價結構性核心黏性'
   },
   'US_PCE': {
@@ -37,9 +37,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '通膨指標',
     unit: '%',
     source: 'BEA / FRED (PCEPILFE)',
-    defaultVal: 3.3,
-    defaultPeriod: '2026-07',
-    defaultRelease: '08/28',
+    defaultVal: 3.0,
+    defaultPeriod: '2026-08',
+    defaultRelease: '10/07',
     description: '聯準會 FOMC 最重視之長期通膨官方定價參考錨點'
   },
   'US_PPI': {
@@ -50,8 +50,8 @@ const METRIC_DEFINITIONS = {
     unit: '%',
     source: 'BLS (PPIACO)',
     defaultVal: 2.8,
-    defaultPeriod: '2026-07',
-    defaultRelease: '08/14',
+    defaultPeriod: '2026-08',
+    defaultRelease: '09/12',
     description: '批發端出廠物價，為消費者端通膨之上游先行預警指標'
   },
 
@@ -63,9 +63,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '就業消費',
     unit: '萬人',
     source: 'BLS / FRED (PAYEMS)',
-    defaultVal: -2.3,
-    defaultPeriod: '2026-08',
-    defaultRelease: '09/04',
+    defaultVal: 2.9,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/02',
     description: '美國非農業聘僱淨增減人數，衡量勞動力市場邊際冷暖'
   },
   'US_UR': {
@@ -75,9 +75,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '就業消費',
     unit: '%',
     source: 'BLS / FRED (UNRATE)',
-    defaultVal: 4.1,
-    defaultPeriod: '2026-08',
-    defaultRelease: '09/04',
+    defaultVal: 4.2,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/05',
     description: '官方勞動力失業比率，觸發薩姆規則與預防性降息關鍵'
   },
   'US_RETAIL': {
@@ -88,8 +88,8 @@ const METRIC_DEFINITIONS = {
     unit: '%',
     source: 'Census Bureau (RSAFS)',
     defaultVal: 0.5,
-    defaultPeriod: '2026-07',
-    defaultRelease: '08/15',
+    defaultPeriod: '2026-08',
+    defaultRelease: '09/16',
     description: '衡量佔美國 GDP 70% 之終端消費支出動能強度'
   },
 
@@ -101,8 +101,8 @@ const METRIC_DEFINITIONS = {
     categoryZh: '利率政策',
     unit: '%',
     source: 'Federal Reserve (FEDFUNDS)',
-    defaultVal: 3.65,
-    defaultPeriod: '2026-08',
+    defaultVal: 3.75,
+    defaultPeriod: '2026-09',
     defaultRelease: '09/01',
     description: '聯準會貨幣政策核心目標利率區間之有效基準'
   },
@@ -113,9 +113,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '利率政策',
     unit: '%',
     source: 'US Treasury / FRED (DGS10)',
-    defaultVal: 4.704,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/10',
+    defaultVal: 5.190,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/15',
     description: '全球無風險資產定價之錨，實體企業長天期融資成本基準'
   },
   'US_2Y': {
@@ -125,9 +125,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '利率政策',
     unit: '%',
     source: 'US Treasury / FRED (DGS2)',
-    defaultVal: 3.961,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/10',
+    defaultVal: 4.750,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/15',
     description: '對聯準會未來 1~2 年升降息路徑最敏感之短端市場定價'
   },
   'US_SPREAD': {
@@ -137,9 +137,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '利率政策',
     unit: '%',
     source: 'US Treasury Yield Curve',
-    defaultVal: 0.743,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/10',
+    defaultVal: 0.440,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/15',
     description: '10Y 減 2Y 利率差，正斜率擴大為熊市走陡，負數為倒掛警訊'
   },
   'MARKET_DXY': {
@@ -149,9 +149,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '利率政策',
     unit: '點',
     source: 'ICE (DX-Y.NYB)',
-    defaultVal: 98.75,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 101.97,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/15',
     description: '衡量美元對一籃子六大主要貨幣之整體全球流動性溢價'
   },
 
@@ -189,10 +189,10 @@ const METRIC_DEFINITIONS = {
     categoryZh: '大宗重工',
     unit: '美元/噸',
     source: 'SGX / Fastmarkets (TIO=F)',
-    defaultVal: 95.34,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
-    description: '全球高爐煉鋼之命脈原料，95~100 美元為非主流邊際礦成本底線'
+    defaultVal: 90.74,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
+    description: '全球高爐煉鋼之命脈原料，90~100 美元為非主流邊際礦成本底線'
   },
   'COMMODITY_COAL': {
     id: 'COMMODITY_COAL',
@@ -202,8 +202,8 @@ const METRIC_DEFINITIONS = {
     unit: '美元/噸',
     source: 'Newcastle Benchmark',
     defaultVal: 124.50,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: '亞太重工業實體發電與鋼鐵焦化重要能量基準'
   },
   'COMMODITY_COPPER': {
@@ -213,9 +213,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '大宗重工',
     unit: '美元/磅',
     source: 'COMEX (HG=F)',
-    defaultVal: 6.604,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 6.611,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: '電網基建、AI 伺服器散熱與實體景氣擴張最敏感領先晴雨表'
   },
   'COMMODITY_OIL': {
@@ -225,9 +225,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '大宗重工',
     unit: '美元/桶',
     source: 'NYMEX (CL=F)',
-    defaultVal: 85.69,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 93.99,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: '全球大宗工業運輸與實體化學基礎能源成本定價'
   },
   'COMMODITY_GOLD': {
@@ -237,9 +237,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '大宗重工',
     unit: '美元/盎司',
     source: 'COMEX (GC=F)',
-    defaultVal: 4712.3,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 4168.4,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: '對沖全球主權債務擴張與法幣購買力稀釋之終極硬資產'
   },
 
@@ -251,9 +251,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '科技權值',
     unit: '元',
     source: 'TWSE (2330.TW)',
-    defaultVal: 2365,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 2440,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/15',
     description: '全球先進製程晶圓代工龍頭，AI 算力基礎建設核心定價權'
   },
   'MARKET_NVDA': {
@@ -263,9 +263,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '科技權值',
     unit: '美元',
     source: 'NASDAQ (NVDA)',
-    defaultVal: 208.48,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 221.30,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: '全球 GPU 算力架構與雲端巨頭 (CSP) 資本支出總指標'
   },
   'MARKET_SOX': {
@@ -276,8 +276,8 @@ const METRIC_DEFINITIONS = {
     unit: '點',
     source: 'PHLX (^SOX)',
     defaultVal: 11423.2,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: '全球半導體硬體製造與設備景氣風向標'
   },
   'MARKET_TAIEX': {
@@ -287,9 +287,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '科技權值',
     unit: '點',
     source: 'TWSE (^TWII)',
-    defaultVal: 44369,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 47227,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/15',
     description: '高度連動全球科技供應鏈與外資資本流向之核心股指'
   },
   'MARKET_VIX': {
@@ -299,9 +299,9 @@ const METRIC_DEFINITIONS = {
     categoryZh: '科技權值',
     unit: '點',
     source: 'CBOE (^VIX)',
-    defaultVal: 15.85,
-    defaultPeriod: '2026-09',
-    defaultRelease: '09/11',
+    defaultVal: 16.87,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/14',
     description: 'S&P 500 選擇權隱含波動率，20 以下為平穩，30 以上為市場極度恐慌'
   }
 };
@@ -753,6 +753,7 @@ async function macroVaultHandler(req, res) {
 
 module.exports = macroVaultHandler;
 module.exports.initOrLoadVault = initOrLoadVault;
+module.exports.getVaultMetrics = initOrLoadVault;
 module.exports.syncLiveVaultData = syncLiveVaultData;
 module.exports.recordMacroMetric = recordMacroMetric;
 module.exports.recordFredTrends = recordFredTrends;
