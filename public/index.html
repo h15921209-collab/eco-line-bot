@@ -636,7 +636,7 @@
           statusStr = '盤後數據結算中';
         }
       } else {
-        statusStr = '週末週末休市';
+        statusStr = '週末休市';
       }
       const stEl = document.getElementById('market-status-text');
       if (stEl) stEl.innerText = statusStr;
@@ -783,12 +783,18 @@
     // 板塊 2：📈 常用到的全球熱門財經數據 (Global Financial Tickers)
     // ============================================================
     function formatChange(chg, pct, dec = 2, isBps = false) {
-      if (pct === undefined || pct === null) return { text: '--', color: 'text-slate-400' };
+      if (pct === undefined || pct === null || isNaN(pct)) return { text: '--', color: 'text-slate-400' };
       const numPct = Number(pct);
-      const isUp = numPct >= 0;
+      const suffix = isBps ? ' bps' : '%';
+      if (Math.abs(numPct) < 0.0001) {
+        return {
+          text: `0.00${suffix}`,
+          color: 'text-slate-400'
+        };
+      }
+      const isUp = numPct > 0;
       const sign = isUp ? '+' : '';
       const color = isUp ? 'text-red-400' : 'text-emerald-400';
-      const suffix = isBps ? ' bps' : '%';
       return {
         text: `${sign}${numPct.toFixed(dec)}${suffix}`,
         color
@@ -999,16 +1005,21 @@
           cachedCalendarEvents = data.events || [];
           
           const rangeEl = document.getElementById('cal-period-range');
-          if (rangeEl && data.periodRange) {
-            rangeEl.innerText = `${data.periodRange.start} ~ ${data.periodRange.end} (${data.periodRange.periodName || period})`;
+          if (rangeEl) {
+            if (data.range) {
+              rangeEl.innerText = data.range;
+            } else if (data.periodRange && data.periodRange.start && data.periodRange.end) {
+              rangeEl.innerText = `${data.periodRange.start} ~ ${data.periodRange.end} (${data.periodRange.periodName || period})`;
+            }
           }
 
           const badgeEl = document.getElementById('calendar-sync-badge');
-          if (badgeEl && data.syncMeta) {
+          const meta = data.syncMeta || data.syncInfo;
+          if (badgeEl && meta) {
             badgeEl.innerHTML = `
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>校準：${data.syncMeta.lastOfficialSync || '官方同步'}</span>
-              <span class="text-slate-400">(${data.syncMeta.authoritySources || 'BLS/Fed/BEA'})</span>
+              <span>校準：${meta.lastOfficialSync || meta.lastSyncTime || '官方同步'}</span>
+              <span class="text-slate-400">(${meta.authoritySources || meta.source || 'BLS/Fed/BEA'})</span>
             `;
           }
 
@@ -1179,28 +1190,38 @@
         cpiEl.innerText = cpiEv ? getDaysHours(cpiEv.date + 'T12:30:00Z') : '11/12 21:30';
       }
 
-      // 計算台指期結算（每月第 3 個週三）
+      // 計算台指期結算（每月第 3 個週三 13:30 結算）
       const taifexEl = document.getElementById('countdown-taifex');
       if (taifexEl) {
-        const thirdWed = getThirdWednesday(now.getFullYear(), now.getMonth());
-        taifexEl.innerText = getDaysHours(thirdWed);
+        const nextThirdWed = getNextThirdWednesday(now);
+        taifexEl.innerText = getDaysHours(nextThirdWed);
       }
     }
 
-    function getThirdWednesday(year, month) {
-      let count = 0;
-      for (let day = 1; day <= 31; day++) {
-        const d = new Date(year, month, day);
-        if (d.getMonth() !== month) break;
-        if (d.getDay() === 3) {
-          count++;
-          if (count === 3) {
-            d.setHours(13, 30, 0, 0);
-            return d.toISOString();
+    function getNextThirdWednesday(now) {
+      function findThirdWed(year, month) {
+        let count = 0;
+        for (let day = 1; day <= 31; day++) {
+          const d = new Date(year, month, day, 13, 30, 0, 0);
+          if (d.getMonth() !== month) break;
+          if (d.getDay() === 3) {
+            count++;
+            if (count === 3) {
+              return d;
+            }
           }
         }
+        return new Date(year, month + 1, 15, 13, 30, 0, 0);
       }
-      return new Date(year, month + 1, 15).toISOString();
+
+      const thisMonthWed = findThirdWed(now.getFullYear(), now.getMonth());
+      if (thisMonthWed.getTime() > now.getTime()) {
+        return thisMonthWed.toISOString();
+      }
+      const nextMonth = now.getMonth() === 11 ? 0 : now.getMonth() + 1;
+      const nextYear = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
+      const nextMonthWed = findThirdWed(nextYear, nextMonth);
+      return nextMonthWed.toISOString();
     }
 
     // ============================================================

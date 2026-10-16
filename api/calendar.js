@@ -1257,10 +1257,19 @@ const calendarHandler = async (req, res) => {
       status: 'success',
       period,
       range: rangeDescription,
+      periodRange: {
+        start: rangeDescription.split(' ~ ')[0] || '',
+        end: (rangeDescription.split(' ~ ')[1] || '').split(' ')[0] || '',
+        periodName: period === 'this_week' ? '本週焦點' : (period === 'next_week' ? '下週預告' : '整月大事')
+      },
       currentTime: formatDateStr(now) + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
       totalCount: filteredEvents.length,
       events: filteredEvents,
       fredTrends: cachedFredTrends || {},
+      syncMeta: {
+        lastOfficialSync: currentCalibrated?.lastSyncTime || '即時校驗',
+        authoritySources: 'BLS / BEA / Fed / 財政部'
+      },
       syncInfo: {
         lastSyncTime: currentCalibrated?.lastSyncTime || '即時校驗',
         status: currentCalibrated?.status || 'verified',

@@ -1,5 +1,1209 @@
 [
   {
+    "id": "5rK55YO56YCa6Iao",
+    "title": "油價通膨難降？PIMCO：全球經濟6至12個月內維持韌性 但要注意3大風險",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632321",
+    "pubDate": "Fri, 16 Oct 2026 12:47:13 GMT",
+    "timeDisplay": "10/16 20:47",
+    "timestamp": 1792154833000,
+    "category": "energy",
+    "tag": "#能源原油",
+    "icon": "🛢️",
+    "relatedIndicators": [
+      "COMMODITY_OIL"
+    ],
+    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「油價通膨難降？PIMCO：全球經濟6至12個月內維持韌性 但要注意3大風險」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5r2Y5Yqf5Yud6K2m",
+    "title": "潘功勝警示金融脆弱性 並重申全球失衡不能依靠匯率調節",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/5603/9818933",
+    "pubDate": "Fri, 16 Oct 2026 20:40:37 +0800",
+    "timeDisplay": "10/16 20:40",
+    "timestamp": 1792154437000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「潘功勝警示金融脆弱性 並重申全球失衡不能依靠匯率調節」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Y+X5bed5pmu6Zec",
+    "title": "受川普關稅措施影響 美國鋼價創4年新高 加重製造業負擔",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632286",
+    "pubDate": "Fri, 16 Oct 2026 12:40:02 GMT",
+    "timeDisplay": "10/16 20:40",
+    "timestamp": 1792154402000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「受川普關稅措施影響 美國鋼價創4年新高 加重製造業負擔」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit5p2x5oiw54it",
+    "title": "中東戰爭衝擊石油出口　伊拉克：約損失1.9兆",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/5599/9819874",
+    "pubDate": "Fri, 16 Oct 2026 20:36:34 +0800",
+    "timeDisplay": "10/16 20:36",
+    "timestamp": 1792154194000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "TW_EXPORT"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中東戰爭衝擊石油出口　伊拉克：約損失1.9兆」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5b6e5Y2K5bCO6auU",
+    "title": "從半導體到量子：美義攜手啟動科技加速器深化合作",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%BE%9E%E5%8D%8A%E5%B0%8E%E9%AB%94%E5%88%B0%E9%87%8F%E5%AD%90-%E7%BE%8E%E7%BE%A9%E6%94%9C%E6%89%8B%E5%95%9F%E5%8B%95%E7%A7%91%E6%8A%80%E5%8A%A0%E9%80%9F%E5%99%A8%E6%B7%B1%E5%8C%96%E5%90%88%E4%BD%9C-123139456.html",
+    "pubDate": "Fri, 16 Oct 2026 12:31:39 GMT",
+    "timeDisplay": "10/16 20:31",
+    "timestamp": 1792153899000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「從半導體到量子：美義攜手啟動科技加速器深化合作」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5LiA6YKK5pKS6Yyi",
+    "title": "一邊撒錢、一邊直言歐洲科技痛點！黃仁勳砸11.6億美元布局英國新創",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632318",
+    "pubDate": "Fri, 16 Oct 2026 12:30:06 GMT",
+    "timeDisplay": "10/16 20:30",
+    "timestamp": 1792153806000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「一邊撒錢、一邊直言歐洲科技痛點！黃仁勳砸11.6億美元布局英國新創」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit5p2x5oiw54it",
+    "title": "中東戰爭衝擊石油出口　伊拉克：約損失1.9兆",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E4%B8%AD%E6%9D%B1%E6%88%B0%E7%88%AD%E8%A1%9D%E6%93%8A%E7%9F%B3%E6%B2%B9%E5%87%BA%E5%8F%A3-%E4%BC%8A%E6%8B%89%E5%85%8B-%E7%B4%84%E6%90%8D%E5%A4%B11-9%E5%85%86-122516446.html",
+    "pubDate": "Fri, 16 Oct 2026 12:25:16 GMT",
+    "timeDisplay": "10/16 20:25",
+    "timestamp": 1792153516000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "TW_EXPORT"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中東戰爭衝擊石油出口　伊拉克：約損失1.9兆」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5rOV5ZyL5aSP5a2j",
+    "title": "法國夏季野火肆虐  保險損失恐達205億台幣",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E6%B3%95%E5%9C%8B%E5%A4%8F%E5%AD%A3%E9%87%8E%E7%81%AB%E8%82%86%E8%99%90-%E4%BF%9D%E9%9A%AA%E6%90%8D%E5%A4%B1%E6%81%90%E9%81%94205%E5%84%84%E5%8F%B0%E5%B9%A3-121943028.html",
+    "pubDate": "Fri, 16 Oct 2026 12:19:43 GMT",
+    "timeDisplay": "10/16 20:19",
+    "timestamp": 1792153183000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「法國夏季野火肆虐  保險損失恐達205億台幣」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CQ576O6IKh55uk",
+    "title": "【美股盤前】「輝達親兒子」違約機率飆6成　黃仁勳發聲了",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E7%BE%8E%E8%82%A1%E7%9B%A4%E5%89%8D-%E8%BC%9D%E9%81%94%E8%A6%AA%E5%85%92%E5%AD%90-%E9%81%95%E7%B4%84%E6%A9%9F%E7%8E%87%E9%A3%866%E6%88%90-%E9%BB%83%E4%BB%81%E5%8B%B3%E7%99%BC%E8%81%B2%E4%BA%86-121500211.html",
+    "pubDate": "Fri, 16 Oct 2026 12:15:00 GMT",
+    "timeDisplay": "10/16 20:15",
+    "timestamp": 1792152900000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「【美股盤前】「輝達親兒子」違約機率飆6成　黃仁勳發聲了」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5LuW54ug6Ku36JSj",
+    "title": "他狠諷蔣萬安：只會重播鮮奶、輝達、大巨蛋",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E4%BB%96%E7%8B%A0%E8%AB%B7%E8%94%A3%E8%90%AC%E5%AE%89-%E5%8F%AA%E6%9C%83%E9%87%8D%E6%92%AD%E9%AE%AE%E5%A5%B6-%E8%BC%9D%E9%81%94-%E5%A4%A7%E5%B7%A8%E8%9B%8B-102811304.html",
+    "pubDate": "Fri, 16 Oct 2026 12:14:00 GMT",
+    "timeDisplay": "10/16 20:14",
+    "timestamp": 1792152840000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「他狠諷蔣萬安：只會重播鮮奶、輝達、大巨蛋」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "SU1G5Lyw5pel6YqA",
+    "title": "IMF估日銀將再升息一次 後續應維持彈性與財政紀律",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632274",
+    "pubDate": "Fri, 16 Oct 2026 12:10:04 GMT",
+    "timeDisplay": "10/16 20:10",
+    "timestamp": 1792152604000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「IMF估日銀將再升息一次 後續應維持彈性與財政紀律」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5oi/6LK457O+57Sb",
+    "title": "房貸糾紛｜利率、成數、綁約、提前還款4大重點一次看",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E6%88%BF%E8%B2%B8%E7%B3%BE%E7%B4%9B%EF%BD%9C%E5%88%A9%E7%8E%87%E3%80%81%E6%88%90%E6%95%B8%E3%80%81%E7%B6%81%E7%B4%84%E3%80%81%E6%8F%90%E5%89%8D%E9%82%84%E6%AC%BE4%E5%A4%A7%E9%87%8D%E9%BB%9E%E4%B8%80%E6%AC%A1%E7%9C%8B-120000766.html",
+    "pubDate": "Fri, 16 Oct 2026 12:00:00 GMT",
+    "timeDisplay": "10/16 20:00",
+    "timestamp": 1792152000000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「房貸糾紛｜利率、成數、綁約、提前還款4大重點一次看」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5q+U54m55bmj6Iul",
+    "title": "比特幣若漲至 29.5 萬美��� XRP 有望飆升 573% 達 8.95 美元",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E6%AF%94%E7%89%B9%E5%B9%A3%E8%8B%A5%E6%BC%B2%E8%87%B3-29-5-%E8%90%AC%E7%BE%8E%E5%85%83-xrp-120000451.html",
+    "pubDate": "Fri, 16 Oct 2026 12:00:00 GMT",
+    "timeDisplay": "10/16 20:00",
+    "timestamp": 1792152000000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「比特幣若漲至 29.5 萬美��� XRP 有望飆升 573% 達 8.95 美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6Lyd6YGU6aaW5qy+",
+    "title": "輝達首款採用CoWos超級筆電 RTX Spark開賣！華碩宏碁聯發科同站台",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94%E9%A6%96%E6%AC%BE%E6%8E%A1%E7%94%A8cowos%E8%B6%85%E7%B4%9A%E7%AD%86%E9%9B%BB-rtx-spark%E9%96%8B%E8%B3%A3-%E8%8F%AF%E7%A2%A9%E5%AE%8F%E7%A2%81%E8%81%AF%E7%99%BC%E7%A7%91%E5%90%8C%E7%AB%99%E5%8F%B0-074951748.html",
+    "pubDate": "Fri, 16 Oct 2026 11:53:51 GMT",
+    "timeDisplay": "10/16 19:53",
+    "timestamp": 1792151631000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「輝達首款採用CoWos超級筆電 RTX Spark開賣！華碩宏碁聯發科同站台」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit5ZyL5pOs5pO0",
+    "title": "中國擬擴大技術出口管制  AI、生醫及太陽能光電40項納管",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E4%B8%AD%E5%9C%8B%E6%93%AC%E6%93%B4%E5%A4%A7%E6%8A%80%E8%A1%93%E5%87%BA%E5%8F%A3%E7%AE%A1%E5%88%B6-ai-%E7%94%9F%E9%86%AB%E5%8F%8A%E5%A4%AA%E9%99%BD%E8%83%BD%E5%85%89%E9%9B%BB40%E9%A0%85%E7%B4%8D%E7%AE%A1-115222580.html",
+    "pubDate": "Fri, 16 Oct 2026 11:52:22 GMT",
+    "timeDisplay": "10/16 19:52",
+    "timestamp": 1792151542000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "TW_EXPORT"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中國擬擴大技術出口管制  AI、生醫及太陽能光電40項納管」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit5ZyL5pOs5pO0",
+    "title": "中國擬擴大技術出口管制 AI、生醫及太陽能光電40項納管",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/5603/9819810",
+    "pubDate": "Fri, 16 Oct 2026 19:45:31 +0800",
+    "timeDisplay": "10/16 19:45",
+    "timestamp": 1792151131000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "TW_EXPORT"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中國擬擴大技術出口管制 AI、生醫及太陽能光電40項納管」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "55+z5rK55Ye65Y+j",
+    "title": "石油出口放緩之際 霍爾木茲海峽輪船遇襲案件創新高",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E7%9F%B3%E6%B2%B9%E5%87%BA%E5%8F%A3%E6%94%BE%E7%B7%A9%E4%B9%8B%E9%9A%9B-%E9%9C%8D%E7%88%BE%E6%9C%A8%E8%8C%B2%E6%B5%B7%E5%B3%BD%E8%BC%AA%E8%88%B9%E9%81%87%E8%A5%B2%E6%A1%88%E4%BB%B6%E5%89%B5%E6%96%B0%E9%AB%98-073632675.html",
+    "pubDate": "Fri, 16 Oct 2026 11:44:56 GMT",
+    "timeDisplay": "10/16 19:44",
+    "timestamp": 1792151096000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "TW_EXPORT"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「石油出口放緩之際 霍爾木茲海峽輪船遇襲案件創新高」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CM5Yil5pOU5b+D",
+    "title": "「別擔心沒發生的事！」分析師看好台股中短期爆發力 不必杞人憂天",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/123398/9819809",
+    "pubDate": "Fri, 16 Oct 2026 19:43:47 +0800",
+    "timeDisplay": "10/16 19:43",
+    "timestamp": 1792151027000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「「別擔心沒發生的事！」分析師看好台股中短期爆發力 不必杞人憂天」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6Iux5ZyL5aSu6KGM",
+    "title": "英國央行總裁貝利認為目前幾無證據顯示通膨衝擊的第二輪效應",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/5599/9819008",
+    "pubDate": "Fri, 16 Oct 2026 19:35:30 +0800",
+    "timeDisplay": "10/16 19:35",
+    "timestamp": 1792150530000,
+    "category": "cpi",
+    "tag": "#CPI通膨",
+    "icon": "📊",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_10Y"
+    ],
+    "commentary": "通膨黏性緩解進程直接決定限制性利率退場斜率，為跨資產長天期估值提供下檔保護。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「英國央行總裁貝利認為目前幾無證據顯示通膨衝擊的第二輪效應」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5aSu6KGM5pyq6Lef",
+    "title": "央行未跟進升息！賴清德接受專訪 揭背後關鍵原因",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%A4%AE%E8%A1%8C%E6%9C%AA%E8%B7%9F%E9%80%B2%E5%8D%87%E6%81%AF-%E8%B3%B4%E6%B8%85%E5%BE%B7%E6%8E%A5%E5%8F%97%E5%B0%88%E8%A8%AA-%E6%8F%AD%E8%83%8C%E5%BE%8C%E9%97%9C%E9%8D%B5%E5%8E%9F%E5%9B%A0-113438770.html",
+    "pubDate": "Fri, 16 Oct 2026 11:34:38 GMT",
+    "timeDisplay": "10/16 19:34",
+    "timestamp": 1792150478000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「央行未跟進升息！賴清德接受專訪 揭背後關鍵原因」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6YCa6Iao5YGP54ax",
+    "title": "通膨偏熱仍不給升息暗示！「Fed傳聲筒」解析華許10月政策留白",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E9%80%9A%E8%86%A8%E5%81%8F%E7%86%B1%E4%BB%8D%E4%B8%8D%E7%B5%A6%E5%8D%87%E6%81%AF%E6%9A%97%E7%A4%BA-fed%E5%82%B3%E8%81%B2%E7%AD%92-%E8%A7%A3%E6%9E%90%E8%8F%AF%E8%A8%B110%E6%9C%88%E6%94%BF%E7%AD%96%E7%95%99%E7%99%BD-113120640.html",
+    "pubDate": "Fri, 16 Oct 2026 11:31:20 GMT",
+    "timeDisplay": "10/16 19:31",
+    "timestamp": 1792150280000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「通膨偏熱仍不給升息暗示！「Fed傳聲筒」解析華許10月政策留白」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6YCa6Iao5YGP54ax",
+    "title": "通膨偏熱仍不給升息暗示！「Fed傳聲筒」解析華許10月政策留白",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632279",
+    "pubDate": "Fri, 16 Oct 2026 11:31:20 GMT",
+    "timeDisplay": "10/16 19:31",
+    "timestamp": 1792150280000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「通膨偏熱仍不給升息暗示！「Fed傳聲筒」解析華許10月政策留白」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5aSW6LOH6YCjOOiz",
+    "title": "外資連8賣台股461億元 權王台積電遭倒貨2.2萬張最多���大砍0050",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%A4%96%E8%B3%87%E9%80%A38%E8%B3%A3%E5%8F%B0%E8%82%A1461%E5%84%84%E5%85%83-%E6%AC%8A%E7%8E%8B%E5%8F%B0%E7%A9%8D%E9%9B%BB%E9%81%AD%E5%80%92%E8%B2%A82-2%E8%90%AC%E5%BC%B5%E6%9C%80%E5%A4%9A-%E5%A4%A7%E7%A0%8D0050-112659241.html",
+    "pubDate": "Fri, 16 Oct 2026 11:26:59 GMT",
+    "timeDisplay": "10/16 19:26",
+    "timestamp": 1792150019000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_TSMC",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「外資連8賣台股461億元 權王台積電遭倒貨2.2萬張最多���大砍0050」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5aSW6LOH6YCjOOiz",
+    "title": "外資連8賣台股461億元 權王台積電遭倒貨2.2萬張最多、大砍0050",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632287",
+    "pubDate": "Fri, 16 Oct 2026 11:26:59 GMT",
+    "timeDisplay": "10/16 19:26",
+    "timestamp": 1792150019000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_TSMC",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「外資連8賣台股461億元 權王台積電遭倒貨2.2萬張最多、大砍0050」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Zau5LiA5ZyS5Y2A",
+    "title": "單一園區投入20～40億美元！經長龔明鑫曝將在美打造工業園區",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%96%AE-%E5%9C%92%E5%8D%80%E6%8A%95%E5%85%A520-40%E5%84%84%E7%BE%8E%E5%85%83-%E7%B6%93%E9%95%B7%E9%BE%94%E6%98%8E%E9%91%AB%E6%9B%9D%E5%B0%87%E5%9C%A8%E7%BE%8E%E6%89%93%E9%80%A0%E5%B7%A5%E6%A5%AD%E5%9C%92%E5%8D%80-112201984.html",
+    "pubDate": "Fri, 16 Oct 2026 11:22:01 GMT",
+    "timeDisplay": "10/16 19:22",
+    "timestamp": 1792149721000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「單一園區投入20～40億美元！經長龔明鑫曝將在美打造工業園區」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5paw6IiI5Yqg5a+G",
+    "title": "新興加密貨幣 Pepeto 募資破千萬美元 分析師看好比特幣衝上 17.5 萬美元",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E6%96%B0%E8%88%88%E5%8A%A0%E5%AF%86%E8%B2%A8%E5%B9%A3-pepeto-%E5%8B%9F%E8%B3%87%E7%A0%B4%E5%8D%83%E8%90%AC%E7%BE%8E%E5%85%83-%E5%88%86%E6%9E%90%E5%B8%AB%E7%9C%8B%E5%A5%BD%E6%AF%94%E7%89%B9%E5%B9%A3%E8%A1%9D%E4%B8%8A-17-112050000.html",
+    "pubDate": "Fri, 16 Oct 2026 11:20:50 GMT",
+    "timeDisplay": "10/16 19:20",
+    "timestamp": 1792149650000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「新興加密貨幣 Pepeto 募資破千萬美元 分析師看好比特幣衝上 17.5 萬美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "QUnmpoLlv7XogqHk",
+    "title": "AI概念股估值承壓、資金轉向傳產 法��：美股中期多頭格局未變",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/ai%E6%A6%82%E5%BF%B5%E8%82%A1%E4%BC%B0%E5%80%BC%E6%89%BF%E5%A3%93-%E8%B3%87%E9%87%91%E8%BD%89%E5%90%91%E5%82%B3%E7%94%A2-%E6%B3%95%E4%BA%BA-%E7%BE%8E%E8%82%A1%E4%B8%AD%E6%9C%9F%E5%A4%9A%E9%A0%AD%E6%A0%BC%E5%B1%80%E6%9C%AA%E8%AE%8A-111352381.html",
+    "pubDate": "Fri, 16 Oct 2026 11:13:52 GMT",
+    "timeDisplay": "10/16 19:13",
+    "timestamp": 1792149232000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「AI概念股估值承壓、資金轉向傳產 法��：美股中期多頭格局未變」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "QUnmpoLlv7XogqHk",
+    "title": "AI概念股估值承壓、資金轉向傳產 法人：美股中期多頭格局未變",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/ai%E6%A6%82%E5%BF%B5%E8%82%A1%E4%BC%B0%E5%80%BC%E6%89%BF%E5%A3%93-%E8%B3%87%E9%87%91%E8%BD%89%E5%90%91%E5%82%B3%E7%94%A2-%E6%B3%95%E4%BA%BA-%E7%BE%8E%E8%82%A1%E4%B8%AD%E6%9C%9F%E5%A4%9A%E9%A0%AD%E6%A0%BC%E5%B1%80%E6%9C%AA%E8%AE%8A-111352381.html",
+    "pubDate": "Fri, 16 Oct 2026 11:13:52 GMT",
+    "timeDisplay": "10/16 19:13",
+    "timestamp": 1792149232000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「AI概念股估值承壓、資金轉向傳產 法人：美股中期多頭格局未變」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "QUnmpoLlv7XogqHk",
+    "title": "AI概念股估值承壓、資金轉向傳產 法人：美股中期多頭格局未變",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6631134",
+    "pubDate": "Fri, 16 Oct 2026 11:13:52 GMT",
+    "timeDisplay": "10/16 19:13",
+    "timestamp": 1792149232000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「AI概念股估值承壓、資金轉向傳產 法人：美股中期多頭格局未變」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6YG/6Zqq6LOH6YeR",
+    "title": "避險資金推動 歐元區公債殖利率徘徊在數周低點附近",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E9%81%BF%E9%9A%AA%E8%B3%87%E9%87%91%E6%8E%A8%E5%8B%95-%E6%AD%90%E5%85%83%E5%8D%80%E5%85%AC%E5%82%B5%E6%AE%96%E5%88%A9%E7%8E%87%E5%BE%98%E5%BE%8A%E5%9C%A8%E6%95%B8%E5%91%A8%E4%BD%8E%E9%BB%9E%E9%99%84%E8%BF%91-103005204.html",
+    "pubDate": "Fri, 16 Oct 2026 10:30:05 GMT",
+    "timeDisplay": "10/16 18:30",
+    "timestamp": 1792146605000,
+    "category": "yield",
+    "tag": "#美債殖利率",
+    "icon": "📈",
+    "relatedIndicators": [
+      "US_10Y"
+    ],
+    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「避險資金推動 歐元區公債殖利率徘徊在數周低點附近」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6YG/6Zqq6LOH6YeR",
+    "title": "避險資金推動 歐元區公債殖利率徘徊在數周低點附近",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632214",
+    "pubDate": "Fri, 16 Oct 2026 10:30:05 GMT",
+    "timeDisplay": "10/16 18:30",
+    "timestamp": 1792146605000,
+    "category": "yield",
+    "tag": "#美債殖利率",
+    "icon": "📈",
+    "relatedIndicators": [
+      "US_10Y"
+    ],
+    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「避險資金推動 歐元區公債殖利率徘徊在數周低點附近」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5YWp5bK45LqU5aSn",
+    "title": "兩岸五大聚焦／人民幣對美元匯率在岸、離岸雙雙升破6.69 續創四年高點",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/5603/9819703",
+    "pubDate": "Fri, 16 Oct 2026 18:29:36 +0800",
+    "timeDisplay": "10/16 18:29",
+    "timestamp": 1792146576000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「兩岸五大聚焦／人民幣對美元匯率在岸、離岸雙雙升破6.69 續創四年高點」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6IGv5rqW5pyD5Li7",
+    "title": "聯準會主席看好AI前景　亞股普遍反彈收紅",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E8%81%AF%E6%BA%96%E6%9C%83%E4%B8%BB%E5%B8%AD%E7%9C%8B%E5%A5%BDai%E5%89%8D%E6%99%AF-%E4%BA%9E%E8%82%A1%E6%99%AE%E9%81%8D%E5%8F%8D%E5%BD%88%E6%94%B6%E7%B4%85-102236535.html",
+    "pubDate": "Fri, 16 Oct 2026 10:22:36 GMT",
+    "timeDisplay": "10/16 18:22",
+    "timestamp": 1792146156000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會主席看好AI前景　亞股普遍反彈收紅」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6Iux54m554i+6YGt",
+    "title": "英特爾遭控詐欺 撕毀晶圓代工合約 高塔半導體求償恐涉數億美元",
+    "source": "經濟日報",
+    "link": "https://money.udn.com/money/story/5599/9819682",
+    "pubDate": "Fri, 16 Oct 2026 18:12:32 +0800",
+    "timeDisplay": "10/16 18:12",
+    "timestamp": 1792145552000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_TSMC"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「英特爾遭控詐欺 撕毀晶圓代工合約 高塔半導體求償恐涉數億美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CI5Y+w5bmj44CJ",
+    "title": "〈台幣〉股匯不同調 續貶7.3分失守32.3元關卡",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632196",
+    "pubDate": "Fri, 16 Oct 2026 10:07:52 GMT",
+    "timeDisplay": "10/16 18:07",
+    "timestamp": 1792145272000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「〈台幣〉股匯不同調 續貶7.3分失守32.3元關卡」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5rC46LGQ6YeR6K2J",
+    "title": "永豐金證券8月複委託交易2846億、市占率居冠　投資美股個股比重達86%",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E6%B0%B8%E8%B1%90%E9%87%91%E8%AD%89%E5%88%B88%E6%9C%88%E8%A4%87%E5%A7%94%E8%A8%97%E4%BA%A4%E6%98%932846%E5%84%84-%E5%B8%82%E5%8D%A0%E7%8E%87%E5%B1%85%E5%86%A0-%E6%8A%95%E8%B3%87%E7%BE%8E%E8%82%A1%E5%80%8B%E8%82%A1%E6%AF%94%E9%87%8D%E9%81%9486-100449341.html",
+    "pubDate": "Fri, 16 Oct 2026 10:04:49 GMT",
+    "timeDisplay": "10/16 18:04",
+    "timestamp": 1792145089000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「永豐金證券8月複委託交易2846億、市占率居冠　投資美股個股比重達86%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit5ZyL5pOs5L+u",
+    "title": "中國擬修訂技術出口管制目錄 增列人工智慧技術",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632207",
+    "pubDate": "Fri, 16 Oct 2026 09:50:05 GMT",
+    "timeDisplay": "10/16 17:50",
+    "timestamp": 1792144205000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "TW_EXPORT"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中國擬修訂技術出口管制目錄 增列人工智慧技術」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Y+w6IKh6LeM56C0",
+    "title": "台股跌破關鍵支撐！第四季誰能逆勢飆？",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632209",
+    "pubDate": "Fri, 16 Oct 2026 09:39:33 GMT",
+    "timeDisplay": "10/16 17:39",
+    "timestamp": 1792143573000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「台股跌破關鍵支撐！第四季誰能逆勢飆？」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "QUnpu4Pph5Hms6Lm",
+    "title": "AI黃金波段行情、金像電、矽力⊕、富喬⊕、建榮",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632199",
+    "pubDate": "Fri, 16 Oct 2026 09:26:31 GMT",
+    "timeDisplay": "10/16 17:26",
+    "timestamp": 1792142791000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "COMMODITY_GOLD"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「AI黃金波段行情、金像電、矽力⊕、富喬⊕、建榮」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6Lyd6YGUUnViaW7k",
+    "title": "輝達Rubin不降規了！12層HBM4引爆記憶體缺��潮 明年HBM「驚人暴漲」",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E8%BC%9D%E9%81%94rubin%E4%B8%8D%E9%99%8D%E8%A6%8F%E4%BA%86-12%E5%B1%A4hbm4%E5%BC%95%E7%88%86%E8%A8%98%E6%86%B6%E9%AB%94%E7%BC%BA%E8%B2%A8%E6%BD%AE-%E6%98%8E%E5%B9%B4hbm-%E9%A9%9A%E4%BA%BA%E6%9A%B4%E6%BC%B2-092441063.html",
+    "pubDate": "Fri, 16 Oct 2026 09:24:41 GMT",
+    "timeDisplay": "10/16 17:24",
+    "timestamp": 1792142681000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「輝達Rubin不降規了！12層HBM4引爆記憶體缺��潮 明年HBM「驚人暴漲」」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6IGv5rqW5pyD5Li7",
+    "title": "聯準會主席看好AI前景　亞股普遍反彈收紅",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E8%81%AF%E6%BA%96%E6%9C%83%E4%B8%BB%E5%B8%AD%E7%9C%8B%E5%A5%BDai%E5%89%8D%E6%99%AF-%E4%BA%9E%E8%82%A1%E6%99%AE%E9%81%8D%E5%8F%8D%E5%BD%88%E6%94%B6%E7%B4%85-091213000.html",
+    "pubDate": "Fri, 16 Oct 2026 09:12:13 GMT",
+    "timeDisplay": "10/16 17:12",
+    "timestamp": 1792141933000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會主席看好AI前景　亞股普遍反彈收紅」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6buD5LuB5Yuz5rKS",
+    "title": "黃仁勳沒替特斯拉Rocket站台　輝達牽起他",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E9%BB%83%E4%BB%81%E5%8B%B3%E6%B2%92%E6%9B%BF%E7%89%B9%E6%96%AF%E6%8B%89rocket%E7%AB%99%E5%8F%B0-%E8%BC%9D%E9%81%94%E7%89%BD%E8%B5%B7%E4%BB%96-090400897.html",
+    "pubDate": "Fri, 16 Oct 2026 09:04:00 GMT",
+    "timeDisplay": "10/16 17:04",
+    "timestamp": 1792141440000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「黃仁勳沒替特斯拉Rocket站台　輝達牽起他」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6IGv5rqW5pyD5Li7",
+    "title": "聯準會主席華許：全球經濟韌性超乎預期　通膨壓力未歇",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E8%81%AF%E6%BA%96%E6%9C%83%E4%B8%BB%E5%B8%AD%E8%8F%AF%E8%A8%B1-%E5%85%A8%E7%90%83%E7%B6%93%E6%BF%9F%E9%9F%8C%E6%80%A7%E8%B6%85%E4%B9%8E%E9%A0%90%E6%9C%9F-%E9%80%9A%E8%86%A8%E5%A3%93%E5%8A%9B%E6%9C%AA%E6%AD%87-090143174.html",
+    "pubDate": "Fri, 16 Oct 2026 09:01:43 GMT",
+    "timeDisplay": "10/16 17:01",
+    "timestamp": 1792141303000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會主席華許：全球經濟韌性超乎預期　通膨壓力未歇」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CI5riv6IKh55uk",
+    "title": "〈港股盤後〉恒指升0.52% 科指漲1.16% AI與儲存概念、黃金股強勢領漲",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632113",
+    "pubDate": "Fri, 16 Oct 2026 08:40:03 GMT",
+    "timeDisplay": "10/16 16:40",
+    "timestamp": 1792140003000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "COMMODITY_GOLD"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「〈港股盤後〉恒指升0.52% 科指漲1.16% AI與儲存概念、黃金股強勢領漲」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》循環經濟模式—RSG、WM",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E5%BE%AA%E7%92%B0%E7%B6%93%E6%BF%9F%E6%A8%A1%E5%BC%8F-rsg-wm-083000388.html",
+    "pubDate": "Fri, 16 Oct 2026 08:30:00 GMT",
+    "timeDisplay": "10/16 16:30",
+    "timestamp": 1792139400000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》循環經濟模式—RSG、WM」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》全球水資源短缺—BMI、XYL、WTRG",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E5%85%A8%E7%90%83%E6%B0%B4%E8%B3%87%E6%BA%90%E7%9F%AD%E7%BC%BA-bmi-xyl-wtrg-082400166.html",
+    "pubDate": "Fri, 16 Oct 2026 08:24:00 GMT",
+    "timeDisplay": "10/16 16:24",
+    "timestamp": 1792139040000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》全球水資源短缺—BMI、XYL、WTRG」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5YWJ5a+256eR5pSc",
+    "title": "光寶科攜雲達，OCP秀輝達NVL72平台基礎設施解方",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%85%89%E5%AF%B6%E7%A7%91%E6%94%9C%E9%9B%B2%E9%81%94-ocp%E7%A7%80%E8%BC%9D%E9%81%94nvl72%E5%B9%B3%E5%8F%B0%E5%9F%BA%E7%A4%8E%E8%A8%AD%E6%96%BD%E8%A7%A3%E6%96%B9-081100041.html",
+    "pubDate": "Fri, 16 Oct 2026 08:11:00 GMT",
+    "timeDisplay": "10/16 16:11",
+    "timestamp": 1792138260000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「光寶科攜雲達，OCP秀輝達NVL72平台基礎設施解方」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6I+v6Kix5pyq6YeL",
+    "title": "華許未釋鷹派訊號 10月升息預期顯著降溫 美股指反彈、金價回穩",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E8%8F%AF%E8%A8%B1%E6%9C%AA%E9%87%8B%E9%B7%B9%E6%B4%BE%E8%A8%8A%E8%99%9F-10%E6%9C%88%E5%8D%87%E6%81%AF%E9%A0%90%E6%9C%9F%E9%A1%AF%E8%91%97%E9%99%8D%E6%BA%AB-%E7%BE%8E%E8%82%A1%E6%8C%87%E5%8F%8D%E5%BD%88-%E9%87%91%E5%83%B9%E5%9B%9E%E7%A9%A9-081003956.html",
+    "pubDate": "Fri, 16 Oct 2026 08:10:03 GMT",
+    "timeDisplay": "10/16 16:10",
+    "timestamp": 1792138203000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y",
+      "COMMODITY_GOLD"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「華許未釋鷹派訊號 10月升息預期顯著降溫 美股指反彈、金價回穩」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6I+v6Kix5pyq6YeL",
+    "title": "華許未釋鷹派訊號 10月升息預期顯著降溫 美股指反彈、金價回穩",
+    "source": "鉅亨網",
+    "link": "https://news.cnyes.com/news/id/6632016",
+    "pubDate": "Fri, 16 Oct 2026 08:10:03 GMT",
+    "timeDisplay": "10/16 16:10",
+    "timestamp": 1792138203000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y",
+      "COMMODITY_GOLD"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「華許未釋鷹派訊號 10月升息預期顯著降溫 美股指反彈、金價回穩」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6a2P5ZOy5a626IiH",
+    "title": "魏哲家與馬斯克都證實台積電德州設廠　「誰說了算」兩人說法卻不相同",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E9%AD%8F%E5%93%B2%E5%AE%B6%E8%88%87%E9%A6%AC%E6%96%AF%E5%85%8B%E9%83%BD%E8%AD%89%E5%AF%A6%E5%8F%B0%E7%A9%8D%E9%9B%BB%E5%BE%B7%E5%B7%9E%E8%A8%AD%E5%BB%A0-%E8%AA%B0%E8%AA%AA%E4%BA%86%E7%AE%97-%E5%85%A9%E4%BA%BA%E8%AA%AA%E6%B3%95%E5%8D%BB%E4%B8%8D%E7%9B%B8%E5%90%8C-080924917.html",
+    "pubDate": "Fri, 16 Oct 2026 08:09:24 GMT",
+    "timeDisplay": "10/16 16:09",
+    "timestamp": 1792138164000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_TSMC"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「魏哲家與馬斯克都證實台積電德州設廠　「誰說了算」兩人說法卻不相同」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》地緣政治與戰略資源—TSM、GFS、AMAT",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E5%9C%B0%E7%B7%A3%E6%94%BF%E6%B2%BB%E8%88%87%E6%88%B0%E7%95%A5%E8%B3%87%E6%BA%90-tsm-gfs-amat-080700879.html",
+    "pubDate": "Fri, 16 Oct 2026 08:07:00 GMT",
+    "timeDisplay": "10/16 16:07",
+    "timestamp": 1792138020000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》地緣政治與戰略資源—TSM、GFS、AMAT」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "MTAvMTbmlrDlj7Dl",
+    "title": "10/16新台幣兌美元匯率以32.338元作收、貶值7.3分；本週貶1.45%",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/10-16%E6%96%B0%E5%8F%B0%E5%B9%A3%E5%85%8C%E7%BE%8E%E5%85%83%E5%8C%AF%E7%8E%87%E4%BB%A532-338%E5%85%83%E4%BD%9C%E6%94%B6-%E8%B2%B6%E5%80%BC7-3%E5%88%86-080400131.html",
+    "pubDate": "Fri, 16 Oct 2026 08:04:00 GMT",
+    "timeDisplay": "10/16 16:04",
+    "timestamp": 1792137840000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「10/16新台幣兌美元匯率以32.338元作收、貶值7.3分；本週貶1.45%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6IGv5rqW5pyD5Li7",
+    "title": "聯準會主席華許：全球經濟韌性超乎預期　通膨壓力未歇",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E8%81%AF%E6%BA%96%E6%9C%83%E4%B8%BB%E5%B8%AD%E8%8F%AF%E8%A8%B1-%E5%85%A8%E7%90%83%E7%B6%93%E6%BF%9F%E9%9F%8C%E6%80%A7%E8%B6%85%E4%B9%8E%E9%A0%90%E6%9C%9F-%E9%80%9A%E8%86%A8%E5%A3%93%E5%8A%9B%E6%9C%AA%E6%AD%87-080041910.html",
+    "pubDate": "Fri, 16 Oct 2026 08:00:41 GMT",
+    "timeDisplay": "10/16 16:00",
+    "timestamp": 1792137641000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會主席華許：全球經濟韌性超乎預期　通膨壓力未歇」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》保險科技—LMND、PGR、MET",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E4%BF%9D%E9%9A%AA%E7%A7%91%E6%8A%80-lmnd-pgr-met-075200818.html",
+    "pubDate": "Fri, 16 Oct 2026 07:52:00 GMT",
+    "timeDisplay": "10/16 15:52",
+    "timestamp": 1792137120000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》保險科技—LMND、PGR、MET」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6Zec56iF5oiw6IiH",
+    "title": "關稅戰與戰火衝擊選情 川普鐵票倉俄州現動搖跡象",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E9%97%9C%E7%A8%85%E6%88%B0%E8%88%87%E6%88%B0%E7%81%AB%E8%A1%9D%E6%93%8A%E9%81%B8%E6%83%85-%E5%B7%9D%E6%99%AE%E9%90%B5%E7%A5%A8%E5%80%89%E4%BF%84%E5%B7%9E%E7%8F%BE%E5%8B%95%E6%90%96%E8%B7%A1%E8%B1%A1-073945207.html",
+    "pubDate": "Fri, 16 Oct 2026 07:39:45 GMT",
+    "timeDisplay": "10/16 15:39",
+    "timestamp": 1792136385000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「關稅戰與戰火衝擊選情 川普鐵票倉俄州現動搖跡象」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "576O6IKh5ryy5Yui",
+    "title": "美股漲勢凌厲 永豐金證券複委託衝破2846億元",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E6%BC%B2%E5%8B%A2%E5%87%8C%E5%8E%B2-%E6%B0%B8%E8%B1%90%E9%87%91%E8%AD%89%E5%88%B8%E8%A4%87%E5%A7%94%E8%A8%97%E8%A1%9D%E7%A0%B42846%E5%84%84%E5%85%83-073525719.html",
+    "pubDate": "Fri, 16 Oct 2026 07:35:25 GMT",
+    "timeDisplay": "10/16 15:35",
+    "timestamp": 1792136125000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「美股漲勢凌厲 永豐金證券複委託衝破2846億元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》體驗式消費趨勢—DIS、BKNG",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E9%AB%94%E9%A9%97%E5%BC%8F%E6%B6%88%E8%B2%BB%E8%B6%A8%E5%8B%A2-dis-bkng-073300256.html",
+    "pubDate": "Fri, 16 Oct 2026 07:33:00 GMT",
+    "timeDisplay": "10/16 15:33",
+    "timestamp": 1792135980000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》體驗式消費趨勢—DIS、BKNG」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5bel5qWt55Si5ZOB",
+    "title": "工業產品服務類股領漲，道瓊歐洲Stoxx 600指數盤初上揚0.29%",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%B7%A5%E6%A5%AD%E7%94%A2%E5%93%81%E6%9C%8D%E5%8B%99%E9%A1%9E%E8%82%A1%E9%A0%98%E6%BC%B2-%E9%81%93%E7%93%8A%E6%AD%90%E6%B4%B2stoxx-600%E6%8C%87%E6%95%B8%E7%9B%A4%E5%88%9D%E4%B8%8A%E6%8F%9A0-29-072751777.html",
+    "pubDate": "Fri, 16 Oct 2026 07:27:51 GMT",
+    "timeDisplay": "10/16 15:27",
+    "timestamp": 1792135671000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「工業產品服務類股領漲，道瓊歐洲Stoxx 600指數盤初上揚0.29%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》銀髮經濟—OHI、VTR",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E9%8A%80%E9%AB%AE%E7%B6%93%E6%BF%9F-ohi-vtr-070400798.html",
+    "pubDate": "Fri, 16 Oct 2026 07:04:00 GMT",
+    "timeDisplay": "10/16 15:04",
+    "timestamp": 1792134240000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》銀髮經濟—OHI、VTR」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "6YCi5L2O6LK355uk",
+    "title": "逢低買盤點火，日經週五上揚898.34或1.39%，AI疑慮仍壓抑半導體股",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E9%80%A2%E4%BD%8E%E8%B2%B7%E7%9B%A4%E9%BB%9E%E7%81%AB-%E6%97%A5%E7%B6%93%E9%80%B1%E4%BA%94%E4%B8%8A%E6%8F%9A898-34%E6%88%961-39-ai%E7%96%91%E6%85%AE%E4%BB%8D%E5%A3%93%E6%8A%91%E5%8D%8A%E5%B0%8E%E9%AB%94%E8%82%A1-065738144.html",
+    "pubDate": "Fri, 16 Oct 2026 06:57:38 GMT",
+    "timeDisplay": "10/16 14:57",
+    "timestamp": 1792133858000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「逢低買盤點火，日經週五上揚898.34或1.39%，AI疑慮仍壓抑半導體股」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5YWJ5a+25pSc6Zuy",
+    "title": "光寶攜雲達亮相2026 OCP 共同展示輝達Vera Rubin NVL72機櫃級解決方案",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%85%89%E5%AF%B6%E6%94%9C%E9%9B%B2%E9%81%94%E4%BA%AE%E7%9B%B82026-ocp-%E5%85%B1%E5%90%8C%E5%B1%95%E7%A4%BA%E8%BC%9D%E9%81%94vera-rubin-nvl72%E6%A9%9F%E6%AB%83%E7%B4%9A%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88-065725838.html",
+    "pubDate": "Fri, 16 Oct 2026 06:57:25 GMT",
+    "timeDisplay": "10/16 14:57",
+    "timestamp": 1792133845000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "MARKET_NVDA"
+    ],
+    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「光寶攜雲達亮相2026 OCP 共同展示輝達Vera Rubin NVL72機櫃級解決方案」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》金融創新與消費趨勢—COIN、XYZ、SECZ",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E9%87%91%E8%9E%8D%E5%89%B5%E6%96%B0%E8%88%87%E6%B6%88%E8%B2%BB%E8%B6%A8%E5%8B%A2-coin-xyz-secz-060300390.html",
+    "pubDate": "Fri, 16 Oct 2026 06:03:00 GMT",
+    "timeDisplay": "10/16 14:03",
+    "timestamp": 1792130580000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》金融創新與消費趨勢—COIN、XYZ、SECZ」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Y+w6IKh5pep55uk",
+    "title": "台股早盤重回4萬7關卡 美聯準會與IMF對談恐影響走勢",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E5%8F%B0%E8%82%A1%E6%97%A9%E7%9B%A4%E9%87%8D%E5%9B%9E4%E8%90%AC7%E9%97%9C%E5%8D%A1-%E7%BE%8E%E8%81%AF%E6%BA%96%E6%9C%83%E8%88%87imf%E5%B0%8D%E8%AB%87%E6%81%90%E5%BD%B1%E9%9F%BF%E8%B5%B0%E5%8B%A2-054708233.html",
+    "pubDate": "Fri, 16 Oct 2026 05:47:08 GMT",
+    "timeDisplay": "10/16 13:47",
+    "timestamp": 1792129628000,
+    "category": "fed",
+    "tag": "#Fed聯準會",
+    "icon": "🏛️",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「台股早盤重回4萬7關卡 美聯準會與IMF對談恐影響走勢」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Y+w6IKh5Y+N5b2I",
+    "title": "台股反彈無量不妙？收漲141點重返47K 輝���PTFE族群飆漲停",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E8%82%A1%E5%8F%8D%E5%BD%88%E7%84%A1%E9%87%8F%E4%B8%8D%E5%A6%99-%E6%94%B6%E6%BC%B2141%E9%BB%9E%E9%87%8D%E8%BF%9447k-%E8%BC%9D%E9%81%94ptfe%E6%97%8F%E7%BE%A4%E9%A3%86%E6%BC%B2%E5%81%9C-054331436.html",
+    "pubDate": "Fri, 16 Oct 2026 05:43:31 GMT",
+    "timeDisplay": "10/16 13:43",
+    "timestamp": 1792129411000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「台股反彈無量不妙？收漲141點重返47K 輝���PTFE族群飆漲停」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "44CK576O6IKh5Li7",
+    "title": "《美股主題週報》數位身份驗證/生物辨識技術－FISV、OKTA",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E4%B8%BB%E9%A1%8C%E9%80%B1%E5%A0%B1-%E6%95%B8%E4%BD%8D%E8%BA%AB%E4%BB%BD%E9%A9%97%E8%AD%89-%E7%94%9F%E7%89%A9%E8%BE%A8%E8%AD%98%E6%8A%80%E8%A1%93-fisv-okta-054300040.html",
+    "pubDate": "Fri, 16 Oct 2026 05:43:00 GMT",
+    "timeDisplay": "10/16 13:43",
+    "timestamp": 1792129380000,
+    "category": "macro",
+    "tag": "#全球總經",
+    "icon": "🌐",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「《美股主題週報》數位身份驗證/生物辨識技術－FISV、OKTA」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit57aT6Zmi5Lyw",
+    "title": "中經院估新台幣匯率第4季走升　均價為31.82元",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/%E4%B8%AD%E7%B6%93%E9%99%A2%E4%BC%B0%E6%96%B0%E5%8F%B0%E5%B9%A3%E5%8C%AF%E7%8E%87%E7%AC%AC4%E5%AD%A3%E8%B5%B0%E5%8D%87-%E5%9D%87%E5%83%B9%E7%82%BA31-82%E5%85%83-053741508.html",
+    "pubDate": "Fri, 16 Oct 2026 05:37:41 GMT",
+    "timeDisplay": "10/16 13:37",
+    "timestamp": 1792129061000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中經院估新台幣匯率第4季走升　均價為31.82元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "5Lit57aT6Zmi5Lyw",
+    "title": "中經院估新台幣匯率第4季走升　均價為31.82元",
+    "source": "Yahoo股市",
+    "link": "https://tw.news.yahoo.com/%E4%B8%AD%E7%B6%93%E9%99%A2%E4%BC%B0%E6%96%B0%E5%8F%B0%E5%B9%A3%E5%8C%AF%E7%8E%87%E7%AC%AC4%E5%AD%A3%E8%B5%B0%E5%8D%87-%E5%9D%87%E5%83%B9%E7%82%BA31-82%E5%85%83-053724090.html",
+    "pubDate": "Fri, 16 Oct 2026 05:37:24 GMT",
+    "timeDisplay": "10/16 13:37",
+    "timestamp": 1792129044000,
+    "category": "trade",
+    "tag": "#外銷匯率",
+    "icon": "💱",
+    "relatedIndicators": [
+      "US_10Y",
+      "MARKET_TAIEX"
+    ],
+    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「中經院估新台幣匯率第4季走升　均價為31.82元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
+    "id": "RmVk5Li75bit6I+v",
+    "title": "Fed主席華許：AI有益美國經濟、過程將非常顛簸！未談利率走向 美股期指小漲",
+    "source": "Yahoo股市",
+    "link": "https://tw.stock.yahoo.com/news/fed%E4%B8%BB%E5%B8%AD%E8%8F%AF%E8%A8%B1-ai%E6%9C%89%E7%9B%8A%E7%BE%8E%E5%9C%8B%E7%B6%93%E6%BF%9F-%E9%81%8E%E7%A8%8B%E5%B0%87%E9%9D%9E%E5%B8%B8%E9%A1%9B%E7%B0%B8-%E6%9C%AA%E8%AB%87%E5%88%A9%E7%8E%87%E8%B5%B0%E5%90%91-%E7%BE%8E%E8%82%A1%E6%9C%9F%E6%8C%87%E5%B0%8F%E6%BC%B2-052818216.html",
+    "pubDate": "Fri, 16 Oct 2026 05:28:18 GMT",
+    "timeDisplay": "10/16 13:28",
+    "timestamp": 1792128498000,
+    "category": "tech",
+    "tag": "#科技半導體",
+    "icon": "💎",
+    "relatedIndicators": [
+      "US_FOMC",
+      "US_2Y"
+    ],
+    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
+    "aiPrompt": "請針對最新重大總經與央行新聞「Fed主席華許：AI有益美國經濟、過程將非常顛簸！未談利率走向 美股期指小漲」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
+  },
+  {
     "id": "5omN5Ymb6L2J5Y2H",
     "title": "才剛轉升又股匯雙殺！新台幣貶逾2角跌破32.3元 刷新2個月盤中最低價",
     "source": "Yahoo股市",
@@ -561,1208 +1765,5 @@
     ],
     "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
     "aiPrompt": "請針對最新重大總經與央行新聞「台股遭空襲重挫1300點 多家內資看好權王下午法說穩信心」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "44CK5Lq65bmj5Yyv",
-    "title": "《人幣匯率》中間價15日報6.7253元 貶值4基點",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E4%BA%BA%E5%B9%A3%E5%8C%AF%E7%8E%87-%E4%B8%AD%E9%96%93%E5%83%B915%E6%97%A5%E5%A0%B16-7253%E5%85%83-%E8%B2%B6%E5%80%BC4%E5%9F%BA%E9%BB%9E-014500495.html",
-    "pubDate": "Thu, 15 Oct 2026 01:45:00 GMT",
-    "timeDisplay": "10/15 09:45",
-    "timestamp": 1792028700000,
-    "category": "trade",
-    "tag": "#外銷匯率",
-    "icon": "💱",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「《人幣匯率》中間價15日報6.7253元 貶值4基點」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6LOj6YqF5pS55pS2",
-    "title": "賣銅改收人民幣！尚比亞明年起部分對大陸出口改用人民幣結算",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5603/9815782",
-    "pubDate": "Thu, 15 Oct 2026 09:39:16 +0800",
-    "timeDisplay": "10/15 09:39",
-    "timestamp": 1792028356000,
-    "category": "trade",
-    "tag": "#外銷匯率",
-    "icon": "💱",
-    "relatedIndicators": [
-      "TW_EXPORT",
-      "COMMODITY_COPPER"
-    ],
-    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「賣銅改收人民幣！尚比亞明年起部分對大陸出口改用人民幣結算」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6YCG6aKo6J6N6LOH",
-    "title": "逆風融資！摩根士丹利發債30億美元，無視美債殖利率飆升衝擊",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%80%86%E9%A2%A8%E8%9E%8D%E8%B3%87-%E6%91%A9%E6%A0%B9%E5%A3%AB%E4%B8%B9%E5%88%A9%E7%99%BC%E5%82%B530%E5%84%84%E7%BE%8E%E5%85%83-%E7%84%A1%E8%A6%96%E7%BE%8E%E5%82%B5%E6%AE%96%E5%88%A9%E7%8E%87%E9%A3%86%E5%8D%87%E8%A1%9D%E6%93%8A-013551515.html",
-    "pubDate": "Thu, 15 Oct 2026 01:35:51 GMT",
-    "timeDisplay": "10/15 09:35",
-    "timestamp": 1792028151000,
-    "category": "trade",
-    "tag": "#外銷匯率",
-    "icon": "💱",
-    "relatedIndicators": [
-      "US_10Y"
-    ],
-    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「逆風融資！摩根士丹利發債30億美元，無視美債殖利率飆升衝擊」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6IiK6YeR5bGxRmVk",
-    "title": "舊金山Fed戴莉：可能仍需升息 但不急於採取行動",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6630786",
-    "pubDate": "Thu, 15 Oct 2026 01:30:05 GMT",
-    "timeDisplay": "10/15 09:30",
-    "timestamp": 1792027805000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「舊金山Fed戴莉：可能仍需升息 但不急於採取行動」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6buD5LuB5Yuz5pS+",
-    "title": "黃仁勳放話：客戶若開發不安全AI 輝達恐斷供晶片",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%BB%83%E4%BB%81%E5%8B%B3%E6%94%BE%E8%A9%B1-%E5%AE%A2%E6%88%B6%E8%8B%A5%E9%96%8B%E7%99%BC%E4%B8%8D%E5%AE%89%E5%85%A8ai-%E8%BC%9D%E9%81%94%E6%81%90%E6%96%B7%E4%BE%9B%E6%99%B6%E7%89%87-012900347.html",
-    "pubDate": "Thu, 15 Oct 2026 01:29:00 GMT",
-    "timeDisplay": "10/15 09:29",
-    "timestamp": 1792027740000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「黃仁勳放話：客戶若開發不安全AI 輝達恐斷供晶片」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Iqd5Yqg5ZOl6IGv",
-    "title": "芝加哥聯準總裁稱通膨數據令人失望 警告經濟過熱風險",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5599/9815599",
-    "pubDate": "Thu, 15 Oct 2026 09:20:32 +0800",
-    "timeDisplay": "10/15 09:20",
-    "timestamp": 1792027232000,
-    "category": "cpi",
-    "tag": "#CPI通膨",
-    "icon": "📊",
-    "relatedIndicators": [
-      "US_CPI"
-    ],
-    "commentary": "通膨黏性緩解進程直接決定限制性利率退場斜率，為跨資產長天期估值提供下檔保護。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「芝加哥聯準總裁稱通膨數據令人失望 警告經濟過熱風險」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "Q05QQ+acquaMieWN",
-    "title": "CNPC未按協議匯回6%原油出口收入，尼日外匯挹注落空",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/cnpc%E6%9C%AA%E6%8C%89%E5%8D%94%E8%AD%B0%E5%8C%AF%E5%9B%9E6-%E5%8E%9F%E6%B2%B9%E5%87%BA%E5%8F%A3%E6%94%B6%E5%85%A5-%E5%B0%BC%E6%97%A5%E5%A4%96%E5%8C%AF%E6%8C%B9%E6%B3%A8%E8%90%BD%E7%A9%BA-011559443.html",
-    "pubDate": "Thu, 15 Oct 2026 01:15:59 GMT",
-    "timeDisplay": "10/15 09:15",
-    "timestamp": 1792026959000,
-    "category": "energy",
-    "tag": "#能源原油",
-    "icon": "🛢️",
-    "relatedIndicators": [
-      "TW_EXPORT",
-      "COMMODITY_OIL"
-    ],
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「CNPC未按協議匯回6%原油出口收入，尼日外匯挹注落空」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "QUnmipXos4fkuI3l",
-    "title": "AI投資不只看輝達！國泰證券點名半導體設備、先進封裝　第四季布局方向出爐",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/ai%E6%8A%95%E8%B3%87%E4%B8%8D%E5%8F%AA%E7%9C%8B%E8%BC%9D%E9%81%94-%E5%9C%8B%E6%B3%B0%E8%AD%89%E5%88%B8%E9%BB%9E%E5%90%8D%E5%8D%8A%E5%B0%8E%E9%AB%94%E8%A8%AD%E5%82%99-%E5%85%88%E9%80%B2%E5%B0%81%E8%A3%9D-%E7%AC%AC%E5%9B%9B%E5%AD%A3%E5%B8%83%E5%B1%80%E6%96%B9%E5%90%91%E5%87%BA%E7%88%90-011400519.html",
-    "pubDate": "Thu, 15 Oct 2026 01:14:00 GMT",
-    "timeDisplay": "10/15 09:14",
-    "timestamp": 1792026840000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「AI投資不只看輝達！國泰證券點名半導體設備、先進封裝　第四季布局方向出爐」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "55u06L+96Lyd6YGU",
-    "title": "直追輝達！蘋果市值首度收盤衝破5兆美元",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E7%9B%B4%E8%BF%BD%E8%BC%9D%E9%81%94-%E8%98%8B%E6%9E%9C%E5%B8%82%E5%80%BC%E9%A6%96%E5%BA%A6%E6%94%B6%E7%9B%A4%E8%A1%9D%E7%A0%B45%E5%85%86%E7%BE%8E%E5%85%83-010743232.html",
-    "pubDate": "Thu, 15 Oct 2026 01:07:43 GMT",
-    "timeDisplay": "10/15 09:07",
-    "timestamp": 1792026463000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「直追輝達！蘋果市值首度收盤衝破5兆美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6IGv5rqW5pyD6KSQ",
-    "title": "聯準會褐皮書揭物價壓力加劇　10月底升息機率升至37%",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5599/9815687",
-    "pubDate": "Thu, 15 Oct 2026 09:00:34 +0800",
-    "timeDisplay": "10/15 09:00",
-    "timestamp": 1792026034000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會褐皮書揭物價壓力加劇　10月底升息機率升至37%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6IGv5rqW5pyD6KSQ",
-    "title": "聯準會褐皮書揭物價壓力加劇　10月底升息機率升至37%",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%81%AF%E6%BA%96%E6%9C%83%E8%A4%90%E7%9A%AE%E6%9B%B8%E6%8F%AD%E7%89%A9%E5%83%B9%E5%A3%93%E5%8A%9B%E5%8A%A0%E5%8A%87-10%E6%9C%88%E5%BA%95%E5%8D%87%E6%81%AF%E6%A9%9F%E7%8E%87%E5%8D%87%E8%87%B337-005933783.html",
-    "pubDate": "Thu, 15 Oct 2026 00:59:33 GMT",
-    "timeDisplay": "10/15 08:59",
-    "timestamp": 1792025973000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會褐皮書揭物價壓力加劇　10月底升息機率升至37%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "56We5rqW5oq85Lit",
-    "title": "神準押中9月升息今再預警 申克：Fed 12月可能一口氣升2碼",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5599/9815684",
-    "pubDate": "Thu, 15 Oct 2026 08:56:58 +0800",
-    "timeDisplay": "10/15 08:56",
-    "timestamp": 1792025818000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「神準押中9月升息今再預警 申克：Fed 12月可能一口氣升2碼」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "44CM6ZuZ5YCN6LaF",
-    "title": "「雙倍超配」AI建設！ 大摩：AI產業年度開支有望維持1兆美元水準",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6630784",
-    "pubDate": "Thu, 15 Oct 2026 00:52:59 GMT",
-    "timeDisplay": "10/15 08:52",
-    "timestamp": 1792025579000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「「雙倍超配」AI建設！ 大摩：AI產業年度開支有望維持1兆美元水準」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6IGv5rqW5pyD6KSQ",
-    "title": "聯準會褐皮書揭物價壓力加劇　10月底升息機率升至37%",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E8%81%AF%E6%BA%96%E6%9C%83%E8%A4%90%E7%9A%AE%E6%9B%B8%E6%8F%AD%E7%89%A9%E5%83%B9%E5%A3%93%E5%8A%9B%E5%8A%A0%E5%8A%87-10%E6%9C%88%E5%BA%95%E5%8D%87%E6%81%AF%E6%A9%9F%E7%8E%87%E5%8D%87%E8%87%B337-005156578.html",
-    "pubDate": "Thu, 15 Oct 2026 00:51:56 GMT",
-    "timeDisplay": "10/15 08:51",
-    "timestamp": 1792025516000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會褐皮書揭物價壓力加劇　10月底升息機率升至37%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5pm254mH6IKh5Y+I",
-    "title": "晶片股又遭血洗 韓股暴跌6%日經225狂瀉2,300點 費半6天蒸發1.6兆美元",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5599/9815673",
-    "pubDate": "Thu, 15 Oct 2026 08:51:27 +0800",
-    "timeDisplay": "10/15 08:51",
-    "timestamp": 1792025487000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「晶片股又遭血洗 韓股暴跌6%日經225狂瀉2,300點 費半6天蒸發1.6兆美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "56ys5LqM5rOi6YCa",
-    "title": "第二波通膨浪潮將至！IMF警告食品能源價格波動恐常態化 全球通膨降溫之路添變數",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6630707",
-    "pubDate": "Thu, 15 Oct 2026 00:50:04 GMT",
-    "timeDisplay": "10/15 08:50",
-    "timestamp": 1792025404000,
-    "category": "cpi",
-    "tag": "#CPI通膨",
-    "icon": "📊",
-    "relatedIndicators": [
-      "US_CPI"
-    ],
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「第二波通膨浪潮將至！IMF警告食品能源價格波動恐常態化 全球通膨降溫之路添變數」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6YKj5oyH44CB6LK7",
-    "title": "那指、費半急殺壓力外溢＋AI投資疑慮升溫，日經指數早盤急跌逾3%連六黑",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%82%A3%E6%8C%87-%E8%B2%BB%E5%8D%8A%E6%80%A5%E6%AE%BA%E5%A3%93%E5%8A%9B%E5%A4%96%E6%BA%A2-ai%E6%8A%95%E8%B3%87%E7%96%91%E6%85%AE%E5%8D%87%E6%BA%AB-%E6%97%A5%E7%B6%93%E6%8C%87%E6%95%B8%E6%97%A9%E7%9B%A4%E6%80%A5%E8%B7%8C%E9%80%BE3-%E9%80%A3%E5%85%AD%E9%BB%91-004603753.html",
-    "pubDate": "Thu, 15 Oct 2026 00:46:03 GMT",
-    "timeDisplay": "10/15 08:46",
-    "timestamp": 1792025163000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「那指、費半急殺壓力外溢＋AI投資疑慮升溫，日經指數早盤急跌逾3%連六黑」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Lyd6YGU6ZaL5pS+",
-    "title": "輝達開放Vera Rubin機櫃設計! AI 資料中心標準之爭提前打響",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%BC%9D%E9%81%94%E9%96%8B%E6%94%BEvera-rubin%E6%A9%9F%E6%AB%83%E8%A8%AD%E8%A8%88-ai-%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E6%A8%99%E6%BA%96%E4%B9%8B%E7%88%AD%E6%8F%90%E5%89%8D%E6%89%93%E9%9F%BF-004003147.html",
-    "pubDate": "Thu, 15 Oct 2026 00:40:03 GMT",
-    "timeDisplay": "10/15 08:40",
-    "timestamp": 1792024803000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「輝達開放Vera Rubin機櫃設計! AI 資料中心標準之爭提前打響」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Lyd6YGU6ZaL5pS+",
-    "title": "輝達開放Vera Rubin機櫃設計! AI 資料中心標準之爭提前打響",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6630706",
-    "pubDate": "Thu, 15 Oct 2026 00:40:03 GMT",
-    "timeDisplay": "10/15 08:40",
-    "timestamp": 1792024803000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「輝達開放Vera Rubin機櫃設計! AI 資料中心標準之爭提前打響」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6IGv5rqW5pyD6YCj",
-    "title": "聯準會連三個月暫停準備金管理購債，銀行準備金維持3.02兆美元",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%81%AF%E6%BA%96%E6%9C%83%E9%80%A3%E4%B8%89%E5%80%8B%E6%9C%88%E6%9A%AB%E5%81%9C%E6%BA%96%E5%82%99%E9%87%91%E7%AE%A1%E7%90%86%E8%B3%BC%E5%82%B5-%E9%8A%80%E8%A1%8C%E6%BA%96%E5%82%99%E9%87%91%E7%B6%AD%E6%8C%813-02%E5%85%86%E7%BE%8E%E5%85%83-003900469.html",
-    "pubDate": "Thu, 15 Oct 2026 00:39:00 GMT",
-    "timeDisplay": "10/15 08:39",
-    "timestamp": 1792024740000,
-    "category": "trade",
-    "tag": "#外銷匯率",
-    "icon": "💱",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「聯準會連三個月暫停準備金管理購債，銀行準備金維持3.02兆美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5Y+w6IKh5LiN56mp",
-    "title": "台股不穩了？韓股下跌4%、日經暴跌千點　科技指標股齊殺超過5%",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E8%82%A1%E4%B8%8D%E7%A9%A9%E4%BA%86-%E9%9F%93%E8%82%A1%E4%B8%8B%E8%B7%8C4-%E6%97%A5%E7%B6%93%E6%9A%B4%E8%B7%8C%E5%8D%83%E9%BB%9E-%E7%A7%91%E6%8A%80%E6%8C%87%E6%A8%99%E8%82%A1%E9%BD%8A%E6%AE%BA%E8%B6%85%E9%81%8E5-003500746.html",
-    "pubDate": "Thu, 15 Oct 2026 00:35:00 GMT",
-    "timeDisplay": "10/15 08:35",
-    "timestamp": 1792024500000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "MARKET_TAIEX"
-    ],
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「台股不穩了？韓股下跌4%、日經暴跌千點　科技指標股齊殺超過5%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5rOV6Kqq5YmN5aSV",
-    "title": "法說前夕，台積電ADR週三重挫3.40%，創一個月新低",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E6%B3%95%E8%AA%AA%E5%89%8D%E5%A4%95-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E9%80%B1%E4%B8%89%E9%87%8D%E6%8C%AB3-40-%E5%89%B5-%E5%80%8B%E6%9C%88%E6%96%B0%E4%BD%8E-003439771.html",
-    "pubDate": "Thu, 15 Oct 2026 00:34:39 GMT",
-    "timeDisplay": "10/15 08:34",
-    "timestamp": 1792024479000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「法說前夕，台積電ADR週三重挫3.40%，創一個月新低」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6buD5LuB5Yuz56ix",
-    "title": "黃仁勳稱AI基建短缺��延續數年，輝達週三仍跌3.16%，居道瓊跌幅之冠",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%BB%83%E4%BB%81%E5%8B%B3%E7%A8%B1ai%E5%9F%BA%E5%BB%BA%E7%9F%AD%E7%BC%BA%E5%B0%87%E5%BB%B6%E7%BA%8C%E6%95%B8%E5%B9%B4-%E8%BC%9D%E9%81%94%E9%80%B1%E4%B8%89%E4%BB%8D%E8%B7%8C3-16-%E5%B1%85%E9%81%93%E7%93%8A%E8%B7%8C%E5%B9%85%E4%B9%8B%E5%86%A0-003245551.html",
-    "pubDate": "Thu, 15 Oct 2026 00:32:45 GMT",
-    "timeDisplay": "10/15 08:32",
-    "timestamp": 1792024365000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「黃仁勳稱AI基建短缺��延續數年，輝達週三仍跌3.16%，居道瓊跌幅之冠」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6buD5LuB5Yuz56ix",
-    "title": "黃仁勳稱AI基建短缺將延續數年，輝達週三仍跌3.16%，居道瓊跌幅之冠",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%BB%83%E4%BB%81%E5%8B%B3%E7%A8%B1ai%E5%9F%BA%E5%BB%BA%E7%9F%AD%E7%BC%BA%E5%B0%87%E5%BB%B6%E7%BA%8C%E6%95%B8%E5%B9%B4-%E8%BC%9D%E9%81%94%E9%80%B1%E4%B8%89%E4%BB%8D%E8%B7%8C3-16-%E5%B1%85%E9%81%93%E7%93%8A%E8%B7%8C%E5%B9%85%E4%B9%8B%E5%86%A0-003245551.html",
-    "pubDate": "Thu, 15 Oct 2026 00:32:45 GMT",
-    "timeDisplay": "10/15 08:32",
-    "timestamp": 1792024365000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「黃仁勳稱AI基建短缺將延續數年，輝達週三仍跌3.16%，居道瓊跌幅之冠」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "QVNNTOiyoeWgseaU",
-    "title": "ASML財報支撐，道瓊歐洲600週三收漲0.43%，五大股市僅義大利收黑",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/asml%E8%B2%A1%E5%A0%B1%E6%94%AF%E6%92%90-%E9%81%93%E7%93%8A%E6%AD%90%E6%B4%B2600%E9%80%B1%E4%B8%89%E6%94%B6%E6%BC%B20-43-%E4%BA%94%E5%A4%A7%E8%82%A1%E5%B8%82%E5%83%85%E7%BE%A9%E5%A4%A7%E5%88%A9%E6%94%B6%E9%BB%91-003008872.html",
-    "pubDate": "Thu, 15 Oct 2026 00:30:08 GMT",
-    "timeDisplay": "10/15 08:30",
-    "timestamp": 1792024208000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「ASML財報支撐，道瓊歐洲600週三收漲0.43%，五大股市僅義大利收黑」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "QVNNTOiyoeWgseaU",
-    "title": "ASML財報支撐，道瓊歐洲600週三收漲0.43%，五大股市僅義��利收黑",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/asml%E8%B2%A1%E5%A0%B1%E6%94%AF%E6%92%90-%E9%81%93%E7%93%8A%E6%AD%90%E6%B4%B2600%E9%80%B1%E4%B8%89%E6%94%B6%E6%BC%B20-43-%E4%BA%94%E5%A4%A7%E8%82%A1%E5%B8%82%E5%83%85%E7%BE%A9%E5%A4%A7%E5%88%A9%E6%94%B6%E9%BB%91-003008872.html",
-    "pubDate": "Thu, 15 Oct 2026 00:30:08 GMT",
-    "timeDisplay": "10/15 08:30",
-    "timestamp": 1792024208000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「ASML財報支撐，道瓊歐洲600週三收漲0.43%，五大股市僅義��利收黑」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5b635ZyL5ryi6I6O",
-    "title": "德國漢莎航空砸12億歐元 收購葡航44.9%股權獲黃金航線",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E5%BE%B7%E5%9C%8B%E6%BC%A2%E8%8E%8E%E8%88%AA%E7%A9%BA%E7%A0%B812%E5%84%84%E6%AD%90%E5%85%83-%E6%94%B6%E8%B3%BC%E8%91%A1%E8%88%AA44-9-%E8%82%A1%E6%AC%8A%E7%8D%B2%E9%BB%83%E9%87%91%E8%88%AA%E7%B7%9A-001326229.html",
-    "pubDate": "Thu, 15 Oct 2026 00:13:26 GMT",
-    "timeDisplay": "10/15 08:13",
-    "timestamp": 1792023206000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "COMMODITY_GOLD"
-    ],
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「德國漢莎航空砸12億歐元 收購葡航44.9%股權獲黃金航線」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O5YWs5YK15q6W",
-    "title": "美公債殖利率攀高　費半等四大指數收黑　台積電ADR下跌3.4％",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E7%BE%8E%E5%85%AC%E5%82%B5%E6%AE%96%E5%88%A9%E7%8E%87%E6%94%80%E9%AB%98-%E8%B2%BB%E5%8D%8A%E7%AD%89%E5%9B%9B%E5%A4%A7%E6%8C%87%E6%95%B8%E6%94%B6%E9%BB%91-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E4%B8%8B%E8%B7%8C3-4-001014199.html",
-    "pubDate": "Thu, 15 Oct 2026 00:10:14 GMT",
-    "timeDisplay": "10/15 08:10",
-    "timestamp": 1792023014000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TSMC",
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美公債殖利率攀高　費半等四大指數收黑　台積電ADR下跌3.4％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O6IKh56eR5oqA",
-    "title": "美股科技股全面重挫！費半暴跌4.3%，台指期夜盤重挫853點",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E7%A7%91%E6%8A%80%E8%82%A1%E5%85%A8%E9%9D%A2%E9%87%8D%E6%8C%AB-%E8%B2%BB%E5%8D%8A%E6%9A%B4%E8%B7%8C4-3-%E5%8F%B0%E6%8C%87%E6%9C%9F%E5%A4%9C%E7%9B%A4%E9%87%8D%E6%8C%AB853%E9%BB%9E-000245915.html",
-    "pubDate": "Thu, 15 Oct 2026 00:02:45 GMT",
-    "timeDisplay": "10/15 08:02",
-    "timestamp": 1792022565000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_SOX",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美股科技股全面重挫！費半暴跌4.3%，台指期夜盤重挫853點」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Iqx5peX6L2J6be5",
-    "title": "花旗轉鷹改估聯準會12月升息1碼，降息須等到2027年6月",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%8A%B1%E6%97%97%E8%BD%89%E9%B7%B9%E6%94%B9%E4%BC%B0%E8%81%AF%E6%BA%96%E6%9C%8312%E6%9C%88%E5%8D%87%E6%81%AF1%E7%A2%BC-%E9%99%8D%E6%81%AF%E9%A0%88%E7%AD%89%E5%88%B02027%E5%B9%B46%E6%9C%88-000224117.html",
-    "pubDate": "Thu, 15 Oct 2026 00:02:24 GMT",
-    "timeDisplay": "10/15 08:02",
-    "timestamp": 1792022544000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「花旗轉鷹改估聯準會12月升息1碼，降息須等到2027年6月」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "Q29yZVdlYXZl5YK1",
-    "title": "CoreWeave債殖利率逼15%股價崩 馬斯克驚呼不妙",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/coreweave%E5%82%B5%E6%AE%96%E5%88%A9%E7%8E%87%E9%80%BC15-%E8%82%A1%E5%83%B9%E5%B4%A9-%E9%A6%AC%E6%96%AF%E5%85%8B%E9%A9%9A%E5%91%BC%E4%B8%8D%E5%A6%99-000200075.html",
-    "pubDate": "Thu, 15 Oct 2026 00:02:00 GMT",
-    "timeDisplay": "10/15 08:02",
-    "timestamp": 1792022520000,
-    "category": "yield",
-    "tag": "#美債殖利率",
-    "icon": "📈",
-    "relatedIndicators": [
-      "US_10Y"
-    ],
-    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「CoreWeave債殖利率逼15%股價崩 馬斯克驚呼不妙」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Lyd6YGU44CB6LaF",
-    "title": "輝達、超微喊訂單旺！ASML設���不夠賣　就等台積電驗證AI行情",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94-%E8%B6%85%E5%BE%AE%E5%96%8A%E8%A8%82%E5%96%AE%E6%97%BA-asml%E8%A8%AD%E5%82%99%E4%B8%8D%E5%A4%A0%E8%B3%A3-%E5%B0%B1%E7%AD%89%E5%8F%B0%E7%A9%8D%E9%9B%BB%E9%A9%97%E8%AD%89ai%E8%A1%8C%E6%83%85-000100728.html",
-    "pubDate": "Thu, 15 Oct 2026 00:01:00 GMT",
-    "timeDisplay": "10/15 08:01",
-    "timestamp": 1792022460000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC",
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「輝達、超微喊訂單旺！ASML設���不夠賣　就等台積電驗證AI行情」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Lyd6YGU44CB6LaF",
-    "title": "輝達、超微喊訂單旺！ASML設備不夠賣　就等台積電驗證AI行情",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94-%E8%B6%85%E5%BE%AE%E5%96%8A%E8%A8%82%E5%96%AE%E6%97%BA-asml%E8%A8%AD%E5%82%99%E4%B8%8D%E5%A4%A0%E8%B3%A3-%E5%B0%B1%E7%AD%89%E5%8F%B0%E7%A9%8D%E9%9B%BB%E9%A9%97%E8%AD%89ai%E8%A1%8C%E6%83%85-000100728.html",
-    "pubDate": "Thu, 15 Oct 2026 00:01:00 GMT",
-    "timeDisplay": "10/15 08:01",
-    "timestamp": 1792022460000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC",
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「輝達、超微喊訂單旺！ASML設備不夠賣　就等台積電驗證AI行情」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5Y+w56mN6Zu75pSc",
-    "title": "台積電攜手馬斯克赴德州建晶圓廠？業界評：沒什麼吸引力　今法說會說分明",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E9%A6%AC%E6%96%AF%E5%85%8B%E7%A8%B1%E5%8F%AA%E6%98%AF%E7%A7%9F%E5%BB%A0%E6%88%BF-%E5%8F%B0%E7%A9%8D%E9%9B%BB%E5%BE%B7%E5%B7%9E%E5%BB%A0%E5%88%B0%E5%BA%95%E6%80%8E%E9%BA%BC%E7%87%9F%E9%81%8B-%E6%B3%95%E8%AA%AA%E6%9C%83%E8%AA%AA%E5%88%86%E6%98%8E-000100447.html",
-    "pubDate": "Thu, 15 Oct 2026 00:00:00 GMT",
-    "timeDisplay": "10/15 08:00",
-    "timestamp": 1792022400000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「台積電攜手馬斯克赴德州建晶圓廠？業界評：沒什麼吸引力　今法說會說分明」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6buD5LuB5Yuz5pS+",
-    "title": "黃仁勳放話：客戶若開發不安全AI　輝達將停止供晶片",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E9%BB%83%E4%BB%81%E5%8B%B3%E6%94%BE%E8%A9%B1-%E5%AE%A2%E6%88%B6%E8%8B%A5%E9%96%8B%E7%99%BC%E4%B8%8D%E5%AE%89%E5%85%A8ai-%E8%BC%9D%E9%81%94%E5%B0%87%E5%81%9C%E6%AD%A2%E4%BE%9B%E6%99%B6%E7%89%87-235300947.html",
-    "pubDate": "Wed, 14 Oct 2026 23:53:00 GMT",
-    "timeDisplay": "10/15 07:53",
-    "timestamp": 1792021980000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「黃仁勳放話：客戶若開發不安全AI　輝達將停止供晶片」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O6YCa6Iao6auY",
-    "title": "美通膨高於預期掀升息疑慮！美股費半跌4.3％、台積電ADR跌3.4％",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E7%BE%8E%E9%80%9A%E8%86%A8%E9%AB%98%E6%96%BC%E9%A0%90%E6%9C%9F%E6%8E%80%E5%8D%87%E6%81%AF%E7%96%91%E6%85%AE-%E7%BE%8E%E8%82%A1%E8%B2%BB%E5%8D%8A%E8%B7%8C4-3-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E8%B7%8C3-4-235150953.html",
-    "pubDate": "Wed, 14 Oct 2026 23:51:50 GMT",
-    "timeDisplay": "10/15 07:51",
-    "timestamp": 1792021910000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y",
-      "MARKET_TSMC",
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美通膨高於預期掀升息疑慮！美股費半跌4.3％、台積電ADR跌3.4％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576OOeaciENQSemr",
-    "title": "美9月CPI高於���期！費半連跌6天　台積電ADR重挫3.34％",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E7%BE%8E9%E6%9C%88cpi%E9%AB%98%E6%96%BC%E9%A0%90%E6%9C%9F-%E8%B2%BB%E5%8D%8A%E9%80%A3%E8%B7%8C6%E5%A4%A9-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E9%87%8D%E6%8C%AB3-34-232006751.html",
-    "pubDate": "Wed, 14 Oct 2026 23:20:06 GMT",
-    "timeDisplay": "10/15 07:20",
-    "timestamp": 1792020006000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_CPI",
-      "MARKET_TSMC",
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美9月CPI高於���期！費半連跌6天　台積電ADR重挫3.34％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576OOeaciENQSemr",
-    "title": "美9月CPI高於預期！費半連跌6天　台積電ADR重挫3.34％",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E7%BE%8E9%E6%9C%88cpi%E9%AB%98%E6%96%BC%E9%A0%90%E6%9C%9F-%E8%B2%BB%E5%8D%8A%E9%80%A3%E8%B7%8C6%E5%A4%A9-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E9%87%8D%E6%8C%AB3-34-232006751.html",
-    "pubDate": "Wed, 14 Oct 2026 23:20:06 GMT",
-    "timeDisplay": "10/15 07:20",
-    "timestamp": 1792020006000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_CPI",
-      "MARKET_TSMC",
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美9月CPI高於預期！費半連跌6天　台積電ADR重挫3.34％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O5ZyL6YCa6Iao",
-    "title": "美國通膨數據超出預期！美股收黑「那指、費半」齊跌超過500點　記憶體股下殺、台指期夜盤失守48K",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E5%9C%8B%E9%80%9A%E8%86%A8%E6%95%B8%E6%93%9A%E8%B6%85%E5%87%BA%E9%A0%90%E6%9C%9F-%E7%BE%8E%E8%82%A1%E6%94%B6%E9%BB%91-%E9%82%A3%E6%8C%87-%E8%B2%BB%E5%8D%8A-%E9%BD%8A%E8%B7%8C%E8%B6%85%E9%81%8E500%E9%BB%9E-231500976.html",
-    "pubDate": "Wed, 14 Oct 2026 23:15:00 GMT",
-    "timeDisplay": "10/15 07:15",
-    "timestamp": 1792019700000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_SOX",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美國通膨數據超出預期！美股收黑「那指、費半」齊跌超過500點　記憶體股下殺、台指期夜盤失守48K」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "44CK576O6IKh44CL",
-    "title": "《美股》通膨火熱 CoreWeave/戴爾跳水 費半倒地",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1-%E9%80%9A%E8%86%A8%E7%81%AB%E7%86%B1-coreweave-%E6%88%B4%E7%88%BE%E8%B7%B3%E6%B0%B4-%E8%B2%BB%E5%8D%8A%E5%80%92%E5%9C%B0-231000314.html",
-    "pubDate": "Wed, 14 Oct 2026 23:10:00 GMT",
-    "timeDisplay": "10/15 07:10",
-    "timestamp": 1792019400000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_SOX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「《美股》通膨火熱 CoreWeave/戴爾跳水 費半倒地」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "44CK576O5YK144CL",
-    "title": "《美債》9月CPI增幅超標 殖利率先升後跌",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E5%82%B5-9%E6%9C%88cpi%E5%A2%9E%E5%B9%85%E8%B6%85%E6%A8%99-%E6%AE%96%E5%88%A9%E7%8E%87%E5%85%88%E5%8D%87%E5%BE%8C%E8%B7%8C-230700391.html",
-    "pubDate": "Wed, 14 Oct 2026 23:07:00 GMT",
-    "timeDisplay": "10/15 07:07",
-    "timestamp": 1792019220000,
-    "category": "cpi",
-    "tag": "#CPI通膨",
-    "icon": "📊",
-    "relatedIndicators": [
-      "US_CPI",
-      "US_10Y"
-    ],
-    "commentary": "通膨黏性緩解進程直接決定限制性利率退場斜率，為跨資產長天期估值提供下檔保護。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「《美債》9月CPI增幅超標 殖利率先升後跌」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6YCa6Iao5o6A5Y2H",
-    "title": "通膨掀升息疑慮！美股全線收黑　台積電ADR重挫3.4％",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E9%80%9A%E8%86%A8%E6%8E%80%E5%8D%87%E6%81%AF%E7%96%91%E6%85%AE-%E7%BE%8E%E8%82%A1%E5%85%A8%E7%B7%9A%E6%94%B6%E9%BB%91-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E9%87%8D%E6%8C%AB3-4-230322908.html",
-    "pubDate": "Wed, 14 Oct 2026 23:03:22 GMT",
-    "timeDisplay": "10/15 07:03",
-    "timestamp": 1792019002000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y",
-      "MARKET_TSMC"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「通膨掀升息疑慮！美股全線收黑　台積電ADR重挫3.4％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6YCa6Iao5o6A5Y2H",
-    "title": "通膨掀升息疑慮！美股全線收黑　台���電ADR重挫3.4％",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E9%80%9A%E8%86%A8%E6%8E%80%E5%8D%87%E6%81%AF%E7%96%91%E6%85%AE-%E7%BE%8E%E8%82%A1%E5%85%A8%E7%B7%9A%E6%94%B6%E9%BB%91-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E9%87%8D%E6%8C%AB3-4-230322908.html",
-    "pubDate": "Wed, 14 Oct 2026 23:03:22 GMT",
-    "timeDisplay": "10/15 07:03",
-    "timestamp": 1792019002000,
-    "category": "fed",
-    "tag": "#Fed聯準會",
-    "icon": "🏛️",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y"
-    ],
-    "commentary": "牽動基準利率降息節奏與短端美債定價，市場聚焦中性利率落點與實體資金借貸成本。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「通膨掀升息疑慮！美股全線收黑　台���電ADR重挫3.4％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5LiD6ZuE5ZCI6KiI",
-    "title": "七雄合計市值逼近25兆美元 成美股最後支柱！標普500逾四成成分股今年下跌",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E4%B8%83%E9%9B%84%E5%90%88%E8%A8%88%E5%B8%82%E5%80%BC%E9%80%BC%E8%BF%9125%E5%85%86%E7%BE%8E%E5%85%83-%E6%88%90%E7%BE%8E%E8%82%A1%E6%9C%80%E5%BE%8C%E6%94%AF%E6%9F%B1-%E6%A8%99%E6%99%AE500%E9%80%BE%E5%9B%9B%E6%88%90%E6%88%90%E5%88%86%E8%82%A1%E4%BB%8A%E5%B9%B4%E4%B8%8B%E8%B7%8C-225105097.html",
-    "pubDate": "Wed, 14 Oct 2026 22:51:05 GMT",
-    "timeDisplay": "10/15 06:51",
-    "timestamp": 1792018265000,
-    "category": "trade",
-    "tag": "#外銷匯率",
-    "icon": "💱",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「七雄合計市值逼近25兆美元 成美股最後支柱！標普500逾四成成分股今年下跌」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O6IKh5pS255uk",
-    "title": "美股收盤／通膨升息疑慮「美股收黑」　AMD重挫5.73%、台積電ADR跌3.4%",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E7%BE%8E%E8%82%A1%E6%94%B6%E7%9B%A4-%E9%80%9A%E8%86%A8%E5%8D%87%E6%81%AF%E7%96%91%E6%85%AE-%E7%BE%8E%E8%82%A1%E6%94%B6%E9%BB%91-amd%E9%87%8D%E6%8C%AB5-73-224100149.html",
-    "pubDate": "Wed, 14 Oct 2026 22:41:00 GMT",
-    "timeDisplay": "10/15 06:41",
-    "timestamp": 1792017660000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y",
-      "MARKET_TSMC"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美股收盤／通膨升息疑慮「美股收黑」　AMD重挫5.73%、台積電ADR跌3.4%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Lyd6YGU44CB5Y+w",
-    "title": "輝達、台積電ADR跌逾3% 通膨數據加深晶片股賣壓",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%BC%9D%E9%81%94-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E8%B7%8C%E9%80%BE3-%E9%80%9A%E8%86%A8%E6%95%B8%E6%93%9A%E5%8A%A0%E6%B7%B1%E6%99%B6%E7%89%87%E8%82%A1%E8%B3%A3%E5%A3%93-222147328.html",
-    "pubDate": "Wed, 14 Oct 2026 22:21:47 GMT",
-    "timeDisplay": "10/15 06:21",
-    "timestamp": 1792016507000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC",
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「輝達、台積電ADR跌逾3% 通膨數據加深晶片股賣壓」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6YCa6Iao5o6A5Y2H",
-    "title": "通膨掀升息疑慮美股收黑 台指期下殺853點、台積電ADR挫逾3％",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%80%9A%E8%86%A8%E6%8E%80%E5%8D%87%E6%81%AF%E7%96%91%E6%85%AE%E7%BE%8E%E8%82%A1%E6%94%B6%E9%BB%91-%E5%8F%B0%E6%8C%87%E6%9C%9F%E4%B8%8B%E6%AE%BA853%E9%BB%9E-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E6%8C%AB%E9%80%BE3-221546492.html",
-    "pubDate": "Wed, 14 Oct 2026 22:15:46 GMT",
-    "timeDisplay": "10/15 06:15",
-    "timestamp": 1792016146000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "US_FOMC",
-      "US_2Y",
-      "MARKET_TSMC",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「通膨掀升息疑慮美股收黑 台指期下殺853點、台積電ADR挫逾3％」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O6IKh54ax6ZaA",
-    "title": "美股熱門 ETF 揭曉！比特幣��輝達與特斯拉槓桿商品交易熱絡",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E7%86%B1%E9%96%80-etf-%E6%8F%AD%E6%9B%89-%E6%AF%94%E7%89%B9%E5%B9%A3-%E8%BC%9D%E9%81%94%E8%88%87%E7%89%B9%E6%96%AF%E6%8B%89%E6%A7%93%E6%A1%BF%E5%95%86%E5%93%81%E4%BA%A4%E6%98%93%E7%86%B1%E7%B5%A1-221004183.html",
-    "pubDate": "Wed, 14 Oct 2026 22:10:04 GMT",
-    "timeDisplay": "10/15 06:10",
-    "timestamp": 1792015804000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美股熱門 ETF 揭曉！比特幣��輝達與特斯拉槓桿商品交易熱絡」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O6IKh54ax6ZaA",
-    "title": "美股熱門 ETF 揭曉！比特幣、輝達與特斯拉槓桿商品交易熱絡",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E8%82%A1%E7%86%B1%E9%96%80-etf-%E6%8F%AD%E6%9B%89-%E6%AF%94%E7%89%B9%E5%B9%A3-%E8%BC%9D%E9%81%94%E8%88%87%E7%89%B9%E6%96%AF%E6%8B%89%E6%A7%93%E6%A1%BF%E5%95%86%E5%93%81%E4%BA%A4%E6%98%93%E7%86%B1%E7%B5%A1-221004183.html",
-    "pubDate": "Wed, 14 Oct 2026 22:10:04 GMT",
-    "timeDisplay": "10/15 06:10",
-    "timestamp": 1792015804000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美股熱門 ETF 揭曉！比特幣、輝達與特斯拉槓桿商品交易熱絡」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Lyd6YGU44CB6LaF",
-    "title": "輝達、超微、蘋果爭相下單！美銀：台積電2027年產能有望提前達標　2奈米營收貢獻升至11%",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%BC%9D%E9%81%94-%E8%B6%85%E5%BE%AE-%E8%98%8B%E6%9E%9C%E7%88%AD%E7%9B%B8%E4%B8%8B%E5%96%AE-%E7%BE%8E%E9%8A%80-%E5%8F%B0%E7%A9%8D%E9%9B%BB2027%E5%B9%B4%E7%94%A2%E8%83%BD%E6%9C%89%E6%9C%9B%E6%8F%90%E5%89%8D%E9%81%94%E6%A8%99-221004332.html",
-    "pubDate": "Wed, 14 Oct 2026 22:10:04 GMT",
-    "timeDisplay": "10/15 06:10",
-    "timestamp": 1792015804000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC",
-      "MARKET_NVDA"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「輝達、超微、蘋果爭相下單！美銀：台積電2027年產能有望提前達標　2奈米營收貢獻升至11%」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "6Zm4OeaciOWHuuWP",
-    "title": "陸9月出口大增36% 優於預期 可能導致與主要夥伴緊張關係升溫",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5603/9815331",
-    "pubDate": "Thu, 15 Oct 2026 02:23:03 +0800",
-    "timeDisplay": "10/15 02:23",
-    "timestamp": 1792002183000,
-    "category": "trade",
-    "tag": "#外銷匯率",
-    "icon": "💱",
-    "relatedIndicators": [
-      "TW_EXPORT"
-    ],
-    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「陸9月出口大增36% 優於預期 可能導致與主要夥伴緊張關係升溫」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5aSn6Zm4IFBQSSDl",
-    "title": "大陸 PPI 彈升 產業復甦不平衡 企業無法將增加成本轉嫁消費者",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5603/9815345",
-    "pubDate": "Thu, 15 Oct 2026 02:15:05 +0800",
-    "timeDisplay": "10/15 02:15",
-    "timestamp": 1792001705000,
-    "category": "cpi",
-    "tag": "#CPI通膨",
-    "icon": "📊",
-    "relatedIndicators": [
-      "US_PPI"
-    ],
-    "commentary": "通膨黏性緩解進程直接決定限制性利率退場斜率，為跨資產長天期估值提供下檔保護。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「大陸 PPI 彈升 產業復甦不平衡 企業無法將增加成本轉嫁消費者」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5riv5YWD6LWw5byx",
-    "title": "港元走弱且總結餘維持低檔 引發香港利率波動擔憂",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/6721/9813380",
-    "pubDate": "Wed, 14 Oct 2026 22:23:23 +0800",
-    "timeDisplay": "10/14 22:23",
-    "timestamp": 1791987803000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「港元走弱且總結餘維持低檔 引發香港利率波動擔憂」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5YiG5p6Q77ya5rK5",
-    "title": "分析：油價高 推升中國9月CPI漲幅擴大",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5603/9815213",
-    "pubDate": "Wed, 14 Oct 2026 22:21:27 +0800",
-    "timeDisplay": "10/14 22:21",
-    "timestamp": 1791987687000,
-    "category": "energy",
-    "tag": "#能源原油",
-    "icon": "🛢️",
-    "relatedIndicators": [
-      "US_CPI",
-      "COMMODITY_OIL"
-    ],
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「分析：油價高 推升中國9月CPI漲幅擴大」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5q2Q5Lqe6ZuG5ZyY",
-    "title": "歐亞集團預計大陸煉油企業11月起將啟動原油補庫",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5603/9813928",
-    "pubDate": "Wed, 14 Oct 2026 22:06:26 +0800",
-    "timeDisplay": "10/14 22:06",
-    "timestamp": 1791986786000,
-    "category": "energy",
-    "tag": "#能源原油",
-    "icon": "🛢️",
-    "relatedIndicators": [
-      "COMMODITY_OIL"
-    ],
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「歐亞集團預計大陸煉油企業11月起將啟動原油補庫」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5pmu5LiB5YKz6YGU",
-    "title": "普丁傳達伊朗停戰構想給川普！俄承諾增供逾400萬噸柴油、美暫緩制裁",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6627502",
-    "pubDate": "Sun, 11 Oct 2026 07:10:04 GMT",
-    "timeDisplay": "10/11 15:10",
-    "timestamp": 1791702604000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「普丁傳達伊朗停戰構想給川普！俄承諾增供逾400萬噸柴油、美暫緩制裁」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。"
-  },
-  {
-    "id": "5LiN55WP5aSn55uk",
-    "title": "不畏大盤創高拉回 12檔台股ETF規模仍創高",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E4%B8%8D%E7%95%8F%E5%A4%A7%E7%9B%A4%E5%89%B5%E9%AB%98%E6%8B%89%E5%9B%9E-12%E6%AA%94%E5%8F%B0%E8%82%A1etf%E8%A6%8F%E6%A8%A1%E4%BB%8D%E5%89%B5%E9%AB%98-070437606.html",
-    "pubDate": "Sun, 11 Oct 2026 07:04:37 GMT",
-    "timeDisplay": "10/11 15:04",
-    "timestamp": 1791702277000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "MARKET_TAIEX"
-    ],
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「不畏大盤創高拉回 12檔台股ETF規模仍創高」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "576O56eR5oqA6IKh",
-    "title": "美科技股壓回　投顧：台股本週聚焦台積電法說會",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E7%BE%8E%E7%A7%91%E6%8A%80%E8%82%A1%E5%A3%93%E5%9B%9E-%E6%8A%95%E9%A1%A7-%E5%8F%B0%E8%82%A1%E6%9C%AC%E9%80%B1%E8%81%9A%E7%84%A6%E5%8F%B0%E7%A9%8D%E9%9B%BB%E6%B3%95%E8%AA%AA%E6%9C%83-070115683.html",
-    "pubDate": "Sun, 11 Oct 2026 07:01:15 GMT",
-    "timeDisplay": "10/11 15:01",
-    "timestamp": 1791702075000,
-    "category": "tech",
-    "tag": "#科技半導體",
-    "icon": "💎",
-    "relatedIndicators": [
-      "MARKET_TSMC",
-      "MARKET_TAIEX"
-    ],
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。",
-    "aiPrompt": "請針對最新重大總經與央行新聞「美科技股壓回　投顧：台股本週聚焦台積電法說會」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響"
-  },
-  {
-    "id": "5Y+w5aGR55+z5YyW",
-    "title": "台塑石化：12日起汽柴油不漲價",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E5%A1%91%E7%9F%B3%E5%8C%96-12%E6%97%A5%E8%B5%B7%E6%B1%BD%E6%9F%B4%E6%B2%B9%E4%B8%8D%E6%BC%B2%E5%83%B9-063512379.html",
-    "pubDate": "Sun, 11 Oct 2026 06:35:12 GMT",
-    "timeDisplay": "10/11 14:35",
-    "timestamp": 1791700512000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「台塑石化：12日起汽柴油不漲價」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。"
-  },
-  {
-    "id": "5Y+w6IKh6YCx5LiA",
-    "title": "台股週一恐迎千點震盪？台積電ADR連假回檔4%　中東戰火升溫、3台廠遭「337調查」",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E5%8F%B0%E8%82%A1%E9%80%B1-%E6%81%90%E8%BF%8E%E5%8D%83%E9%BB%9E%E9%9C%87%E7%9B%AA-%E5%8F%B0%E7%A9%8D%E9%9B%BBadr%E9%80%A3%E5%81%87%E5%9B%9E%E6%AA%944-%E4%B8%AD%E6%9D%B1%E6%88%B0%E7%81%AB%E5%8D%87%E6%BA%AB-3%E5%8F%B0%E5%BB%A0%E9%81%AD-054853468.html",
-    "pubDate": "Sun, 11 Oct 2026 05:48:53 GMT",
-    "timeDisplay": "10/11 13:48",
-    "timestamp": 1791697733000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "MARKET_TSMC",
-      "MARKET_TAIEX"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「台股週一恐迎千點震盪？台積電ADR連假回檔4%　中東戰火升溫、3台廠遭「337調查」」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。"
-  },
-  {
-    "id": "5oyo5om56IiH6a2U",
-    "title": "挨批與魔鬼交易！川普、普丁達成柴油協議 共和黨人也不挺 提案反制",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5599/9807590",
-    "pubDate": "Sun, 11 Oct 2026 13:41:42 +0800",
-    "timeDisplay": "10/11 13:41",
-    "timestamp": 1791697302000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「挨批與魔鬼交易！川普、普丁達成柴油協議 共和黨人也不挺 提案反制」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "大宗能源供給與地緣政治溢價直接牽動輸入型通膨預期，影響央行中性利率定價區間。"
-  },
-  {
-    "id": "6YqF5YO56YC86L+R",
-    "title": "銅價逼近歷史高點！瑞銀示警供應缺口延續至2030年代初、德銀喊價2.2萬美元",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6627499",
-    "pubDate": "Sun, 11 Oct 2026 05:10:02 GMT",
-    "timeDisplay": "10/11 13:10",
-    "timestamp": 1791695402000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "COMMODITY_COPPER"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「銅價逼近歷史高點！瑞銀示警供應缺口延續至2030年代初、德銀喊價2.2萬美元」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "美元強弱直接影響跨國企業長天期再融資利息負擔，並牽動製造業出口換匯實質毛利。"
-  },
-  {
-    "id": "5rKI5Lyv5rSL6L2f",
-    "title": "沈伯洋轟「死貓戰術」抹毒社工太惡劣！蔣萬安搬出：輝達、大巨蛋…",
-    "source": "Yahoo股市",
-    "link": "https://tw.news.yahoo.com/%E6%B2%88%E4%BC%AF%E6%B4%8B%E8%BD%9F-%E6%AD%BB%E8%B2%93%E6%88%B0%E8%A1%93-%E6%8A%B9%E6%AF%92%E7%A4%BE%E5%B7%A5%E5%A4%AA%E6%83%A1%E5%8A%A3-%E8%94%A3%E8%90%AC%E5%AE%89%E6%90%AC%E5%87%BA-%E8%BC%9D%E9%81%94-050900489.html",
-    "pubDate": "Sun, 11 Oct 2026 05:09:00 GMT",
-    "timeDisplay": "10/11 13:09",
-    "timestamp": 1791695340000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "MARKET_NVDA"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「沈伯洋轟「死貓戰術」抹毒社工太惡劣！蔣萬安搬出：輝達、大巨蛋…」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。"
-  },
-  {
-    "id": "5pel576O5aSW6ZW3",
-    "title": "日美外長通話談ICC制裁　盧比歐：ICC威脅美國主權所致",
-    "source": "經濟日報",
-    "link": "https://money.udn.com/money/story/5599/9807529",
-    "pubDate": "Sun, 11 Oct 2026 13:07:55 +0800",
-    "timeDisplay": "10/11 13:07",
-    "timestamp": 1791695275000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「日美外長通話談ICC制裁　盧比歐：ICC威脅美國主權所致」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "隔夜宏觀條件變動穿透實體產業定價鏈條，持續重塑全球資產配置的多空風險臨界線。"
-  },
-  {
-    "id": "6IGv5omL6Iux54m5",
-    "title": "聯手英特爾砸150億美元打造Terrafab　馬斯克放話做出「世界最強晶片」",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E8%81%AF%E6%89%8B%E8%8B%B1%E7%89%B9%E7%88%BE%E7%A0%B8150%E5%84%84%E7%BE%8E%E5%85%83%E6%89%93%E9%80%A0terrafab-%E9%A6%AC%E6%96%AF%E5%85%8B%E6%94%BE%E8%A9%B1%E5%81%9A%E5%87%BA-%E4%B8%96%E7%95%8C%E6%9C%80%E5%BC%B7%E6%99%B6%E7%89%87-050200437.html",
-    "pubDate": "Sun, 11 Oct 2026 05:02:00 GMT",
-    "timeDisplay": "10/11 13:02",
-    "timestamp": 1791694920000,
-    "category": "macro",
-    "tag": "#全球總經",
-    "icon": "🌐",
-    "relatedIndicators": [
-      "US_10Y",
-      "MARKET_TAIEX"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「聯手英特爾砸150億美元打造Terrafab　馬斯克放話做出「世界最強晶片」」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "先進製程與 AI 算力資本支出維持高景氣，龍頭定價權溢價持續支撐外銷出口基本面。"
-  },
-  {
-    "id": "44CK6buR5aSp6bWd",
-    "title": "《黑天鵝》作者示警：AI前景好不等於值得買 更怕美國人自己撤出美債",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%BB%91%E5%A4%A9%E9%B5%9D-%E4%BD%9C%E8%80%85%E7%A4%BA%E8%AD%A6-ai%E5%89%8D%E6%99%AF%E5%A5%BD%E4%B8%8D%E7%AD%89%E6%96%BC%E5%80%BC%E5%BE%97%E8%B2%B7-%E6%9B%B4%E6%80%95%E7%BE%8E%E5%9C%8B%E4%BA%BA%E8%87%AA%E5%B7%B1%E6%92%A4%E5%87%BA%E7%BE%8E%E5%82%B5-050005838.html",
-    "pubDate": "Sun, 11 Oct 2026 05:00:05 GMT",
-    "timeDisplay": "10/11 13:00",
-    "timestamp": 1791694805000,
-    "category": "yield",
-    "tag": "#美債殖利率",
-    "icon": "📈",
-    "relatedIndicators": [
-      "US_10Y"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「《黑天鵝》作者示警：AI前景好不等於值得買 更怕美國人自己撤出美債」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。"
-  },
-  {
-    "id": "44CK6buR5aSp6bWd",
-    "title": "《黑天鵝》作者示警：AI前景好不等於值得買 更怕美國人自己撤出美債",
-    "source": "Yahoo股市",
-    "link": "https://tw.stock.yahoo.com/news/%E9%BB%91%E5%A4%A9%E9%B5%9D-%E4%BD%9C%E8%80%85%E7%A4%BA%E8%AD%A6-ai%E5%89%8D%E6%99%AF%E5%A5%BD%E4%B8%8D%E7%AD%89%E6%96%BC%E5%80%BC%E5%BE%97%E8%B2%B7-%E6%9B%B4%E6%80%95%E7%BE%8E%E5%9C%8B%E4%BA%BA%E8%87%AA%E5%B7%B1%E6%92%A4%E5%87%BA%E7%BE%8E%E5%82%B5-050005838.html",
-    "pubDate": "Sun, 11 Oct 2026 05:00:05 GMT",
-    "timeDisplay": "10/11 13:00",
-    "timestamp": 1791694805000,
-    "category": "yield",
-    "tag": "#美債殖利率",
-    "icon": "📈",
-    "relatedIndicators": [
-      "US_10Y"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「《黑天鵝》作者示警：AI前景好不等於值得買 更怕美國人自己撤出美債」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。"
-  },
-  {
-    "id": "44CK6buR5aSp6bWd",
-    "title": "《黑天鵝》作者示警：AI前景好不等於值得買 更怕美國人自己撤出美債",
-    "source": "鉅亨網",
-    "link": "https://news.cnyes.com/news/id/6624469",
-    "pubDate": "Sun, 11 Oct 2026 05:00:05 GMT",
-    "timeDisplay": "10/11 13:00",
-    "timestamp": 1791694805000,
-    "category": "yield",
-    "tag": "#美債殖利率",
-    "icon": "📈",
-    "relatedIndicators": [
-      "US_10Y"
-    ],
-    "aiPrompt": "請針對最新重大總經與央行新聞「《黑天鵝》作者示警：AI前景好不等於值得買 更怕美國人自己撤出美債」深入剖析其對聯準會利率決策、美債殖利率曲線、通膨定價及全球跨資產之連鎖傳導影響",
-    "commentary": "財政部赤字天量發債推升期限溢價，短端降息預期與長端融資成本剛性呈現結構性背馳。"
   }
 ]
