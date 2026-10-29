@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#0b0f19">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -37,6 +40,10 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono bg-emerald-950/60 text-emerald-400 border border-emerald-500/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="hidden sm:inline">實時連線中</span>
+        </span>
         <span id="nav-live-clock" class="text-xs font-mono text-slate-400 hidden sm:inline bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
           --:--:-- (UTC+8)
         </span>
@@ -612,6 +619,17 @@
     let cachedCalendarEvents = [];
     let currentNewsCategory = 'all';
     let cachedMacroNews = [];
+    let lastGlobalRefreshTime = Date.now();
+
+    // 徹底清除既有 Service Worker 與快取，確保所有數據直連最新網路
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const r of registrations) r.unregister();
+      }).catch(() => {});
+      if ('caches' in window) {
+        caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
+      }
+    }
 
     // 1. 即時時鐘與撮合狀態
     function updateClock() {
@@ -644,17 +662,18 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // 2. 全盤刷新
+    // 2. 全盤刷新（穿透後端所有快取，強制自官方與即時市場重新同步）
     async function refreshAllPanels() {
       const icon = document.getElementById('refresh-all-icon');
       if (icon) icon.className = "inline-block animate-spin";
       try {
         await Promise.all([
           loadMacroVaultData(true),
-          loadTickerData(),
-          loadMacroCalendar(currentCalendarPeriod),
+          loadTickerData(true),
+          loadMacroCalendar(currentCalendarPeriod, true),
           loadMacroNews(currentNewsCategory, true)
         ]);
+        lastGlobalRefreshTime = Date.now();
       } catch (e) {
         console.error('Refresh all error:', e);
       } finally {
@@ -761,8 +780,9 @@
       const timeTag = document.getElementById('vault-last-updated');
 
       try {
-        const url = force ? '/api/macro-vault?refresh=1&t=' + Date.now() : '/api/macro-vault?t=' + Date.now();
-        const res = await fetch(url);
+        const forceParam = force ? '&refresh=1&force=1' : '';
+        const url = '/api/macro-vault?t=' + Date.now() + forceParam;
+        const res = await fetch(url, { cache: 'no-store' });
         const json = await res.json();
         allVaultMetrics = json.metricsArray || Object.values(json.metrics || {});
 
@@ -801,9 +821,10 @@
       };
     }
 
-    async function loadTickerData() {
+    async function loadTickerData(force = false) {
       try {
-        const res = await fetch('/api/collector?t=' + Date.now());
+        const forceParam = force ? '&force=1&refresh=1' : '';
+        const res = await fetch('/api/collector?t=' + Date.now() + forceParam, { cache: 'no-store' });
         const json = await res.json();
         const d = json.data || {};
 
@@ -995,10 +1016,11 @@
     // ============================================================
     // 板塊 3：📅 全球總經每週大事行事曆 (Macro Calendar) 邏輯
     // ============================================================
-    async function loadMacroCalendar(period = currentCalendarPeriod) {
+    async function loadMacroCalendar(period = currentCalendarPeriod, sync = false) {
       currentCalendarPeriod = period;
       try {
-        const res = await fetch(`/api/calendar?period=${period}`);
+        const syncParam = sync ? '&sync=1' : '';
+        const res = await fetch(`/api/calendar?period=${period}${syncParam}&t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('API Calendar status ' + res.status);
         const data = await res.json();
         if (data && (data.success || data.status === 'success')) {
@@ -1241,8 +1263,8 @@
       }
 
       try {
-        const forceParam = isManual ? '&force=1' : '';
-        const res = await fetch('/api/news?category=' + encodeURIComponent(cat) + forceParam + '&t=' + Date.now());
+        const forceParam = isManual ? '&force=1&refresh=1' : '';
+        const res = await fetch('/api/news?category=' + encodeURIComponent(cat) + forceParam + '&t=' + Date.now(), { cache: 'no-store' });
         if (!res.ok) return;
         const data = await res.json();
         if (data.status === 'success') {
@@ -1330,6 +1352,45 @@
         `;
       }).join('');
     }
+
+    // ============================================================
+    // 智慧實時更新引擎：自動定時輪詢與視窗焦點喚醒 (Auto-Refresh Engine)
+    // ============================================================
+    // 1. 每 30 秒自動靜默輪詢最新行情報價（台股、美股期貨、大宗商品即時跳動）
+    setInterval(() => {
+      loadTickerData(false);
+    }, 30 * 1000);
+
+    // 2. 每 3 分鐘自動輪詢總經歸檔庫、大事行事曆與即時新聞
+    setInterval(() => {
+      loadMacroVaultData(false);
+      loadMacroCalendar(currentCalendarPeriod, false);
+      loadMacroNews(currentNewsCategory, false);
+      lastGlobalRefreshTime = Date.now();
+    }, 3 * 60 * 1000);
+
+    // 3. 視窗切換 / 手機解鎖 / LINE Webview 喚醒自動刷新：
+    // 當使用者切回分頁或重新點亮螢幕時，若超過 20 秒未更新，自動觸發即時校準！
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        const elapsed = Date.now() - lastGlobalRefreshTime;
+        if (elapsed > 20 * 1000) {
+          loadTickerData(true);
+          loadMacroVaultData(false);
+          loadMacroCalendar(currentCalendarPeriod, false);
+          loadMacroNews(currentNewsCategory, false);
+          lastGlobalRefreshTime = Date.now();
+        }
+      }
+    });
+
+    window.addEventListener('focus', () => {
+      const elapsed = Date.now() - lastGlobalRefreshTime;
+      if (elapsed > 20 * 1000) {
+        loadTickerData(true);
+        lastGlobalRefreshTime = Date.now();
+      }
+    });
 
     // 頁面初始化載入
     document.addEventListener('DOMContentLoaded', () => {

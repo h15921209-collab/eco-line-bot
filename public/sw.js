@@ -1,53 +1,20 @@
-const CACHE_NAME = 'eco-macro-cache-v4';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/macro-bull-bike.js'
-];
-
+// 停用所有離線快取，全量直通即時網路，並清除既有過期快取
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
+      return Promise.all(keys.map((key) => caches.delete(key)));
+    }).then(() => {
+      return self.registration.unregister();
     })
   );
   self.clients.claim();
 });
 
+// 所有請求 100% 直通網路，嚴禁讀取本地快取
 self.addEventListener('fetch', (event) => {
-  // 只針對靜態網頁資源使用 Stale-While-Revalidate 瞬開策略，API 請求維持即時網路
-  if (event.request.method === 'GET' && !event.request.url.includes('/api/')) {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return networkResponse;
-        }).catch(() => cachedResponse);
-
-        // 若本地已有快取，0.05 秒瞬開；無快取時等待網路回應
-        return cachedResponse || fetchPromise;
-      })
-    );
-  }
+  event.respondWith(fetch(event.request));
 });

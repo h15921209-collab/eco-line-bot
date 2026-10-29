@@ -4,16 +4,26 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// 關閉全局 ETag，杜絕 304 快取，確保每次請求皆自伺服器獲取全新內容
+app.set('etag', false);
+
 // 解析 JSON 與 URL-encoded 請求主體
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 跨域 CORS 與快取標頭中介軟體
+// 跨域 CORS 與全局 100% 強制防快取中介軟體（確保使用者每次進站都是最新數據）
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('X-Voice-Engine', 'Neural-Dual-Anchor-v2.1');
+  
+  // 杜絕瀏覽器、代理伺服器、Cloudflare、LINE 內建 Webview 之任何快取
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -50,11 +60,22 @@ app.all('/api/morning-broadcast', (req, res) => morningBroadcastHandler(req, res
 app.all('/api/cron-daily', (req, res) => morningBroadcastHandler(req, res));
 app.all('/api/alert-check', (req, res) => alertCheckHandler(req, res));
 
-// 靜態資源目錄
-app.use(express.static(path.join(__dirname, 'public')));
+// 靜態資源目錄（嚴格關閉靜態快取，確保所有前端更新即刻生效）
+app.use(express.static(path.join(__dirname, 'public'), {
+  etag: false,
+  maxAge: 0,
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+}));
 
-// 根路由首頁
+// 根路由首頁（每次造訪皆保證由伺服器提供即時最新頁面）
 app.get('/', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
