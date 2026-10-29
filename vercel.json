@@ -1,13 +1,7 @@
 {
-  "version": 2,
-  "crons": [
-    {
-      "path": "/api/morning-broadcast",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/collector",
-      "schedule": "0 9 * * 1-5"
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "exit 0",
+  "git": {
+    "deploymentEnabled": false
+  }
 }
