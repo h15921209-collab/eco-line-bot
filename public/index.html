@@ -1392,13 +1392,19 @@
       }
     });
 
-    // 頁面初始化載入
-    document.addEventListener('DOMContentLoaded', () => {
+    // 頁面初始化載入（雙重防護：無論 DOMContentLoaded 是否已觸發皆保證立即載入）
+    function initAllPanels() {
       loadMacroVaultData();
       loadTickerData();
       loadMacroCalendar();
       loadMacroNews();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAllPanels);
+    } else {
+      initAllPanels();
+    }
   </script>
 </body>
 </html>
