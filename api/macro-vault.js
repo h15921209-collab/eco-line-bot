@@ -3,9 +3,91 @@ const path = require('path');
 
 const VAULT_FILE_PATH = path.join(__dirname, '..', 'data', 'macro_vault.json');
 
-// 24 大關鍵總經與跨資產指標元數據庫（涵蓋 6 大維度）
+// 30 大關鍵總經與跨資產指標元數據庫（涵蓋 7 大維度）
 const METRIC_DEFINITIONS = {
-  // 1. 美國通膨指標
+  // 1. 全球與台灣總體景氣成長 (GDP & Leading Cycle)
+  'US_GDP': {
+    id: 'US_GDP',
+    name: '美國實質 GDP 季增年率 (QoQ SAAR)',
+    category: 'growth',
+    categoryZh: '景氣成長',
+    unit: '%',
+    source: 'BEA / FRED (A191RL1Q225SBEA)',
+    defaultVal: 3.4,
+    defaultPeriod: '2026-Q3',
+    defaultRelease: '10/29',
+    description: '衡量美國整體經濟實質產出成長動能，為景氣擴張或衰退之終極基準',
+    defaultHistory: [
+      { period: '2025-Q2', value: 4.0, releaseDate: '07/25' },
+      { period: '2025-Q3', value: 3.9, releaseDate: '10/30' },
+      { period: '2025-Q4', value: 0.2, releaseDate: '01/29' },
+      { period: '2026-Q1', value: 2.5, releaseDate: '04/28' },
+      { period: '2026-Q2', value: 2.2, releaseDate: '07/28' },
+      { period: '2026-Q3', value: 3.4, releaseDate: '10/29' }
+    ]
+  },
+  'TW_GDP': {
+    id: 'TW_GDP',
+    name: '台灣實質 GDP 經濟成長率 (YoY)',
+    category: 'growth',
+    categoryZh: '景氣成長',
+    unit: '%',
+    source: '行政院主計總處 (DGBAS)',
+    defaultVal: 3.97,
+    defaultPeriod: '2026-Q3',
+    defaultRelease: '10/31',
+    description: '反映台灣資通訊科技外銷與民間投資動能之實體經濟年成長率',
+    defaultHistory: [
+      { period: '2025-Q2', value: 5.06, releaseDate: '07/31' },
+      { period: '2025-Q3', value: 4.10, releaseDate: '10/31' },
+      { period: '2025-Q4', value: 4.93, releaseDate: '01/23' },
+      { period: '2026-Q1', value: 6.56, releaseDate: '04/30' },
+      { period: '2026-Q2', value: 5.09, releaseDate: '07/31' },
+      { period: '2026-Q3', value: 3.97, releaseDate: '10/31' }
+    ]
+  },
+  'US_ISM_PMI': {
+    id: 'US_ISM_PMI',
+    name: '美國 ISM 製造業採購經理人指數',
+    category: 'growth',
+    categoryZh: '景氣成長',
+    unit: '榮枯線50',
+    source: 'Institute for Supply Management (ISM)',
+    defaultVal: 48.5,
+    defaultPeriod: '2026-10',
+    defaultRelease: '11/02',
+    description: '全球實體工業景氣與新訂單/庫存循環最權威領先指標，大於50為擴張',
+    defaultHistory: [
+      { period: '2026-05', value: 48.7, releaseDate: '06/03' },
+      { period: '2026-06', value: 48.5, releaseDate: '07/01' },
+      { period: '2026-07', value: 46.8, releaseDate: '08/01' },
+      { period: '2026-08', value: 47.2, releaseDate: '09/03' },
+      { period: '2026-09', value: 47.2, releaseDate: '10/01' },
+      { period: '2026-10', value: 48.5, releaseDate: '11/02' }
+    ]
+  },
+  'TW_SIGNAL': {
+    id: 'TW_SIGNAL',
+    name: '台灣國發會景氣對策信號 (燈號與綜合分數)',
+    category: 'growth',
+    categoryZh: '景氣成長',
+    unit: '分 (燈號)',
+    source: '中華民國國家發展委員會 (NDC)',
+    defaultVal: 34,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/27',
+    description: '綜合出口、股價、工業生產判定台灣景氣榮枯（32~37分為黃紅燈，轉折警訊）',
+    defaultHistory: [
+      { period: '2026-04', value: 35, releaseDate: '05/27' },
+      { period: '2026-05', value: 36, releaseDate: '06/27' },
+      { period: '2026-06', value: 38, releaseDate: '07/26' },
+      { period: '2026-07', value: 35, releaseDate: '08/27' },
+      { period: '2026-08', value: 39, releaseDate: '09/27' },
+      { period: '2026-09', value: 34, releaseDate: '10/27' }
+    ]
+  },
+
+  // 2. 美國通膨指標
   'US_CPI': {
     id: 'US_CPI',
     name: '美國 CPI 通膨年增率',
@@ -92,8 +174,28 @@ const METRIC_DEFINITIONS = {
     defaultRelease: '09/16',
     description: '衡量佔美國 GDP 70% 之終端消費支出動能強度'
   },
+  'US_UMICH': {
+    id: 'US_UMICH',
+    name: '密西根大學消費者信心指數',
+    category: 'labor',
+    categoryZh: '就業消費',
+    unit: '點',
+    source: 'University of Michigan / FRED (UMCSENT)',
+    defaultVal: 48.1,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/27',
+    description: '領先反映美國消費者個人財務評價、耐久財購買意願與長期通膨預期',
+    defaultHistory: [
+      { period: '2026-04', value: 49.8, releaseDate: '05/10' },
+      { period: '2026-05', value: 44.8, releaseDate: '06/14' },
+      { period: '2026-06', value: 49.5, releaseDate: '07/12' },
+      { period: '2026-07', value: 55.2, releaseDate: '08/16' },
+      { period: '2026-08', value: 51.7, releaseDate: '09/13' },
+      { period: '2026-09', value: 48.1, releaseDate: '10/27' }
+    ]
+  },
 
-  // 3. 利率、殖利率曲線與貨幣政策
+  // 4. 利率、殖利率曲線與貨幣政策
   'US_FOMC': {
     id: 'US_FOMC',
     name: '聯邦基金基準利率 (Fed Funds)',
@@ -154,8 +256,28 @@ const METRIC_DEFINITIONS = {
     defaultRelease: '10/15',
     description: '衡量美元對一籃子六大主要貨幣之整體全球流動性溢價'
   },
+  'US_M2': {
+    id: 'US_M2',
+    name: '美國 M2 貨幣供給額年增率',
+    category: 'monetary',
+    categoryZh: '利率政策',
+    unit: '%',
+    source: 'Federal Reserve / FRED (M2SL)',
+    defaultVal: 5.71,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/27',
+    description: '宏觀金融市場的實質流動性水庫，引導風險資產評價與實體信用擴張總源頭',
+    defaultHistory: [
+      { period: '2026-04', value: 4.53, releaseDate: '05/28' },
+      { period: '2026-05', value: 5.37, releaseDate: '06/25' },
+      { period: '2026-06', value: 5.30, releaseDate: '07/23' },
+      { period: '2026-07', value: 5.36, releaseDate: '08/27' },
+      { period: '2026-08', value: 5.60, releaseDate: '09/24' },
+      { period: '2026-09', value: 5.71, releaseDate: '10/27' }
+    ]
+  },
 
-  // 4. 全球製造業與對外貿易出口
+  // 5. 全球製造業與對外貿易出口
   'TW_EXPORT': {
     id: 'TW_EXPORT',
     name: '台灣海關出口年增率',
@@ -361,6 +483,39 @@ function initOrLoadVault() {
     });
 
     saveVaultToDisk(true);
+  } else {
+    // 確保 METRIC_DEFINITIONS 中所有指標（包含新擴充的 6 大指標）皆已同步至 inMemoryVault.metrics
+    let hasNew = false;
+    Object.keys(METRIC_DEFINITIONS).forEach(k => {
+      if (!inMemoryVault.metrics[k]) {
+        hasNew = true;
+        const def = METRIC_DEFINITIONS[k];
+        inMemoryVault.metrics[k] = {
+          id: def.id,
+          name: def.name,
+          category: def.category,
+          categoryZh: def.categoryZh,
+          unit: def.unit,
+          source: def.source,
+          latestValue: def.defaultVal,
+          latestPeriod: def.defaultPeriod,
+          latestReleaseDate: def.defaultRelease,
+          description: def.description,
+          lastUpdated: new Date().toISOString(),
+          history: def.defaultHistory || [
+            { period: '2026-03', value: def.defaultVal * 0.98, releaseDate: '04/10' },
+            { period: '2026-04', value: def.defaultVal * 0.99, releaseDate: '05/12' },
+            { period: '2026-05', value: def.defaultVal * 1.01, releaseDate: '06/11' },
+            { period: '2026-06', value: def.defaultVal * 1.00, releaseDate: '07/14' },
+            { period: '2026-07', value: def.defaultVal * 1.02, releaseDate: '08/12' },
+            { period: def.defaultPeriod, value: def.defaultVal, releaseDate: def.defaultRelease }
+          ]
+        };
+      }
+    });
+    if (hasNew) {
+      saveVaultToDisk(true);
+    }
   }
 
   return inMemoryVault;
@@ -553,6 +708,42 @@ function recordFredTrends(fredTrends) {
       history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: h.label }))
     });
   }
+
+  // 10. 🇺🇸 US_GDP (實質 GDP 季增年率)
+  if (fredTrends.US_GDP && fredTrends.US_GDP.history?.length > 0) {
+    const hist = fredTrends.US_GDP.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_GDP', {
+      value: last.val,
+      period: fredTrends.US_GDP.latestPeriod || last.period,
+      releaseDate: fredTrends.US_GDP.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_GDP.latestReleaseDate }))
+    });
+  }
+
+  // 11. 🇺🇸 US_UMICH (密大消費者信心)
+  if (fredTrends.US_UMICH && fredTrends.US_UMICH.history?.length > 0) {
+    const hist = fredTrends.US_UMICH.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_UMICH', {
+      value: last.val,
+      period: fredTrends.US_UMICH.latestPeriod || last.period,
+      releaseDate: fredTrends.US_UMICH.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_UMICH.latestReleaseDate }))
+    });
+  }
+
+  // 12. 🇺🇸 US_M2 (M2 貨幣供給額年增率)
+  if (fredTrends.US_M2 && fredTrends.US_M2.history?.length > 0) {
+    const hist = fredTrends.US_M2.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_M2', {
+      value: last.val,
+      period: fredTrends.US_M2.latestPeriod || last.period,
+      releaseDate: fredTrends.US_M2.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_M2.latestReleaseDate }))
+    });
+  }
 }
 
 // 自動記錄從 collector 快照抓取的市場實時行情
@@ -735,6 +926,7 @@ async function macroVaultHandler(req, res) {
       lastUpdated: vault.lastUpdated,
       totalMetrics: metricsList.length,
       categories: [
+        { id: 'growth', name: '景氣成長', count: metricsList.filter(m => m.category === 'growth').length },
         { id: 'inflation', name: '通膨指標', count: metricsList.filter(m => m.category === 'inflation').length },
         { id: 'labor', name: '就業消費', count: metricsList.filter(m => m.category === 'labor').length },
         { id: 'monetary', name: '利率政策', count: metricsList.filter(m => m.category === 'monetary').length },

@@ -265,6 +265,84 @@ async function syncFredLiveTrends() {
       };
     }
 
+    // 10. 🇺🇸 實質 GDP 季增年率 (A191RL1Q225SBEA)
+    try {
+      const gdpObs = await fetchFredObservations('A191RL1Q225SBEA', 10);
+      const validGdp = gdpObs.filter(o => o.value && o.value !== '.');
+      if (validGdp.length >= 4) {
+        const history = [];
+        for (let i = 0; i < Math.min(6, validGdp.length); i++) {
+          const [y, m] = validGdp[i].date.split('-');
+          const q = Math.ceil(parseInt(m) / 3);
+          history.unshift({ label: `${y}Q${q}`, val: parseFloat(validGdp[i].value), period: `${y}-Q${q}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validGdp[0].realtime_start ? validGdp[0].realtime_start.substring(5).replace('-', '/') : '10/29';
+        trends['US_GDP'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val >= 2.0 ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: history[history.length - 1].period,
+          summary: `BEA實質GDP ${lastLbl} ${lastVal}% │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED GDP error:', e.message); }
+
+    // 11. 🇺🇸 密西根大學消費者信心指數 (UMCSENT)
+    try {
+      const umichObs = await fetchFredObservations('UMCSENT', 10);
+      const validUmich = umichObs.filter(o => o.value && o.value !== '.');
+      if (validUmich.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m] = validUmich[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validUmich[i].value), period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validUmich[0].realtime_start ? validUmich[0].realtime_start.substring(5).replace('-', '/') : '10/27';
+        trends['US_UMICH'] = {
+          unit: '點',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: validUmich[0].date.substring(0, 7),
+          summary: `UMich信心 ${lastLbl} ${lastVal} │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED UMCSENT error:', e.message); }
+
+    // 12. 🇺🇸 M2 貨幣供給額年增率 (M2SL)
+    try {
+      const m2Obs = await fetchFredObservations('M2SL', 30);
+      const validM2 = m2Obs.filter(o => o.value && o.value !== '.');
+      if (validM2.length >= 14) {
+        const history = [];
+        for (let i = 0; i < Math.min(6, validM2.length); i++) {
+          const cur = parseFloat(validM2[i].value);
+          const [y, m, day] = validM2[i].date.split('-');
+          const targetPrevDate = `${parseInt(y) - 1}-${m}-${day}`;
+          const prevItem = validM2.find(o => o.date === targetPrevDate);
+          const prev = prevItem ? parseFloat(prevItem.value) : (validM2[i + 12] ? parseFloat(validM2[i + 12].value) : cur);
+          const yoy = Number((((cur - prev) / prev) * 100).toFixed(2));
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy, period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validM2[0].realtime_start ? validM2[0].realtime_start.substring(5).replace('-', '/') : '10/27';
+        trends['US_M2'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: validM2[0].date.substring(0, 7),
+          summary: `FRED M2年增 ${lastLbl} ${lastVal}% │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED M2 error:', e.message); }
+
     if (Object.keys(trends).length > 0) {
       cachedFredTrends = trends;
       lastFredSyncTime = Date.now();

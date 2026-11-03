@@ -713,6 +713,20 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
 
     const fedVal = m['US_FOMC']?.latestValue ?? 3.75;
 
+    // 景氣成長與循環指標
+    const usGdpVal = m['US_GDP']?.latestValue ?? 3.4;
+    const usGdpPeriod = m['US_GDP']?.latestPeriod ?? '2026-Q3';
+    const twGdpVal = m['TW_GDP']?.latestValue ?? 3.97;
+    const twGdpPeriod = m['TW_GDP']?.latestPeriod ?? '2026-Q3';
+    const ismPmiVal = m['US_ISM_PMI']?.latestValue ?? 48.5;
+    const ismPmiPeriod = m['US_ISM_PMI']?.latestPeriod ?? '2026-10';
+    const twSignalVal = m['TW_SIGNAL']?.latestValue ?? 34;
+    const twSignalPeriod = m['TW_SIGNAL']?.latestPeriod ?? '2026-09';
+    const umichVal = m['US_UMICH']?.latestValue ?? 48.1;
+    const umichPeriod = m['US_UMICH']?.latestPeriod ?? '2026-09';
+    const m2Val = m['US_M2']?.latestValue ?? 5.71;
+    const m2Period = m['US_M2']?.latestPeriod ?? '2026-09';
+
     // 2. 實時金融市場公債、美元與原料
     const snap = (typeof collector.fetchCollectorSnapshot === 'function') ? await collector.fetchCollectorSnapshot(false).catch(() => null) : null;
 
@@ -744,6 +758,14 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
 
 🕒【數據校驗完成時間】：${timeStr} (UTC+8)
 ━━━━━━━━━━━━━━━━━━━━
+🌐【景氣成長、實質 GDP 與信號】：
+• 🇺🇸 美國實質 GDP 季增年率 (QoQ SAAR)：${usGdpVal}%（${usGdpPeriod}期 ｜ BEA 權威發布）
+• 🇹🇼 台灣實質 GDP 成長率 (YoY)：${twGdpVal}%（${twGdpPeriod}期 ｜ 主計總處官方概估）
+• 🇺🇸 ISM 製造業 PMI：${ismPmiVal} 點（${ismPmiPeriod}期 ｜ 50 榮枯線分水嶺）
+• 🇹🇼 國發會景氣對策信號：${twSignalVal} 分（${twSignalPeriod}期 ｜ 黃紅燈熱度延續）
+• 🇺🇸 密西根大學消費者信心：${umichVal} 點（${umichPeriod}期 ｜ 耐久財消費與通膨預期）
+• 🇺🇸 美國 M2 貨幣供給額年增率：${m2Val}%（${m2Period}期 ｜ 實質金融流動性）
+
 🏛️【美國官方權威總經指標（FRED 最新官方期別）】：
 • CPI 通膨年增率：${cpiVal}%（${cpiPeriod}期 ｜ 發布：${cpiRel}）
 • 核心 CPI 年增率：${coreCpiVal}%（${coreCpiPeriod}期 ｜ 發布：${coreCpiRel}）

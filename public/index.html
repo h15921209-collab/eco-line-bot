@@ -79,7 +79,7 @@
             </span>
           </div>
           <p class="text-xs text-slate-400 mt-1">
-            由 FRED、BLS、BEA、中華民國財政部等官方機構定時校正，涵蓋通膨、就業、利率、出口與重工原料共 24 項核心時序。
+            由 FRED、BLS、BEA、行政院主計總處、國發會等官方機構定時校正，涵蓋實質 GDP、景氣燈號、通膨、就業、貨幣與重工原料共 30 項核心時序。
           </p>
         </div>
 
@@ -99,10 +99,11 @@
 
       <!-- 分類標籤篩選列 -->
       <div class="flex items-center gap-1.5 mb-3.5 text-xs overflow-x-auto pb-1" id="vault-category-filter">
-        <button onclick="filterVaultCategory('all')" id="vcat-all" class="px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition whitespace-nowrap shadow-sm">全部 (24項)</button>
+        <button onclick="filterVaultCategory('all')" id="vcat-all" class="px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition whitespace-nowrap shadow-sm">全部 (30項)</button>
+        <button onclick="filterVaultCategory('growth')" id="vcat-growth" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🌐 景氣成長 (4)</button>
         <button onclick="filterVaultCategory('inflation')" id="vcat-inflation" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📊 通膨指標 (4)</button>
-        <button onclick="filterVaultCategory('labor')" id="vcat-labor" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 就業消費 (3)</button>
-        <button onclick="filterVaultCategory('monetary')" id="vcat-monetary" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ 利率政策 (5)</button>
+        <button onclick="filterVaultCategory('labor')" id="vcat-labor" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 就業消費 (4)</button>
+        <button onclick="filterVaultCategory('monetary')" id="vcat-monetary" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ 貨幣利率 (6)</button>
         <button onclick="filterVaultCategory('trade')" id="vcat-trade" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🚢 貿易外銷 (2)</button>
         <button onclick="filterVaultCategory('commodity')" id="vcat-commodity" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏭 大宗重工 (5)</button>
         <button onclick="filterVaultCategory('equity')" id="vcat-equity" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🚀 科技權值 (5)</button>
@@ -695,7 +696,7 @@
 
     function filterVaultCategory(cat) {
       currentVaultCat = cat;
-      const cats = ['all', 'inflation', 'labor', 'monetary', 'trade', 'commodity', 'equity'];
+      const cats = ['all', 'growth', 'inflation', 'labor', 'monetary', 'trade', 'commodity', 'equity'];
       cats.forEach(c => {
         const btn = document.getElementById('vcat-' + c);
         if (btn) {
