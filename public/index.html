@@ -120,7 +120,7 @@
               <th class="py-2.5 px-2.5 text-center whitespace-nowrap">所屬期別</th>
               <th class="py-2.5 px-2.5 text-center whitespace-nowrap">官方發布日</th>
               <th class="py-2.5 px-3 whitespace-nowrap">數據來源機構</th>
-              <th class="py-2.5 px-3 text-right whitespace-nowrap">近 6 期趨勢</th>
+              <th class="py-2.5 px-3 text-right whitespace-nowrap">近 6 期趨勢 <span class="text-[10px] text-sky-400 font-normal">（點擊看細節）</span></th>
             </tr>
           </thead>
           <tbody id="macro-vault-table-body" class="divide-y divide-slate-800/50 font-mono">
@@ -604,6 +604,133 @@
   </footer>
 
   <!-- ============================================================ -->
+  <!-- 總經數據近 6 期趨勢詳情彈出視窗 (Modal Dialog)                -->
+  <!-- ============================================================ -->
+  <div id="vault-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-md hidden transition-opacity duration-200" onclick="handleVaultModalBackdrop(event)">
+    <div class="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-4 border-b border-slate-800/80 flex items-start justify-between bg-slate-950/50">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="vmodal-category" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30"></span>
+            <span id="vmodal-id" class="text-xs font-mono text-slate-400"></span>
+          </div>
+          <h3 id="vmodal-name" class="text-lg sm:text-xl font-bold text-white mt-1"></h3>
+          <div class="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
+            <span>官方來源：<strong id="vmodal-source" class="text-slate-300 font-normal"></strong></span>
+          </div>
+        </div>
+        <button onclick="closeVaultDetailModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-5 overflow-y-auto space-y-5 divide-y divide-slate-800/60">
+        
+        <!-- 頂部核心數值卡片 (KPI Bar) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-0">
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">最新官方數值</div>
+            <div class="text-xl sm:text-2xl font-bold text-amber-300 font-mono mt-0.5 flex items-baseline gap-1">
+              <span id="vmodal-latest-val"></span>
+              <span id="vmodal-unit" class="text-xs text-slate-400 font-normal"></span>
+            </div>
+            <div id="vmodal-latest-period" class="text-[10px] text-slate-500 font-mono mt-0.5"></div>
+          </div>
+          
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">近 1 期變動 (MoM/QoQ)</div>
+            <div id="vmodal-mom-change" class="text-lg sm:text-xl font-bold font-mono mt-1"></div>
+            <div class="text-[10px] text-slate-500">相較前一發布期別</div>
+          </div>
+
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">近 6 期累計淨變動</div>
+            <div id="vmodal-total-change" class="text-lg sm:text-xl font-bold font-mono mt-1"></div>
+            <div class="text-[10px] text-slate-500">6 期總擴張/收縮幅度</div>
+          </div>
+
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">官方最新發布日</div>
+            <div id="vmodal-release-date" class="text-base sm:text-lg font-bold text-emerald-400 font-mono mt-1"></div>
+            <div class="text-[10px] text-slate-500">權威機構正式公布</div>
+          </div>
+        </div>
+
+        <!-- 高解析度 SVG 趨勢走勢圖 -->
+        <div class="pt-4">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <span>📈</span> <span>近 6 期歷史走勢軌跡</span>
+            </div>
+            <div id="vmodal-chart-range" class="text-[11px] font-mono text-slate-400"></div>
+          </div>
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80">
+            <div id="vmodal-chart-svg-container" class="w-full flex justify-center"></div>
+          </div>
+        </div>
+
+        <!-- 近 6 期明細對照表 -->
+        <div class="pt-4">
+          <div class="text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1.5">
+            <span>📋</span> <span>近 6 期數據逐期明細清單</span>
+          </div>
+          <div class="overflow-x-auto rounded-xl border border-slate-800/80 bg-slate-950/60">
+            <table class="w-full text-left text-xs border-collapse font-mono">
+              <thead>
+                <tr class="bg-slate-900/90 text-slate-400 border-b border-slate-800 text-[11px]">
+                  <th class="py-2 px-3">期別</th>
+                  <th class="py-2 px-3 text-right">官方發布數值</th>
+                  <th class="py-2 px-3 text-right">較前期變動</th>
+                  <th class="py-2 px-3 text-center">發布日期</th>
+                  <th class="py-2 px-3 text-center">趨勢狀態</th>
+                </tr>
+              </thead>
+              <tbody id="vmodal-history-tbody" class="divide-y divide-slate-800/50">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 指標經濟意涵與產業決策解讀 -->
+        <div class="pt-4">
+          <div class="text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <span>💡</span> <span>經濟分析意涵與決策解讀</span>
+          </div>
+          <div class="p-3 rounded-xl bg-sky-950/30 border border-sky-800/30 text-xs text-slate-300 leading-relaxed" id="vmodal-description">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer (Navigation & Actions) -->
+      <div class="px-5 py-3 border-t border-slate-800/80 bg-slate-950/60 flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-1.5">
+          <button onclick="navigateVaultDetail(-1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition flex items-center gap-1 active:scale-95">
+            <span>⬅️</span> 上一指標
+          </button>
+          <button onclick="navigateVaultDetail(1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition flex items-center gap-1 active:scale-95">
+            下一指標 <span>➡️</span>
+          </button>
+          <span id="vmodal-nav-index" class="text-xs text-slate-500 font-mono ml-1"></span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="copyVaultDetailData()" class="px-3 py-1.5 rounded-lg bg-sky-600/20 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs font-medium transition flex items-center gap-1 active:scale-95">
+            <span>📋</span> 複製 6 期數據
+          </button>
+          <button onclick="closeVaultDetailModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition active:scale-95">
+            關閉
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
   <!-- 核心輕量化 JavaScript (專精 4 大板塊數據請求與渲染)           -->
   <!-- ============================================================ -->
   <script>
@@ -728,9 +855,12 @@
         const hist = m.history || [];
         const sparklineHtml = generateMiniSparklineSvg(hist.map(h => h.value));
         return `
-          <tr class="hover:bg-slate-900/50 transition">
+          <tr onclick="openVaultDetailModal('${m.id}')" class="hover:bg-slate-800/60 cursor-pointer transition group select-none" title="點擊檢視【${m.name}】近 6 期趨勢細節與分析">
             <td class="py-2.5 px-3">
-              <div class="text-white font-bold">${m.name}</div>
+              <div class="text-white font-bold group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
+                <span>${m.name}</span>
+                <span class="text-[10px] text-sky-400 opacity-60 group-hover:opacity-100 transition-opacity">🔍</span>
+              </div>
               <div class="text-[10px] text-slate-500 font-mono">${m.id}</div>
             </td>
             <td class="py-2.5 px-2.5">
@@ -742,7 +872,12 @@
             <td class="py-2.5 px-2.5 text-center text-slate-300 font-mono">${m.latestPeriod || '--'}</td>
             <td class="py-2.5 px-2.5 text-center text-emerald-400 font-mono">${m.latestReleaseDate || '--'}</td>
             <td class="py-2.5 px-3 text-slate-400 text-[11px]">${m.source}</td>
-            <td class="py-2.5 px-3 text-right font-mono">${sparklineHtml}</td>
+            <td class="py-2.5 px-3 text-right font-mono">
+              <div class="inline-flex items-center gap-1.5 bg-slate-900/80 group-hover:bg-sky-950/70 px-2 py-1 rounded-lg border border-slate-800 group-hover:border-sky-500/50 transition shadow-sm">
+                ${sparklineHtml}
+                <span class="text-[10px] text-slate-400 group-hover:text-sky-300 transition-colors">↗</span>
+              </div>
+            </td>
           </tr>
         `;
       }).join('');
@@ -799,6 +934,304 @@
         if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-rose-400">載入總經歸檔庫失敗，請重試。</td></tr>';
       }
     }
+
+    // ============================================================
+    // 總經數據近 6 期趨勢詳情視窗 (Modal Dialog) 控制邏輯
+    // ============================================================
+    let currentModalMetricId = null;
+
+    function handleVaultModalBackdrop(e) {
+      if (e.target.id === 'vault-detail-modal') {
+        closeVaultDetailModal();
+      }
+    }
+
+    function openVaultDetailModal(metricId) {
+      const metric = (allVaultMetrics || []).find(m => m.id === metricId);
+      if (!metric) return;
+
+      currentModalMetricId = metricId;
+
+      // 1. 設置標題、代碼與來源
+      const nameEl = document.getElementById('vmodal-name');
+      const idEl = document.getElementById('vmodal-id');
+      const catEl = document.getElementById('vmodal-category');
+      const srcEl = document.getElementById('vmodal-source');
+      const descEl = document.getElementById('vmodal-description');
+
+      if (nameEl) nameEl.innerText = metric.name;
+      if (idEl) idEl.innerText = metric.id;
+      if (catEl) catEl.innerText = metric.categoryZh || metric.category;
+      if (srcEl) srcEl.innerText = metric.source;
+      if (descEl) descEl.innerText = metric.description || '無詳細經濟意涵說明';
+
+      // 2. 核心數值與期別
+      const unit = metric.unit || '';
+      const valEl = document.getElementById('vmodal-latest-val');
+      const unitEl = document.getElementById('vmodal-unit');
+      const periodEl = document.getElementById('vmodal-latest-period');
+      const relEl = document.getElementById('vmodal-release-date');
+
+      if (valEl) valEl.innerText = metric.latestValue;
+      if (unitEl) unitEl.innerText = unit;
+      if (periodEl) periodEl.innerText = '所屬期別：' + (metric.latestPeriod || '--');
+      if (relEl) relEl.innerText = metric.latestReleaseDate || '--';
+
+      // 3. 計算增減差 (MoM/QoQ 與 6期累計淨變動)
+      const hist = metric.history || [];
+      const len = hist.length;
+
+      const momEl = document.getElementById('vmodal-mom-change');
+      const totalEl = document.getElementById('vmodal-total-change');
+
+      if (momEl) {
+        if (len >= 2) {
+          const cur = Number(hist[len - 1].value);
+          const prev = Number(hist[len - 2].value);
+          const momDiff = Number((cur - prev).toFixed(3));
+          const momSign = momDiff > 0 ? '+' : '';
+          const momColor = momDiff > 0 ? 'text-red-400' : (momDiff < 0 ? 'text-emerald-400' : 'text-slate-400');
+          momEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 ' + momColor;
+          momEl.innerText = `${momSign}${momDiff} ${unit}`;
+        } else {
+          momEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 text-slate-400';
+          momEl.innerText = '--';
+        }
+      }
+
+      if (totalEl) {
+        if (len >= 2) {
+          const first = Number(hist[0].value);
+          const last = Number(hist[len - 1].value);
+          const totDiff = Number((last - first).toFixed(3));
+          const totSign = totDiff > 0 ? '+' : '';
+          const totColor = totDiff > 0 ? 'text-red-400' : (totDiff < 0 ? 'text-emerald-400' : 'text-slate-400');
+          totalEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 ' + totColor;
+          totalEl.innerText = `${totSign}${totDiff} ${unit}`;
+        } else {
+          totalEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 text-slate-400';
+          totalEl.innerText = '--';
+        }
+      }
+
+      // 4. 歷史期別區間
+      const rangeEl = document.getElementById('vmodal-chart-range');
+      if (rangeEl) {
+        if (len >= 2) {
+          rangeEl.innerText = `${hist[0].period} ~ ${hist[len - 1].period} (${len} 期)`;
+        } else {
+          rangeEl.innerText = '';
+        }
+      }
+
+      // 5. 繪製高解析度 SVG 折線走勢圖
+      renderVaultDetailChart(hist, unit);
+
+      // 6. 渲染近 6 期明細對照表
+      const tbody = document.getElementById('vmodal-history-tbody');
+      if (tbody) {
+        tbody.innerHTML = hist.map((h, i) => {
+          let diffHtml = '<span class="text-slate-500">基準</span>';
+          let trendIcon = '<span class="text-slate-500">━</span>';
+          if (i > 0) {
+            const prevVal = Number(hist[i - 1].value);
+            const curVal = Number(h.value);
+            const diff = Number((curVal - prevVal).toFixed(3));
+            const sign = diff > 0 ? '+' : '';
+            const color = diff > 0 ? 'text-red-400' : (diff < 0 ? 'text-emerald-400' : 'text-slate-400');
+            diffHtml = `<span class="${color} font-bold">${sign}${diff}</span>`;
+            trendIcon = diff > 0 ? '<span class="text-red-400 font-bold">▲ 上升</span>' : (diff < 0 ? '<span class="text-emerald-400 font-bold">▼ 下降</span>' : '<span class="text-slate-400">━ 持平</span>');
+          }
+          const isLatest = i === hist.length - 1;
+          const rowBg = isLatest ? 'bg-sky-950/40 border-l-2 border-sky-400' : '';
+          return `
+            <tr class="hover:bg-slate-900/70 transition ${rowBg}">
+              <td class="py-2.5 px-3 text-slate-300 font-medium">
+                ${h.period} ${isLatest ? '<span class="ml-1 px-1.5 py-0.2 rounded text-[9px] bg-sky-500/20 text-sky-300 border border-sky-500/40">最新</span>' : ''}
+              </td>
+              <td class="py-2.5 px-3 text-right text-amber-300 font-bold text-sm">
+                ${h.value} <span class="text-[10px] text-slate-500 font-normal">${unit}</span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono">${diffHtml}</td>
+              <td class="py-2.5 px-3 text-center text-emerald-400">${h.releaseDate || '--'}</td>
+              <td class="py-2.5 px-3 text-center text-xs font-sans">${trendIcon}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // 7. 更新指標切換編號
+      updateVaultDetailNavIndex();
+
+      // 8. 顯示彈出視窗並鎖定背景滾動
+      const modal = document.getElementById('vault-detail-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeVaultDetailModal() {
+      const modal = document.getElementById('vault-detail-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function getActiveVaultMetricsList() {
+      if (currentVaultCat === 'all') return allVaultMetrics || [];
+      return (allVaultMetrics || []).filter(m => m.category === currentVaultCat);
+    }
+
+    function updateVaultDetailNavIndex() {
+      const list = getActiveVaultMetricsList();
+      const idx = list.findIndex(m => m.id === currentModalMetricId);
+      const el = document.getElementById('vmodal-nav-index');
+      if (el) {
+        if (idx >= 0) {
+          el.innerText = `(${idx + 1} / ${list.length})`;
+        } else {
+          el.innerText = '';
+        }
+      }
+    }
+
+    function navigateVaultDetail(direction) {
+      const list = getActiveVaultMetricsList();
+      if (!list || list.length === 0) return;
+      let idx = list.findIndex(m => m.id === currentModalMetricId);
+      if (idx === -1) idx = 0;
+      let nextIdx = idx + direction;
+      if (nextIdx < 0) nextIdx = list.length - 1;
+      if (nextIdx >= list.length) nextIdx = 0;
+      openVaultDetailModal(list[nextIdx].id);
+    }
+
+    function renderVaultDetailChart(history, unit) {
+      const container = document.getElementById('vmodal-chart-svg-container');
+      if (!container) return;
+
+      if (!Array.isArray(history) || history.length < 2) {
+        container.innerHTML = '<div class="py-8 text-slate-500 text-xs">歷史數據不足，無法繪製走勢圖</div>';
+        return;
+      }
+
+      const values = history.map(h => Number(h.value));
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const range = (max - min) === 0 ? 1 : (max - min);
+
+      const w = 540;
+      const h = 160;
+      const padTop = 28;
+      const padBottom = 28;
+      const padLeft = 46;
+      const padRight = 46;
+      const plotW = w - padLeft - padRight;
+      const plotH = h - padTop - padBottom;
+      const step = plotW / (values.length - 1);
+
+      const coords = values.map((v, i) => {
+        const x = Number((padLeft + i * step).toFixed(1));
+        const y = Number((padTop + plotH - ((v - min) / range) * plotH).toFixed(1));
+        return { x, y, val: v, period: history[i].period, releaseDate: history[i].releaseDate };
+      });
+
+      const linePoints = coords.map(c => `${c.x},${c.y}`).join(' ');
+      const areaPoints = `${coords[0].x},${padTop + plotH} ` + linePoints + ` ${coords[coords.length - 1].x},${padTop + plotH}`;
+
+      const isUp = values[values.length - 1] >= values[0];
+      const strokeColor = isUp ? '#38bdf8' : '#f43f5e';
+      const stopColor = isUp ? '#0284c7' : '#e11d48';
+
+      // 基準網格線 (3 條水平線：最低、中位、最高)
+      const gridLevels = [0, 0.5, 1];
+      const gridLinesHtml = gridLevels.map(lvl => {
+        const gy = Number((padTop + plotH * (1 - lvl)).toFixed(1));
+        const gVal = Number((min + range * lvl).toFixed(2));
+        return `
+          <line x1="${padLeft - 6}" y1="${gy}" x2="${w - padRight + 6}" y2="${gy}" stroke="#334155" stroke-dasharray="3,3" stroke-width="0.8" opacity="0.6" />
+          <text x="${padLeft - 10}" y="${gy + 3}" text-anchor="end" font-size="9" font-family="monospace" fill="#64748b">${gVal}</text>
+        `;
+      }).join('');
+
+      // 坐標點與數據標籤
+      const dotsHtml = coords.map((c, i) => {
+        const isMax = c.val === max && max !== min;
+        const isMin = c.val === min && max !== min;
+        const dotColor = isMax ? '#fbbf24' : (isMin ? '#a855f7' : strokeColor);
+        return `
+          <g class="cursor-pointer group/dot">
+            <circle cx="${c.x}" cy="${c.y}" r="4.5" fill="#0f172a" stroke="${dotColor}" stroke-width="2.2" class="transition-transform group-hover/dot:scale-125" />
+            <text x="${c.x}" y="${c.y - 8}" text-anchor="middle" font-size="10" font-family="monospace" font-weight="bold" fill="#f8fafc">${c.val}</text>
+            <text x="${c.x}" y="${h - 8}" text-anchor="middle" font-size="9.5" font-family="monospace" fill="#94a3b8">${c.period}</text>
+          </g>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto select-none overflow-visible">
+          <defs>
+            <linearGradient id="vmodalGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="${stopColor}" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="${stopColor}" stop-opacity="0.0" />
+            </linearGradient>
+          </defs>
+          ${gridLinesHtml}
+          <polygon fill="url(#vmodalGrad)" points="${areaPoints}" />
+          <polyline fill="none" stroke="${strokeColor}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" points="${linePoints}" />
+          ${dotsHtml}
+        </svg>
+      `;
+    }
+
+    function copyVaultDetailData() {
+      const metric = (allVaultMetrics || []).find(m => m.id === currentModalMetricId);
+      if (!metric) return;
+
+      const hist = metric.history || [];
+      const lines = [
+        `【${metric.name}】(${metric.id})`,
+        `官方來源：${metric.source}`,
+        `最新數值：${metric.latestValue} ${metric.unit || ''} (${metric.latestPeriod})`,
+        `官方發布日：${metric.latestReleaseDate || '--'}`,
+        '---------------------------------------',
+        '期別\t數值\t較前期變動\t發布日'
+      ];
+
+      hist.forEach((h, i) => {
+        let diffStr = '基準';
+        if (i > 0) {
+          const prevVal = Number(hist[i - 1].value);
+          const curVal = Number(h.value);
+          const diff = Number((curVal - prevVal).toFixed(3));
+          diffStr = (diff > 0 ? '+' : '') + diff;
+        }
+        lines.push(`${h.period}\t${h.value} ${metric.unit || ''}\t${diffStr}\t${h.releaseDate || '--'}`);
+      });
+
+      const copyText = lines.join('\n');
+      navigator.clipboard.writeText(copyText).then(() => {
+        alert(`✅ 【${metric.name}】近 6 期歷史明細數據已複製到剪貼簿！\n可直接貼入 Excel、Word 或個人筆記。`);
+      }).catch(() => {
+        prompt('請手動複製以下明細數據：', copyText);
+      });
+    }
+
+    // 鍵盤監聽（ESC 鍵關閉，左右方向鍵切換指標）
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('vault-detail-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        if (e.key === 'Escape') {
+          closeVaultDetailModal();
+        } else if (e.key === 'ArrowLeft') {
+          navigateVaultDetail(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigateVaultDetail(1);
+        }
+      }
+    });
 
     // ============================================================
     // 板塊 2：📈 常用到的全球熱門財經數據 (Global Financial Tickers)
