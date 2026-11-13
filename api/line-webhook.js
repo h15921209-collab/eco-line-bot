@@ -716,11 +716,11 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
     // 景氣成長與循環指標
     const usGdpVal = m['US_GDP']?.latestValue ?? 3.4;
     const usGdpPeriod = m['US_GDP']?.latestPeriod ?? '2026-Q3';
-    const twGdpVal = m['TW_GDP']?.latestValue ?? 3.97;
+    const twGdpVal = m['TW_GDP']?.latestValue ?? 14.36;
     const twGdpPeriod = m['TW_GDP']?.latestPeriod ?? '2026-Q3';
     const ismPmiVal = m['US_ISM_PMI']?.latestValue ?? 48.5;
     const ismPmiPeriod = m['US_ISM_PMI']?.latestPeriod ?? '2026-10';
-    const twSignalVal = m['TW_SIGNAL']?.latestValue ?? 34;
+    const twSignalVal = m['TW_SIGNAL']?.latestValue ?? 41;
     const twSignalPeriod = m['TW_SIGNAL']?.latestPeriod ?? '2026-09';
     const umichVal = m['US_UMICH']?.latestValue ?? 48.1;
     const umichPeriod = m['US_UMICH']?.latestPeriod ?? '2026-09';
@@ -730,7 +730,7 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
     // 服務業、外銷訂單、房貸、新屋與耐久財
     const ismServicesVal = m['US_ISM_SERVICES']?.latestValue ?? 56.0;
     const ismServicesPeriod = m['US_ISM_SERVICES']?.latestPeriod ?? '2026-10';
-    const twOrdersVal = m['TW_EXPORT_ORDERS']?.latestValue ?? 4.6;
+    const twOrdersVal = m['TW_EXPORT_ORDERS']?.latestValue ?? 62.4;
     const twOrdersPeriod = m['TW_EXPORT_ORDERS']?.latestPeriod ?? '2026-09';
     const bdiVal = m['GLOBAL_BDI']?.latestValue ?? 1410;
     const bdiPeriod = m['GLOBAL_BDI']?.latestPeriod ?? '2026-10';
@@ -774,9 +774,9 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
 ━━━━━━━━━━━━━━━━━━━━
 🌐【景氣成長、實質 GDP 與信號】：
 • 🇺🇸 美國實質 GDP 季增年率 (QoQ SAAR)：${usGdpVal}%（${usGdpPeriod}期 ｜ BEA 權威發布）
-• 🇹🇼 台灣實質 GDP 成長率 (YoY)：${twGdpVal}%（${twGdpPeriod}期 ｜ 主計總處官方概估）
+• 🇹🇼 台灣實質 GDP 成長率 (YoY)：${twGdpVal}%（${twGdpPeriod}期 ｜ 主計總處官方概估，創48年新高）
 • 🇺🇸 ISM 製造業 PMI：${ismPmiVal} 點 ｜ 服務業 PMI：${ismServicesVal} 點（${ismServicesPeriod}期 ｜ 50 榮枯線）
-• 🇹🇼 國發會景氣對策信號：${twSignalVal} 分（${twSignalPeriod}期 ｜ 黃紅燈熱度延續）
+• 🇹🇼 國發會景氣對策信號：${twSignalVal} 分（${twSignalPeriod}期 ｜ ${Number(twSignalVal) >= 38 ? '紅燈連10紅擴張' : '熱度延續'}）
 • 🇹🇼 經濟部外銷訂單年增率：+${twOrdersVal}%（${twOrdersPeriod}期 ｜ 領先海關出口）
 • 🚢 波羅的海乾散貨指數 (BDI)：${bdiVal} 點（${bdiPeriod}期 ｜ 散裝原物料海運週轉）
 • 🇺🇸 30 年期固定房貸利率：${mortgageVal}%（${mortgagePeriod}期 ｜ 居民房貸信貸成本）

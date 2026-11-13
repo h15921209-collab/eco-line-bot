@@ -33,17 +33,17 @@ const METRIC_DEFINITIONS = {
     categoryZh: '景氣成長',
     unit: '%',
     source: '行政院主計總處 (DGBAS)',
-    defaultVal: 3.97,
+    defaultVal: 14.36,
     defaultPeriod: '2026-Q3',
     defaultRelease: '10/31',
-    description: '反映台灣資通訊科技外銷與民間投資動能之實體經濟年成長率',
+    description: '反映台灣資通訊科技外銷與民間投資動能之實體經濟年成長率，創48年同期新高',
     defaultHistory: [
-      { period: '2025-Q2', value: 5.06, releaseDate: '07/31' },
-      { period: '2025-Q3', value: 4.10, releaseDate: '10/31' },
-      { period: '2025-Q4', value: 4.93, releaseDate: '01/23' },
-      { period: '2026-Q1', value: 6.56, releaseDate: '04/30' },
-      { period: '2026-Q2', value: 5.09, releaseDate: '07/31' },
-      { period: '2026-Q3', value: 3.97, releaseDate: '10/31' }
+      { period: '2025-Q2', value: 9.80, releaseDate: '07/31' },
+      { period: '2025-Q3', value: 8.20, releaseDate: '10/31' },
+      { period: '2025-Q4', value: 12.65, releaseDate: '01/23' },
+      { period: '2026-Q1', value: 15.43, releaseDate: '04/30' },
+      { period: '2026-Q2', value: 12.93, releaseDate: '07/31' },
+      { period: '2026-Q3', value: 14.36, releaseDate: '10/31' }
     ]
   },
   'US_ISM_PMI': {
@@ -73,17 +73,17 @@ const METRIC_DEFINITIONS = {
     categoryZh: '景氣成長',
     unit: '分 (燈號)',
     source: '中華民國國家發展委員會 (NDC)',
-    defaultVal: 34,
+    defaultVal: 41,
     defaultPeriod: '2026-09',
     defaultRelease: '10/27',
-    description: '綜合出口、股價、工業生產判定台灣景氣榮枯（32~37分為黃紅燈，轉折警訊）',
+    description: '綜合出口、股價、工業生產判定台灣景氣榮枯（38~45分為紅燈，創連10紅紀錄）',
     defaultHistory: [
-      { period: '2026-04', value: 35, releaseDate: '05/27' },
-      { period: '2026-05', value: 36, releaseDate: '06/27' },
-      { period: '2026-06', value: 38, releaseDate: '07/26' },
-      { period: '2026-07', value: 35, releaseDate: '08/27' },
-      { period: '2026-08', value: 39, releaseDate: '09/27' },
-      { period: '2026-09', value: 34, releaseDate: '10/27' }
+      { period: '2026-04', value: 40, releaseDate: '05/27' },
+      { period: '2026-05', value: 39, releaseDate: '06/27' },
+      { period: '2026-06', value: 41, releaseDate: '07/26' },
+      { period: '2026-07', value: 41, releaseDate: '08/27' },
+      { period: '2026-08', value: 41, releaseDate: '09/27' },
+      { period: '2026-09', value: 41, releaseDate: '10/27' }
     ]
   },
   'US_ISM_SERVICES': {
@@ -345,10 +345,18 @@ const METRIC_DEFINITIONS = {
     categoryZh: '貿易外銷',
     unit: '%',
     source: '中華民國財政部統計處',
-    defaultVal: 18.5,
-    defaultPeriod: '2026-08',
-    defaultRelease: '09/08',
-    description: '反映台灣資通訊電子與傳統貨品之全球實體出貨動能'
+    defaultVal: 58.9,
+    defaultPeriod: '2026-10',
+    defaultRelease: '11/08',
+    description: '反映台灣資通訊電子、AI 伺服器與半導體晶圓之實質海關出貨動能（連36個月正成長）',
+    defaultHistory: [
+      { period: '2026-05', value: 41.5, releaseDate: '06/07' },
+      { period: '2026-06', value: 38.2, releaseDate: '07/08' },
+      { period: '2026-07', value: 42.1, releaseDate: '08/08' },
+      { period: '2026-08', value: 45.3, releaseDate: '09/08' },
+      { period: '2026-09', value: 51.2, releaseDate: '10/08' },
+      { period: '2026-10', value: 58.9, releaseDate: '11/08' }
+    ]
   },
   'CN_PMI': {
     id: 'CN_PMI',
@@ -357,10 +365,18 @@ const METRIC_DEFINITIONS = {
     categoryZh: '貿易外銷',
     unit: '榮枯線50',
     source: '中國國家統計局',
-    defaultVal: 49.4,
-    defaultPeriod: '2026-08',
-    defaultRelease: '08/31',
-    description: '衡量全球最大製造業實體工廠開工與新訂單之景氣榮枯'
+    defaultVal: 49.3,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/31',
+    description: '衡量全球最大製造業實體工廠開工與新訂單之景氣榮枯，大於50為擴張',
+    defaultHistory: [
+      { period: '2026-05', value: 49.5, releaseDate: '05/31' },
+      { period: '2026-06', value: 49.5, releaseDate: '06/30' },
+      { period: '2026-07', value: 49.4, releaseDate: '07/31' },
+      { period: '2026-08', value: 49.8, releaseDate: '08/31' },
+      { period: '2026-09', value: 50.1, releaseDate: '09/30' },
+      { period: '2026-10', value: 49.3, releaseDate: '10/31' }
+    ]
   },
   'TW_EXPORT_ORDERS': {
     id: 'TW_EXPORT_ORDERS',
@@ -369,17 +385,17 @@ const METRIC_DEFINITIONS = {
     categoryZh: '貿易外銷',
     unit: '%',
     source: '中華民國經濟部統計處',
-    defaultVal: 4.6,
+    defaultVal: 62.4,
     defaultPeriod: '2026-09',
     defaultRelease: '10/20',
     description: '領先海關出口 1~2 個月，反映台灣半導體、AI 伺服器與電子組裝之全球接單動能',
     defaultHistory: [
-      { period: '2026-04', value: 2.8, releaseDate: '05/20' },
-      { period: '2026-05', value: 7.0, releaseDate: '06/20' },
-      { period: '2026-06', value: 3.1, releaseDate: '07/22' },
-      { period: '2026-07', value: 4.8, releaseDate: '08/20' },
-      { period: '2026-08', value: 9.1, releaseDate: '09/20' },
-      { period: '2026-09', value: 4.6, releaseDate: '10/20' }
+      { period: '2026-04', value: 38.6, releaseDate: '05/20' },
+      { period: '2026-05', value: 45.2, releaseDate: '06/20' },
+      { period: '2026-06', value: 52.8, releaseDate: '07/22' },
+      { period: '2026-07', value: 57.3, releaseDate: '08/20' },
+      { period: '2026-08', value: 59.8, releaseDate: '09/20' },
+      { period: '2026-09', value: 62.4, releaseDate: '10/20' }
     ]
   },
   'GLOBAL_BDI': {
@@ -633,7 +649,30 @@ function initOrLoadVault() {
         };
       }
     });
-    if (hasNew) {
+
+    // 🎯 深度校準已存在之重要指標：覆寫過期或未同步之歷史快取
+    const calibratedKeys = ['TW_GDP', 'TW_SIGNAL', 'TW_EXPORT', 'TW_EXPORT_ORDERS', 'CN_PMI'];
+    let hasCalibrated = false;
+    calibratedKeys.forEach(k => {
+      const def = METRIC_DEFINITIONS[k];
+      if (def && inMemoryVault.metrics[k]) {
+        const current = inMemoryVault.metrics[k];
+        if (current.latestValue !== def.defaultVal || current.latestPeriod !== def.defaultPeriod) {
+          console.log(`[Macro Vault Calibration] 正在校準 ${k}: ${current.latestValue} (${current.latestPeriod}) ➔ ${def.defaultVal} (${def.defaultPeriod})`);
+          current.latestValue = def.defaultVal;
+          current.latestPeriod = def.defaultPeriod;
+          current.latestReleaseDate = def.defaultRelease;
+          current.description = def.description;
+          if (def.defaultHistory) {
+            current.history = JSON.parse(JSON.stringify(def.defaultHistory));
+          }
+          current.lastUpdated = new Date().toISOString();
+          hasCalibrated = true;
+        }
+      }
+    });
+
+    if (hasNew || hasCalibrated) {
       saveVaultToDisk(true);
     }
   }

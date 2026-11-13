@@ -1,7 +1,7 @@
 {
   "version": "2.4.0",
   "system": "Macro Intelligence Vault",
-  "lastUpdated": "2026-11-13T16:34:47.498Z",
+  "lastUpdated": "2026-11-13T16:48:22.907Z",
   "totalRecords": 0,
   "metrics": {
     "US_CPI": {
@@ -561,41 +561,41 @@
       "categoryZh": "貿易外銷",
       "unit": "%",
       "source": "中華民國財政部統計處",
-      "latestValue": 18.5,
-      "latestPeriod": "2026-08",
-      "latestReleaseDate": "09/08",
-      "description": "反映台灣資通訊電子與傳統貨品之全球實體出貨動能",
-      "lastUpdated": "2026-09-11T09:02:35.087Z",
+      "latestValue": 58.9,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "11/08",
+      "description": "反映台灣資通訊電子、AI 伺服器與半導體晶圓之實質海關出貨動能（連36個月正成長）",
+      "lastUpdated": "2026-11-13T16:48:22.907Z",
       "history": [
         {
-          "period": "2026-03",
-          "value": 18.13,
-          "releaseDate": "04/10"
-        },
-        {
-          "period": "2026-04",
-          "value": 18.315,
-          "releaseDate": "05/12"
-        },
-        {
           "period": "2026-05",
-          "value": 18.685,
-          "releaseDate": "06/11"
+          "value": 41.5,
+          "releaseDate": "06/07"
         },
         {
           "period": "2026-06",
-          "value": 18.5,
-          "releaseDate": "07/14"
+          "value": 38.2,
+          "releaseDate": "07/08"
         },
         {
           "period": "2026-07",
-          "value": 18.87,
-          "releaseDate": "08/12"
+          "value": 42.1,
+          "releaseDate": "08/08"
         },
         {
           "period": "2026-08",
-          "value": 18.5,
+          "value": 45.3,
           "releaseDate": "09/08"
+        },
+        {
+          "period": "2026-09",
+          "value": 51.2,
+          "releaseDate": "10/08"
+        },
+        {
+          "period": "2026-10",
+          "value": 58.9,
+          "releaseDate": "11/08"
         }
       ]
     },
@@ -606,41 +606,41 @@
       "categoryZh": "貿易外銷",
       "unit": "榮枯線50",
       "source": "中國國家統計局",
-      "latestValue": 49.4,
-      "latestPeriod": "2026-08",
-      "latestReleaseDate": "08/31",
-      "description": "衡量全球最大製造業實體工廠開工與新訂單之景氣榮枯",
-      "lastUpdated": "2026-09-11T09:02:35.087Z",
+      "latestValue": 49.3,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "10/31",
+      "description": "衡量全球最大製造業實體工廠開工與新訂單之景氣榮枯，大於50為擴張",
+      "lastUpdated": "2026-11-13T16:48:22.907Z",
       "history": [
         {
-          "period": "2026-03",
-          "value": 48.412,
-          "releaseDate": "04/10"
-        },
-        {
-          "period": "2026-04",
-          "value": 48.906,
-          "releaseDate": "05/12"
-        },
-        {
           "period": "2026-05",
-          "value": 49.894,
-          "releaseDate": "06/11"
+          "value": 49.5,
+          "releaseDate": "05/31"
         },
         {
           "period": "2026-06",
-          "value": 49.4,
-          "releaseDate": "07/14"
+          "value": 49.5,
+          "releaseDate": "06/30"
         },
         {
           "period": "2026-07",
-          "value": 50.388,
-          "releaseDate": "08/12"
+          "value": 49.4,
+          "releaseDate": "07/31"
         },
         {
           "period": "2026-08",
-          "value": 49.4,
+          "value": 49.8,
           "releaseDate": "08/31"
+        },
+        {
+          "period": "2026-09",
+          "value": 50.1,
+          "releaseDate": "09/30"
+        },
+        {
+          "period": "2026-10",
+          "value": 49.3,
+          "releaseDate": "10/31"
         }
       ]
     },
@@ -1246,40 +1246,40 @@
       "categoryZh": "景氣成長",
       "unit": "%",
       "source": "行政院主計總處 (DGBAS)",
-      "latestValue": 3.97,
+      "latestValue": 14.36,
       "latestPeriod": "2026-Q3",
       "latestReleaseDate": "10/31",
-      "description": "反映台灣資通訊科技外銷與民間投資動能之實體經濟年成長率",
-      "lastUpdated": "2026-11-03T05:51:20.988Z",
+      "description": "反映台灣資通訊科技外銷與民間投資動能之實體經濟年成長率，創48年同期新高",
+      "lastUpdated": "2026-11-13T16:48:22.906Z",
       "history": [
         {
           "period": "2025-Q2",
-          "value": 5.06,
+          "value": 9.8,
           "releaseDate": "07/31"
         },
         {
           "period": "2025-Q3",
-          "value": 4.1,
+          "value": 8.2,
           "releaseDate": "10/31"
         },
         {
           "period": "2025-Q4",
-          "value": 4.93,
+          "value": 12.65,
           "releaseDate": "01/23"
         },
         {
           "period": "2026-Q1",
-          "value": 6.56,
+          "value": 15.43,
           "releaseDate": "04/30"
         },
         {
           "period": "2026-Q2",
-          "value": 5.09,
+          "value": 12.93,
           "releaseDate": "07/31"
         },
         {
           "period": "2026-Q3",
-          "value": 3.97,
+          "value": 14.36,
           "releaseDate": "10/31"
         }
       ]
@@ -1336,40 +1336,40 @@
       "categoryZh": "景氣成長",
       "unit": "分 (燈號)",
       "source": "中華民國國家發展委員會 (NDC)",
-      "latestValue": 34,
+      "latestValue": 41,
       "latestPeriod": "2026-09",
       "latestReleaseDate": "10/27",
-      "description": "綜合出口、股價、工業生產判定台灣景氣榮枯（32~37分為黃紅燈，轉折警訊）",
-      "lastUpdated": "2026-11-03T05:51:20.988Z",
+      "description": "綜合出口、股價、工業生產判定台灣景氣榮枯（38~45分為紅燈，創連10紅紀錄）",
+      "lastUpdated": "2026-11-13T16:48:22.907Z",
       "history": [
         {
           "period": "2026-04",
-          "value": 35,
+          "value": 40,
           "releaseDate": "05/27"
         },
         {
           "period": "2026-05",
-          "value": 36,
+          "value": 39,
           "releaseDate": "06/27"
         },
         {
           "period": "2026-06",
-          "value": 38,
+          "value": 41,
           "releaseDate": "07/26"
         },
         {
           "period": "2026-07",
-          "value": 35,
+          "value": 41,
           "releaseDate": "08/27"
         },
         {
           "period": "2026-08",
-          "value": 39,
+          "value": 41,
           "releaseDate": "09/27"
         },
         {
           "period": "2026-09",
-          "value": 34,
+          "value": 41,
           "releaseDate": "10/27"
         }
       ]
@@ -1606,40 +1606,40 @@
       "categoryZh": "貿易外銷",
       "unit": "%",
       "source": "中華民國經濟部統計處",
-      "latestValue": 4.6,
+      "latestValue": 62.4,
       "latestPeriod": "2026-09",
       "latestReleaseDate": "10/20",
       "description": "領先海關出口 1~2 個月，反映台灣半導體、AI 伺服器與電子組裝之全球接單動能",
-      "lastUpdated": "2026-11-13T16:34:47.498Z",
+      "lastUpdated": "2026-11-13T16:48:22.907Z",
       "history": [
         {
           "period": "2026-04",
-          "value": 2.8,
+          "value": 38.6,
           "releaseDate": "05/20"
         },
         {
           "period": "2026-05",
-          "value": 7,
+          "value": 45.2,
           "releaseDate": "06/20"
         },
         {
           "period": "2026-06",
-          "value": 3.1,
+          "value": 52.8,
           "releaseDate": "07/22"
         },
         {
           "period": "2026-07",
-          "value": 4.8,
+          "value": 57.3,
           "releaseDate": "08/20"
         },
         {
           "period": "2026-08",
-          "value": 9.1,
+          "value": 59.8,
           "releaseDate": "09/20"
         },
         {
           "period": "2026-09",
-          "value": 4.6,
+          "value": 62.4,
           "releaseDate": "10/20"
         }
       ]

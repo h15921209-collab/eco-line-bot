@@ -191,9 +191,9 @@ async function fetchLiveMarketAndHistory() {
     const vault = (typeof macroVault.initOrLoadVault === 'function') ? macroVault.initOrLoadVault() : null;
     const m = vault?.metrics || {};
     const gdp = m['US_GDP'] || { latestValue: 3.4, latestPeriod: '2026-Q3', latestReleaseDate: '10/29' };
-    const twGdp = m['TW_GDP'] || { latestValue: 3.97, latestPeriod: '2026-Q3', latestReleaseDate: '10/31' };
+    const twGdp = m['TW_GDP'] || { latestValue: 14.36, latestPeriod: '2026-Q3', latestReleaseDate: '10/31' };
     const ismPmi = m['US_ISM_PMI'] || { latestValue: 48.5, latestPeriod: '2026-10', latestReleaseDate: '11/01' };
-    const twSignal = m['TW_SIGNAL'] || { latestValue: 34, latestPeriod: '2026-09', latestReleaseDate: '10/27' };
+    const twSignal = m['TW_SIGNAL'] || { latestValue: 41, latestPeriod: '2026-09', latestReleaseDate: '10/27' };
     const cpi = m['US_CPI'] || { latestValue: 3.7, latestPeriod: '2026-09', latestReleaseDate: '10/14' };
     const coreCpi = m['US_CORE_CPI'] || { latestValue: 2.6, latestPeriod: '2026-09', latestReleaseDate: '10/14' };
     const pce = m['US_PCE'] || { latestValue: 3.0, latestPeriod: '2026-08', latestReleaseDate: '10/07' };
@@ -202,9 +202,9 @@ async function fetchLiveMarketAndHistory() {
     const umich = m['US_UMICH'] || { latestValue: 48.1, latestPeriod: '2026-09', latestReleaseDate: '10/27' };
     const m2 = m['US_M2'] || { latestValue: 5.71, latestPeriod: '2026-09', latestReleaseDate: '10/27' };
     const fed = m['US_FOMC'] || { latestValue: 3.75, latestPeriod: '2026-09' };
-    const twExport = m['TW_EXPORT'] || { latestValue: 18.5, latestPeriod: '2026-08' };
+    const twExport = m['TW_EXPORT'] || { latestValue: 58.9, latestPeriod: '2026-10' };
     const ismServices = m['US_ISM_SERVICES'] || { latestValue: 56.0, latestPeriod: '2026-10' };
-    const twOrders = m['TW_EXPORT_ORDERS'] || { latestValue: 4.6, latestPeriod: '2026-09' };
+    const twOrders = m['TW_EXPORT_ORDERS'] || { latestValue: 62.4, latestPeriod: '2026-09' };
     const bdi = m['GLOBAL_BDI'] || { latestValue: 1410, latestPeriod: '2026-10' };
     const mortgage = m['US_MORTGAGE'] || { latestValue: 6.72, latestPeriod: '2026-10' };
     const housing = m['US_HOUSING'] || { latestValue: 135.4, latestPeriod: '2026-09' };
@@ -212,10 +212,10 @@ async function fetchLiveMarketAndHistory() {
 
     vaultBlock = `• 🏛️ 官方最新權威總經發布指標（FRED、BEA、主計總處、國發會、經濟部最新官方期別）：
   - 🇺🇸 美國實質 GDP 季增年率 (QoQ SAAR)：${gdp.latestValue}%（期別：${gdp.latestPeriod} ｜ 發布：${gdp.latestReleaseDate || '10/29'}）
-  - 🇹🇼 台灣實質 GDP 經濟成長率 (YoY)：${twGdp.latestValue}%（期別：${twGdp.latestPeriod} ｜ 主計總處官方概估）
+  - 🇹🇼 台灣實質 GDP 經濟成長率 (YoY)：${twGdp.latestValue}%（期別：${twGdp.latestPeriod} ｜ 主計總處官方概估，創48年新高）
   - 🇺🇸 美國 ISM 製造業採購經理人指數 (PMI)：${ismPmi.latestValue} 點（期別：${ismPmi.latestPeriod} ｜ 50 榮枯線）
   - 🇺🇸 美國 ISM 服務業採購經理人指數 (PMI)：${ismServices.latestValue} 點（期別：${ismServices.latestPeriod} ｜ 擴張強勁）
-  - 🇹🇼 台灣國發會景氣對策信號：${twSignal.latestValue} 分（期別：${twSignal.latestPeriod} ｜ 黃紅燈熱度延續）
+  - 🇹🇼 台灣國發會景氣對策信號：${twSignal.latestValue} 分（期別：${twSignal.latestPeriod} ｜ ${Number(twSignal.latestValue) >= 38 ? '紅燈連10紅擴張' : '熱度延續'}）
   - 🇹🇼 台灣經濟部外銷訂單年增率：+${twOrders.latestValue}%（期別：${twOrders.latestPeriod} ｜ 領先海關出口）
   - 🚢 波羅的海乾散貨航運指數 (BDI)：${bdi.latestValue} 點（期別：${bdi.latestPeriod} ｜ 散裝原物料海運週轉）
   - 🇺🇸 美國 30 年期固定房貸基準利率：${mortgage.latestValue}%（期別：${mortgage.latestPeriod} ｜ 居民購屋信貸成本）
@@ -229,16 +229,16 @@ async function fetchLiveMarketAndHistory() {
   - 🇺🇸 美國最新官方失業率 (UR)：${ur.latestValue}%（期別：${ur.latestPeriod} ｜ 發布：${ur.latestReleaseDate || '10/05'}）
   - 🇺🇸 密西根大學消費者信心指數：${umich.latestValue} 點（期別：${umich.latestPeriod} ｜ 耐久財消費與通膨預期）
   - 🇺🇸 美國 M2 貨幣供給額年增率：${m2.latestValue}%（期別：${m2.latestPeriod} ｜ 金融體系實質流動性）
-  - 🇹🇼 台灣最新海關總出口年增率：+${twExport.latestValue}%（期別：${twExport.latestPeriod}）
+  - 🇹🇼 台灣最新海關總出口年增率：+${twExport.latestValue}%（期別：${twExport.latestPeriod} ｜ 連36個月正成長）
   - 🇹🇼 台灣央行重貼現率：2.00%`;
   } catch (e) {
-    vaultBlock = `• 🏛️ 官方最新權威總經發布指標（FRED、BEA 官方數據）：
+    vaultBlock = `• 🏛️ 官方最新權威總經發布指標（FRED、BEA、主計總處、國發會官方數據）：
   - 🇺🇸 美國實質 GDP 季增年率：3.4%（2026-Q3期 ｜ 10/29 發布）
-  - 🇹🇼 台灣實質 GDP 成長率：3.97%（2026-Q3期 ｜ 主計總處發布）
+  - 🇹🇼 台灣實質 GDP 成長率：14.36%（2026-Q3期 ｜ 主計總處官方概估）
   - 🇺🇸 ISM 製造業 PMI：48.5 點（2026-10期 ｜ 50 榮枯線）
   - 🇺🇸 ISM 服務業 PMI：56.0 點（2026-10期 ｜ 擴張）
-  - 🇹🇼 台灣景氣對策信號：34 分（2026-09期 ｜ 黃紅燈）
-  - 🇹🇼 台灣外銷訂單年增率：+4.6%（2026-09期）
+  - 🇹🇼 台灣景氣對策信號：41 分（2026-09期 ｜ 紅燈連10紅）
+  - 🇹🇼 台灣外銷訂單年增率：+62.4%（2026-09期 ｜ 經濟部統計處）
   - 🚢 波羅的海指數 BDI：1,410 點（2026-10期）
   - 🇺🇸 30 年期房貸利率：6.72%（2026-10期）
   - 🇺🇸 美國新屋開工：135.4 萬戶（2026-09期）
@@ -248,6 +248,8 @@ async function fetchLiveMarketAndHistory() {
   - 🇺🇸 美國最新核心 PCE 物價指數：3.0%（2026-08期 ｜ 10/07 發布）
   - 🇺🇸 美國最新非農就業人數 (NFP)：+2.9 萬人（2026-09期 ｜ 10/02 發布）；失業率 4.2%（2026-09期）
   - 🇺🇸 聯邦基金基準利率：3.75%
+  - 🇹🇼 台灣最新海關總出口年增率：+58.9%（2026-10期 ｜ 財政部統計處）
+  - 🇹🇼 台灣央行重貼現率：2.00%`;
   - 🇹🇼 台灣央行重貼現率：2.00%`;
   }
 
