@@ -86,6 +86,26 @@ const METRIC_DEFINITIONS = {
       { period: '2026-09', value: 34, releaseDate: '10/27' }
     ]
   },
+  'US_ISM_SERVICES': {
+    id: 'US_ISM_SERVICES',
+    name: '美國 ISM 服務業採購經理人指數',
+    category: 'growth',
+    categoryZh: '景氣成長',
+    unit: '榮枯線50',
+    source: 'Institute for Supply Management (ISM)',
+    defaultVal: 56.0,
+    defaultPeriod: '2026-10',
+    defaultRelease: '11/05',
+    description: '衡量佔美國經濟產出 80% 之廣義非製造業服務活動榮枯，大於50為擴張',
+    defaultHistory: [
+      { period: '2026-05', value: 53.8, releaseDate: '06/05' },
+      { period: '2026-06', value: 48.8, releaseDate: '07/03' },
+      { period: '2026-07', value: 51.4, releaseDate: '08/05' },
+      { period: '2026-08', value: 51.5, releaseDate: '09/05' },
+      { period: '2026-09', value: 54.9, releaseDate: '10/03' },
+      { period: '2026-10', value: 56.0, releaseDate: '11/05' }
+    ]
+  },
 
   // 2. 美國通膨指標
   'US_CPI': {
@@ -194,6 +214,26 @@ const METRIC_DEFINITIONS = {
       { period: '2026-09', value: 48.1, releaseDate: '10/27' }
     ]
   },
+  'US_DURABLE': {
+    id: 'US_DURABLE',
+    name: '美國核心資本財耐久財新訂單月率',
+    category: 'labor',
+    categoryZh: '就業消費',
+    unit: '%',
+    source: 'Census Bureau / FRED (NEWORDER)',
+    defaultVal: 0.5,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/25',
+    description: '排除國防與飛機之非國防核心資本財新訂單，為企業實質設備投資 (CAPEX) 領先指針',
+    defaultHistory: [
+      { period: '2026-04', value: 0.2, releaseDate: '05/24' },
+      { period: '2026-05', value: -0.6, releaseDate: '06/27' },
+      { period: '2026-06', value: 0.1, releaseDate: '07/25' },
+      { period: '2026-07', value: -0.1, releaseDate: '08/26' },
+      { period: '2026-08', value: 0.3, releaseDate: '09/26' },
+      { period: '2026-09', value: 0.5, releaseDate: '10/25' }
+    ]
+  },
 
   // 4. 利率、殖利率曲線與貨幣政策
   'US_FOMC': {
@@ -276,6 +316,26 @@ const METRIC_DEFINITIONS = {
       { period: '2026-09', value: 5.71, releaseDate: '10/27' }
     ]
   },
+  'US_MORTGAGE': {
+    id: 'US_MORTGAGE',
+    name: '美國 30 年期固定房貸基準利率',
+    category: 'monetary',
+    categoryZh: '貨幣利率',
+    unit: '%',
+    source: 'Freddie Mac / FRED (MORTGAGE30US)',
+    defaultVal: 6.72,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/31',
+    description: '美國房貸融資之核心基準，體現 10Y 美債殖利率向實體居民房地產購屋信貸成本之傳導',
+    defaultHistory: [
+      { period: '2026-05', value: 7.03, releaseDate: '05/30' },
+      { period: '2026-06', value: 6.86, releaseDate: '06/27' },
+      { period: '2026-07', value: 6.78, releaseDate: '07/25' },
+      { period: '2026-08', value: 6.50, releaseDate: '08/29' },
+      { period: '2026-09', value: 6.20, releaseDate: '09/26' },
+      { period: '2026-10', value: 6.72, releaseDate: '10/31' }
+    ]
+  },
 
   // 5. 全球製造業與對外貿易出口
   'TW_EXPORT': {
@@ -301,6 +361,46 @@ const METRIC_DEFINITIONS = {
     defaultPeriod: '2026-08',
     defaultRelease: '08/31',
     description: '衡量全球最大製造業實體工廠開工與新訂單之景氣榮枯'
+  },
+  'TW_EXPORT_ORDERS': {
+    id: 'TW_EXPORT_ORDERS',
+    name: '台灣經濟部外銷訂單年增率 (YoY)',
+    category: 'trade',
+    categoryZh: '貿易外銷',
+    unit: '%',
+    source: '中華民國經濟部統計處',
+    defaultVal: 4.6,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/20',
+    description: '領先海關出口 1~2 個月，反映台灣半導體、AI 伺服器與電子組裝之全球接單動能',
+    defaultHistory: [
+      { period: '2026-04', value: 2.8, releaseDate: '05/20' },
+      { period: '2026-05', value: 7.0, releaseDate: '06/20' },
+      { period: '2026-06', value: 3.1, releaseDate: '07/22' },
+      { period: '2026-07', value: 4.8, releaseDate: '08/20' },
+      { period: '2026-08', value: 9.1, releaseDate: '09/20' },
+      { period: '2026-09', value: 4.6, releaseDate: '10/20' }
+    ]
+  },
+  'GLOBAL_BDI': {
+    id: 'GLOBAL_BDI',
+    name: '波羅的海乾散貨運價指數 (BDI)',
+    category: 'trade',
+    categoryZh: '貿易外銷',
+    unit: '點',
+    source: 'Baltic Exchange (BDI)',
+    defaultVal: 1410,
+    defaultPeriod: '2026-10',
+    defaultRelease: '10/31',
+    description: '全球散裝海運運價定價基準，直接反映國際鐵礦砂、焦煤與穀物之海運週轉強度',
+    defaultHistory: [
+      { period: '2026-05', value: 1815, releaseDate: '05/31' },
+      { period: '2026-06', value: 2050, releaseDate: '06/28' },
+      { period: '2026-07', value: 1720, releaseDate: '07/31' },
+      { period: '2026-08', value: 1755, releaseDate: '08/30' },
+      { period: '2026-09', value: 2011, releaseDate: '09/30' },
+      { period: '2026-10', value: 1410, releaseDate: '10/31' }
+    ]
   },
 
   // 5. 大宗工業原料、能源與貴金屬
@@ -363,6 +463,26 @@ const METRIC_DEFINITIONS = {
     defaultPeriod: '2026-10',
     defaultRelease: '10/14',
     description: '對沖全球主權債務擴張與法幣購買力稀釋之終極硬資產'
+  },
+  'US_HOUSING': {
+    id: 'US_HOUSING',
+    name: '美國新屋開工總數 (Housing Starts)',
+    category: 'commodity',
+    categoryZh: '大宗重工',
+    unit: '萬戶',
+    source: 'Census Bureau / FRED (HOUST)',
+    defaultVal: 135.4,
+    defaultPeriod: '2026-09',
+    defaultRelease: '10/18',
+    description: '年化新屋開工總戶數，直接帶動實體鋼筋、型鋼、螺絲釘與銅喉管等重工營造材料需求',
+    defaultHistory: [
+      { period: '2026-04', value: 134.0, releaseDate: '05/16' },
+      { period: '2026-05', value: 131.4, releaseDate: '06/20' },
+      { period: '2026-06', value: 132.9, releaseDate: '07/17' },
+      { period: '2026-07', value: 123.7, releaseDate: '08/16' },
+      { period: '2026-08', value: 136.1, releaseDate: '09/18' },
+      { period: '2026-09', value: 135.4, releaseDate: '10/18' }
+    ]
   },
 
   // 6. 科技權值龍頭與市場恐慌指數
@@ -742,6 +862,42 @@ function recordFredTrends(fredTrends) {
       period: fredTrends.US_M2.latestPeriod || last.period,
       releaseDate: fredTrends.US_M2.latestReleaseDate || '近期',
       history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_M2.latestReleaseDate }))
+    });
+  }
+
+  // 13. 🇺🇸 US_MORTGAGE (30年房貸利率)
+  if (fredTrends.US_MORTGAGE && fredTrends.US_MORTGAGE.history?.length > 0) {
+    const hist = fredTrends.US_MORTGAGE.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_MORTGAGE', {
+      value: last.val,
+      period: fredTrends.US_MORTGAGE.latestPeriod || last.period,
+      releaseDate: fredTrends.US_MORTGAGE.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_MORTGAGE.latestReleaseDate }))
+    });
+  }
+
+  // 14. 🇺🇸 US_HOUSING (新屋開工總數)
+  if (fredTrends.US_HOUSING && fredTrends.US_HOUSING.history?.length > 0) {
+    const hist = fredTrends.US_HOUSING.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_HOUSING', {
+      value: last.val,
+      period: fredTrends.US_HOUSING.latestPeriod || last.period,
+      releaseDate: fredTrends.US_HOUSING.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_HOUSING.latestReleaseDate }))
+    });
+  }
+
+  // 15. 🇺🇸 US_DURABLE (核心耐久財新訂單月率)
+  if (fredTrends.US_DURABLE && fredTrends.US_DURABLE.history?.length > 0) {
+    const hist = fredTrends.US_DURABLE.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_DURABLE', {
+      value: last.val,
+      period: fredTrends.US_DURABLE.latestPeriod || last.period,
+      releaseDate: fredTrends.US_DURABLE.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_DURABLE.latestReleaseDate }))
     });
   }
 }

@@ -203,12 +203,24 @@ async function fetchLiveMarketAndHistory() {
     const m2 = m['US_M2'] || { latestValue: 5.71, latestPeriod: '2026-09', latestReleaseDate: '10/27' };
     const fed = m['US_FOMC'] || { latestValue: 3.75, latestPeriod: '2026-09' };
     const twExport = m['TW_EXPORT'] || { latestValue: 18.5, latestPeriod: '2026-08' };
+    const ismServices = m['US_ISM_SERVICES'] || { latestValue: 56.0, latestPeriod: '2026-10' };
+    const twOrders = m['TW_EXPORT_ORDERS'] || { latestValue: 4.6, latestPeriod: '2026-09' };
+    const bdi = m['GLOBAL_BDI'] || { latestValue: 1410, latestPeriod: '2026-10' };
+    const mortgage = m['US_MORTGAGE'] || { latestValue: 6.72, latestPeriod: '2026-10' };
+    const housing = m['US_HOUSING'] || { latestValue: 135.4, latestPeriod: '2026-09' };
+    const durable = m['US_DURABLE'] || { latestValue: 0.5, latestPeriod: '2026-09' };
 
-    vaultBlock = `• 🏛️ 官方最新權威總經發布指標（FRED、BEA、主計總處、國發會最新官方期別）：
+    vaultBlock = `• 🏛️ 官方最新權威總經發布指標（FRED、BEA、主計總處、國發會、經濟部最新官方期別）：
   - 🇺🇸 美國實質 GDP 季增年率 (QoQ SAAR)：${gdp.latestValue}%（期別：${gdp.latestPeriod} ｜ 發布：${gdp.latestReleaseDate || '10/29'}）
   - 🇹🇼 台灣實質 GDP 經濟成長率 (YoY)：${twGdp.latestValue}%（期別：${twGdp.latestPeriod} ｜ 主計總處官方概估）
   - 🇺🇸 美國 ISM 製造業採購經理人指數 (PMI)：${ismPmi.latestValue} 點（期別：${ismPmi.latestPeriod} ｜ 50 榮枯線）
+  - 🇺🇸 美國 ISM 服務業採購經理人指數 (PMI)：${ismServices.latestValue} 點（期別：${ismServices.latestPeriod} ｜ 擴張強勁）
   - 🇹🇼 台灣國發會景氣對策信號：${twSignal.latestValue} 分（期別：${twSignal.latestPeriod} ｜ 黃紅燈熱度延續）
+  - 🇹🇼 台灣經濟部外銷訂單年增率：+${twOrders.latestValue}%（期別：${twOrders.latestPeriod} ｜ 領先海關出口）
+  - 🚢 波羅的海乾散貨航運指數 (BDI)：${bdi.latestValue} 點（期別：${bdi.latestPeriod} ｜ 散裝原物料海運週轉）
+  - 🇺🇸 美國 30 年期固定房貸基準利率：${mortgage.latestValue}%（期別：${mortgage.latestPeriod} ｜ 居民購屋信貸成本）
+  - 🇺🇸 美國新屋開工年化總數：${housing.latestValue} 萬戶（期別：${housing.latestPeriod} ｜ 鋼材建材實體用量）
+  - 🇺🇸 美國核心耐久財新訂單月率：+${durable.latestValue}%（期別：${durable.latestPeriod} ｜ 企業實質資本支出）
   - 🇺🇸 美國聯準會 (Fed) 基準利率目標區間：3.50% - 3.75%（最新有效基準：${fed.latestValue}%）
   - 🇺🇸 美國最新 CPI 通膨年增率：${cpi.latestValue}%（期別：${cpi.latestPeriod} ｜ 發布：${cpi.latestReleaseDate || '10/14'}）
   - 🇺🇸 美國最新核心 CPI 年增率：${coreCpi.latestValue}%（期別：${coreCpi.latestPeriod} ｜ 發布：${coreCpi.latestReleaseDate || '10/14'}）
@@ -224,7 +236,13 @@ async function fetchLiveMarketAndHistory() {
   - 🇺🇸 美國實質 GDP 季增年率：3.4%（2026-Q3期 ｜ 10/29 發布）
   - 🇹🇼 台灣實質 GDP 成長率：3.97%（2026-Q3期 ｜ 主計總處發布）
   - 🇺🇸 ISM 製造業 PMI：48.5 點（2026-10期 ｜ 50 榮枯線）
+  - 🇺🇸 ISM 服務業 PMI：56.0 點（2026-10期 ｜ 擴張）
   - 🇹🇼 台灣景氣對策信號：34 分（2026-09期 ｜ 黃紅燈）
+  - 🇹🇼 台灣外銷訂單年增率：+4.6%（2026-09期）
+  - 🚢 波羅的海指數 BDI：1,410 點（2026-10期）
+  - 🇺🇸 30 年期房貸利率：6.72%（2026-10期）
+  - 🇺🇸 美國新屋開工：135.4 萬戶（2026-09期）
+  - 🇺🇸 核心耐久財訂單月率：+0.5%（2026-09期）
   - 🇺🇸 美國最新 CPI 通膨年增率：3.7%（2026-09期 ｜ 10/14 發布）
   - 🇺🇸 美國最新核心 CPI 年增率：2.6%（2026-09期 ｜ 10/14 發布）
   - 🇺🇸 美國最新核心 PCE 物價指數：3.0%（2026-08期 ｜ 10/07 發布）
@@ -233,7 +251,7 @@ async function fetchLiveMarketAndHistory() {
   - 🇹🇼 台灣央行重貼現率：2.00%`;
   }
 
-  return `【查詢當下（${timeStr} UTC+8）即時連線抓取之全維度 30 大官方指標與市場行情】：
+  return `【查詢當下（${timeStr} UTC+8）即時連線抓取之全維度 36 大官方指標與市場行情】：
 ${formattedLines.length > 0 ? formattedLines.join("\n") : "• 即時市場連線更新中"}
 ${spreadText}
 ${ratioText}
@@ -258,7 +276,7 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
   const isBond = query.includes("債") || query.includes("利率") || query.includes("殖利率") || query.includes("fed") || query.includes("降息") || query.includes("利差") || query.includes("2yy") || query.includes("10y") || query.includes("spread");
   const isShipping = query.includes("航運") || query.includes("bdi") || query.includes("貨櫃") || query.includes("馬士基") || query.includes("amkby") || query.includes("長榮") || query.includes("散裝");
   const isStress = query.includes("壓力測試") || query.includes("黑天鵝") || query.includes("股災") || query.includes("崩盤") || query.includes("衰退");
-  const isMacroGrowth = query.includes("gdp") || query.includes("pmi") || query.includes("景氣") || query.includes("燈號") || query.includes("m2") || query.includes("信心");
+  const isMacroGrowth = query.includes("gdp") || query.includes("pmi") || query.includes("景氣") || query.includes("燈號") || query.includes("m2") || query.includes("信心") || query.includes("外銷訂單") || query.includes("房貸") || query.includes("新屋") || query.includes("耐久財") || query.includes("bdi") || query.includes("服務業");
 
   let reply = "";
 
@@ -342,19 +360,21 @@ function generateInstitutionalQuantReport(userText, liveMarketData) {
 ◆ 救命防禦底線：極端避險狀態下流動性現金部位不得低於 15%，實體黃金部位為對沖地緣失控的第一道防線。`;
 
   } else if (isMacroGrowth) {
-    reply = `全球與台美景氣循環當前的核心主線在於「實質 GDP 與高階科技出口保持擴張，但傳統製造業 PMI 處於榮枯線下拉鋸，形成製造與服務、AI 與傳產之結構性 K 型分化」。
+    reply = `全球與台美景氣循環當前的核心主線在於「服務業擴張與先進外銷接單保持強韌，但製造業與房貸高利仍在消化磨底，形成實質資本支出增長 vs 傳統重工業拉鋸之 K 型分化」。
 
-從當前官方最新公布之權威景氣數據穿透：
-* **美國實質 GDP (季增年率 3.4%) vs ISM PMI (48.5 點)**：
-  BEA 官方實質 GDP 顯示美國終端消費與企業設備投資展現強韌韌性；但 ISM 製造業採購經理人指數持續處於 50 榮枯線下方（48.5），反映高借貸成本對耐久財與重工業下游客戶下單節奏仍具壓抑，呈現典型的「軟數據（問卷預期）弱於硬數據（實質產出）」之預期差。
-* **台灣實質 GDP (年增率 3.97%) 與國發會景氣對策信號 (34分 黃紅燈)**：
-  受惠於全球 AI 算力基礎設施、高效能運算 (HPC) 與先進封裝晶片外銷強勁，台灣外銷訂單與海關出口雙位數攀升，帶動景氣對策信號穩居 34 分黃紅燈，實體經濟保持擴張動能。
-* **金融流動性與消費者信心之傳導**：
-  美國 M2 貨幣供給額年增率修復至 +5.71%，為實體資產與資本市場注入流動性安全墊；但密西根大學消費者信心指數（48.1 點）仍受累於累積物價基期居高不下，終端消費呈現「量能平穩但價格敏感度激增」之特徵。
+從當前官方最新公布之 36 大權威總經數據深入穿透：
+* **美國 ISM 服務業 (56.0 點) vs 製造業 PMI (48.5 點)**：
+  服務業指數強勁擴張（56.0），印證美國佔 GDP 80% 之廣義消費動能未見失速；製造業（48.5）則持續在榮枯線下方磨底，顯現製造與服務的顯著溫差。
+* **台灣外銷訂單 (+4.6%) 與海關出口 (+18.5%) 之領先連動**：
+  受惠於 AI 伺服器與高階封裝外銷剛性需求，外銷訂單維持年增擴張，直接為未來 1~2 個月之實質海關出口提供下檔保證，支撐國發會景氣對策信號穩居 34 分黃紅燈。
+* **美國房貸利率 (6.72%)、新屋開工 (135.4萬戶) 與耐久財資本支出 (+0.5%)**：
+  30 年期房貸利率維持在 6.7% 高檔，抑制成屋換屋意願，但新屋開工總數（135.4 萬戶）展現支撐力，核心資本財耐久財新訂單月增 +0.5%，反映企業設備資本支出 (CAPEX) 保持前瞻投資韌性。
+* **波羅的海乾散貨指數 (BDI 1,410 點) 與原物料海運**：
+  BDI 處於 1,350~1,500 區間整固，反映鐵礦砂與動力煤等大宗海運維持剛性運力週轉，未見流動性失衡衝擊。
 
 ◆ 景氣循環關鍵監控點：
 1. ISM 製造業 PMI 能否於未來 1~2 季跨越 50 榮枯線，引導製造業進入全面補庫存週期。
-2. 國發會景氣對策信號若向 38 分以上紅燈逼近，需提防出口基期墊高後之拉回波動風險。`;
+2. 外銷訂單年增率能否持續維持正成長，作為研判半導體與台灣電子業景氣下半場之領先指針。`;
 
   } else {
     // 標的專屬動態分析（絕無預設套話，精確錨定技術與基本面）

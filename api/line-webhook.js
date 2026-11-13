@@ -727,6 +727,20 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
     const m2Val = m['US_M2']?.latestValue ?? 5.71;
     const m2Period = m['US_M2']?.latestPeriod ?? '2026-09';
 
+    // 服務業、外銷訂單、房貸、新屋與耐久財
+    const ismServicesVal = m['US_ISM_SERVICES']?.latestValue ?? 56.0;
+    const ismServicesPeriod = m['US_ISM_SERVICES']?.latestPeriod ?? '2026-10';
+    const twOrdersVal = m['TW_EXPORT_ORDERS']?.latestValue ?? 4.6;
+    const twOrdersPeriod = m['TW_EXPORT_ORDERS']?.latestPeriod ?? '2026-09';
+    const bdiVal = m['GLOBAL_BDI']?.latestValue ?? 1410;
+    const bdiPeriod = m['GLOBAL_BDI']?.latestPeriod ?? '2026-10';
+    const mortgageVal = m['US_MORTGAGE']?.latestValue ?? 6.72;
+    const mortgagePeriod = m['US_MORTGAGE']?.latestPeriod ?? '2026-10';
+    const housingVal = m['US_HOUSING']?.latestValue ?? 135.4;
+    const housingPeriod = m['US_HOUSING']?.latestPeriod ?? '2026-09';
+    const durableVal = m['US_DURABLE']?.latestValue ?? 0.5;
+    const durablePeriod = m['US_DURABLE']?.latestPeriod ?? '2026-09';
+
     // 2. 實時金融市場公債、美元與原料
     const snap = (typeof collector.fetchCollectorSnapshot === 'function') ? await collector.fetchCollectorSnapshot(false).catch(() => null) : null;
 
@@ -761,8 +775,13 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
 🌐【景氣成長、實質 GDP 與信號】：
 • 🇺🇸 美國實質 GDP 季增年率 (QoQ SAAR)：${usGdpVal}%（${usGdpPeriod}期 ｜ BEA 權威發布）
 • 🇹🇼 台灣實質 GDP 成長率 (YoY)：${twGdpVal}%（${twGdpPeriod}期 ｜ 主計總處官方概估）
-• 🇺🇸 ISM 製造業 PMI：${ismPmiVal} 點（${ismPmiPeriod}期 ｜ 50 榮枯線分水嶺）
+• 🇺🇸 ISM 製造業 PMI：${ismPmiVal} 點 ｜ 服務業 PMI：${ismServicesVal} 點（${ismServicesPeriod}期 ｜ 50 榮枯線）
 • 🇹🇼 國發會景氣對策信號：${twSignalVal} 分（${twSignalPeriod}期 ｜ 黃紅燈熱度延續）
+• 🇹🇼 經濟部外銷訂單年增率：+${twOrdersVal}%（${twOrdersPeriod}期 ｜ 領先海關出口）
+• 🚢 波羅的海乾散貨指數 (BDI)：${bdiVal} 點（${bdiPeriod}期 ｜ 散裝原物料海運週轉）
+• 🇺🇸 30 年期固定房貸利率：${mortgageVal}%（${mortgagePeriod}期 ｜ 居民房貸信貸成本）
+• 🇺🇸 美國新屋開工總數：${housingVal} 萬戶（${housingPeriod}期 ｜ 重工建材實體用量）
+• 🇺🇸 核心資本財耐久財訂單月率：+${durableVal}%（${durablePeriod}期 ｜ 企業實質資本支出）
 • 🇺🇸 密西根大學消費者信心：${umichVal} 點（${umichPeriod}期 ｜ 耐久財消費與通膨預期）
 • 🇺🇸 美國 M2 貨幣供給額年增率：${m2Val}%（${m2Period}期 ｜ 實質金融流動性）
 

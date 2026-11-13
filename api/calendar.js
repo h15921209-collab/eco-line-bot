@@ -343,6 +343,81 @@ async function syncFredLiveTrends() {
       }
     } catch (e) { console.warn('FRED M2 error:', e.message); }
 
+    // 13. 🇺🇸 30 年期固定房貸利率 (MORTGAGE30US)
+    try {
+      const mortObs = await fetchFredObservations('MORTGAGE30US', 12);
+      const validMort = mortObs.filter(o => o.value && o.value !== '.');
+      if (validMort.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m, d] = validMort[i].date.split('-');
+          history.unshift({ label: `${m}/${d}`, val: parseFloat(validMort[i].value), period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastDate = history[history.length - 1].label;
+        trends['US_MORTGAGE'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: lastDate,
+          latestPeriod: validMort[0].date.substring(0, 7),
+          summary: `房貸利率 ${lastVal}% │ ${lastDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED MORTGAGE30US error:', e.message); }
+
+    // 14. 🇺🇸 新屋開工總數 (HOUST)
+    try {
+      const houstObs = await fetchFredObservations('HOUST', 10);
+      const validHoust = houstObs.filter(o => o.value && o.value !== '.');
+      if (validHoust.length >= 6) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const [y, m] = validHoust[i].date.split('-');
+          const valInWan = Number((parseFloat(validHoust[i].value) / 10).toFixed(1));
+          history.unshift({ label: `${parseInt(m)}月`, val: valInWan, period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validHoust[0].realtime_start ? validHoust[0].realtime_start.substring(5).replace('-', '/') : '10/18';
+        trends['US_HOUSING'] = {
+          unit: '萬戶',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: validHoust[0].date.substring(0, 7),
+          summary: `新屋開工 ${lastLbl} ${lastVal}萬戶 │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED HOUST error:', e.message); }
+
+    // 15. 🇺🇸 核心資本財耐久財新訂單月增率 (NEWORDER)
+    try {
+      const durObs = await fetchFredObservations('NEWORDER', 12);
+      const validDur = durObs.filter(o => o.value && o.value !== '.');
+      if (validDur.length >= 7) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const cur = parseFloat(validDur[i].value);
+          const prev = parseFloat(validDur[i + 1].value);
+          const mom = Number((((cur - prev) / prev) * 100).toFixed(1));
+          const [y, m] = validDur[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: mom, period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validDur[0].realtime_start ? validDur[0].realtime_start.substring(5).replace('-', '/') : '10/25';
+        trends['US_DURABLE'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: validDur[0].date.substring(0, 7),
+          summary: `核心耐久財 ${lastLbl} ${lastVal}% │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED NEWORDER error:', e.message); }
+
     if (Object.keys(trends).length > 0) {
       cachedFredTrends = trends;
       lastFredSyncTime = Date.now();
