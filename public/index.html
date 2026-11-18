@@ -892,18 +892,32 @@
       }
     }
 
-    // 1. 即時時鐘與撮合狀態
+    // 1. 即時時鐘與撮合狀態（嚴格鎖定 Asia/Taipei 官方標準時區，杜絕時區重複加 8 小時）
     function updateClock() {
       const now = new Date();
-      const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
-      const pad = n => String(n).padStart(2, '0');
-      const timeStr = `${pad(utc8.getHours())}:${pad(utc8.getMinutes())}:${pad(utc8.getSeconds())} (UTC+8)`;
+      // 使用國際化標準 Intl API 精確取得台北時區之年月日時分秒
+      const formatter = new Intl.DateTimeFormat('zh-TW', {
+        timeZone: 'Asia/Taipei',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      const parts = formatter.formatToParts(now);
+      const p = {};
+      parts.forEach(part => p[part.type] = part.value);
+
+      const hour = parseInt(p.hour, 10);
+      const min = parseInt(p.minute, 10);
+      const timeStr = `${p.hour}:${p.minute}:${p.second} (UTC+8)`;
+      
       const clockEl = document.getElementById('nav-live-clock');
       if (clockEl) clockEl.innerText = timeStr;
 
-      const hour = utc8.getHours();
-      const min = utc8.getMinutes();
-      const day = utc8.getDay();
+      // 取得台北時區的星期幾
+      const taipeiDateObj = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+      const day = taipeiDateObj.getDay();
+
       let statusStr = '市場連線正常';
       if (day >= 1 && day <= 5) {
         const timeVal = hour * 100 + min;
