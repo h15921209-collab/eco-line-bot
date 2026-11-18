@@ -6,1126 +6,764 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="theme-color" content="#05080e">
+  <meta name="theme-color" content="#0b0f19">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="宏觀智庫戰情室">
+  <meta name="apple-mobile-web-app-title" content="宏觀智庫">
   <link rel="manifest" href="/manifest.json">
-  <title>US MACRO WAR ROOM // 美國總經大螢幕戰情室 · 林勝穩專屬</title>
+  <title>宏觀全球智庫 · 林勝穩專屬總經看板</title>
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
-    :root {
-      --bg-terminal: #05080e;
-      --bg-panel: #090e17;
-      --bg-panel-header: #0e1524;
-      --bg-card: #0c121e;
-      --border-main: #182236;
-      --border-accent: #243350;
-      --amber-main: #f59e0b;
-      --amber-bright: #fbbf24;
-      --amber-dim: #92400e;
-      --amber-bg: rgba(245, 158, 11, 0.1);
-      --red-move: #f87171;
-      --green-move: #4ade80;
-      --text-bright: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #475569;
-    }
-
-    body {
-      background-color: var(--bg-terminal);
-      color: #e2e8f0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-feature-settings: 'tnum';
-      font-variant-numeric: tabular-nums;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .font-mono, th, td, input, button, select, .tabular-nums {
-      font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
-      font-feature-settings: 'tnum' !important;
-      font-variant-numeric: tabular-nums !important;
-    }
-
-    .warroom-card {
-      background-color: var(--bg-panel);
-      border: 1px solid var(--border-main);
-      border-radius: 4px;
-      transition: border-color 0.15s ease, background-color 0.15s ease;
-    }
-
-    .warroom-card:hover {
-      border-color: var(--border-accent);
-    }
-
-    .warroom-header {
-      background-color: var(--bg-panel-header);
-      border-bottom: 1px solid var(--border-main);
-    }
-
-    .terminal-chip {
-      background: #0d1422;
-      border: 1px solid var(--border-main);
-      color: var(--text-muted);
-      border-radius: 3px;
-      font-size: 12px;
-      padding: 4px 10px;
-      transition: all 0.15s ease;
-      white-space: nowrap;
-    }
-
-    .terminal-chip:hover {
-      border-color: var(--border-accent);
-      color: var(--text-bright);
-    }
-
-    .terminal-chip.active {
-      background: var(--amber-bg);
-      border-color: var(--amber-main);
-      color: var(--amber-bright);
-      font-weight: 700;
-    }
-
-    /* 頂部跑馬燈 */
-    .ribbon-track {
-      display: inline-flex;
-      animation: ribbonScroll 60s linear infinite;
-    }
-    .ribbon-track:hover {
-      animation-play-state: paused;
-    }
-    @keyframes ribbonScroll {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
-    }
-
+    body { background-color: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    .glass-card { background: rgba(22, 27, 34, 0.88); backdrop-filter: blur(16px); border: 1px solid rgba(48, 54, 61, 0.85); }
+    .neon-border { border: 1px solid rgba(88, 166, 255, 0.35); box-shadow: 0 0 20px rgba(88, 166, 255, 0.12); }
     html { scroll-behavior: smooth; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #05080e; }
-    ::-webkit-scrollbar-thumb { background: #1c273c; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #2f4060; }
+    ::-webkit-scrollbar-track { background: #0b0f19; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
   </style>
 </head>
-<body class="min-h-screen pb-12 antialiased select-none text-slate-300">
+<body class="min-h-screen pb-16 antialiased">
 
-  <!-- ============================================================ -->
-  <!-- 頂部金融終端狀態列 (WAR ROOM TOP BAR)                         -->
-  <!-- ============================================================ -->
-  <nav class="border-b border-[#182236] bg-[#070b13]/95 sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-[1780px] mx-auto px-4 sm:px-8 h-15 flex items-center justify-between gap-4 py-2">
-      
-      <!-- 品牌與使用者身分標記 -->
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <div class="w-2.5 h-6 bg-amber-500 rounded-none"></div>
+  <!-- 頂部精簡導航 -->
+  <nav class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl">🏛️</span>
         <div>
-          <div class="flex items-center gap-2">
-            <span class="font-mono font-bold text-base sm:text-lg text-white tracking-wider">US MACRO WAR ROOM</span>
-            <span class="text-[11px] font-mono px-2 py-0.5 bg-amber-500/15 text-amber-400 border border-amber-500/30 font-bold">PROJECTION DESK</span>
-          </div>
-          <span class="text-[11px] font-mono text-slate-400 block -mt-0.5">LIN SHENG-WEN PRIVATE TERMINAL // 林勝穩大螢幕演講專屬看板</span>
+          <span class="font-bold text-base sm:text-lg text-white tracking-wide">宏觀全球智庫</span>
+          <span class="text-[11px] text-sky-400 block sm:inline sm:ml-2">林勝穩專屬總經看板</span>
         </div>
       </div>
-
-      <!-- 桌面端 4 大主工作台切換器 (VIEW CONTROLLER) -->
-      <div class="hidden lg:flex items-center gap-1.5 bg-[#090e17] p-1 border border-[#182236] rounded-[3px]">
-        <button onclick="switchWarRoomView('us-warroom')" id="nav-btn-us" class="px-3.5 py-1.5 font-mono text-xs sm:text-sm rounded-[2px] transition flex items-center gap-1.5 text-amber-400 bg-amber-500/15 border border-amber-500/40 font-bold">
-          <span class="text-amber-500">[F1]</span> 美國總經戰情室 (US MACRO)
-        </button>
-        <button onclick="switchWarRoomView('global-contrast')" id="nav-btn-global" class="px-3.5 py-1.5 font-mono text-xs sm:text-sm rounded-[2px] transition flex items-center gap-1.5 text-slate-400 hover:text-white border border-transparent">
-          <span class="text-slate-500">[F2]</span> 全球與台灣對照 (TW & GLOBAL)
-        </button>
-        <button onclick="switchWarRoomView('calendar')" id="nav-btn-calendar" class="px-3.5 py-1.5 font-mono text-xs sm:text-sm rounded-[2px] transition flex items-center gap-1.5 text-slate-400 hover:text-white border border-transparent">
-          <span class="text-slate-500">[F3]</span> 央行排程行事曆 (CALENDAR)
-        </button>
-        <button onclick="switchWarRoomView('news')" id="nav-btn-news" class="px-3.5 py-1.5 font-mono text-xs sm:text-sm rounded-[2px] transition flex items-center gap-1.5 text-slate-400 hover:text-white border border-transparent">
-          <span class="text-slate-500">[F4]</span> 央行權威電訊 (WIRE)
-        </button>
-      </div>
-
-      <!-- 右側系統狀態、時鐘與投影控制 -->
-      <div class="flex items-center gap-2.5 flex-shrink-0">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[2px] text-[11px] font-mono bg-emerald-950/70 text-emerald-400 border border-emerald-500/30">
-          <span class="w-2 h-2 bg-emerald-400"></span>
-          <span>OFFICIAL LIVE</span>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono bg-emerald-950/60 text-emerald-400 border border-emerald-500/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="hidden sm:inline">實時連線中</span>
         </span>
-        <span id="nav-live-clock" class="text-xs sm:text-sm font-mono text-slate-300 hidden sm:inline bg-[#090e17] px-3 py-1 rounded-[2px] border border-[#182236]">
+        <span id="nav-live-clock" class="text-xs font-mono text-slate-400 hidden sm:inline bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
           --:--:-- (UTC+8)
         </span>
-        <button onclick="toggleFullscreen()" class="text-xs sm:text-sm font-mono bg-[#0d1422] hover:bg-[#152034] text-amber-300 hover:text-amber-200 border border-amber-500/40 px-3 py-1 rounded-[2px] transition flex items-center gap-1 font-bold active:scale-95" title="全螢幕投影模式 (快捷鍵 F)">
-          <span id="fs-icon">[FULLSCREEN (F)]</span>
+        <button onclick="refreshAllPanels()" id="btn-refresh-all" class="text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 active:scale-95 shadow-sm">
+          <span id="refresh-all-icon">🔄</span>
+          <span>全盤刷新</span>
         </button>
-        <button onclick="refreshAllPanels()" id="btn-refresh-all" class="text-xs sm:text-sm font-mono bg-[#0d1422] hover:bg-[#152034] text-slate-300 hover:text-white border border-[#182236] px-3 py-1 rounded-[2px] transition flex items-center gap-1 font-bold">
-          <span id="refresh-all-icon">[SYNC]</span>
+        <button onclick="toggleFullscreen()" id="btn-fullscreen-toggle" class="text-xs bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 active:scale-95 shadow-sm" title="全螢幕 / 簡報投影模式 (F鍵)">
+          <span id="fs-icon">⛶</span>
+          <span class="hidden sm:inline">全螢幕 (F)</span>
+        </button>
+        <button onclick="copyVaultFormula()" class="text-xs bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-2.5 sm:px-3 py-1.5 rounded-lg transition font-medium hidden md:flex items-center gap-1 active:scale-95">
+          <span>📋</span>
+          <span>試算表公式</span>
         </button>
       </div>
-    </div>
-
-    <!-- 行動/筆電緊湊選單切換列 -->
-    <div class="flex lg:hidden overflow-x-auto border-t border-[#182236] bg-[#05080e] px-2 py-1 gap-1 text-xs font-mono">
-      <button onclick="switchWarRoomView('us-warroom')" id="nav-btn-us-m" class="px-3 py-1 text-amber-400 bg-amber-500/15 border border-amber-500/40 font-bold whitespace-nowrap rounded-[2px]">
-        [US] 美國戰情
-      </button>
-      <button onclick="switchWarRoomView('global-contrast')" id="nav-btn-global-m" class="px-3 py-1 text-slate-400 border border-transparent whitespace-nowrap rounded-[2px]">
-        [TW] 台灣/全球
-      </button>
-      <button onclick="switchWarRoomView('calendar')" id="nav-btn-calendar-m" class="px-3 py-1 text-slate-400 border border-transparent whitespace-nowrap rounded-[2px]">
-        [CALENDAR] 排程
-      </button>
-      <button onclick="switchWarRoomView('news')" id="nav-btn-news-m" class="px-3 py-1 text-slate-400 border border-transparent whitespace-nowrap rounded-[2px]">
-        [WIRE] 電訊
-      </button>
     </div>
   </nav>
 
-  <!-- ============================================================ -->
-  <!-- 常駐即時行情跑馬帶 (GLOBAL TICKER RIBBON)                     -->
-  <!-- ============================================================ -->
-  <div class="border-b border-[#182236] bg-[#070b13] overflow-x-auto whitespace-nowrap py-2 px-4 sm:px-8 text-xs font-mono select-none" id="terminal-ticker-ribbon">
-    <div class="inline-flex items-center gap-5 text-slate-400">
-      <span class="text-amber-400 font-bold tracking-wider">[FEED 實時行情]</span>
-      <span id="rib-sp500"><span class="text-slate-400 font-bold">^GSPC:</span> <span class="text-slate-200 font-bold">--</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-us10y"><span class="text-slate-400 font-bold">US 10Y:</span> <span class="text-slate-200 font-bold">5.190%</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-spread"><span class="text-slate-400 font-bold">10Y-2Y SPREAD:</span> <span class="text-amber-300 font-bold">+44 bps</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-dxy"><span class="text-slate-400 font-bold">DXY:</span> <span class="text-slate-200 font-bold">101.97</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-nvda"><span class="text-slate-400 font-bold">NVDA:</span> <span class="text-slate-200 font-bold">--</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-sox"><span class="text-slate-400 font-bold">^SOX:</span> <span class="text-slate-200 font-bold">--</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-vix"><span class="text-slate-400 font-bold">^VIX:</span> <span class="text-slate-200 font-bold">16.87</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-oil"><span class="text-slate-400 font-bold">WTI CRUDE:</span> <span class="text-slate-200 font-bold">$93.99</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-gold"><span class="text-slate-400 font-bold">GOLD:</span> <span class="text-amber-300 font-bold">$4,168</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-twii"><span class="text-slate-400 font-bold">^TWII:</span> <span class="text-slate-200 font-bold">--</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-tsmc"><span class="text-slate-400 font-bold">2330.TW:</span> <span class="text-amber-300 font-bold">--</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-tsm-adr"><span class="text-slate-400 font-bold">TSM ADR:</span> <span class="text-amber-300 font-bold">--</span></span>
-      <span class="text-slate-700">|</span>
-      <span id="rib-iron"><span class="text-slate-400 font-bold">IRON 62%:</span> <span class="text-amber-300 font-bold">$90.74</span></span>
-    </div>
-  </div>
-
-  <!-- 主內容容器 (16:9 寬螢幕自適應) -->
-  <main class="max-w-[1780px] mx-auto px-3 sm:px-6 mt-4 space-y-4">
+  <!-- 主內容容器 -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-5 space-y-6">
 
     <!-- ============================================================ -->
-    <!-- 主視野 1：[US MACRO WAR ROOM] 美國總經 16:9 大螢幕戰情室     -->
+    <!-- 板塊 1：⚡ 我要求定時更新的經濟數據 (Macro Data Vault)         -->
     <!-- ============================================================ -->
-    <div id="view-us-warroom" class="space-y-4">
-
-      <!-- 1. 頂部 6 大巨幅美國焦點 KPI 卡片 (28~36px 大字體 · 投影可見) -->
-      <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
-        
-        <!-- KPI 1: 美國實質 GDP -->
-        <div onclick="openVaultDetailModal('US_GDP')" class="warroom-card p-3.5 sm:p-4 cursor-pointer hover:border-amber-400 transition group select-none">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="font-bold text-amber-400">[01] REAL GDP</span>
-            <span class="text-[10px] text-slate-500">BEA 概估</span>
-          </div>
-          <div class="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono text-white mt-1 group-hover:text-amber-300 transition">
-            3.4<span class="text-sm sm:text-base font-normal text-slate-400 ml-0.5">%</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 mt-1 flex items-center justify-between">
-            <span>2026-Q3 (QoQ SAAR)</span>
-            <span class="text-emerald-400 font-bold">軟著陸韌性</span>
-          </div>
-        </div>
-
-        <!-- KPI 2: 核心 PCE 物價指數 -->
-        <div onclick="openVaultDetailModal('US_PCE')" class="warroom-card p-3.5 sm:p-4 cursor-pointer hover:border-amber-400 transition group select-none">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="font-bold text-amber-400">[02] CORE PCE</span>
-            <span class="text-[10px] text-slate-500">FOMC錨點</span>
-          </div>
-          <div class="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono text-amber-300 mt-1 group-hover:text-amber-200 transition">
-            3.0<span class="text-sm sm:text-base font-normal text-slate-400 ml-0.5">%</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 mt-1 flex items-center justify-between">
-            <span>2026-08 (YoY)</span>
-            <span class="text-amber-400">黏性仍存</span>
-          </div>
-        </div>
-
-        <!-- KPI 3: Fed 聯邦基金基準利率 -->
-        <div onclick="openVaultDetailModal('US_FOMC')" class="warroom-card p-3.5 sm:p-4 cursor-pointer hover:border-amber-400 transition group select-none">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="font-bold text-amber-400">[03] FED FUNDS</span>
-            <span class="text-[10px] text-slate-500">基準利率</span>
-          </div>
-          <div class="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono text-white mt-1 group-hover:text-amber-300 transition">
-            3.75<span class="text-sm sm:text-base font-normal text-slate-400 ml-0.5">%</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 mt-1 flex items-center justify-between">
-            <span>有效基準 (3.50~3.75)</span>
-            <span class="text-sky-400">降息循環中</span>
-          </div>
-        </div>
-
-        <!-- KPI 4: 10Y-2Y 殖利率利差 -->
-        <div onclick="openVaultDetailModal('US_SPREAD')" class="warroom-card p-3.5 sm:p-4 cursor-pointer hover:border-amber-400 transition group select-none">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="font-bold text-amber-400">[04] 10Y-2Y SPREAD</span>
-            <span class="text-[10px] text-slate-500">利差定價</span>
-          </div>
-          <div class="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono text-amber-300 mt-1 group-hover:text-amber-200 transition">
-            +44<span class="text-sm sm:text-base font-normal text-slate-400 ml-0.5">bps</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 mt-1 flex items-center justify-between">
-            <span>10Y 5.19% - 2Y 4.75%</span>
-            <span class="text-emerald-400 font-bold">倒掛修復走陡</span>
-          </div>
-        </div>
-
-        <!-- KPI 5: 官方失業率 / 非農就業 -->
-        <div onclick="openVaultDetailModal('US_UR')" class="warroom-card p-3.5 sm:p-4 cursor-pointer hover:border-amber-400 transition group select-none">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="font-bold text-amber-400">[05] LABOR MARKET</span>
-            <span class="text-[10px] text-slate-500">BLS/FRED</span>
-          </div>
-          <div class="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono text-white mt-1 group-hover:text-amber-300 transition">
-            4.2<span class="text-sm sm:text-base font-normal text-slate-400 ml-0.5">%</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 mt-1 flex items-center justify-between">
-            <span>2026-09 失業率</span>
-            <span class="text-slate-300">非農 +2.9萬人</span>
-          </div>
-        </div>
-
-        <!-- KPI 6: ISM 服務業 / 製造業 PMI -->
-        <div onclick="openVaultDetailModal('US_ISM_SERVICES')" class="warroom-card p-3.5 sm:p-4 cursor-pointer hover:border-amber-400 transition group select-none">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="font-bold text-amber-400">[06] ISM PMI</span>
-            <span class="text-[10px] text-slate-500">榮枯線 50</span>
-          </div>
-          <div class="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono text-amber-300 mt-1 group-hover:text-amber-200 transition">
-            56.0<span class="text-sm sm:text-base font-normal text-slate-400 ml-0.5">點</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 mt-1 flex items-center justify-between">
-            <span>服務業強勁擴張</span>
-            <span class="text-slate-400">製造業 48.5</span>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- 2. 中央大尺寸互動時序走勢畫布 (WIDE TREND CANVAS) -->
-      <section class="warroom-card overflow-hidden">
-        <div class="warroom-header px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-2">
-            <span class="text-amber-400 font-bold text-sm sm:text-base font-mono tracking-wider">[MACRO TRAJECTORY] 美國總經時序演變走勢圖</span>
-            <span id="canvas-active-title" class="text-xs font-mono px-2 py-0.5 bg-[#121c2d] text-white border border-[#243350] font-bold">
-              US REAL GDP 季增年率 (3.4%)
+    <section id="section-macro-vault" class="glass-card p-4 sm:p-6 rounded-2xl border-sky-500/30 shadow-xl">
+      <!-- 頂部標題與控制項 -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+              <span class="text-amber-400">⚡</span> 1. 定時更新的經濟數據 (Macro Data Vault)
+            </h2>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>每日 08:15 自動校準 · 2026 最新官方期別對齊</span>
             </span>
           </div>
-
-          <!-- 畫布切換按鈕群 -->
-          <div class="flex items-center gap-1.5 overflow-x-auto text-xs font-mono" id="chart-metric-selector">
-            <button onclick="setFocusChartMetric('US_GDP')" id="cbtn-US_GDP" class="terminal-chip active font-bold">GDP 3.4%</button>
-            <button onclick="setFocusChartMetric('US_PCE')" id="cbtn-US_PCE" class="terminal-chip">CORE PCE 3.0%</button>
-            <button onclick="setFocusChartMetric('US_SPREAD')" id="cbtn-US_SPREAD" class="terminal-chip">10Y-2Y +44bps</button>
-            <button onclick="setFocusChartMetric('US_ISM_SERVICES')" id="cbtn-US_ISM_SERVICES" class="terminal-chip">ISM 服務業 56.0</button>
-            <button onclick="setFocusChartMetric('US_ISM_PMI')" id="cbtn-US_ISM_PMI" class="terminal-chip">ISM 製造業 48.5</button>
-            <button onclick="setFocusChartMetric('US_FOMC')" id="cbtn-US_FOMC" class="terminal-chip">FED 利率 3.75%</button>
-            <button onclick="setFocusChartMetric('US_CPI')" id="cbtn-US_CPI" class="terminal-chip">CPI 通膨 3.7%</button>
-            <button onclick="setFocusChartMetric('US_UR')" id="cbtn-US_UR" class="terminal-chip">失業率 4.2%</button>
-          </div>
-        </div>
-
-        <!-- 走勢圖主體 (超大寬幅 SVG) -->
-        <div class="p-4 sm:p-6 bg-[#070b13]">
-          <div id="main-trend-chart-container" class="w-full flex justify-center">
-            <!-- 動態繪製 SVG -->
-          </div>
-          <!-- 底部即時講點摘要 -->
-          <div id="canvas-macro-summary" class="mt-3 pt-3 border-t border-[#182236] text-xs sm:text-sm font-mono text-slate-300 flex items-center justify-between flex-wrap gap-2">
-            <span class="text-amber-400 font-bold" id="canvas-takeaway-tag">[MACRO NARRATIVE]</span>
-            <span class="flex-1 text-slate-300 ml-2" id="canvas-takeaway-text">美國經濟在服務業與民間實質消費驅動下維持 3.4% 穩健擴張，通膨穩步回落至 3.0%，實質利率促使 Fed 展開有序預防性降息。</span>
-            <button onclick="openCurrentFocusModal()" class="terminal-chip text-amber-300 font-bold hover:text-white">
-              [SPOTLIGHT 演講卡 &gt;]
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. 美國總經 4 大支柱矩陣 (BENTO GRID 戰情矩陣) -->
-      <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
-        
-        <!-- 支柱 1: 貨幣政策與利率曲線 -->
-        <div class="warroom-card flex flex-col justify-between">
-          <div>
-            <div class="warroom-header px-4 py-2.5 flex items-center justify-between">
-              <span class="text-xs sm:text-sm font-bold font-mono text-amber-400">[01 // MONETARY & RATES] 利率政策與殖利率曲線</span>
-              <span class="text-[10px] font-mono text-slate-500">FRED</span>
-            </div>
-            <div class="p-3 space-y-2 font-mono">
-              <div onclick="openVaultDetailModal('US_FOMC')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">聯邦基金利率 (Fed Funds)</div>
-                  <div class="text-[10px] text-slate-500">政策利率目標有效基準</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-amber-300">3.75%</div>
-                  <div class="text-[10px] text-slate-400">區間 3.50~3.75%</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_10Y')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">美債 10 年期殖利率 (10Y)</div>
-                  <div class="text-[10px] text-slate-500">全球資產定價無風險錨</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">5.190%</div>
-                  <div class="text-[10px] text-slate-400">長天期融資成本</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_2Y')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">美債 2 年期殖利率 (2Y)</div>
-                  <div class="text-[10px] text-slate-500">聯準會降息預期敏感端</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">4.750%</div>
-                  <div class="text-[10px] text-slate-400">短端市場定價</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_SPREAD')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#243350]">
-                <div>
-                  <div class="text-xs font-bold text-amber-400">10Y-2Y 殖利率利差</div>
-                  <div class="text-[10px] text-slate-400">正斜率擴大為經濟常態</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-amber-300">+44 bps</div>
-                  <div class="text-[10px] text-amber-400">倒掛徹底結束</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_MORTGAGE')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">30 年期固定房貸利率</div>
-                  <div class="text-[10px] text-slate-500">房地美 Freddie Mac 基準</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">6.72%</div>
-                  <div class="text-[10px] text-slate-400">居民信貸成本</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_M2')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">M2 貨幣供給額年增率</div>
-                  <div class="text-[10px] text-slate-500">廣義金融體系流動性水庫</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-amber-300">5.71%</div>
-                  <div class="text-[10px] text-slate-400">實質信用擴張</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 支柱 2: 通膨指標與價格壓力 -->
-        <div class="warroom-card flex flex-col justify-between">
-          <div>
-            <div class="warroom-header px-4 py-2.5 flex items-center justify-between">
-              <span class="text-xs sm:text-sm font-bold font-mono text-amber-400">[02 // INFLATION WATCH] 美國通膨指標</span>
-              <span class="text-[10px] font-mono text-slate-500">BLS/BEA</span>
-            </div>
-            <div class="p-3 space-y-2 font-mono">
-              <div onclick="openVaultDetailModal('US_PCE')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#243350]">
-                <div>
-                  <div class="text-xs font-bold text-amber-400">核心 PCE 物價指數 (YoY)</div>
-                  <div class="text-[10px] text-slate-400">FOMC 貨幣決策核心指標</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-amber-300">3.0%</div>
-                  <div class="text-[10px] text-slate-400">2026-08期</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_CPI')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">整體 CPI 通膨年增率 (YoY)</div>
-                  <div class="text-[10px] text-slate-500">消費者日常生活物價指數</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">3.7%</div>
-                  <div class="text-[10px] text-slate-400">2026-09期</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_CORE_CPI')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">核心 CPI 通膨年增率 (YoY)</div>
-                  <div class="text-[10px] text-slate-500">扣除食品與能源之核心黏性</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">2.6%</div>
-                  <div class="text-[10px] text-slate-400">結構性放緩</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_PPI')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">PPI 生產者出廠物價 (YoY)</div>
-                  <div class="text-[10px] text-slate-500">上游批發端先行指標</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">2.8%</div>
-                  <div class="text-[10px] text-slate-400">2026-08期</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('COMMODITY_OIL')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">紐約輕原油 (WTI Crude)</div>
-                  <div class="text-[10px] text-slate-500">實體能源與交通運輸成本</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">$93.99</div>
-                  <div class="text-[10px] text-slate-400">美元/桶</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('COMMODITY_GOLD')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">國際黃金現貨 (Gold Spot)</div>
-                  <div class="text-[10px] text-slate-500">法幣信用與主權避險定價</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-amber-300">$4,168</div>
-                  <div class="text-[10px] text-slate-400">美元/盎司</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 支柱 3: 實體經濟與企業投資 -->
-        <div class="warroom-card flex flex-col justify-between">
-          <div>
-            <div class="warroom-header px-4 py-2.5 flex items-center justify-between">
-              <span class="text-xs sm:text-sm font-bold font-mono text-amber-400">[03 // REAL ECONOMY & CAPEX] 實體經濟與企業投資</span>
-              <span class="text-[10px] font-mono text-slate-500">ISM/CENSUS</span>
-            </div>
-            <div class="p-3 space-y-2 font-mono">
-              <div onclick="openVaultDetailModal('US_GDP')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#243350]">
-                <div>
-                  <div class="text-xs font-bold text-amber-400">實質 GDP 季增年率 (SAAR)</div>
-                  <div class="text-[10px] text-slate-400">廣義實體經濟最終產出動能</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-amber-300">3.4%</div>
-                  <div class="text-[10px] text-slate-400">2026-Q3期</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_ISM_SERVICES')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">ISM 服務業採購經理人指數</div>
-                  <div class="text-[10px] text-slate-500">佔美國經濟 80% 之服務動能</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-emerald-400">56.0</div>
-                  <div class="text-[10px] text-emerald-400">擴張強勁 (50榮枯)</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_ISM_PMI')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">ISM 製造業採購經理人指數</div>
-                  <div class="text-[10px] text-slate-500">實體工廠新訂單/庫存景氣</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">48.5</div>
-                  <div class="text-[10px] text-slate-400">輕度收縮 (50榮枯)</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_DURABLE')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">核心非國防耐久財新訂單</div>
-                  <div class="text-[10px] text-slate-500">企業實質設備資本支出 (CAPEX)</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">+0.5%</div>
-                  <div class="text-[10px] text-slate-400">月增率 (2026-09)</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_HOUSING')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">新屋開工年化總數 (Starts)</div>
-                  <div class="text-[10px] text-slate-500">營建鋼材與銅材實體需求</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">135.4萬</div>
-                  <div class="text-[10px] text-slate-400">戶 (2026-09)</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('GLOBAL_BDI')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">波羅的海乾散貨指數 (BDI)</div>
-                  <div class="text-[10px] text-slate-500">國際鐵礦砂/焦煤海運週轉</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-slate-200">1,410</div>
-                  <div class="text-[10px] text-slate-400">點 (2026-10)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 支柱 4: 就業市場與消費者信心 -->
-        <div class="warroom-card flex flex-col justify-between">
-          <div>
-            <div class="warroom-header px-4 py-2.5 flex items-center justify-between">
-              <span class="text-xs sm:text-sm font-bold font-mono text-amber-400">[04 // LABOR & CONSUMER] 就業市場與消費者信心</span>
-              <span class="text-[10px] font-mono text-slate-500">BLS/UMICH</span>
-            </div>
-            <div class="p-3 space-y-2 font-mono">
-              <div onclick="openVaultDetailModal('US_UR')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#243350]">
-                <div>
-                  <div class="text-xs font-bold text-amber-400">官方失業率 (U3 Unemp)</div>
-                  <div class="text-[10px] text-slate-400">就業市場整體鬆弛度監控</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">4.2%</div>
-                  <div class="text-[10px] text-slate-400">充分就業區間</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_NFP')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">季調非農就業增長 (NFP)</div>
-                  <div class="text-[10px] text-slate-500">非農業單月淨聘僱人數</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">+2.9萬</div>
-                  <div class="text-[10px] text-slate-400">2026-09期</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_UMICH')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">密西根大學消費者信心</div>
-                  <div class="text-[10px] text-slate-500">大額耐久財消費與通膨預期</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">48.1</div>
-                  <div class="text-[10px] text-slate-400">2026-09期</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('US_RETAIL')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">美國零售銷售月增率</div>
-                  <div class="text-[10px] text-slate-500">民間終端消費支出核心動能</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">+0.5%</div>
-                  <div class="text-[10px] text-slate-400">月增率</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('MARKET_DXY')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">美元指數 (DXY Index)</div>
-                  <div class="text-[10px] text-slate-500">對一籃子六大主要貨幣溢價</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-white">101.97</div>
-                  <div class="text-[10px] text-slate-400">點</div>
-                </div>
-              </div>
-
-              <div onclick="openVaultDetailModal('MARKET_VIX')" class="flex items-center justify-between p-2 rounded-[2px] bg-[#0c121e] hover:bg-[#131b2c] cursor-pointer transition border border-[#162033]">
-                <div>
-                  <div class="text-xs font-bold text-white">CBOE VIX 恐慌波動指數</div>
-                  <div class="text-[10px] text-slate-500">S&P 500 選擇權隱含波動率</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-base sm:text-lg font-bold text-emerald-400">16.87</div>
-                  <div class="text-[10px] text-emerald-400">平穩正常 (&lt;20)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- 4. 底部快捷演講導航條 -->
-      <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-[#090e17] border border-[#182236] rounded-[3px] text-xs font-mono">
-        <div class="flex items-center gap-2">
-          <span class="text-amber-400 font-bold">[SPEAKER SHORTCUTS] 演講導航：</span>
-          <span class="text-slate-400 hidden sm:inline">點擊任何指標卡片即可全螢幕展開大字體簡報投影卡；鍵盤左右鍵 (← / →) 快速切換！</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <button onclick="switchWarRoomView('global-contrast')" class="terminal-chip text-amber-300 font-bold hover:text-white">
-            [切換全球與台灣對比 &gt;]
-          </button>
-          <button onclick="toggleFullscreen()" class="terminal-chip font-bold text-white">
-            [全螢幕 F]
-          </button>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- 輔助視野 2：[GLOBAL / TW CONTRAST] 全球與台灣對照 (對比演講)    -->
-    <!-- ============================================================ -->
-    <div id="view-global-contrast" class="space-y-4 hidden">
-      <!-- 頂部標頭 -->
-      <div class="warroom-card p-4 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 class="text-lg sm:text-xl font-bold font-mono text-white flex items-center gap-2">
-            <span class="text-amber-400">[TW & GLOBAL CONTRAST]</span> 台灣外銷景氣與全球實體重工對比
-          </h2>
-          <p class="text-xs font-mono text-slate-400 mt-1">
-            由行政院主計總處、國發會、經濟部、財政部最新 2026 官方核定數據，呈現台灣科技外銷雙位數成長奇蹟。
+          <p class="text-xs text-slate-400 mt-1">
+            由 FRED、BLS、BEA、行政院主計總處、國發會、經濟部統計處等官方機構定時校正，涵蓋實質 GDP、景氣燈號、外銷訂單、服務業、耐久財、房貸利率與大宗原料共 36 項核心時序。
           </p>
         </div>
-        <button onclick="switchWarRoomView('us-warroom')" class="terminal-chip text-amber-300 font-bold">
-          [&lt; 返回美國總經戰情室]
-        </button>
-      </div>
 
-      <!-- 台灣 4 大核心焦點卡 (大字體) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div onclick="openVaultDetailModal('TW_GDP')" class="warroom-card p-4 cursor-pointer hover:border-amber-400 transition group">
-          <div class="text-xs font-mono text-amber-400 font-bold">[TW_GDP] 台灣實質 GDP 成長率</div>
-          <div class="text-3xl sm:text-4xl font-bold font-mono text-white mt-1 group-hover:text-amber-300">
-            14.36<span class="text-base text-slate-400">%</span>
-          </div>
-          <div class="text-xs font-mono text-slate-400 mt-1">2026-Q3期 (YoY) ｜ 創48年歷史新高</div>
-        </div>
-
-        <div onclick="openVaultDetailModal('TW_SIGNAL')" class="warroom-card p-4 cursor-pointer hover:border-amber-400 transition group">
-          <div class="text-xs font-mono text-amber-400 font-bold">[TW_SIGNAL] 國發會景氣對策信號</div>
-          <div class="text-3xl sm:text-4xl font-bold font-mono text-amber-300 mt-1 group-hover:text-amber-200">
-            41<span class="text-base text-slate-400">分 [紅燈]</span>
-          </div>
-          <div class="text-xs font-mono text-slate-400 mt-1">2026-09期 ｜ 連續 10 個月亮出紅燈</div>
-        </div>
-
-        <div onclick="openVaultDetailModal('TW_EXPORT_ORDERS')" class="warroom-card p-4 cursor-pointer hover:border-amber-400 transition group">
-          <div class="text-xs font-mono text-amber-400 font-bold">[TW_ORDERS] 經濟部外銷訂單年增率</div>
-          <div class="text-3xl sm:text-4xl font-bold font-mono text-white mt-1 group-hover:text-amber-300">
-            +62.4<span class="text-base text-slate-400">%</span>
-          </div>
-          <div class="text-xs font-mono text-slate-400 mt-1">2026-09期 ｜ 9月接單 $1,142億新高</div>
-        </div>
-
-        <div onclick="openVaultDetailModal('TW_EXPORT')" class="warroom-card p-4 cursor-pointer hover:border-amber-400 transition group">
-          <div class="text-xs font-mono text-amber-400 font-bold">[TW_EXPORT] 財政部海關總出口年增率</div>
-          <div class="text-3xl sm:text-4xl font-bold font-mono text-white mt-1 group-hover:text-amber-300">
-            +58.9<span class="text-base text-slate-400">%</span>
-          </div>
-          <div class="text-xs font-mono text-slate-400 mt-1">2026-10期 ｜ 連續 36 個月正成長</div>
-        </div>
-      </div>
-
-      <!-- 台灣權值與大宗重工原物料 -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-        <div class="warroom-card p-4">
-          <div class="warroom-header -m-4 mb-3 p-3 text-xs font-bold font-mono text-amber-400">
-            [TAIWAN TECH ANCHOR] 台積電現貨與 ADR 溢價
-          </div>
-          <div class="space-y-3 font-mono pt-2">
-            <div class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236]">
-              <span class="text-sm font-bold text-white">台積電現貨 (2330.TW)</span>
-              <span class="text-lg font-bold text-amber-300" id="tw-contrast-tsmc">2,440 元</span>
-            </div>
-            <div class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236]">
-              <span class="text-sm font-bold text-white">台積電 ADR (TSM)</span>
-              <span class="text-lg font-bold text-amber-300" id="tw-contrast-tsm-adr">$430.00</span>
-            </div>
-            <div class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#243350]">
-              <span class="text-sm font-bold text-amber-400">ADR 換算現股溢價率</span>
-              <span class="text-lg font-bold text-amber-300" id="tw-contrast-adr-prem">+13.93%</span>
-            </div>
-            <div class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236]">
-              <span class="text-sm font-bold text-white">台股加權指數 (^TWII)</span>
-              <span class="text-lg font-bold text-white" id="tw-contrast-twii">47,227 點</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="warroom-card p-4">
-          <div class="warroom-header -m-4 mb-3 p-3 text-xs font-bold font-mono text-amber-400">
-            [COMMODITIES & CHINA] 國際原料與中國製造業
-          </div>
-          <div class="space-y-3 font-mono pt-2">
-            <div onclick="openVaultDetailModal('COMMODITY_IRON_ORE')" class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236] cursor-pointer hover:border-amber-400 transition">
-              <span class="text-sm font-bold text-white">國際鐵礦砂 62% (CFR)</span>
-              <span class="text-lg font-bold text-amber-300">$90.74 / 噸</span>
-            </div>
-            <div onclick="openVaultDetailModal('COMMODITY_COAL')" class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236] cursor-pointer hover:border-amber-400 transition">
-              <span class="text-sm font-bold text-white">國際動力煤 (Newcastle)</span>
-              <span class="text-lg font-bold text-slate-200">$124.50 / 噸</span>
-            </div>
-            <div onclick="openVaultDetailModal('COMMODITY_COPPER')" class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236] cursor-pointer hover:border-amber-400 transition">
-              <span class="text-sm font-bold text-white">國際銅博士 (HG Copper)</span>
-              <span class="text-lg font-bold text-slate-200">$6.611 / 磅</span>
-            </div>
-            <div onclick="openVaultDetailModal('CN_PMI')" class="flex items-center justify-between p-2.5 bg-[#0c121e] border border-[#182236] cursor-pointer hover:border-amber-400 transition">
-              <span class="text-sm font-bold text-white">中國官方製造業 PMI (NBS)</span>
-              <span class="text-lg font-bold text-slate-300">49.3 (收縮)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- 輔助視野 3：[ECONOMIC CALENDAR] 央行排程行事曆                  -->
-    <!-- ============================================================ -->
-    <div id="view-calendar" class="warroom-card p-4 space-y-3.5 hidden">
-      <div class="warroom-header -m-4 mb-2 p-3.5 flex flex-wrap items-center justify-between gap-2.5">
-        <div class="flex items-center gap-2">
-          <span class="text-amber-400 font-bold text-sm sm:text-base font-mono">[ECONOMIC CALENDAR] 央行與重大總經發布排程</span>
-          <span class="text-[11px] font-mono px-2 py-0.5 bg-[#141c2c] text-slate-300 border border-[#222d42]" id="calendar-sync-badge">
-            OFFICIAL CALENDAR SYNCED
-          </span>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="btn-sync-calendar" onclick="syncCalendarNow()" class="terminal-chip text-amber-300 font-bold">
-            <span id="sync-calendar-icon">[SYNC]</span>
-            <span id="sync-calendar-text">即時校正排程</span>
+        <!-- 操作按鈕群 -->
+        <div class="flex items-center gap-2 flex-wrap flex-shrink-0">
+          <button onclick="copyVaultFormula()" class="bg-sky-600/20 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs px-2.5 py-1.5 rounded-xl font-medium transition flex items-center gap-1 active:scale-95">
+            <span>📋</span> 複製試算表公式
+          </button>
+          <a href="/api/macro-vault?format=csv" download="macro_vault.csv" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl font-medium transition flex items-center gap-1 active:scale-95">
+            <span>📥</span> 匯出 CSV
+          </a>
+          <button onclick="loadMacroVaultData(true)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-2.5 py-1.5 rounded-xl font-medium transition flex items-center gap-1 active:scale-95">
+            <span>🔄</span> 刷新
           </button>
         </div>
       </div>
 
-      <!-- 倒數看板 -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-mono">
-        <div class="bg-[#0c121e] p-3 rounded-[2px] border border-[#182236] flex items-center justify-between">
-          <span class="text-slate-400">[EVENT] 下次 FOMC 利率決策</span>
-          <span id="countdown-fomc" class="text-amber-400 font-bold text-sm">--</span>
-        </div>
-        <div class="bg-[#0c121e] p-3 rounded-[2px] border border-[#182236] flex items-center justify-between">
-          <span class="text-slate-400">[EVENT] 下次 美國 CPI 發布</span>
-          <span id="countdown-cpi" class="text-amber-400 font-bold text-sm">--</span>
-        </div>
-        <div class="bg-[#0c121e] p-3 rounded-[2px] border border-[#182236] flex items-center justify-between">
-          <span class="text-slate-400">[EVENT] 台指期月結算</span>
-          <span id="countdown-taifex" class="text-amber-400 font-bold text-sm">--</span>
-        </div>
+      <!-- 分類標籤篩選列 -->
+      <div class="flex items-center gap-1.5 mb-3.5 text-xs overflow-x-auto pb-1" id="vault-category-filter">
+        <button onclick="filterVaultCategory('all')" id="vcat-all" class="px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition whitespace-nowrap shadow-sm">全部 (36項)</button>
+        <button onclick="filterVaultCategory('growth')" id="vcat-growth" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🌐 景氣成長 (5)</button>
+        <button onclick="filterVaultCategory('inflation')" id="vcat-inflation" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📊 通膨指標 (4)</button>
+        <button onclick="filterVaultCategory('labor')" id="vcat-labor" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 就業消費 (5)</button>
+        <button onclick="filterVaultCategory('monetary')" id="vcat-monetary" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ 貨幣利率 (7)</button>
+        <button onclick="filterVaultCategory('trade')" id="vcat-trade" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🚢 貿易外銷 (4)</button>
+        <button onclick="filterVaultCategory('commodity')" id="vcat-commodity" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏭 大宗重工 (6)</button>
+        <button onclick="filterVaultCategory('equity')" id="vcat-equity" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🚀 科技權值 (5)</button>
       </div>
 
-      <!-- 週期與區域篩選列 -->
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#182236]">
-        <div class="flex items-center gap-1.5 text-xs font-mono">
-          <button onclick="switchCalendarPeriod('week')" id="btn-cal-week" class="terminal-chip active font-bold">THIS WEEK 本週</button>
-          <button onclick="switchCalendarPeriod('next_week')" id="btn-cal-next_week" class="terminal-chip">NEXT WEEK 下週</button>
-          <button onclick="switchCalendarPeriod('month')" id="btn-cal-month" class="terminal-chip">THIS MONTH 本月</button>
-          <span id="cal-period-range" class="text-xs text-slate-400 ml-2 hidden sm:inline"></span>
-        </div>
-
-        <div class="flex items-center gap-1 text-xs font-mono">
-          <button onclick="filterCalendarRegion('all')" id="btn-reg-all" class="terminal-chip active font-bold">ALL</button>
-          <button onclick="filterCalendarRegion('US')" id="btn-reg-US" class="terminal-chip">[US] 美國</button>
-          <button onclick="filterCalendarRegion('TW')" id="btn-reg-TW" class="terminal-chip">[TW] 台灣</button>
-          <button onclick="filterCalendarRegion('CN')" id="btn-reg-CN" class="terminal-chip">[CN] 中國</button>
-          <button onclick="filterCalendarRegion('EU')" id="btn-reg-EU" class="terminal-chip">[EU] 歐洲</button>
-          <button onclick="toggleCalendarImportance()" id="btn-cal-star3" class="terminal-chip font-bold">
-            [KEY ONLY (***)]
-          </button>
-        </div>
-      </div>
-
-      <!-- 桌面排程表格 -->
-      <div class="overflow-x-auto rounded-[3px] border border-[#182236] bg-[#070b13]">
-        <table class="w-full text-left text-xs sm:text-sm border-collapse font-mono">
+      <!-- 歸檔庫表格主體 -->
+      <div class="overflow-x-auto rounded-xl border border-slate-800/80 bg-slate-950/60">
+        <table class="w-full text-left text-xs border-collapse">
           <thead>
-            <tr class="bg-[#0e1524] text-slate-400 border-b border-[#182236] text-xs">
-              <th class="py-3 px-3.5 whitespace-nowrap">DATE/TIME 時間</th>
-              <th class="py-3 px-3 whitespace-nowrap">REGION 國家</th>
-              <th class="py-3 px-3.5 whitespace-nowrap">EVENT 經濟指標 / 央行事件</th>
-              <th class="py-3 px-3 text-center whitespace-nowrap">IMPACT 影響級</th>
-              <th class="py-3 px-3.5 text-right whitespace-nowrap">PREVIOUS 前值</th>
-              <th class="py-3 px-3.5 text-right whitespace-nowrap">FORECAST 預期</th>
-              <th class="py-3 px-3.5 text-right whitespace-nowrap">ACTUAL 實際公布</th>
+            <tr class="bg-slate-900/90 text-slate-400 border-b border-slate-800 text-[11px] font-mono">
+              <th class="py-2.5 px-3 whitespace-nowrap">指標代碼 / 名稱</th>
+              <th class="py-2.5 px-2.5 whitespace-nowrap">類別</th>
+              <th class="py-2.5 px-3 text-right whitespace-nowrap">最新官方數值</th>
+              <th class="py-2.5 px-2.5 text-center whitespace-nowrap">所屬期別</th>
+              <th class="py-2.5 px-2.5 text-center whitespace-nowrap">官方發布日</th>
+              <th class="py-2.5 px-3 whitespace-nowrap">數據來源機構</th>
+              <th class="py-2.5 px-3 text-right whitespace-nowrap">近 6 期趨勢 <span class="text-[10px] text-sky-400 font-normal">（點擊看細節）</span></th>
             </tr>
           </thead>
-          <tbody id="calendar-table-body" class="divide-y divide-[#141d2e]">
+          <tbody id="macro-vault-table-body" class="divide-y divide-slate-800/50 font-mono">
             <tr>
-              <td colspan="7" class="py-8 text-center text-slate-500 font-mono">
-                [CONNECTING // 正在同步央行與重大總經發布排程...]
+              <td colspan="7" class="py-8 text-center text-slate-500">
+                <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+                <div>正在連線總經數據自動歸檔庫...</div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- 行動端排程清單 -->
-      <div id="calendar-mobile-list" class="sm:hidden divide-y divide-[#141d2e] font-mono"></div>
-
-      <div class="text-xs font-mono text-slate-500 px-1" id="cal-events-count">
-        FILTERED EVENTS: --
+      <!-- 底部最後更新時間標籤 -->
+      <div class="flex items-center justify-between text-[11px] font-mono text-slate-500 mt-3 px-1">
+        <span id="vault-summary-count">共 24 項指標已對齊</span>
+        <span id="vault-last-updated">更新時間：連線中...</span>
       </div>
-    </div>
+    </section>
 
     <!-- ============================================================ -->
-    <!-- 輔助視野 4：[MACRO WIRE] 央行電訊與新聞流                     -->
+    <!-- 板塊 2：📈 常用到的全球熱門財經數據 (Global Financial Tickers)  -->
     <!-- ============================================================ -->
-    <div id="view-news" class="warroom-card p-4 space-y-3.5 hidden">
-      <div class="warroom-header -m-4 mb-2 p-3.5 flex flex-wrap items-center justify-between gap-2.5">
-        <div class="flex items-center gap-2">
-          <span class="text-amber-400 font-bold text-sm sm:text-base font-mono">[MACRO WIRE] 國際央行與總經權威電訊</span>
-          <span class="text-[11px] font-mono px-2 py-0.5 bg-[#141c2c] text-slate-300 border border-[#222d42]">
-            WIRE COUNT: <span id="news-total-count" class="text-amber-300 font-bold">--</span>
-          </span>
+    <section id="section-popular-tickers" class="glass-card p-4 sm:p-6 rounded-2xl border-slate-800 shadow-xl">
+      <!-- 頂部標題與撮合狀態 -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4 pb-3 border-b border-slate-800">
+        <div class="flex flex-wrap items-center gap-2">
+          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <span class="text-sky-400">📈</span> 2. 常用到的全球熱門財經數據 (Global Financial Assets)
+          </h2>
+          <span class="text-[11px] text-slate-400 font-normal hidden md:inline">（台股現貨 ｜ 美股權值 ｜ 美債利差 ｜ 大宗重工原料）</span>
         </div>
-        <button id="btn-refresh-news" onclick="loadMacroNews(currentNewsCategory, true)" class="terminal-chip text-amber-300 font-bold">
-          <span id="refresh-news-icon">[SYNC]</span>
-          <span id="refresh-news-text">重新整理</span>
-        </button>
-      </div>
 
-      <!-- 分類標籤篩選列 -->
-      <div class="flex items-center gap-1.5 text-xs font-mono overflow-x-auto pb-1" id="news-category-filter">
-        <button onclick="filterNewsCategory('all')" id="btn-news-all" class="terminal-chip active font-bold">ALL WIRE 全部電訊</button>
-        <button onclick="filterNewsCategory('fed')" id="btn-news-fed" class="terminal-chip">[FED] 聯準會</button>
-        <button onclick="filterNewsCategory('cpi')" id="btn-news-cpi" class="terminal-chip">[CPI/PCE] 通膨</button>
-        <button onclick="filterNewsCategory('employment')" id="btn-news-employment" class="terminal-chip">[NFP] 就業</button>
-        <button onclick="filterNewsCategory('yield')" id="btn-news-yield" class="terminal-chip">[BONDS] 殖利率</button>
-        <button onclick="filterNewsCategory('ecb')" id="btn-news-ecb" class="terminal-chip">[ECB] 歐洲央行</button>
-      </div>
-
-      <!-- 新聞電訊清單 -->
-      <div id="macro-news-list" class="space-y-2.5 max-h-[640px] overflow-y-auto pr-1 font-mono">
-        <div class="text-center py-8 text-slate-500 text-xs font-mono">
-          [CONNECTING // 正在檢索國際央行最新電訊...]
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- ============================================================ -->
-  <!-- [SPOTLIGHT MODAL] 大螢幕演講投影卡 (巨幅48px數值 + 3大講點)     -->
-  <!-- ============================================================ -->
-  <div id="vault-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md hidden select-none" onclick="handleVaultModalBackdrop(event)">
-    <div class="relative w-full max-w-4xl max-h-[94vh] flex flex-col bg-[#090e17] border border-[#243350] rounded-[4px] shadow-2xl overflow-hidden font-mono" onclick="event.stopPropagation()">
-      
-      <!-- Modal Header (演講看板標頭) -->
-      <div class="px-5 py-3.5 border-b border-[#182236] flex items-start justify-between bg-[#0e1524]">
-        <div>
-          <div class="flex items-center gap-2.5 flex-wrap">
-            <span id="vmodal-category" class="px-2 py-0.5 text-xs font-mono bg-[#141c2c] text-amber-400 border border-[#243350] font-bold"></span>
-            <span id="vmodal-id" class="text-xs sm:text-sm font-mono text-slate-300 font-bold"></span>
-            <span id="vmodal-nav-index" class="text-xs text-slate-500"></span>
+        <div class="flex items-center gap-3 text-xs">
+          <div class="flex items-center gap-1.5 text-slate-400 font-mono text-[11px]">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="market-status-text">市場連線正常</span>
           </div>
-          <h3 id="vmodal-name" class="text-xl sm:text-2xl font-bold text-white mt-1"></h3>
-          <div class="text-xs text-slate-400 mt-1">
-            AUTHORITY SOURCE: <strong id="vmodal-source" class="text-slate-300 font-normal"></strong>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button onclick="navigateVaultDetail(-1)" class="px-3 py-1.5 bg-[#141c2c] hover:bg-[#1a2538] text-amber-300 border border-[#182236] text-xs sm:text-sm font-bold transition" title="前一項 (鍵盤 ←)">[&lt; PREV]</button>
-          <button onclick="navigateVaultDetail(1)" class="px-3 py-1.5 bg-[#141c2c] hover:bg-[#1a2538] text-amber-300 border border-[#182236] text-xs sm:text-sm font-bold transition" title="下一項 (鍵盤 →)">[NEXT &gt;]</button>
-          <button onclick="closeVaultDetailModal()" class="w-8 h-8 bg-[#141c2c] hover:bg-rose-950/60 hover:text-rose-300 text-slate-400 border border-[#182236] flex items-center justify-center text-sm font-bold transition ml-1" title="關閉 (ESC)">
-            X
+          <span id="market-sync-time" class="text-[10px] text-slate-500 font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-800">--:--:--</span>
+          <button onclick="loadTickerData()" class="p-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition" title="刷新行情">
+            🔄
           </button>
         </div>
       </div>
 
-      <!-- Modal Body (Scrollable) -->
-      <div class="p-5 sm:p-6 overflow-y-auto space-y-5 divide-y divide-[#182236]">
+      <!-- 3 大分組磁貼卡片矩陣 (高對比簡潔排版) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
-        <!-- 頂部巨幅數值卡片 (48px 遠距可見) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-0">
-          <div class="bg-[#05080e] p-3.5 rounded-[2px] border border-[#182236]">
-            <div class="text-xs text-slate-400">LATEST VALUE 最新數值</div>
-            <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-amber-300 font-mono mt-1 flex items-baseline gap-1">
-              <span id="vmodal-latest-val"></span>
-              <span id="vmodal-unit" class="text-sm font-normal text-slate-400"></span>
+        <!-- 分組 1: 科技與全球核心股指 -->
+        <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-800/80">
+              <span class="text-xs font-bold text-sky-400 flex items-center gap-1.5">
+                <span>🚀</span> 科技與核心股指 (Equities & Tech)
+              </span>
+              <span class="text-[10px] text-slate-500">權值定價核心</span>
             </div>
-            <div id="vmodal-latest-period" class="text-xs text-slate-400 font-mono mt-1 font-bold"></div>
+
+            <div class="space-y-2.5" id="group-tech-tickers">
+              <!-- 台股加權 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🇹🇼 台股加權 (^TWII)</div>
+                  <div class="text-[10px] text-slate-500">加權指數大盤</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-white" id="tick-twii">--</div>
+                  <div class="text-[10px] font-mono" id="tick-twii-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 台積電現股 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🇹🇼 台積電 (2330.TW)</div>
+                  <div class="text-[10px] text-slate-500">先進製程晶圓龍頭</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-amber-300" id="tick-tsmc">--</div>
+                  <div class="text-[10px] font-mono" id="tick-tsmc-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 台積電 ADR -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🇺🇸 台積電 ADR (TSM)</div>
+                  <div class="text-[10px] text-slate-500" id="tick-tsm-adr-prem">溢價率：計算中</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-amber-300" id="tick-tsm-adr">--</div>
+                  <div class="text-[10px] font-mono" id="tick-tsm-adr-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 輝達 NVIDIA -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🤖 輝達 NVIDIA (NVDA)</div>
+                  <div class="text-[10px] text-slate-500">AI 算力 GPU 旗艦</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-emerald-400" id="tick-nvda">--</div>
+                  <div class="text-[10px] font-mono" id="tick-nvda-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 費城半導體 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🚀 費城半導體 (^SOX)</div>
+                  <div class="text-[10px] text-slate-500">半導體景氣晴雨表</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-sky-400" id="tick-sox">--</div>
+                  <div class="text-[10px] font-mono" id="tick-sox-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 標普 500 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🇺🇸 標普 500 (^GSPC)</div>
+                  <div class="text-[10px] text-slate-500">美股整體權威基石</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-slate-200" id="tick-sp500">--</div>
+                  <div class="text-[10px] font-mono" id="tick-sp500-sub">--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分組 2: 公債利率、利差與外匯 -->
+        <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-800/80">
+              <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+                <span>🏛️</span> 公債利率與外匯 (Rates & FX)
+              </span>
+              <span class="text-[10px] text-slate-500">全球流動性水庫</span>
+            </div>
+
+            <div class="space-y-2.5" id="group-rates-tickers">
+              <!-- 10Y 美債 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🇺🇸 美債 10 年期 (^TNX)</div>
+                  <div class="text-[10px] text-slate-500">全球資產定價之錨</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-rose-400" id="tick-us10y">--</div>
+                  <div class="text-[10px] font-mono" id="tick-us10y-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 2Y 美債 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🇺🇸 美債 2 年期 (2YY=F)</div>
+                  <div class="text-[10px] text-slate-500">政策利率敏感端</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-sky-400" id="tick-us2y">--</div>
+                  <div class="text-[10px] font-mono" id="tick-us2y-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 10Y-2Y 利差 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-indigo-500/30">
+                <div>
+                  <div class="text-xs font-bold text-indigo-300">📊 10Y-2Y 殖利率利差</div>
+                  <div class="text-[10px] text-indigo-400" id="tick-spread-note">倒掛修復正斜率</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-indigo-300" id="tick-spread102">--</div>
+                  <div class="text-[10px] font-mono text-indigo-400" id="tick-spread102-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 美元指數 DXY -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">💵 美元指數 (DXY)</div>
+                  <div class="text-[10px] text-slate-500">全球貨幣流動性溢價</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-white" id="tick-dxy">--</div>
+                  <div class="text-[10px] font-mono" id="tick-dxy-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 美元兌台幣 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">💱 美元/台幣 (USD/TWD)</div>
+                  <div class="text-[10px] text-slate-500">外銷出貨與換匯成本</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-slate-200" id="tick-usdtwd">--</div>
+                  <div class="text-[10px] font-mono" id="tick-usdtwd-sub">--</div>
+                </div>
+              </div>
+
+              <!-- VIX 恐慌指數 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">😱 VIX 恐慌指數 (^VIX)</div>
+                  <div class="text-[10px] text-slate-500">&lt;20 平穩 ｜ &gt;30 恐慌</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-emerald-400" id="tick-vix">--</div>
+                  <div class="text-[10px] font-mono" id="tick-vix-sub">--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分組 3: 大宗原料與重工業 -->
+        <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-800/80">
+              <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                <span>🏭</span> 大宗原料與重工 (Commodities)
+              </span>
+              <span class="text-[10px] text-slate-500">實體成本防線</span>
+            </div>
+
+            <div class="space-y-2.5" id="group-commodity-tickers">
+              <!-- 鐵礦砂 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-amber-500/30">
+                <div>
+                  <div class="text-xs font-bold text-white">🧱 國際鐵礦砂 62% (TIO)</div>
+                  <div class="text-[10px] text-amber-400" id="tick-iron-status">高爐煉鋼核心原料</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-amber-300" id="tick-iron">--</div>
+                  <div class="text-[10px] font-mono" id="tick-iron-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 動力煤 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🔥 國際動力煤 (Newcastle)</div>
+                  <div class="text-[10px] text-slate-500">焦化發電剛性成本</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-slate-200" id="tick-coal">--</div>
+                  <div class="text-[10px] font-mono" id="tick-coal-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 輕原油 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🛢️ 紐約輕原油 (WTI)</div>
+                  <div class="text-[10px] text-slate-500">基礎能源與運輸成本</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-white" id="tick-oil">--</div>
+                  <div class="text-[10px] font-mono" id="tick-oil-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 銅博士 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">⛏️ 國際銅博士 (HG Copper)</div>
+                  <div class="text-[10px] text-slate-500">電網基建與AI散熱</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-orange-400" id="tick-copper">--</div>
+                  <div class="text-[10px] font-mono" id="tick-copper-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 黃金現貨 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🪙 國際黃金現貨 (Gold)</div>
+                  <div class="text-[10px] text-slate-500">對沖法幣購買力稀釋</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-amber-300" id="tick-gold">--</div>
+                  <div class="text-[10px] font-mono" id="tick-gold-sub">--</div>
+                </div>
+              </div>
+
+              <!-- 比特幣 -->
+              <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
+                <div>
+                  <div class="text-xs font-bold text-white">🪙 比特幣 (BTC-USD)</div>
+                  <div class="text-[10px] text-slate-500">全球投機流動性晴雨表</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-emerald-400" id="tick-btc">--</div>
+                  <div class="text-[10px] font-mono" id="tick-btc-sub">--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 板塊 3：📅 全球總經每週大事行事曆 (Macro Economic Calendar)     -->
+    <!-- ============================================================ -->
+    <section id="section-macro-calendar" class="glass-card p-4 sm:p-6 rounded-2xl border-slate-800 shadow-xl">
+      <!-- 頂部標題、倒數與校正鈕 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3.5 border-b border-slate-800/80">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <span class="text-sky-400">📅</span> 3. 全球總經每週大事行事曆 (Economic Calendar)
+          </h2>
+          <span class="text-[11px] text-slate-400 font-normal hidden sm:inline">（比照財經M平方標準 · 官方即時排程與預期對比）</span>
+          <!-- 官方排程校驗狀態徽章與立即校正鈕 -->
+          <span id="calendar-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>官方排程已校驗</span>
+          </span>
+          <button id="btn-sync-calendar" onclick="syncCalendarNow()" title="比照 BLS / BEA / Fed / 財政部官方發布日曆即時校準排程" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border border-slate-700 transition flex items-center gap-1 text-[11px] active:scale-95">
+            <span id="sync-calendar-icon">🔄</span>
+            <span id="sync-calendar-text">校正</span>
+          </button>
+        </div>
+
+        <!-- 3 大重磅事件快速倒數膠囊 -->
+        <div class="flex flex-wrap items-center gap-2 text-[11px] font-mono">
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/30 text-indigo-300">
+            <span class="text-indigo-400 font-sans">🏛️ FOMC：</span>
+            <span class="font-bold text-white" id="countdown-fomc">計算中...</span>
+          </div>
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300">
+            <span class="text-amber-400 font-sans">📊 美國 CPI：</span>
+            <span class="font-bold text-white" id="countdown-cpi">計算中...</span>
+          </div>
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">
+            <span class="text-emerald-400 font-sans">🇹🇼 台指結算：</span>
+            <span class="font-bold text-white" id="countdown-taifex">計算中...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 控制列：週期切換 + 地區篩選 + 只看三星必看開關 -->
+      <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3.5 text-xs">
+        <!-- 週期切換 -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 font-medium">
+          <button onclick="switchCalendarPeriod('week')" id="btn-cal-week" class="px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition shadow-sm">本週焦點</button>
+          <button onclick="switchCalendarPeriod('next_week')" id="btn-cal-next_week" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">下週預告</button>
+          <button onclick="switchCalendarPeriod('month')" id="btn-cal-month" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">本月全覽</button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- 地區篩選按鈕 -->
+          <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-[11px] overflow-x-auto">
+            <span class="text-slate-500 px-1">地區：</span>
+            <button onclick="filterCalendarRegion('all')" id="btn-reg-all" class="px-2 py-0.5 rounded-lg bg-sky-500/30 text-sky-200 border border-sky-500/40 font-bold transition">全部</button>
+            <button onclick="filterCalendarRegion('US')" id="btn-reg-US" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇺🇸 美國</button>
+            <button onclick="filterCalendarRegion('TW')" id="btn-reg-TW" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇹🇼 台灣</button>
+            <button onclick="filterCalendarRegion('CN')" id="btn-reg-CN" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇨🇳 中國</button>
+            <button onclick="filterCalendarRegion('EU')" id="btn-reg-EU" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇪🇺 歐洲</button>
+            <button onclick="filterCalendarRegion('JP')" id="btn-reg-JP" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">🇯🇵 日本</button>
+          </div>
+
+          <!-- 只看三星必看開關 -->
+          <button onclick="toggleCalendarImportance()" id="btn-cal-star3" class="px-2.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/40 text-slate-400 hover:text-amber-300 transition flex items-center gap-1 font-medium text-[11px]">
+            <span>🔥</span>
+            <span>只看 ⭐⭐⭐ 重磅必看</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 當前排程時段提示 -->
+      <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2.5 px-1 font-mono">
+        <div>排程區間：<span id="cal-period-range" class="text-sky-300 font-bold">載入中...</span></div>
+        <div id="cal-events-count" class="text-slate-500">共 0 項重大數據</div>
+      </div>
+
+      <!-- 行事曆主體：桌面表格 + 行動卡片 -->
+      <div id="calendar-table-container" class="rounded-xl overflow-hidden border border-slate-800/80 bg-slate-950/60">
+        <!-- 桌面表格 -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-900/90 text-slate-400 border-b border-slate-800 text-[11px] font-medium font-mono">
+                <th class="py-2.5 px-3 whitespace-nowrap">時間 (UTC+8)</th>
+                <th class="py-2.5 px-2.5 whitespace-nowrap">地區</th>
+                <th class="py-2.5 px-3">經濟指標 / 重大事件</th>
+                <th class="py-2.5 px-2.5 text-center whitespace-nowrap">重要性</th>
+                <th class="py-2.5 px-3 text-right whitespace-nowrap">前值</th>
+                <th class="py-2.5 px-3 text-right whitespace-nowrap">市場預期</th>
+                <th class="py-2.5 px-3 text-right whitespace-nowrap">實際值 / 狀態</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-table-body" class="divide-y divide-slate-800/50 font-mono">
+              <tr>
+                <td colspan="7" class="text-center py-8 text-slate-500">
+                  <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+                  <div>正在連線全球總經日曆排程...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 行動版卡片列表 -->
+        <div class="md:hidden divide-y divide-slate-800/60 p-1" id="calendar-mobile-list">
+          <div class="text-center py-6 text-slate-500 text-xs">
+            <div class="inline-block animate-spin text-lg mb-1.5">⚙️</div>
+            <div>正在連線全球總經日曆排程...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 板塊 4：📰 美歐央行與總經即時新聞 (Macro News Stream)         -->
+    <!-- ============================================================ -->
+    <section id="section-macro-news" class="glass-card p-4 sm:p-6 rounded-2xl border-slate-800 shadow-xl">
+      <!-- 頂部標題、總數與刷新按鈕 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3.5 border-b border-slate-800/80">
+        <div class="flex items-center gap-2.5">
+          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <span class="text-amber-400">📰</span> 4. 美歐央行與總經即時新聞 (Macro News Feed)
+          </h2>
+          <span class="text-[11px] text-slate-400 font-normal hidden sm:inline">（聚焦 Fed 利率決策、CPI 通膨、非農就業與債券殖利率 ｜ 100% 真實原文外鏈）</span>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-[11px] text-slate-400 font-mono bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
+            收錄：<span id="news-total-count" class="text-amber-300 font-bold">--</span> 則核心情報
+          </span>
+          <button id="btn-refresh-news" onclick="loadMacroNews(currentNewsCategory, true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 text-[11px] active:scale-95">
+            <span id="refresh-news-icon">🔄</span>
+            <span id="refresh-news-text">重新整理</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 分類標籤篩選列 -->
+      <div class="flex items-center gap-1.5 mb-3.5 text-xs overflow-x-auto pb-1" id="news-category-filter">
+        <button onclick="filterNewsCategory('all')" id="btn-news-all" class="px-3 py-1 rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold transition whitespace-nowrap shadow-sm">全部情報</button>
+        <button onclick="filterNewsCategory('fed')" id="btn-news-fed" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🏛️ Fed 聯準會</button>
+        <button onclick="filterNewsCategory('cpi')" id="btn-news-cpi" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📊 CPI/PCE 通膨</button>
+        <button onclick="filterNewsCategory('employment')" id="btn-news-employment" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">💼 非農就業</button>
+        <button onclick="filterNewsCategory('yield')" id="btn-news-yield" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">📈 美債殖利率</button>
+        <button onclick="filterNewsCategory('ecb')" id="btn-news-ecb" class="px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap">🇪🇺 歐洲央行</button>
+      </div>
+
+      <!-- 新聞清單列表 -->
+      <div id="macro-news-list" class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+        <div class="text-center py-8 text-slate-500 text-xs font-mono">
+          <div class="inline-block animate-spin text-xl mb-2">⚙️</div>
+          <div>正在檢索美歐央行與總經最新情報...</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 極簡頁尾 -->
+  <footer class="mt-10 border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="text-base">🏛️</span>
+        <span class="font-bold text-slate-400">宏觀全球智庫 · 林勝穩專屬總經看板</span>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500">
+        官方數據來源：FRED ｜ BLS ｜ BEA ｜ TWSE ｜ ICE ｜ SGX ｜ COMEX ｜ NYMEX
+      </div>
+      <div class="flex items-center gap-2 text-[11px]">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>系統狀態：正常連線中</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- 總經數據近 6 期趨勢詳情彈出視窗 (Modal Dialog)                -->
+  <!-- ============================================================ -->
+  <div id="vault-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-md hidden transition-opacity duration-200" onclick="handleVaultModalBackdrop(event)">
+    <div class="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-4 border-b border-slate-800/80 flex items-start justify-between bg-slate-950/50">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="vmodal-category" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30"></span>
+            <span id="vmodal-id" class="text-xs font-mono text-slate-400"></span>
+          </div>
+          <h3 id="vmodal-name" class="text-lg sm:text-xl font-bold text-white mt-1"></h3>
+          <div class="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
+            <span>官方來源：<strong id="vmodal-source" class="text-slate-300 font-normal"></strong></span>
+          </div>
+        </div>
+        <button onclick="closeVaultDetailModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-5 overflow-y-auto space-y-5 divide-y divide-slate-800/60">
+        
+        <!-- 頂部核心數值卡片 (KPI Bar) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-0">
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">最新官方數值</div>
+            <div class="text-xl sm:text-2xl font-bold text-amber-300 font-mono mt-0.5 flex items-baseline gap-1">
+              <span id="vmodal-latest-val"></span>
+              <span id="vmodal-unit" class="text-xs text-slate-400 font-normal"></span>
+            </div>
+            <div id="vmodal-latest-period" class="text-[10px] text-slate-500 font-mono mt-0.5"></div>
           </div>
           
-          <div class="bg-[#05080e] p-3.5 rounded-[2px] border border-[#182236]">
-            <div class="text-xs text-slate-400">MoM / QoQ 較前期變動</div>
-            <div id="vmodal-mom-change" class="text-xl sm:text-2xl font-bold font-mono mt-2"></div>
-            <div class="text-xs text-slate-500 mt-1">相較前一官方發布期</div>
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">近 1 期變動 (MoM/QoQ)</div>
+            <div id="vmodal-mom-change" class="text-lg sm:text-xl font-bold font-mono mt-1"></div>
+            <div class="text-[10px] text-slate-500">相較前一發布期別</div>
           </div>
 
-          <div class="bg-[#05080e] p-3.5 rounded-[2px] border border-[#182236]">
-            <div class="text-xs text-slate-400">NET CHANGE 6期累計淨變動</div>
-            <div id="vmodal-total-change" class="text-xl sm:text-2xl font-bold font-mono mt-2"></div>
-            <div class="text-xs text-slate-500 mt-1">6期時序總變動量</div>
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">近 6 期累計淨變動</div>
+            <div id="vmodal-total-change" class="text-lg sm:text-xl font-bold font-mono mt-1"></div>
+            <div class="text-[10px] text-slate-500">6 期總擴張/收縮幅度</div>
           </div>
 
-          <div class="bg-[#05080e] p-3.5 rounded-[2px] border border-[#182236]">
-            <div class="text-xs text-slate-400">OFFICIAL RELEASE 發布日</div>
-            <div id="vmodal-release-date" class="text-xl sm:text-2xl font-bold text-slate-200 font-mono mt-2"></div>
-            <div class="text-xs text-slate-500 mt-1">官方正式公布日期</div>
+          <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+            <div class="text-[11px] text-slate-400">官方最新發布日</div>
+            <div id="vmodal-release-date" class="text-base sm:text-lg font-bold text-emerald-400 font-mono mt-1"></div>
+            <div class="text-[10px] text-slate-500">權威機構正式公布</div>
           </div>
         </div>
 
-        <!-- 寬幅高解析走勢圖 -->
+        <!-- 高解析度 SVG 趨勢走勢圖 -->
         <div class="pt-4">
           <div class="flex items-center justify-between mb-2">
-            <div class="text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-2">
-              <span class="text-amber-400">[CHART TRAJECTORY]</span>
-              <span>近 6 期歷史走勢曲線</span>
+            <div class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <span>📈</span> <span>近 6 期歷史走勢軌跡</span>
             </div>
-            <div id="vmodal-chart-range" class="text-xs font-mono text-slate-400"></div>
+            <div id="vmodal-chart-range" class="text-[11px] font-mono text-slate-400"></div>
           </div>
-          <div class="bg-[#05080e] p-4 rounded-[2px] border border-[#182236]">
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80">
             <div id="vmodal-chart-svg-container" class="w-full flex justify-center"></div>
-          </div>
-        </div>
-
-        <!-- 3 大演講因果剖析重點 (SPEAKER TALKING POINTS) -->
-        <div class="pt-4">
-          <div class="text-xs sm:text-sm font-bold text-amber-400 mb-2 flex items-center gap-2">
-            <span>[SPEAKER TALKING POINTS]</span>
-            <span class="text-white">向同學分享之 3 大核心因果剖析重點</span>
-          </div>
-          <div class="bg-[#05080e] p-4 rounded-[2px] border border-[#243350] space-y-2.5 text-xs sm:text-sm leading-relaxed" id="vmodal-talking-points">
-            <!-- 動態生成 3 大剖析重點 -->
           </div>
         </div>
 
         <!-- 近 6 期明細對照表 -->
         <div class="pt-4">
-          <div class="flex items-center justify-between mb-2">
-            <div class="text-xs sm:text-sm font-bold text-slate-200">
-              [TABULAR DATA] 近 6 期逐期數值清單
-            </div>
-            <button onclick="copyVaultDetailData()" class="terminal-chip text-xs py-0.5">
-              [COPY TSV]
-            </button>
+          <div class="text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1.5">
+            <span>📋</span> <span>近 6 期數據逐期明細清單</span>
           </div>
-          <div class="overflow-x-auto rounded-[2px] border border-[#182236] bg-[#05080e]">
-            <table class="w-full text-left text-xs sm:text-sm border-collapse font-mono">
+          <div class="overflow-x-auto rounded-xl border border-slate-800/80 bg-slate-950/60">
+            <table class="w-full text-left text-xs border-collapse font-mono">
               <thead>
-                <tr class="bg-[#0e1524] text-slate-400 border-b border-[#182236] text-xs">
-                  <th class="py-2.5 px-3.5">PERIOD 期別</th>
-                  <th class="py-2.5 px-3.5 text-right">VALUE 官方數值</th>
-                  <th class="py-2.5 px-3.5 text-right">CHANGE 較前期變動</th>
-                  <th class="py-2.5 px-3.5 text-center">RELEASE 發布日期</th>
-                  <th class="py-2.5 px-3.5 text-center">STATUS 狀態</th>
+                <tr class="bg-slate-900/90 text-slate-400 border-b border-slate-800 text-[11px]">
+                  <th class="py-2 px-3">期別</th>
+                  <th class="py-2 px-3 text-right">官方發布數值</th>
+                  <th class="py-2 px-3 text-right">較前期變動</th>
+                  <th class="py-2 px-3 text-center">發布日期</th>
+                  <th class="py-2 px-3 text-center">趨勢狀態</th>
                 </tr>
               </thead>
-              <tbody id="vmodal-history-tbody" class="divide-y divide-[#141d2e]">
+              <tbody id="vmodal-history-tbody" class="divide-y divide-slate-800/50">
               </tbody>
             </table>
           </div>
         </div>
 
+        <!-- 指標經濟意涵與產業決策解讀 -->
+        <div class="pt-4">
+          <div class="text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <span>💡</span> <span>經濟分析意涵與決策解讀</span>
+          </div>
+          <div class="p-3 rounded-xl bg-sky-950/30 border border-sky-800/30 text-xs text-slate-300 leading-relaxed" id="vmodal-description">
+          </div>
+        </div>
+
       </div>
 
-      <!-- Modal Footer -->
-      <div class="px-5 py-3 border-t border-[#182236] bg-[#0e1524] flex items-center justify-between text-xs sm:text-sm">
-        <span class="text-slate-400 text-xs">HOTKEYS: [← PREV] ｜ [→ NEXT] ｜ [ESC CLOSE] ｜ [F FULLSCREEN]</span>
-        <button onclick="closeVaultDetailModal()" class="px-4 py-1.5 bg-[#141c2c] hover:bg-[#1a2538] text-white border border-[#182236] rounded-[2px] transition font-bold">
-          [CLOSE 關閉]
-        </button>
+      <!-- Modal Footer (Navigation & Actions) -->
+      <div class="px-5 py-3 border-t border-slate-800/80 bg-slate-950/60 flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-1.5">
+          <button onclick="navigateVaultDetail(-1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition flex items-center gap-1 active:scale-95">
+            <span>⬅️</span> 上一指標
+          </button>
+          <button onclick="navigateVaultDetail(1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition flex items-center gap-1 active:scale-95">
+            下一指標 <span>➡️</span>
+          </button>
+          <span id="vmodal-nav-index" class="text-xs text-slate-500 font-mono ml-1"></span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="copyVaultDetailData()" class="px-3 py-1.5 rounded-lg bg-sky-600/20 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs font-medium transition flex items-center gap-1 active:scale-95">
+            <span>📋</span> 複製 6 期數據
+          </button>
+          <button onclick="closeVaultDetailModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition active:scale-95">
+            關閉
+          </button>
+        </div>
       </div>
 
     </div>
   </div>
 
   <!-- ============================================================ -->
-  <!-- 核心邏輯與演講互動腳本 (CLIENT RUNTIME)                       -->
+  <!-- 核心輕量化 JavaScript (專精 4 大板塊數據請求與渲染)           -->
   <!-- ============================================================ -->
   <script>
-    const DOMAIN_URL = window.location.origin;
+    const DOMAIN_URL = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost'))
+      ? window.location.origin
+      : (window.location.origin || "https://eco-line-assistant.onrender.com");
+
+    // 全域狀態
     let allVaultMetrics = [];
-    let currentFocusChartMetricId = 'US_GDP';
-    let currentModalMetricId = 'US_GDP';
-    let currentWarRoomView = 'us-warroom';
-    let cachedCalendarEvents = [];
+    let currentVaultCat = 'all';
     let currentCalendarPeriod = 'week';
     let currentCalendarRegion = 'all';
     let calendarOnlyStar3 = false;
-    let cachedMacroNews = [];
+    let cachedCalendarEvents = [];
     let currentNewsCategory = 'all';
+    let cachedMacroNews = [];
     let lastGlobalRefreshTime = Date.now();
 
-    // 1. 全螢幕切換功能 (大螢幕投影必備)
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-        const btn = document.getElementById('fs-icon');
-        if (btn) btn.innerText = "[EXIT FULLSCREEN (F)]";
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen().catch(() => {});
-          const btn = document.getElementById('fs-icon');
-          if (btn) btn.innerText = "[FULLSCREEN (F)]";
-        }
+    // 徹底清除既有 Service Worker 與快取，確保所有數據直連最新網路
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const r of registrations) r.unregister();
+      }).catch(() => {});
+      if ('caches' in window) {
+        caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
       }
     }
 
-    // 鍵盤監聽 (F 全螢幕, ← / → 簡報筆切換, ESC 關閉)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'f' || e.key === 'F') {
-        // 若焦點在 input 則不觸發
-        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-        toggleFullscreen();
-      }
-      const modal = document.getElementById('vault-detail-modal');
-      if (modal && !modal.classList.contains('hidden')) {
-        if (e.key === 'Escape') closeVaultDetailModal();
-        if (e.key === 'ArrowLeft') navigateVaultDetail(-1);
-        if (e.key === 'ArrowRight') navigateVaultDetail(1);
-      }
-    });
-
-    // 2. 主視野切換器 (US War Room / Global Contrast / Calendar / News)
-    function switchWarRoomView(viewId) {
-      currentWarRoomView = viewId;
-      const views = ['us-warroom', 'global-contrast', 'calendar', 'news'];
-      views.forEach(v => {
-        const el = document.getElementById('view-' + v);
-        if (el) {
-          if (v === viewId) el.classList.remove('hidden');
-          else el.classList.add('hidden');
-        }
-
-        // 桌面按鈕
-        const btn = document.getElementById('nav-btn-' + (v === 'us-warroom' ? 'us' : (v === 'global-contrast' ? 'global' : v)));
-        if (btn) {
-          if (v === viewId) {
-            btn.className = "px-3.5 py-1.5 font-mono text-xs sm:text-sm rounded-[2px] transition flex items-center gap-1.5 text-amber-400 bg-amber-500/15 border border-amber-500/40 font-bold";
-          } else {
-            btn.className = "px-3.5 py-1.5 font-mono text-xs sm:text-sm rounded-[2px] transition flex items-center gap-1.5 text-slate-400 hover:text-white border border-transparent";
-          }
-        }
-
-        // 行動端按鈕
-        const btnM = document.getElementById('nav-btn-' + (v === 'us-warroom' ? 'us' : (v === 'global-contrast' ? 'global' : v)) + '-m');
-        if (btnM) {
-          if (v === viewId) {
-            btnM.className = "px-3 py-1 text-amber-400 bg-amber-500/15 border border-amber-500/40 font-bold whitespace-nowrap rounded-[2px]";
-          } else {
-            btnM.className = "px-3 py-1 text-slate-400 border border-transparent whitespace-nowrap rounded-[2px]";
-          }
-        }
-      });
-    }
-
-    // 3. 即時時鐘
+    // 1. 即時時鐘與撮合狀態
     function updateClock() {
       const now = new Date();
       const utc8 = new Date(now.getTime() + 8 * 3600 * 1000);
@@ -1133,14 +771,33 @@
       const timeStr = `${pad(utc8.getHours())}:${pad(utc8.getMinutes())}:${pad(utc8.getSeconds())} (UTC+8)`;
       const clockEl = document.getElementById('nav-live-clock');
       if (clockEl) clockEl.innerText = timeStr;
+
+      const hour = utc8.getHours();
+      const min = utc8.getMinutes();
+      const day = utc8.getDay();
+      let statusStr = '市場連線正常';
+      if (day >= 1 && day <= 5) {
+        const timeVal = hour * 100 + min;
+        if (timeVal >= 900 && timeVal <= 1330) {
+          statusStr = '🇹🇼 台股盤中撮合中';
+        } else if (timeVal >= 2130 || timeVal < 400) {
+          statusStr = '🇺🇸 美股正常開盤撮合';
+        } else {
+          statusStr = '盤後數據結算中';
+        }
+      } else {
+        statusStr = '週末休市';
+      }
+      const stEl = document.getElementById('market-status-text');
+      if (stEl) stEl.innerText = statusStr;
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // 4. 全盤刷新
+    // 2. 全盤刷新（穿透後端所有快取，強制自官方與即時市場重新同步）
     async function refreshAllPanels() {
       const icon = document.getElementById('refresh-all-icon');
-      if (icon) icon.innerText = "[SYNCING...]";
+      if (icon) icon.className = "inline-block animate-spin";
       try {
         await Promise.all([
           loadMacroVaultData(true),
@@ -1152,211 +809,140 @@
       } catch (e) {
         console.error('Refresh all error:', e);
       } finally {
-        if (icon) icon.innerText = "[SYNC]";
+        if (icon) icon.className = "";
       }
     }
 
     // ============================================================
-    // 中央大走勢畫布 (WIDE TREND CANVAS) 繪製
+    // 板塊 1：⚡ 定時更新的經濟數據 (Macro Data Vault) 邏輯
     // ============================================================
-    const MACRO_NARRATIVES = {
-      'US_GDP': {
-        title: 'US REAL GDP 實質經濟成長率 (季增年率 3.4%)',
-        takeaway: '美國實質 GDP 維持 3.4% 穩健擴張，民間消費與企業固定投資具備強大剛性韌性，未見典型經濟衰退特徵。'
-      },
-      'US_PCE': {
-        title: 'CORE PCE 核心物價年率 (3.0% ｜ FOMC長期定價錨)',
-        takeaway: '聯準會最看重之核心 PCE 通膨年率平穩滑落至 3.0%，但服務業勞動力通膨仍具微幅黏性，支持階梯式降息。'
-      },
-      'US_SPREAD': {
-        title: '10Y-2Y 經典公債殖利率利差 (+44 bps ｜ 倒掛徹底修復)',
-        takeaway: '美債殖利率曲線結束歷史最長 26 個月倒掛，利差走陡至 +44 bps，反映債券市場定價降息循環與長端期限溢價。'
-      },
-      'US_ISM_SERVICES': {
-        title: 'ISM 服務業採購經理人指數 (56.0 點 ｜ 服務業超預期擴張)',
-        takeaway: '佔美國經濟產出 80% 之廣義非製造業穩固於 56.0 擴張高位，實體居民消費支出與金融商業服務動能依然充沛。'
-      },
-      'US_ISM_PMI': {
-        title: 'ISM 製造業採購經理人指數 (48.5 點 ｜ 50 榮枯線下方盤整)',
-        takeaway: '製造業 PMI 處於 48.5 輕度收縮，新訂單與庫存循環處於去化尾聲，呈現「服務業熱、製造業平」之典型結構分化。'
-      },
-      'US_FOMC': {
-        title: 'FED FUNDS 聯邦基金基準利率 (3.75% ｜ 預防性降息路徑)',
-        takeaway: '聯準會基準利率目標區間調整為 3.50%~3.75%（有效基準 3.75%），透過預防性調降兼顧充分就業與物價平穩。'
-      },
-      'US_CPI': {
-        title: 'US CPI 消費者物價年增率 (3.7% ｜ 居民日常生活通膨)',
-        takeaway: '受能源與住房租金滯後效應影響，整體 CPI 徘徊於 3.7%，核心通膨則受控於 2.6%，終端物價整體呈現溫和緩解。'
-      },
-      'US_UR': {
-        title: 'US UNEMPLOYMENT RATE 官方失業率 (4.2% ｜ 充分就業平衡)',
-        takeaway: '失業率平穩於 4.2%，非農就業增幅收斂至 +2.9 萬人，勞動力市場由過去的過度緊俏回歸供需常態平衡。'
-      }
-    };
+    function copyVaultFormula() {
+      const txt = '=IMPORTDATA("' + DOMAIN_URL + '/api/macro-vault?format=csv")';
+      navigator.clipboard.writeText(txt).then(() => {
+        alert('✅ 【總經數據自動歸檔庫公式】已複製！\n請至 Google 試算表 A1 儲存格貼上：\n\n' + txt);
+      }).catch(() => {
+        prompt('請手動複製以下 Google 試算表公式：', txt);
+      });
+    }
 
-    function setFocusChartMetric(metricId) {
-      currentFocusChartMetricId = metricId;
-      const keys = ['US_GDP', 'US_PCE', 'US_SPREAD', 'US_ISM_SERVICES', 'US_ISM_PMI', 'US_FOMC', 'US_CPI', 'US_UR'];
-      keys.forEach(k => {
-        const btn = document.getElementById('cbtn-' + k);
+    function filterVaultCategory(cat) {
+      currentVaultCat = cat;
+      const cats = ['all', 'growth', 'inflation', 'labor', 'monetary', 'trade', 'commodity', 'equity'];
+      cats.forEach(c => {
+        const btn = document.getElementById('vcat-' + c);
         if (btn) {
-          if (k === metricId) btn.className = "terminal-chip active font-bold text-amber-300";
-          else btn.className = "terminal-chip";
+          if (c === cat) {
+            btn.className = "px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition whitespace-nowrap shadow-sm";
+          } else {
+            btn.className = "px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap";
+          }
         }
       });
-
-      renderWideCanvasChart(metricId);
+      renderVaultTable();
     }
 
-    function renderWideCanvasChart(metricId) {
-      const container = document.getElementById('main-trend-chart-container');
-      const titleEl = document.getElementById('canvas-active-title');
-      const textEl = document.getElementById('canvas-takeaway-text');
-      if (!container) return;
+    function renderVaultTable() {
+      const tbody = document.getElementById('macro-vault-table-body');
+      if (!tbody) return;
 
-      const metric = allVaultMetrics.find(m => m.id === metricId);
-      const narrative = MACRO_NARRATIVES[metricId] || { title: metric?.name || metricId, takeaway: metric?.description || '' };
+      let list = allVaultMetrics;
+      if (currentVaultCat !== 'all') {
+        list = list.filter(m => m.category === currentVaultCat);
+      }
 
-      if (titleEl) titleEl.innerText = narrative.title;
-      if (textEl) textEl.innerText = narrative.takeaway;
-
-      const history = metric?.history || [];
-      if (!Array.isArray(history) || history.length < 2) {
-        container.innerHTML = '<div class="py-12 text-slate-500 font-mono text-sm">[CONNECTING // 正在載入時序走勢資料...]</div>';
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500">無符合類別之指標</td></tr>';
         return;
       }
 
-      const values = history.map(h => Number(h.value));
+      tbody.innerHTML = list.map(m => {
+        const hist = m.history || [];
+        const sparklineHtml = generateMiniSparklineSvg(hist.map(h => h.value));
+        return `
+          <tr onclick="openVaultDetailModal('${m.id}')" class="hover:bg-slate-800/60 cursor-pointer transition group select-none" title="點擊檢視【${m.name}】近 6 期趨勢細節與分析">
+            <td class="py-2.5 px-3">
+              <div class="text-white font-bold group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
+                <span>${m.name}</span>
+                <span class="text-[10px] text-sky-400 opacity-60 group-hover:opacity-100 transition-opacity">🔍</span>
+              </div>
+              <div class="text-[10px] text-slate-500 font-mono">${m.id}</div>
+            </td>
+            <td class="py-2.5 px-2.5">
+              <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-sky-300 border border-slate-700">${m.categoryZh || m.category}</span>
+            </td>
+            <td class="py-2.5 px-3 text-right text-amber-300 font-mono font-bold text-sm">
+              ${m.latestValue} <span class="text-[10px] text-slate-400 font-normal">${m.unit || ''}</span>
+            </td>
+            <td class="py-2.5 px-2.5 text-center text-slate-300 font-mono">${m.latestPeriod || '--'}</td>
+            <td class="py-2.5 px-2.5 text-center text-emerald-400 font-mono">${m.latestReleaseDate || '--'}</td>
+            <td class="py-2.5 px-3 text-slate-400 text-[11px]">${m.source}</td>
+            <td class="py-2.5 px-3 text-right font-mono">
+              <div class="inline-flex items-center gap-1.5 bg-slate-900/80 group-hover:bg-sky-950/70 px-2 py-1 rounded-lg border border-slate-800 group-hover:border-sky-500/50 transition shadow-sm">
+                ${sparklineHtml}
+                <span class="text-[10px] text-slate-400 group-hover:text-sky-300 transition-colors">↗</span>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function generateMiniSparklineSvg(values) {
+      if (!Array.isArray(values) || values.length < 2) {
+        return '<span class="text-slate-600 text-[10px]">--</span>';
+      }
       const min = Math.min(...values);
       const max = Math.max(...values);
       const range = (max - min) === 0 ? 1 : (max - min);
+      const width = 68;
+      const height = 18;
+      const step = width / (values.length - 1);
 
-      const w = 960;
-      const h = 210;
-      const padTop = 32;
-      const padBottom = 32;
-      const padLeft = 60;
-      const padRight = 60;
-      const plotW = w - padLeft - padRight;
-      const plotH = h - padTop - padBottom;
-      const step = plotW / (values.length - 1);
+      const points = values.map((v, i) => {
+        const x = Number((i * step).toFixed(1));
+        const y = Number((height - 2 - ((v - min) / range) * (height - 4)).toFixed(1));
+        return `${x},${y}`;
+      }).join(' ');
 
-      const coords = values.map((v, i) => {
-        const x = Number((padLeft + i * step).toFixed(1));
-        const y = Number((padTop + plotH - ((v - min) / range) * plotH).toFixed(1));
-        return { x, y, val: v, period: history[i].period };
-      });
+      const isUp = values[values.length - 1] >= values[0];
+      const strokeColor = isUp ? '#34d399' : '#f87171';
 
-      const linePoints = coords.map(c => `${c.x},${c.y}`).join(' ');
-
-      // 水平基準網格 (4 條)
-      const gridLevels = [0, 0.33, 0.66, 1];
-      const gridLinesHtml = gridLevels.map(lvl => {
-        const yPos = Number((padTop + plotH - lvl * plotH).toFixed(1));
-        const valAtLvl = Number((min + lvl * range).toFixed(2));
-        return `
-          <line x1="${padLeft}" y1="${yPos}" x2="${w - padRight}" y2="${yPos}" stroke="#182236" stroke-dasharray="4 4" stroke-width="1.2" />
-          <text x="${padLeft - 10}" y="${yPos + 4}" fill="#64748b" font-size="11" font-family="monospace" text-anchor="end">${valAtLvl}</text>
-        `;
-      }).join('');
-
-      // 數據節點
-      const dotsHtml = coords.map((c, i) => {
-        const isLast = i === coords.length - 1;
-        const radius = isLast ? 6 : 4.5;
-        const color = isLast ? '#fbbf24' : '#f59e0b';
-        return `
-          <circle cx="${c.x}" cy="${c.y}" r="${radius}" fill="${color}" stroke="#090e17" stroke-width="2.5" />
-          <text x="${c.x}" y="${c.y - 12}" fill="#ffffff" font-size="13" font-weight="bold" font-family="monospace" text-anchor="middle">${c.val}</text>
-          <text x="${c.x}" y="${h - 8}" fill="#94a3b8" font-size="11" font-family="monospace" text-anchor="middle">${c.period}</text>
-        `;
-      }).join('');
-
-      const svgHtml = `
-        <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto max-h-[250px]" style="overflow: visible;">
-          ${gridLinesHtml}
-          <polyline fill="none" stroke="#f59e0b" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" points="${linePoints}" />
-          ${dotsHtml}
+      return `
+        <svg width="${width}" height="${height}" class="inline-block align-middle">
+          <polyline fill="none" stroke="${strokeColor}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" points="${points}" />
         </svg>
       `;
-
-      container.innerHTML = svgHtml;
     }
 
-    function openCurrentFocusModal() {
-      openVaultDetailModal(currentFocusChartMetricId);
-    }
-
-    // ============================================================
-    // 總經歸檔庫載入與演講詳情卡 (SPOTLIGHT MODAL)
-    // ============================================================
     async function loadMacroVaultData(force = false) {
+      const tbody = document.getElementById('macro-vault-table-body');
+      const countEl = document.getElementById('vault-summary-count');
+      const timeTag = document.getElementById('vault-last-updated');
+
       try {
         const forceParam = force ? '&refresh=1&force=1' : '';
         const url = '/api/macro-vault?t=' + Date.now() + forceParam;
         const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('Macro Vault API returned ' + res.status);
-        const data = await res.json();
-        
-        if (data && data.metrics) {
-          allVaultMetrics = Object.values(data.metrics);
-          renderWideCanvasChart(currentFocusChartMetricId);
+        const json = await res.json();
+        allVaultMetrics = json.metricsArray || Object.values(json.metrics || {});
+
+        if (countEl) countEl.innerText = `共 ${allVaultMetrics.length} 項指標已對齊`;
+        if (timeTag) {
+          const dt = json.lastUpdated ? new Date(json.lastUpdated) : new Date();
+          timeTag.innerText = '更新時間：' + dt.toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei' });
         }
-      } catch (err) {
-        console.error('Load macro vault data error:', err);
+
+        renderVaultTable();
+      } catch (e) {
+        console.warn('Load vault failed:', e);
+        if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-rose-400">載入總經歸檔庫失敗，請重試。</td></tr>';
       }
     }
 
-    // 針對演講產生 3 大核心因果剖析講點 (SPEAKER TALKING POINTS)
-    function generateSpeakerTalkingPoints(metric) {
-      const id = metric.id;
-      const val = metric.latestValue;
-      const unit = metric.unit || '';
-      
-      const pointTemplates = {
-        'US_GDP': [
-          '【傳導機制】：實質 GDP (QoQ SAAR) 衡量美國本土所有商品與服務之實質經濟產出，年化成長 3.4% 代表內部消費動能健康，徹底粉碎硬著陸疑慮。',
-          '【歷史週期】：相較於歷史衰退期之負成長，當前 3.4% 處於景氣週期「中後期擴張（Late Cycle Expansion）」，支撐標普企業獲利估值。',
-          '【決策意涵】：向同學說明：當經濟具備成長黏性時，Fed 降息屬於「預防性降息」而非「救市式降息」，對風險資產為中長期結構性利多。'
-        ],
-        'US_PCE': [
-          '【傳導機制】：核心 PCE 排除波動劇烈的食品與能源，為聯準會 FOMC 最重視之長期通膨定價錨點（長期通膨目標為 2.0%）。',
-          '【歷史週期】：從 2022 年最高點的 5.6% 持續收斂至當前 3.0%，顯示商品通膨已近歸零，剩下的最後 1% 黏性主要來自住房與服務業工資。',
-          '【決策意涵】：向同學說明：PCE 落在 3.0% 意味著降息空間打開，但降息斜率將採取每季 1 碼之緩步節奏，不急於過度寬鬆。'
-        ],
-        'US_FOMC': [
-          '【傳導機制】：聯邦基金利率為全球資金成本總源頭，直接錨定商業銀行隔夜拆借、長短天期公債殖利率與居民房貸利率。',
-          '【歷史週期】：從本輪升息最高峰的 5.25%~5.50% 調降至當前 3.50%~3.75%（有效基準 3.75%），正式進入降息中後段常態化。',
-          '【決策意涵】：向同學說明：基準利率下行將釋放企業融資壓力，但長端公債利率仍由財政赤字與期限溢價決定，造成利率曲線陡峭化。'
-        ],
-        'US_SPREAD': [
-          '【傳導機制】：10Y 減 2Y 利率差反映長短天期資金成本價差。負數為倒掛（市場預期衰退），正數為常態向上傾斜。',
-          '【歷史週期】：從長達兩年的深度倒掛（曾達 -108 bps）徹底回正至當前 +44 bps，歷史經驗顯示「倒掛結束後走陡」為貨幣政策轉向關鍵點。',
-          '【決策意涵】：向同學說明：利差走陡有助於商業銀行存貸利差改善，金融體系信貸供給意願提升，為實體重工業與基礎建設融資提供動能。'
-        ],
-        'US_UR': [
-          '【傳導機制】：失業率衡量勞動力供需缺口，若急速攀升觸發薩姆規則（Sahm Rule）則預警衰退；平穩溫和則反映勞動市場健康回歸。',
-          '【歷史週期】：失業率保持在 4.2% 的充分就業區間，非農新增聘僱維持在 +2.9 萬人，呈現「無大規模裁員、聘僱回歸理性」的最佳平衡。',
-          '【決策意涵】：向同學說明：只要失業率不失控突破 4.5%，美國居民實質購買力便能支撐 GDP，形成經濟軟著陸的堅實基石。'
-        ],
-        'US_ISM_SERVICES': [
-          '【傳導機制】：服務業貢獻美國 GDP 高達 80%，ISM 服務業採購經理人指數大於 50 為擴張，是判斷實體經濟最即時的廣義風向標。',
-          '【歷史週期】：56.0 點處於高檔強勁擴張區間，相較於製造業 48.5 點，突顯出後疫情時代美國「重服務、輕製造」之鮮明二元結構。',
-          '【決策意涵】：向同學說明：只要服務業維持在 55 以上，美國經濟便有強大防護墊，全球科技外銷與資本市場亦能享有強大需求底氣。'
-        ]
-      };
-
-      if (pointTemplates[id]) {
-        return pointTemplates[id];
-      }
-
-      // 通用高階因果講點生成
-      return [
-        `【指標定位】：${metric.name} 當前最新官方數值為 ${val} ${unit}（${metric.latestPeriod || '最新期'}），來源機構為 ${metric.source}。`,
-        `【歷史走勢】：近 6 期時序走勢顯示，該指標由前期持續傳導演變，反映所屬宏觀經濟構面之邊際冷暖變化。`,
-        `【決策解讀】：${metric.description || '對美國宏觀景氣循環、貨幣政策傳導與全球資本流向具有重要指標定價意涵。'}`
-      ];
-    }
+    // ============================================================
+    // 總經數據近 6 期趨勢詳情視窗 (Modal Dialog) 控制邏輯
+    // ============================================================
+    let currentModalMetricId = null;
 
     function handleVaultModalBackdrop(e) {
       if (e.target.id === 'vault-detail-modal') {
@@ -1365,102 +951,123 @@
     }
 
     function openVaultDetailModal(metricId) {
-      const metric = allVaultMetrics.find(m => m.id === metricId);
+      const metric = (allVaultMetrics || []).find(m => m.id === metricId);
       if (!metric) return;
+
       currentModalMetricId = metricId;
 
-      document.getElementById('vmodal-id').innerText = `[${metric.id}]`;
-      document.getElementById('vmodal-category').innerText = metric.categoryZh || metric.category;
-      document.getElementById('vmodal-name').innerText = metric.name;
-      document.getElementById('vmodal-source').innerText = metric.source || '官方權威機構';
+      // 1. 設置標題、代碼與來源
+      const nameEl = document.getElementById('vmodal-name');
+      const idEl = document.getElementById('vmodal-id');
+      const catEl = document.getElementById('vmodal-category');
+      const srcEl = document.getElementById('vmodal-source');
+      const descEl = document.getElementById('vmodal-description');
 
+      if (nameEl) nameEl.innerText = metric.name;
+      if (idEl) idEl.innerText = metric.id;
+      if (catEl) catEl.innerText = metric.categoryZh || metric.category;
+      if (srcEl) srcEl.innerText = metric.source;
+      if (descEl) descEl.innerText = metric.description || '無詳細經濟意涵說明';
+
+      // 2. 核心數值與期別
       const unit = metric.unit || '';
-      document.getElementById('vmodal-latest-val').innerText = metric.latestValue;
-      document.getElementById('vmodal-unit').innerText = unit;
-      document.getElementById('vmodal-latest-period').innerText = `PERIOD: ${metric.latestPeriod || '--'}`;
-      document.getElementById('vmodal-release-date').innerText = metric.latestReleaseDate || '--';
+      const valEl = document.getElementById('vmodal-latest-val');
+      const unitEl = document.getElementById('vmodal-unit');
+      const periodEl = document.getElementById('vmodal-latest-period');
+      const relEl = document.getElementById('vmodal-release-date');
 
-      const history = metric.history || [];
-      const len = history.length;
-      
-      let momChangeText = '--';
-      let momColor = 'text-slate-400';
-      if (len >= 2) {
-        const curr = Number(history[len - 1].value);
-        const prev = Number(history[len - 2].value);
-        const diff = Number((curr - prev).toFixed(2));
-        const sign = diff > 0 ? '+' : '';
-        momChangeText = `${sign}${diff} ${unit}`;
-        momColor = diff > 0 ? 'text-amber-400' : (diff < 0 ? 'text-sky-400' : 'text-slate-400');
-      }
+      if (valEl) valEl.innerText = metric.latestValue;
+      if (unitEl) unitEl.innerText = unit;
+      if (periodEl) periodEl.innerText = '所屬期別：' + (metric.latestPeriod || '--');
+      if (relEl) relEl.innerText = metric.latestReleaseDate || '--';
+
+      // 3. 計算增減差 (MoM/QoQ 與 6期累計淨變動)
+      const hist = metric.history || [];
+      const len = hist.length;
+
       const momEl = document.getElementById('vmodal-mom-change');
-      momEl.innerText = momChangeText;
-      momEl.className = `text-xl sm:text-2xl font-bold font-mono mt-2 ${momColor}`;
+      const totalEl = document.getElementById('vmodal-total-change');
 
-      let netChangeText = '--';
-      let netColor = 'text-slate-400';
-      if (len >= 2) {
-        const first = Number(history[0].value);
-        const last = Number(history[len - 1].value);
-        const netDiff = Number((last - first).toFixed(2));
-        const sign = netDiff > 0 ? '+' : '';
-        netChangeText = `${sign}${netDiff} ${unit}`;
-        netColor = netDiff > 0 ? 'text-amber-400' : (netDiff < 0 ? 'text-sky-400' : 'text-slate-400');
-      }
-      const netEl = document.getElementById('vmodal-total-change');
-      netEl.innerText = netChangeText;
-      netEl.className = `text-xl sm:text-2xl font-bold font-mono mt-2 ${netColor}`;
-
-      // 演講 3 大剖析重點
-      const points = generateSpeakerTalkingPoints(metric);
-      const pointsContainer = document.getElementById('vmodal-talking-points');
-      if (pointsContainer) {
-        pointsContainer.innerHTML = points.map(p => `
-          <div class="flex items-start gap-2">
-            <span class="text-amber-400 font-bold flex-shrink-0">▶</span>
-            <span class="text-slate-200">${p}</span>
-          </div>
-        `).join('');
+      if (momEl) {
+        if (len >= 2) {
+          const cur = Number(hist[len - 1].value);
+          const prev = Number(hist[len - 2].value);
+          const momDiff = Number((cur - prev).toFixed(3));
+          const momSign = momDiff > 0 ? '+' : '';
+          const momColor = momDiff > 0 ? 'text-red-400' : (momDiff < 0 ? 'text-emerald-400' : 'text-slate-400');
+          momEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 ' + momColor;
+          momEl.innerText = `${momSign}${momDiff} ${unit}`;
+        } else {
+          momEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 text-slate-400';
+          momEl.innerText = '--';
+        }
       }
 
-      renderVaultDetailChart(history, unit);
+      if (totalEl) {
+        if (len >= 2) {
+          const first = Number(hist[0].value);
+          const last = Number(hist[len - 1].value);
+          const totDiff = Number((last - first).toFixed(3));
+          const totSign = totDiff > 0 ? '+' : '';
+          const totColor = totDiff > 0 ? 'text-red-400' : (totDiff < 0 ? 'text-emerald-400' : 'text-slate-400');
+          totalEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 ' + totColor;
+          totalEl.innerText = `${totSign}${totDiff} ${unit}`;
+        } else {
+          totalEl.className = 'text-lg sm:text-xl font-bold font-mono mt-1 text-slate-400';
+          totalEl.innerText = '--';
+        }
+      }
 
-      // 明細對照表
+      // 4. 歷史期別區間
+      const rangeEl = document.getElementById('vmodal-chart-range');
+      if (rangeEl) {
+        if (len >= 2) {
+          rangeEl.innerText = `${hist[0].period} ~ ${hist[len - 1].period} (${len} 期)`;
+        } else {
+          rangeEl.innerText = '';
+        }
+      }
+
+      // 5. 繪製高解析度 SVG 折線走勢圖
+      renderVaultDetailChart(hist, unit);
+
+      // 6. 渲染近 6 期明細對照表
       const tbody = document.getElementById('vmodal-history-tbody');
       if (tbody) {
-        tbody.innerHTML = history.slice().reverse().map((h, revIdx) => {
-          const originalIdx = len - 1 - revIdx;
-          const isLatest = originalIdx === (len - 1);
-          let diffHtml = '<span class="text-slate-600">--</span>';
-          let trendIcon = '<span class="text-slate-500">=</span>';
-          if (originalIdx > 0) {
-            const prevVal = Number(history[originalIdx - 1].value);
+        tbody.innerHTML = hist.map((h, i) => {
+          let diffHtml = '<span class="text-slate-500">基準</span>';
+          let trendIcon = '<span class="text-slate-500">━</span>';
+          if (i > 0) {
+            const prevVal = Number(hist[i - 1].value);
             const curVal = Number(h.value);
-            const d = Number((curVal - prevVal).toFixed(2));
-            const sign = d > 0 ? '+' : '';
-            const cColor = d > 0 ? 'text-amber-400' : (d < 0 ? 'text-sky-400' : 'text-slate-500');
-            diffHtml = `<span class="${cColor}">${sign}${d}</span>`;
-            trendIcon = d > 0 ? '<span class="text-amber-400 font-bold">UP</span>' : (d < 0 ? '<span class="text-sky-400 font-bold">DOWN</span>' : '<span class="text-slate-500">FLAT</span>');
+            const diff = Number((curVal - prevVal).toFixed(3));
+            const sign = diff > 0 ? '+' : '';
+            const color = diff > 0 ? 'text-red-400' : (diff < 0 ? 'text-emerald-400' : 'text-slate-400');
+            diffHtml = `<span class="${color} font-bold">${sign}${diff}</span>`;
+            trendIcon = diff > 0 ? '<span class="text-red-400 font-bold">▲ 上升</span>' : (diff < 0 ? '<span class="text-emerald-400 font-bold">▼ 下降</span>' : '<span class="text-slate-400">━ 持平</span>');
           }
-
+          const isLatest = i === hist.length - 1;
+          const rowBg = isLatest ? 'bg-sky-950/40 border-l-2 border-sky-400' : '';
           return `
-            <tr class="hover:bg-[#121c2d] transition">
-              <td class="py-2.5 px-3.5 text-slate-300 font-mono">
-                ${h.period} ${isLatest ? '<span class="ml-1.5 px-1.5 py-0.2 text-[10px] bg-amber-500/15 text-amber-300 border border-amber-500/40 font-bold">LATEST 最新期</span>' : ''}
+            <tr class="hover:bg-slate-900/70 transition ${rowBg}">
+              <td class="py-2.5 px-3 text-slate-300 font-medium">
+                ${h.period} ${isLatest ? '<span class="ml-1 px-1.5 py-0.2 rounded text-[9px] bg-sky-500/20 text-sky-300 border border-sky-500/40">最新</span>' : ''}
               </td>
-              <td class="py-2.5 px-3.5 text-right text-amber-300 font-bold font-mono text-base">
-                ${h.value} <span class="text-xs text-slate-500 font-normal">${unit}</span>
+              <td class="py-2.5 px-3 text-right text-amber-300 font-bold text-sm">
+                ${h.value} <span class="text-[10px] text-slate-500 font-normal">${unit}</span>
               </td>
-              <td class="py-2.5 px-3.5 text-right font-mono text-sm">${diffHtml}</td>
-              <td class="py-2.5 px-3.5 text-center text-slate-300 font-mono text-xs">${h.releaseDate || '--'}</td>
-              <td class="py-2.5 px-3.5 text-center text-xs font-mono">${trendIcon}</td>
+              <td class="py-2.5 px-3 text-right font-mono">${diffHtml}</td>
+              <td class="py-2.5 px-3 text-center text-emerald-400">${h.releaseDate || '--'}</td>
+              <td class="py-2.5 px-3 text-center text-xs font-sans">${trendIcon}</td>
             </tr>
           `;
         }).join('');
       }
 
+      // 7. 更新指標切換編號
       updateVaultDetailNavIndex();
 
+      // 8. 顯示彈出視窗並鎖定背景滾動
       const modal = document.getElementById('vault-detail-modal');
       if (modal) {
         modal.classList.remove('hidden');
@@ -1476,23 +1083,33 @@
       }
     }
 
+    function getActiveVaultMetricsList() {
+      if (currentVaultCat === 'all') return allVaultMetrics || [];
+      return (allVaultMetrics || []).filter(m => m.category === currentVaultCat);
+    }
+
     function updateVaultDetailNavIndex() {
-      const idx = allVaultMetrics.findIndex(m => m.id === currentModalMetricId);
+      const list = getActiveVaultMetricsList();
+      const idx = list.findIndex(m => m.id === currentModalMetricId);
       const el = document.getElementById('vmodal-nav-index');
       if (el) {
-        if (idx >= 0) el.innerText = `(${idx + 1} / ${allVaultMetrics.length})`;
-        else el.innerText = '';
+        if (idx >= 0) {
+          el.innerText = `(${idx + 1} / ${list.length})`;
+        } else {
+          el.innerText = '';
+        }
       }
     }
 
     function navigateVaultDetail(direction) {
-      if (!allVaultMetrics || allVaultMetrics.length === 0) return;
-      let idx = allVaultMetrics.findIndex(m => m.id === currentModalMetricId);
+      const list = getActiveVaultMetricsList();
+      if (!list || list.length === 0) return;
+      let idx = list.findIndex(m => m.id === currentModalMetricId);
       if (idx === -1) idx = 0;
       let nextIdx = idx + direction;
-      if (nextIdx < 0) nextIdx = allVaultMetrics.length - 1;
-      if (nextIdx >= allVaultMetrics.length) nextIdx = 0;
-      openVaultDetailModal(allVaultMetrics[nextIdx].id);
+      if (nextIdx < 0) nextIdx = list.length - 1;
+      if (nextIdx >= list.length) nextIdx = 0;
+      openVaultDetailModal(list[nextIdx].id);
     }
 
     function renderVaultDetailChart(history, unit) {
@@ -1500,7 +1117,7 @@
       if (!container) return;
 
       if (!Array.isArray(history) || history.length < 2) {
-        container.innerHTML = '<div class="py-8 text-slate-500 text-xs font-mono">[INSUFFICIENT HISTORICAL DATA]</div>';
+        container.innerHTML = '<div class="py-8 text-slate-500 text-xs">歷史數據不足，無法繪製走勢圖</div>';
         return;
       }
 
@@ -1509,12 +1126,12 @@
       const max = Math.max(...values);
       const range = (max - min) === 0 ? 1 : (max - min);
 
-      const w = 640;
-      const h = 180;
+      const w = 540;
+      const h = 160;
       const padTop = 28;
       const padBottom = 28;
-      const padLeft = 50;
-      const padRight = 50;
+      const padLeft = 46;
+      const padRight = 46;
       const plotW = w - padLeft - padRight;
       const plotH = h - padTop - padBottom;
       const step = plotW / (values.length - 1);
@@ -1522,65 +1139,126 @@
       const coords = values.map((v, i) => {
         const x = Number((padLeft + i * step).toFixed(1));
         const y = Number((padTop + plotH - ((v - min) / range) * plotH).toFixed(1));
-        return { x, y, val: v, period: history[i].period };
+        return { x, y, val: v, period: history[i].period, releaseDate: history[i].releaseDate };
       });
 
       const linePoints = coords.map(c => `${c.x},${c.y}`).join(' ');
+      const areaPoints = `${coords[0].x},${padTop + plotH} ` + linePoints + ` ${coords[coords.length - 1].x},${padTop + plotH}`;
 
+      const isUp = values[values.length - 1] >= values[0];
+      const strokeColor = isUp ? '#38bdf8' : '#f43f5e';
+      const stopColor = isUp ? '#0284c7' : '#e11d48';
+
+      // 基準網格線 (3 條水平線：最低、中位、最高)
       const gridLevels = [0, 0.5, 1];
       const gridLinesHtml = gridLevels.map(lvl => {
-        const yPos = Number((padTop + plotH - lvl * plotH).toFixed(1));
-        const valAtLvl = Number((min + lvl * range).toFixed(2));
+        const gy = Number((padTop + plotH * (1 - lvl)).toFixed(1));
+        const gVal = Number((min + range * lvl).toFixed(2));
         return `
-          <line x1="${padLeft}" y1="${yPos}" x2="${w - padRight}" y2="${yPos}" stroke="#182236" stroke-dasharray="3 3" stroke-width="1" />
-          <text x="${padLeft - 8}" y="${yPos + 4}" fill="#64748b" font-size="10" font-family="monospace" text-anchor="end">${valAtLvl}</text>
+          <line x1="${padLeft - 6}" y1="${gy}" x2="${w - padRight + 6}" y2="${gy}" stroke="#334155" stroke-dasharray="3,3" stroke-width="0.8" opacity="0.6" />
+          <text x="${padLeft - 10}" y="${gy + 3}" text-anchor="end" font-size="9" font-family="monospace" fill="#64748b">${gVal}</text>
         `;
       }).join('');
 
+      // 坐標點與數據標籤
       const dotsHtml = coords.map((c, i) => {
-        const isLast = i === coords.length - 1;
-        const radius = isLast ? 5.5 : 4;
-        const color = isLast ? '#fbbf24' : '#f59e0b';
+        const isMax = c.val === max && max !== min;
+        const isMin = c.val === min && max !== min;
+        const dotColor = isMax ? '#fbbf24' : (isMin ? '#a855f7' : strokeColor);
         return `
-          <circle cx="${c.x}" cy="${c.y}" r="${radius}" fill="${color}" stroke="#090e17" stroke-width="2" />
-          <text x="${c.x}" y="${c.y - 10}" fill="#ffffff" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">${c.val}</text>
-          <text x="${c.x}" y="${h - 6}" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">${c.period}</text>
+          <g class="cursor-pointer group/dot">
+            <circle cx="${c.x}" cy="${c.y}" r="4.5" fill="#0f172a" stroke="${dotColor}" stroke-width="2.2" class="transition-transform group-hover/dot:scale-125" />
+            <text x="${c.x}" y="${c.y - 8}" text-anchor="middle" font-size="10" font-family="monospace" font-weight="bold" fill="#f8fafc">${c.val}</text>
+            <text x="${c.x}" y="${h - 8}" text-anchor="middle" font-size="9.5" font-family="monospace" fill="#94a3b8">${c.period}</text>
+          </g>
         `;
       }).join('');
 
-      const svgHtml = `
-        <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto max-h-[220px]" style="overflow: visible;">
+      container.innerHTML = `
+        <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto select-none overflow-visible">
+          <defs>
+            <linearGradient id="vmodalGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="${stopColor}" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="${stopColor}" stop-opacity="0.0" />
+            </linearGradient>
+          </defs>
           ${gridLinesHtml}
-          <polyline fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" points="${linePoints}" />
+          <polygon fill="url(#vmodalGrad)" points="${areaPoints}" />
+          <polyline fill="none" stroke="${strokeColor}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" points="${linePoints}" />
           ${dotsHtml}
         </svg>
       `;
-
-      container.innerHTML = svgHtml;
-      const rangeEl = document.getElementById('vmodal-chart-range');
-      if (rangeEl) {
-        rangeEl.innerText = `${history[0].period} ~ ${history[history.length - 1].period} (${history.length} 期時序)`;
-      }
     }
 
     function copyVaultDetailData() {
-      const metric = allVaultMetrics.find(m => m.id === currentModalMetricId);
+      const metric = (allVaultMetrics || []).find(m => m.id === currentModalMetricId);
       if (!metric) return;
-      const lines = ['Period\tValue\tUnit\tReleaseDate'];
-      (metric.history || []).forEach(h => {
-        lines.push(`${h.period}\t${h.value}\t${metric.unit || ''}\t${h.releaseDate || ''}`);
+
+      const hist = metric.history || [];
+      const lines = [
+        `【${metric.name}】(${metric.id})`,
+        `官方來源：${metric.source}`,
+        `最新數值：${metric.latestValue} ${metric.unit || ''} (${metric.latestPeriod})`,
+        `官方發布日：${metric.latestReleaseDate || '--'}`,
+        '---------------------------------------',
+        '期別\t數值\t較前期變動\t發布日'
+      ];
+
+      hist.forEach((h, i) => {
+        let diffStr = '基準';
+        if (i > 0) {
+          const prevVal = Number(hist[i - 1].value);
+          const curVal = Number(h.value);
+          const diff = Number((curVal - prevVal).toFixed(3));
+          diffStr = (diff > 0 ? '+' : '') + diff;
+        }
+        lines.push(`${h.period}\t${h.value} ${metric.unit || ''}\t${diffStr}\t${h.releaseDate || '--'}`);
       });
-      const tsv = lines.join('\n');
-      navigator.clipboard.writeText(tsv).then(() => {
-        alert('[COPIED] 演講數據 TSV 清單已複製至剪貼簿！');
+
+      const copyText = lines.join('\n');
+      navigator.clipboard.writeText(copyText).then(() => {
+        alert(`✅ 【${metric.name}】近 6 期歷史明細數據已複製到剪貼簿！\n可直接貼入 Excel、Word 或個人筆記。`);
       }).catch(() => {
-        prompt('請手動複製以下 TSV 數據：', tsv);
+        prompt('請手動複製以下明細數據：', copyText);
       });
     }
 
+    // 鍵盤監聽（ESC 鍵關閉，左右方向鍵切換指標）
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('vault-detail-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        if (e.key === 'Escape') {
+          closeVaultDetailModal();
+        } else if (e.key === 'ArrowLeft') {
+          navigateVaultDetail(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigateVaultDetail(1);
+        }
+      }
+    });
+
     // ============================================================
-    // 即時報價加載 (TICKER FEED)
+    // 板塊 2：📈 常用到的全球熱門財經數據 (Global Financial Tickers)
     // ============================================================
+    function formatChange(chg, pct, dec = 2, isBps = false) {
+      if (pct === undefined || pct === null || isNaN(pct)) return { text: '--', color: 'text-slate-400' };
+      const numPct = Number(pct);
+      const suffix = isBps ? ' bps' : '%';
+      if (Math.abs(numPct) < 0.0001) {
+        return {
+          text: `0.00${suffix}`,
+          color: 'text-slate-400'
+        };
+      }
+      const isUp = numPct > 0;
+      const sign = isUp ? '+' : '';
+      const color = isUp ? 'text-red-400' : 'text-emerald-400';
+      return {
+        text: `${sign}${numPct.toFixed(dec)}${suffix}`,
+        color
+      };
+    }
+
     async function loadTickerData(force = false) {
       try {
         const forceParam = force ? '&force=1&refresh=1' : '';
@@ -1588,64 +1266,193 @@
         const json = await res.json();
         const d = json.data || {};
 
-        if (d.sp500) {
-          const r = document.getElementById('rib-sp500');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">^GSPC:</span> <span class="text-white font-bold">${d.sp500.toLocaleString()}</span>`;
+        // 時間戳記
+        const syncTime = document.getElementById('market-sync-time');
+        if (syncTime) syncTime.innerText = new Date().toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei' });
+
+        // 1. 科技與股指
+        const twiiEl = document.getElementById('tick-twii');
+        if (twiiEl && d.twii) twiiEl.innerText = d.twii.toLocaleString() + ' 點';
+        const twiiSub = document.getElementById('tick-twii-sub');
+        if (twiiSub && d.twii_pct !== undefined) {
+          const c = formatChange(d.twii_chg, d.twii_pct, 2);
+          twiiSub.innerText = c.text;
+          twiiSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.us10y) {
-          const r = document.getElementById('rib-us10y');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">US 10Y:</span> <span class="text-white font-bold">${d.us10y.toFixed(3)}%</span>`;
+
+        const tsmcEl = document.getElementById('tick-tsmc');
+        if (tsmcEl && d.tsmc) tsmcEl.innerText = d.tsmc.toLocaleString() + ' 元';
+        const tsmcSub = document.getElementById('tick-tsmc-sub');
+        if (tsmcSub && d.tsmc_pct !== undefined) {
+          const c = formatChange(d.tsmc_chg, d.tsmc_pct, 2);
+          tsmcSub.innerText = c.text;
+          tsmcSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.spread_10y2y !== undefined) {
+
+        const tsmAdrEl = document.getElementById('tick-tsm-adr');
+        if (tsmAdrEl && d.tsm_adr) tsmAdrEl.innerText = '$' + d.tsm_adr.toFixed(2);
+        const tsmAdrSub = document.getElementById('tick-tsm-adr-sub');
+        if (tsmAdrSub && d.tsm_adr_pct !== undefined) {
+          const c = formatChange(d.tsm_adr_chg, d.tsm_adr_pct, 2);
+          tsmAdrSub.innerText = c.text;
+          tsmAdrSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+        const tsmPremEl = document.getElementById('tick-tsm-adr-prem');
+        if (tsmPremEl && d.tsmc_adr_premium !== undefined) {
+          tsmPremEl.innerText = `ADR 溢價率：+${d.tsmc_adr_premium.toFixed(2)}%`;
+        }
+
+        const nvdaEl = document.getElementById('tick-nvda');
+        if (nvdaEl && d.nvda) nvdaEl.innerText = '$' + d.nvda.toFixed(2);
+        const nvdaSub = document.getElementById('tick-nvda-sub');
+        if (nvdaSub && d.nvda_pct !== undefined) {
+          const c = formatChange(d.nvda_chg, d.nvda_pct, 2);
+          nvdaSub.innerText = c.text;
+          nvdaSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
+        const soxEl = document.getElementById('tick-sox');
+        if (soxEl && d.sox) soxEl.innerText = d.sox.toLocaleString() + ' 點';
+        const soxSub = document.getElementById('tick-sox-sub');
+        if (soxSub && d.sox_pct !== undefined) {
+          const c = formatChange(d.sox_chg, d.sox_pct, 2);
+          soxSub.innerText = c.text;
+          soxSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
+        const spEl = document.getElementById('tick-sp500');
+        if (spEl && d.sp500) spEl.innerText = d.sp500.toLocaleString() + ' 點';
+        const spSub = document.getElementById('tick-sp500-sub');
+        if (spSub && d.sp500_pct !== undefined) {
+          const c = formatChange(d.sp500_chg, d.sp500_pct, 2);
+          spSub.innerText = c.text;
+          spSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
+        // 2. 公債利率與外匯
+        const u10El = document.getElementById('tick-us10y');
+        if (u10El && d.us10y) u10El.innerText = d.us10y.toFixed(3) + '%';
+        const u10Sub = document.getElementById('tick-us10y-sub');
+        if (u10Sub && d.us10y_pct !== undefined) {
+          const c = formatChange(d.us10y_chg, d.us10y_pct, 2);
+          u10Sub.innerText = c.text;
+          u10Sub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
+        const u2El = document.getElementById('tick-us2y');
+        if (u2El && d.us2y) u2El.innerText = d.us2y.toFixed(3) + '%';
+        const u2Sub = document.getElementById('tick-us2y-sub');
+        if (u2Sub && d.us2y_pct !== undefined) {
+          const c = formatChange(d.us2y_chg, d.us2y_pct, 2);
+          u2Sub.innerText = c.text;
+          u2Sub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
+        const sp102El = document.getElementById('tick-spread102');
+        if (sp102El && d.spread_10y2y !== undefined) {
+          const spSign = d.spread_10y2y >= 0 ? '+' : '';
+          sp102El.innerText = `${spSign}${d.spread_10y2y.toFixed(3)}%`;
+        }
+        const sp102Sub = document.getElementById('tick-spread102-sub');
+        if (sp102Sub && d.spread_10y2y !== undefined) {
           const bps = Number((d.spread_10y2y * 100).toFixed(1));
-          const r = document.getElementById('rib-spread');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">10Y-2Y:</span> <span class="text-amber-400 font-bold">+${bps} bps</span>`;
+          const bpsSign = bps >= 0 ? '+' : '';
+          sp102Sub.innerText = `${bpsSign}${bps} bps`;
         }
-        if (d.dxy) {
-          const r = document.getElementById('rib-dxy');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">DXY:</span> <span class="text-white font-bold">${d.dxy.toFixed(2)}</span>`;
+
+        const dxyEl = document.getElementById('tick-dxy');
+        if (dxyEl && d.dxy) dxyEl.innerText = d.dxy.toFixed(2);
+        const dxySub = document.getElementById('tick-dxy-sub');
+        if (dxySub && d.dxy_pct !== undefined) {
+          const c = formatChange(d.dxy_chg, d.dxy_pct, 2);
+          dxySub.innerText = c.text;
+          dxySub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.nvda) {
-          const r = document.getElementById('rib-nvda');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">NVDA:</span> <span class="text-white font-bold">$${d.nvda.toFixed(2)}</span>`;
+
+        const twdEl = document.getElementById('tick-usdtwd');
+        if (twdEl && d.usdtwd) twdEl.innerText = d.usdtwd.toFixed(3);
+        const twdSub = document.getElementById('tick-usdtwd-sub');
+        if (twdSub && d.usdtwd_pct !== undefined) {
+          const c = formatChange(d.usdtwd_chg, d.usdtwd_pct, 2);
+          twdSub.innerText = c.text;
+          twdSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.sox) {
-          const r = document.getElementById('rib-sox');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">^SOX:</span> <span class="text-white font-bold">${d.sox.toLocaleString()}</span>`;
+
+        const vixEl = document.getElementById('tick-vix');
+        if (vixEl && d.vix) vixEl.innerText = d.vix.toFixed(2);
+        const vixSub = document.getElementById('tick-vix-sub');
+        if (vixSub && d.vix_pct !== undefined) {
+          const c = formatChange(d.vix_chg, d.vix_pct, 2);
+          vixSub.innerText = c.text;
+          vixSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.vix) {
-          const r = document.getElementById('rib-vix');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">^VIX:</span> <span class="text-emerald-400 font-bold">${d.vix.toFixed(2)}</span>`;
+
+        // 3. 大宗原料與重工業
+        const ironEl = document.getElementById('tick-iron');
+        if (ironEl && d.iron_ore) ironEl.innerText = '$' + d.iron_ore.toFixed(2);
+        const ironSub = document.getElementById('tick-iron-sub');
+        if (ironSub && d.iron_ore_pct !== undefined) {
+          const c = formatChange(d.iron_ore_chg, d.iron_ore_pct, 2);
+          ironSub.innerText = c.text;
+          ironSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.twii) {
-          const r = document.getElementById('rib-twii');
-          const twEl = document.getElementById('tw-contrast-twii');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">^TWII:</span> <span class="text-white font-bold">${d.twii.toLocaleString()}</span>`;
-          if (twEl) twEl.innerText = d.twii.toLocaleString() + ' 點';
+        const ironStatus = document.getElementById('tick-iron-status');
+        if (ironStatus && d.iron_ore) {
+          ironStatus.innerText = Number(d.iron_ore) < 95 ? '⚠️ 跌破 95~100 成本線' : '高爐成本支撐線';
         }
-        if (d.tsmc) {
-          const r = document.getElementById('rib-tsmc');
-          const tsmEl = document.getElementById('tw-contrast-tsmc');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">2330.TW:</span> <span class="text-amber-300 font-bold">${d.tsmc.toLocaleString()}</span>`;
-          if (tsmEl) tsmEl.innerText = d.tsmc.toLocaleString() + ' 元';
+
+        const coalEl = document.getElementById('tick-coal');
+        if (coalEl && d.coal) coalEl.innerText = '$' + d.coal.toFixed(2);
+        const coalSub = document.getElementById('tick-coal-sub');
+        if (coalSub && d.coal_pct !== undefined) {
+          const c = formatChange(d.coal_chg, d.coal_pct, 2);
+          coalSub.innerText = c.text;
+          coalSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.tsm_adr) {
-          const r = document.getElementById('rib-tsm-adr');
-          const adrEl = document.getElementById('tw-contrast-tsm-adr');
-          if (r) r.innerHTML = `<span class="text-slate-400 font-bold">TSM ADR:</span> <span class="text-amber-300 font-bold">$${d.tsm_adr.toFixed(2)}</span>`;
-          if (adrEl) adrEl.innerText = '$' + d.tsm_adr.toFixed(2);
+
+        const oilEl = document.getElementById('tick-oil');
+        if (oilEl && d.oil) oilEl.innerText = '$' + d.oil.toFixed(2);
+        const oilSub = document.getElementById('tick-oil-sub');
+        if (oilSub && d.oil_pct !== undefined) {
+          const c = formatChange(d.oil_chg, d.oil_pct, 2);
+          oilSub.innerText = c.text;
+          oilSub.className = `text-[10px] font-mono ${c.color}`;
         }
-        if (d.tsmc_adr_premium !== undefined) {
-          const premEl = document.getElementById('tw-contrast-adr-prem');
-          if (premEl) premEl.innerText = `+${d.tsmc_adr_premium.toFixed(2)}%`;
+
+        const copperEl = document.getElementById('tick-copper');
+        if (copperEl && d.copper) copperEl.innerText = '$' + d.copper.toFixed(3);
+        const copperSub = document.getElementById('tick-copper-sub');
+        if (copperSub && d.copper_pct !== undefined) {
+          const c = formatChange(d.copper_chg, d.copper_pct, 2);
+          copperSub.innerText = c.text;
+          copperSub.className = `text-[10px] font-mono ${c.color}`;
         }
+
+        const goldEl = document.getElementById('tick-gold');
+        if (goldEl && d.gold) goldEl.innerText = '$' + d.gold.toLocaleString();
+        const goldSub = document.getElementById('tick-gold-sub');
+        if (goldSub && d.gold_pct !== undefined) {
+          const c = formatChange(d.gold_chg, d.gold_pct, 2);
+          goldSub.innerText = c.text;
+          goldSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
+        const btcEl = document.getElementById('tick-btc');
+        if (btcEl && d.btc) btcEl.innerText = '$' + d.btc.toLocaleString();
+        const btcSub = document.getElementById('tick-btc-sub');
+        if (btcSub && d.btc_pct !== undefined) {
+          const c = formatChange(d.btc_chg, d.btc_pct, 2);
+          btcSub.innerText = c.text;
+          btcSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
       } catch (e) {
-        console.warn('Ticker load error:', e);
+        console.warn('Load ticker failed:', e);
       }
     }
 
     // ============================================================
-    // 央行排程行事曆 (CALENDAR)
+    // 板塊 3：📅 全球總經每週大事行事曆 (Macro Calendar) 邏輯
     // ============================================================
     async function loadMacroCalendar(period = currentCalendarPeriod, sync = false) {
       currentCalendarPeriod = period;
@@ -1659,16 +1466,21 @@
           
           const rangeEl = document.getElementById('cal-period-range');
           if (rangeEl) {
-            if (data.range) rangeEl.innerText = `[${data.range}]`;
-            else if (data.periodRange && data.periodRange.start && data.periodRange.end) {
-              rangeEl.innerText = `[${data.periodRange.start} ~ ${data.periodRange.end}]`;
+            if (data.range) {
+              rangeEl.innerText = data.range;
+            } else if (data.periodRange && data.periodRange.start && data.periodRange.end) {
+              rangeEl.innerText = `${data.periodRange.start} ~ ${data.periodRange.end} (${data.periodRange.periodName || period})`;
             }
           }
 
           const badgeEl = document.getElementById('calendar-sync-badge');
           const meta = data.syncMeta || data.syncInfo;
           if (badgeEl && meta) {
-            badgeEl.innerText = `SYNCED: ${meta.lastOfficialSync || meta.lastSyncTime || 'OFFICIAL'}`;
+            badgeEl.innerHTML = `
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>校準：${meta.lastOfficialSync || meta.lastSyncTime || '官方同步'}</span>
+              <span class="text-slate-400">(${meta.authoritySources || meta.source || 'BLS/Fed/BEA'})</span>
+            `;
           }
 
           renderCalendarTable();
@@ -1684,16 +1496,18 @@
       const text = document.getElementById('sync-calendar-text');
       const badge = document.getElementById('calendar-sync-badge');
 
-      if (icon) icon.innerText = "[SYNCING...]";
+      if (icon) icon.className = "inline-block animate-spin";
       if (text) text.innerText = "校準中...";
-      if (badge) badge.innerText = "SYNCING WITH BLS/Fed/BEA...";
+      if (badge) {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-spin"></span><span>正在比照 BLS/Fed/BEA 權威校準...</span>`;
+      }
 
       try {
         const res = await fetch('/api/calendar-sync', { method: 'POST' });
         const result = await res.json();
         if (result && result.success) {
           if (text) text.innerText = "已校準";
-          setTimeout(() => { if (text) text.innerText = "即時校正排程"; }, 3000);
+          setTimeout(() => { if (text) text.innerText = "校正"; }, 3000);
           await loadMacroCalendar(currentCalendarPeriod);
         } else {
           if (text) text.innerText = "重試";
@@ -1702,28 +1516,28 @@
         console.error('Calendar sync error:', err);
         if (text) text.innerText = "失敗";
       } finally {
-        if (icon) icon.innerText = "[SYNC]";
+        if (icon) icon.className = "";
       }
     }
 
     function switchCalendarPeriod(period) {
       ['btn-cal-week', 'btn-cal-next_week', 'btn-cal-month'].forEach(id => {
         const btn = document.getElementById(id);
-        if (btn) btn.className = "terminal-chip";
+        if (btn) btn.className = "px-3 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition";
       });
       const activeBtn = document.getElementById(`btn-cal-${period}`);
-      if (activeBtn) activeBtn.className = "terminal-chip active font-bold text-amber-300";
+      if (activeBtn) activeBtn.className = "px-3 py-1 rounded-lg bg-sky-500 text-slate-950 font-bold transition shadow-sm";
       loadMacroCalendar(period);
     }
 
     function filterCalendarRegion(region) {
       currentCalendarRegion = region;
-      ['btn-reg-all', 'btn-reg-US', 'btn-reg-TW', 'btn-reg-CN', 'btn-reg-EU'].forEach(id => {
+      ['btn-reg-all', 'btn-reg-US', 'btn-reg-TW', 'btn-reg-CN', 'btn-reg-EU', 'btn-reg-JP'].forEach(id => {
         const btn = document.getElementById(id);
-        if (btn) btn.className = "terminal-chip";
+        if (btn) btn.className = "px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition";
       });
       const activeBtn = document.getElementById(`btn-reg-${region}`);
-      if (activeBtn) activeBtn.className = "terminal-chip active font-bold text-amber-300";
+      if (activeBtn) activeBtn.className = "px-2 py-0.5 rounded-lg bg-sky-500/30 text-sky-200 border border-sky-500/40 font-bold transition";
       renderCalendarTable();
     }
 
@@ -1731,8 +1545,11 @@
       calendarOnlyStar3 = !calendarOnlyStar3;
       const btn = document.getElementById('btn-cal-star3');
       if (btn) {
-        if (calendarOnlyStar3) btn.className = "terminal-chip active font-bold text-amber-300";
-        else btn.className = "terminal-chip";
+        if (calendarOnlyStar3) {
+          btn.className = "px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold transition flex items-center gap-1 text-[11px] shadow-sm";
+        } else {
+          btn.className = "px-2.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/40 text-slate-400 hover:text-amber-300 transition flex items-center gap-1 font-medium text-[11px]";
+        }
       }
       renderCalendarTable();
     }
@@ -1747,59 +1564,61 @@
       }
 
       const countEl = document.getElementById('cal-events-count');
-      if (countEl) countEl.innerText = `FILTERED EVENTS: ${events.length} 項重大排程`;
+      if (countEl) countEl.innerText = `篩選後共 ${events.length} 項重大數據`;
 
       const tbody = document.getElementById('calendar-table-body');
       const mobileList = document.getElementById('calendar-mobile-list');
 
       if (events.length === 0) {
-        if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500 font-mono">[NO SCHEDULED EVENTS IN SELECTED INTERVAL]</td></tr>`;
-        if (mobileList) mobileList.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs font-mono">[NO EVENTS]</div>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500">所選條件區間無排程數據，請切換其他週期或地區查看。</td></tr>`;
+        if (mobileList) mobileList.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">所選條件區間無排程數據。</div>`;
         return;
       }
 
-      const regionMap = { 'US': '[US] 美國', 'TW': '[TW] 台灣', 'CN': '[CN] 中國', 'EU': '[EU] 歐洲', 'JP': '[JP] 日本' };
-      const starMap = { 3: '<span class="text-amber-400 font-bold">*** [HIGH]</span>', 2: '<span class="text-slate-400 font-mono">** [MED]</span>', 1: '<span class="text-slate-600 font-mono">* [LOW]</span>' };
+      const flagMap = { 'US': '🇺🇸 美國', 'TW': '🇹🇼 台灣', 'CN': '🇨🇳 中國', 'EU': '🇪🇺 歐洲', 'JP': '🇯🇵 日本' };
+      const starMap = { 3: '<span class="text-amber-400">⭐⭐⭐</span>', 2: '<span class="text-slate-400">⭐⭐</span>', 1: '<span class="text-slate-600">⭐</span>' };
 
+      // 桌面表格
       if (tbody) {
         tbody.innerHTML = events.map(ev => {
           const dt = (ev.date || '') + (ev.time ? ` ${ev.time}` : '');
           const isReleased = ev.actual !== undefined && ev.actual !== null && ev.actual !== '--';
-          const actColor = isReleased ? 'text-amber-300 font-bold text-base' : 'text-slate-500';
+          const actColor = isReleased ? 'text-amber-300 font-bold' : 'text-slate-500';
           return `
-            <tr class="hover:bg-[#121c2d] transition border-b border-[#141d2e]">
-              <td class="py-3 px-3.5 text-slate-300 whitespace-nowrap font-mono">${dt}</td>
-              <td class="py-3 px-3 whitespace-nowrap font-mono font-bold">${regionMap[ev.country] || `[${ev.country}]`}</td>
-              <td class="py-3 px-3.5 text-white font-medium">
+            <tr class="hover:bg-slate-900/50 transition">
+              <td class="py-2.5 px-3 text-slate-300 whitespace-nowrap">${dt}</td>
+              <td class="py-2.5 px-2.5 whitespace-nowrap">${flagMap[ev.country] || ev.country}</td>
+              <td class="py-2.5 px-3 text-white font-medium">
                 <div>${ev.event}</div>
-                ${ev.period ? `<div class="text-xs text-slate-400 font-mono">${ev.period}</div>` : ''}
+                ${ev.period ? `<div class="text-[10px] text-slate-500">${ev.period}</div>` : ''}
               </td>
-              <td class="py-3 px-3 text-center whitespace-nowrap font-mono">${starMap[ev.importance] || '*'}</td>
-              <td class="py-3 px-3.5 text-right text-slate-400 whitespace-nowrap font-mono">${ev.previous || '--'}</td>
-              <td class="py-3 px-3.5 text-right text-slate-300 whitespace-nowrap font-mono">${ev.forecast || '--'}</td>
-              <td class="py-3 px-3.5 text-right whitespace-nowrap font-mono ${actColor}">
-                ${ev.actual || (isReleased ? ev.actual : '未公布')}
+              <td class="py-2.5 px-2.5 text-center whitespace-nowrap">${starMap[ev.importance] || '⭐'}</td>
+              <td class="py-2.5 px-3 text-right text-slate-400 whitespace-nowrap">${ev.previous || '--'}</td>
+              <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${ev.forecast || '--'}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap ${actColor}">
+                ${ev.actual || (isReleased ? ev.actual : '未發布')}
               </td>
             </tr>
           `;
         }).join('');
       }
 
+      // 行動版卡片
       if (mobileList) {
         mobileList.innerHTML = events.map(ev => {
           const dt = (ev.date || '') + (ev.time ? ` ${ev.time}` : '');
           const isReleased = ev.actual !== undefined && ev.actual !== null && ev.actual !== '--';
           return `
-            <div class="py-3 px-2 bg-[#090e17] rounded-[2px] border border-[#182236] my-1">
-              <div class="flex items-center justify-between text-xs mb-1">
-                <span class="text-amber-400 font-mono font-bold">${dt}</span>
-                <span class="font-mono text-slate-300">${regionMap[ev.country] || `[${ev.country}]`} ｜ ${starMap[ev.importance] || '*'}</span>
+            <div class="py-2.5 px-2">
+              <div class="flex items-center justify-between text-[11px] mb-1">
+                <span class="text-sky-300 font-mono">${dt}</span>
+                <span>${flagMap[ev.country] || ev.country} ｜ ${starMap[ev.importance] || '⭐'}</span>
               </div>
-              <div class="text-sm font-bold text-white mb-1">${ev.event}</div>
-              <div class="flex items-center justify-between text-xs text-slate-400 font-mono bg-[#0c121e] p-2 rounded-[2px]">
-                <span>PREV: ${ev.previous || '--'}</span>
-                <span>EST: ${ev.forecast || '--'}</span>
-                <span class="${isReleased ? 'text-amber-300 font-bold' : 'text-slate-500'}">ACT: ${ev.actual || '未公布'}</span>
+              <div class="text-xs font-bold text-white mb-1">${ev.event}</div>
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono bg-slate-900/60 p-1.5 rounded">
+                <span>前值: ${ev.previous || '--'}</span>
+                <span>預期: ${ev.forecast || '--'}</span>
+                <span class="${isReleased ? 'text-amber-300 font-bold' : 'text-slate-500'}">實際: ${ev.actual || '未發布'}</span>
               </div>
             </div>
           `;
@@ -1812,21 +1631,26 @@
       function getDaysHours(targetDateStr) {
         const target = new Date(targetDateStr);
         const diff = target.getTime() - now.getTime();
-        if (diff <= 0) return 'DUE / RELEASED';
+        if (diff <= 0) return '今日到期或已發布';
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        return `倒數 ${d}天 ${h}小時`;
+        return `倒數 ${d} 天 ${h} 小時`;
       }
 
+      // 尋找行事曆中下一筆 FOMC 與 CPI
       const fomcEv = cachedCalendarEvents.find(e => e.event && (e.event.includes('FOMC') || e.event.includes('利率決議')));
       const cpiEv = cachedCalendarEvents.find(e => e.event && (e.event.includes('CPI') || e.event.includes('消費者物價')));
 
       const fomcEl = document.getElementById('countdown-fomc');
-      if (fomcEl) fomcEl.innerText = fomcEv ? getDaysHours(fomcEv.date + 'T14:00:00Z') : '11/06 02:00';
-
+      if (fomcEl) {
+        fomcEl.innerText = fomcEv ? getDaysHours(fomcEv.date + 'T14:00:00Z') : '11/06 02:00';
+      }
       const cpiEl = document.getElementById('countdown-cpi');
-      if (cpiEl) cpiEl.innerText = cpiEv ? getDaysHours(cpiEv.date + 'T12:30:00Z') : '11/12 21:30';
+      if (cpiEl) {
+        cpiEl.innerText = cpiEv ? getDaysHours(cpiEv.date + 'T12:30:00Z') : '11/12 21:30';
+      }
 
+      // 計算台指期結算（每月第 3 個週三 13:30 結算）
       const taifexEl = document.getElementById('countdown-taifex');
       if (taifexEl) {
         const nextThirdWed = getNextThirdWednesday(now);
@@ -1842,20 +1666,26 @@
           if (d.getMonth() !== month) break;
           if (d.getDay() === 3) {
             count++;
-            if (count === 3) return d;
+            if (count === 3) {
+              return d;
+            }
           }
         }
         return new Date(year, month + 1, 15, 13, 30, 0, 0);
       }
+
       const thisMonthWed = findThirdWed(now.getFullYear(), now.getMonth());
-      if (thisMonthWed.getTime() > now.getTime()) return thisMonthWed.toISOString();
+      if (thisMonthWed.getTime() > now.getTime()) {
+        return thisMonthWed.toISOString();
+      }
       const nextMonth = now.getMonth() === 11 ? 0 : now.getMonth() + 1;
       const nextYear = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-      return findThirdWed(nextYear, nextMonth).toISOString();
+      const nextMonthWed = findThirdWed(nextYear, nextMonth);
+      return nextMonthWed.toISOString();
     }
 
     // ============================================================
-    // 央行電訊 (WIRE)
+    // 板塊 4：📰 美歐央行與總經即時新聞 (Macro News Stream)
     // ============================================================
     async function loadMacroNews(cat = currentNewsCategory, isManual = false) {
       currentNewsCategory = cat;
@@ -1866,7 +1696,7 @@
 
       if (isManual && refreshBtn) {
         refreshBtn.disabled = true;
-        if (refreshIcon) refreshIcon.innerText = "[SYNCING...]";
+        if (refreshIcon) refreshIcon.className = "inline-block animate-spin";
         if (refreshText) refreshText.innerText = "抓取中...";
       }
 
@@ -1883,10 +1713,12 @@
         }
       } catch (e) {
         console.warn('Load macro news failed:', e);
-        if (listEl) listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">[ERROR // 連線異常，請稍候重試]</div>';
+        if (listEl) {
+          listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">暫無最新新聞資料或連線異常，請稍後點擊重新整理。</div>';
+        }
       } finally {
         if (isManual && refreshBtn) {
-          if (refreshIcon) refreshIcon.innerText = "[SYNC]";
+          if (refreshIcon) refreshIcon.className = "";
           if (refreshText) refreshText.innerText = "已更新";
           setTimeout(() => {
             if (refreshBtn) refreshBtn.disabled = false;
@@ -1902,8 +1734,11 @@
       cats.forEach(c => {
         const btn = document.getElementById('btn-news-' + c);
         if (btn) {
-          if (c === cat) btn.className = "terminal-chip active font-bold text-amber-300";
-          else btn.className = "terminal-chip";
+          if (c === cat) {
+            btn.className = "px-3 py-1 rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold transition whitespace-nowrap shadow-sm";
+          } else {
+            btn.className = "px-3 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white border border-transparent transition whitespace-nowrap";
+          }
         }
       });
       loadMacroNews(cat);
@@ -1914,27 +1749,40 @@
       if (!listEl) return;
 
       if (!cachedMacroNews || cachedMacroNews.length === 0) {
-        listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">[NO NEWS IN THIS CATEGORY]</div>';
+        listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs font-mono">目前分類暫無相關新聞。</div>';
         return;
       }
 
+      const tagColorMap = {
+        'Fed': 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        'CPI': 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        'PCE': 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        '通膨': 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        '非農': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+        '就業': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+        '美債': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        '殖利率': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        '歐洲央行': 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
+      };
+
       listEl.innerHTML = cachedMacroNews.map(item => {
         const tagsHtml = (item.tags || []).map(t => {
-          return `<span class="text-[11px] px-2 py-0.5 rounded-[2px] border border-[#1e293b] bg-[#0c121e] text-slate-300 font-mono">#${t}</span>`;
+          const style = tagColorMap[t] || 'bg-slate-800 text-slate-300 border-slate-700';
+          return `<span class="text-[10px] px-1.5 py-0.5 rounded border ${style}">#${t}</span>`;
         }).join(' ');
 
         return `
-          <div class="p-3.5 rounded-[3px] bg-[#090e17] border border-[#182236] hover:border-amber-500/40 transition duration-150 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800/80 hover:border-amber-500/40 transition duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span class="text-xs font-mono text-amber-400 bg-[#0e1524] px-2 py-0.5 border border-[#182236] font-bold">${item.time || ''}</span>
-                <span class="text-xs font-mono text-slate-400 font-bold">[${item.source || 'WIRE'}]</span>
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <span class="text-[10px] font-mono text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">${item.time || ''}</span>
+                <span class="text-[10px] text-slate-500">${item.source || '總經情報'}</span>
                 <div class="flex items-center gap-1">${tagsHtml}</div>
               </div>
-              <a href="${item.link}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="text-sm sm:text-base font-semibold text-slate-200 hover:text-amber-300 transition line-clamp-2 block group">
+              <a href="${item.link}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="text-xs sm:text-sm font-semibold text-slate-200 hover:text-amber-300 transition line-clamp-2 block group">
                 <span>${item.title}</span>
-                <span class="text-xs font-normal text-amber-500 opacity-60 group-hover:opacity-100 transition ml-2 font-mono inline-flex items-center gap-0.5">
-                  <span>[SOURCE &gt;]</span>
+                <span class="text-[10px] font-normal text-sky-400 opacity-80 group-hover:opacity-100 transition ml-1.5 inline-flex items-center gap-0.5">
+                  <span>🔗</span><span>查看原文</span>
                 </span>
               </a>
             </div>
@@ -1944,12 +1792,14 @@
     }
 
     // ============================================================
-    // 定時自動輪詢與焦點喚醒
+    // 智慧實時更新引擎：自動定時輪詢與視窗焦點喚醒 (Auto-Refresh Engine)
     // ============================================================
+    // 1. 每 30 秒自動靜默輪詢最新行情報價（台股、美股期貨、大宗商品即時跳動）
     setInterval(() => {
       loadTickerData(false);
     }, 30 * 1000);
 
+    // 2. 每 3 分鐘自動輪詢總經歸檔庫、大事行事曆與即時新聞
     setInterval(() => {
       loadMacroVaultData(false);
       loadMacroCalendar(currentCalendarPeriod, false);
@@ -1957,6 +1807,8 @@
       lastGlobalRefreshTime = Date.now();
     }, 3 * 60 * 1000);
 
+    // 3. 視窗切換 / 手機解鎖 / LINE Webview 喚醒自動刷新：
+    // 當使用者切回分頁或重新點亮螢幕時，若超過 20 秒未更新，自動觸發即時校準！
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         const elapsed = Date.now() - lastGlobalRefreshTime;
@@ -1970,9 +1822,52 @@
       }
     });
 
-    // 初始化與啟動
+    window.addEventListener('focus', () => {
+      const elapsed = Date.now() - lastGlobalRefreshTime;
+      if (elapsed > 20 * 1000) {
+        loadTickerData(true);
+        lastGlobalRefreshTime = Date.now();
+      }
+    });
+
+    // 全螢幕 / 簡報投影模式 (支援 F 鍵與導航欄按鈕切換)
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn("Fullscreen request error:", err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const btn = document.getElementById('btn-fullscreen-toggle');
+      if (btn) {
+        if (document.fullscreenElement) {
+          btn.innerHTML = '<span>✕</span><span class="hidden sm:inline">退出全螢幕 (ESC/F)</span>';
+          btn.classList.add('bg-rose-500/20', 'text-rose-300', 'border-rose-500/40');
+          btn.classList.remove('bg-amber-500/20', 'text-amber-300', 'border-amber-500/40');
+        } else {
+          btn.innerHTML = '<span>⛶</span><span class="hidden sm:inline">全螢幕 (F)</span>';
+          btn.classList.add('bg-amber-500/20', 'text-amber-300', 'border-amber-500/40');
+          btn.classList.remove('bg-rose-500/20', 'text-rose-300', 'border-rose-500/40');
+        }
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    });
+
+    // 頁面初始化載入（雙重防護：無論 DOMContentLoaded 是否已觸發皆保證立即載入）
     function initAllPanels() {
-      switchWarRoomView('us-warroom');
       loadMacroVaultData();
       loadTickerData();
       loadMacroCalendar();
