@@ -434,15 +434,15 @@ const METRIC_DEFINITIONS = {
   },
   'COMMODITY_COAL': {
     id: 'COMMODITY_COAL',
-    name: '國際動力煤現貨 (Newcastle Coal)',
+    name: '國際動力煤現貨 (Newcastle 6,000 kcal)',
     category: 'commodity',
     categoryZh: '大宗重工',
     unit: '美元/噸',
-    source: 'Newcastle Benchmark',
-    defaultVal: 124.50,
-    defaultPeriod: '2026-10',
-    defaultRelease: '10/14',
-    description: '亞太重工業實體發電與鋼鐵焦化重要能量基準'
+    source: 'ICE Newcastle (globalCOAL)',
+    defaultVal: 144.95,
+    defaultPeriod: '2026-11',
+    defaultRelease: '11/20',
+    description: '澳洲紐卡斯爾港 6,000 大卡動力煤 FOB 基準（ICE Newcastle 合約，為亞太與鋼鐵焦化重要能量基準）'
   },
   'COMMODITY_COPPER': {
     id: 'COMMODITY_COPPER',

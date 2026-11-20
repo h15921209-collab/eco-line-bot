@@ -1,7 +1,7 @@
 {
   "version": "2.4.0",
   "system": "Macro Intelligence Vault",
-  "lastUpdated": "2026-11-13T16:48:22.907Z",
+  "lastUpdated": "2026-11-20T02:57:35.712Z",
   "totalRecords": 0,
   "metrics": {
     "US_CPI": {
@@ -11,41 +11,41 @@
       "categoryZh": "通膨指標",
       "unit": "%",
       "source": "FRED (CPIAUCSL)",
-      "latestValue": 3.7,
-      "latestPeriod": "2026-09",
-      "latestReleaseDate": "10/22",
+      "latestValue": 4.1,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "11/10",
       "description": "衡量美國城市消費者日常生活商品與服務之整體物價年變動率",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
-        {
-          "period": "2026-04",
-          "value": 3.8,
-          "releaseDate": "10/22"
-        },
         {
           "period": "2026-05",
           "value": 4.2,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-06",
           "value": 3.5,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-07",
           "value": 3.3,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-08",
           "value": 3.4,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-09",
           "value": 3.7,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
+        },
+        {
+          "period": "2026-10",
+          "value": 4.1,
+          "releaseDate": "11/10"
         }
       ]
     },
@@ -56,41 +56,41 @@
       "categoryZh": "通膨指標",
       "unit": "%",
       "source": "FRED (CPILFESL)",
-      "latestValue": 2.6,
-      "latestPeriod": "2026-09",
-      "latestReleaseDate": "10/22",
+      "latestValue": 2.9,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "11/10",
       "description": "排除波動劇烈之食品與能源項，反映物價結構性核心黏性",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
-        {
-          "period": "2026-04",
-          "value": 2.7,
-          "releaseDate": "10/22"
-        },
         {
           "period": "2026-05",
           "value": 2.8,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-06",
           "value": 2.6,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-07",
           "value": 2.5,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-08",
           "value": 2.4,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
         },
         {
           "period": "2026-09",
           "value": 2.6,
-          "releaseDate": "10/22"
+          "releaseDate": "11/10"
+        },
+        {
+          "period": "2026-10",
+          "value": 2.9,
+          "releaseDate": "11/10"
         }
       ]
     },
@@ -105,7 +105,7 @@
       "latestPeriod": "2026-09",
       "latestReleaseDate": "10/29",
       "description": "聯準會 FOMC 最重視之長期通膨官方定價參考錨點",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
           "period": "2026-04",
@@ -191,41 +191,41 @@
       "categoryZh": "就業消費",
       "unit": "萬人",
       "source": "BLS / FRED (PAYEMS)",
-      "latestValue": 2.9,
-      "latestPeriod": "2026-09",
-      "latestReleaseDate": "10/22",
+      "latestValue": 16.5,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "11/06",
       "description": "美國非農業聘僱淨增減人數，衡量勞動力市場邊際冷暖",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
-        {
-          "period": "2026-04",
-          "value": 14.8,
-          "releaseDate": "10/22"
-        },
         {
           "period": "2026-05",
           "value": 6.3,
-          "releaseDate": "10/22"
+          "releaseDate": "11/06"
         },
         {
           "period": "2026-06",
           "value": 3.1,
-          "releaseDate": "10/22"
+          "releaseDate": "11/06"
         },
         {
           "period": "2026-07",
           "value": -1,
-          "releaseDate": "10/22"
+          "releaseDate": "11/06"
         },
         {
           "period": "2026-08",
-          "value": 13.3,
-          "releaseDate": "10/22"
+          "value": 18.6,
+          "releaseDate": "11/06"
         },
         {
           "period": "2026-09",
-          "value": 2.9,
-          "releaseDate": "10/22"
+          "value": 6,
+          "releaseDate": "11/06"
+        },
+        {
+          "period": "2026-10",
+          "value": 16.5,
+          "releaseDate": "11/06"
         }
       ]
     },
@@ -236,41 +236,41 @@
       "categoryZh": "就業消費",
       "unit": "%",
       "source": "BLS / FRED (UNRATE)",
-      "latestValue": 4.2,
-      "latestPeriod": "2026-09",
-      "latestReleaseDate": "10/21",
+      "latestValue": 4.1,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "11/07",
       "description": "官方勞動力失業比率，觸發薩姆規則與預防性降息關鍵",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
-        {
-          "period": "2026-04",
-          "value": 4.3,
-          "releaseDate": "10/21"
-        },
         {
           "period": "2026-05",
           "value": 4.3,
-          "releaseDate": "10/21"
+          "releaseDate": "11/07"
         },
         {
           "period": "2026-06",
           "value": 4.2,
-          "releaseDate": "10/21"
+          "releaseDate": "11/07"
         },
         {
           "period": "2026-07",
           "value": 4.1,
-          "releaseDate": "10/21"
+          "releaseDate": "11/07"
         },
         {
           "period": "2026-08",
           "value": 4.1,
-          "releaseDate": "10/21"
+          "releaseDate": "11/07"
         },
         {
           "period": "2026-09",
           "value": 4.2,
-          "releaseDate": "10/21"
+          "releaseDate": "11/07"
+        },
+        {
+          "period": "2026-10",
+          "value": 4.1,
+          "releaseDate": "11/07"
         }
       ]
     },
@@ -330,7 +330,7 @@
       "latestPeriod": "2026-10月",
       "latestReleaseDate": "09/01",
       "description": "聯準會貨幣政策核心目標利率區間之有效基準",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
           "period": "2026-5月",
@@ -371,41 +371,46 @@
       "categoryZh": "利率政策",
       "unit": "%",
       "source": "US Treasury / FRED (DGS10)",
-      "latestValue": 4.94,
-      "latestPeriod": "2026-10/30",
-      "latestReleaseDate": "10/30",
+      "latestValue": 5.052,
+      "latestPeriod": "2026-11",
+      "latestReleaseDate": "11/20",
       "description": "全球無風險資產定價之錨，實體企業長天期融資成本基準",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:35.710Z",
       "history": [
         {
-          "period": "2026-10/23",
-          "value": 5,
-          "releaseDate": "10/23"
-        },
-        {
-          "period": "2026-10/26",
-          "value": 5,
-          "releaseDate": "10/26"
-        },
-        {
-          "period": "2026-10/27",
-          "value": 4.99,
-          "releaseDate": "10/27"
-        },
-        {
-          "period": "2026-10/28",
-          "value": 5.05,
-          "releaseDate": "10/28"
-        },
-        {
-          "period": "2026-10/29",
+          "period": "2026-11/10",
           "value": 4.98,
-          "releaseDate": "10/29"
+          "releaseDate": "11/10"
         },
         {
-          "period": "2026-10/30",
-          "value": 4.94,
-          "releaseDate": "10/30"
+          "period": "2026-11/12",
+          "value": 5.1,
+          "releaseDate": "11/12"
+        },
+        {
+          "period": "2026-11/13",
+          "value": 5.15,
+          "releaseDate": "11/13"
+        },
+        {
+          "period": "2026-11/16",
+          "value": 5.12,
+          "releaseDate": "11/16"
+        },
+        {
+          "period": "2026-11/17",
+          "value": 5.1,
+          "releaseDate": "11/17"
+        },
+        {
+          "period": "2026-11/18",
+          "value": 5.07,
+          "releaseDate": "11/18"
+        },
+        {
+          "period": "2026-11",
+          "value": 5.052,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -416,41 +421,46 @@
       "categoryZh": "利率政策",
       "unit": "%",
       "source": "US Treasury / FRED (DGS2)",
-      "latestValue": 4.56,
-      "latestPeriod": "2026-10/30",
-      "latestReleaseDate": "10/30",
+      "latestValue": 4.75,
+      "latestPeriod": "2026-11",
+      "latestReleaseDate": "11/20",
       "description": "對聯準會未來 1~2 年升降息路徑最敏感之短端市場定價",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
-          "period": "2026-10/23",
-          "value": 4.69,
-          "releaseDate": "10/23"
+          "period": "2026-11/10",
+          "value": 4.73,
+          "releaseDate": "11/10"
         },
         {
-          "period": "2026-10/26",
-          "value": 4.68,
-          "releaseDate": "10/26"
+          "period": "2026-11/12",
+          "value": 4.86,
+          "releaseDate": "11/12"
         },
         {
-          "period": "2026-10/27",
-          "value": 4.7,
-          "releaseDate": "10/27"
+          "period": "2026-11/13",
+          "value": 4.88,
+          "releaseDate": "11/13"
         },
         {
-          "period": "2026-10/28",
-          "value": 4.67,
-          "releaseDate": "10/28"
+          "period": "2026-11/16",
+          "value": 4.83,
+          "releaseDate": "11/16"
         },
         {
-          "period": "2026-10/29",
-          "value": 4.61,
-          "releaseDate": "10/29"
+          "period": "2026-11/17",
+          "value": 4.8,
+          "releaseDate": "11/17"
         },
         {
-          "period": "2026-10/30",
-          "value": 4.56,
-          "releaseDate": "10/30"
+          "period": "2026-11/18",
+          "value": 4.8,
+          "releaseDate": "11/18"
+        },
+        {
+          "period": "2026-11",
+          "value": 4.75,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -461,41 +471,46 @@
       "categoryZh": "利率政策",
       "unit": "%",
       "source": "US Treasury Yield Curve",
-      "latestValue": 0.38,
-      "latestPeriod": "2026-10/30",
-      "latestReleaseDate": "10/30",
+      "latestValue": 0.302,
+      "latestPeriod": "2026-11",
+      "latestReleaseDate": "11/20",
       "description": "10Y 減 2Y 利率差，正斜率擴大為熊市走陡，負數為倒掛警訊",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
-          "period": "2026-10/23",
-          "value": 0.31,
-          "releaseDate": "10/23"
+          "period": "2026-11/10",
+          "value": 0.25,
+          "releaseDate": "11/10"
         },
         {
-          "period": "2026-10/26",
-          "value": 0.32,
-          "releaseDate": "10/26"
+          "period": "2026-11/12",
+          "value": 0.24,
+          "releaseDate": "11/12"
         },
         {
-          "period": "2026-10/27",
+          "period": "2026-11/13",
+          "value": 0.27,
+          "releaseDate": "11/13"
+        },
+        {
+          "period": "2026-11/16",
           "value": 0.29,
-          "releaseDate": "10/27"
+          "releaseDate": "11/16"
         },
         {
-          "period": "2026-10/28",
-          "value": 0.38,
-          "releaseDate": "10/28"
+          "period": "2026-11/17",
+          "value": 0.3,
+          "releaseDate": "11/17"
         },
         {
-          "period": "2026-10/29",
-          "value": 0.37,
-          "releaseDate": "10/29"
+          "period": "2026-11/18",
+          "value": 0.27,
+          "releaseDate": "11/18"
         },
         {
-          "period": "2026-10/30",
-          "value": 0.38,
-          "releaseDate": "10/30"
+          "period": "2026-11",
+          "value": 0.302,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -506,11 +521,11 @@
       "categoryZh": "利率政策",
       "unit": "點",
       "source": "ICE (DX-Y.NYB)",
-      "latestValue": 101.74,
+      "latestValue": 103.87,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "衡量美元對一籃子六大主要貨幣之整體全球流動性溢價",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -549,8 +564,8 @@
         },
         {
           "period": "2026-11",
-          "value": 101.74,
-          "releaseDate": "11/03"
+          "value": 103.87,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -651,11 +666,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/噸",
       "source": "SGX / Fastmarkets (TIO=F)",
-      "latestValue": 90.74,
+      "latestValue": 90.86,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "全球高爐煉鋼之命脈原料，95~100 美元為非主流邊際礦成本底線",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -694,23 +709,23 @@
         },
         {
           "period": "2026-11",
-          "value": 90.74,
-          "releaseDate": "11/03"
+          "value": 90.86,
+          "releaseDate": "11/20"
         }
       ]
     },
     "COMMODITY_COAL": {
       "id": "COMMODITY_COAL",
-      "name": "國際動力煤現貨 (Newcastle Coal)",
+      "name": "國際動力煤現貨 (Newcastle 6,000 kcal)",
       "category": "commodity",
       "categoryZh": "大宗重工",
       "unit": "美元/噸",
-      "source": "Newcastle Benchmark",
-      "latestValue": 142.15,
+      "source": "ICE Newcastle (globalCOAL)",
+      "latestValue": 144.95,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
-      "description": "亞太重工業實體發電與鋼鐵焦化重要能量基準",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "latestReleaseDate": "11/20",
+      "description": "澳洲紐卡斯爾港 6,000 大卡動力煤 FOB 基準（ICE Newcastle 合約，為亞太與鋼鐵焦化重要能量基準）",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -749,8 +764,8 @@
         },
         {
           "period": "2026-11",
-          "value": 142.15,
-          "releaseDate": "11/03"
+          "value": 144.95,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -761,11 +776,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/磅",
       "source": "COMEX (HG=F)",
-      "latestValue": 6.415,
+      "latestValue": 5.543,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "電網基建、AI 伺服器散熱與實體景氣擴張最敏感領先晴雨表",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -804,8 +819,8 @@
         },
         {
           "period": "2026-11",
-          "value": 6.415,
-          "releaseDate": "11/03"
+          "value": 5.543,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -816,11 +831,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/桶",
       "source": "NYMEX (CL=F)",
-      "latestValue": 97.2,
+      "latestValue": 82.98,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "全球大宗工業運輸與實體化學基礎能源成本定價",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -859,8 +874,8 @@
         },
         {
           "period": "2026-11",
-          "value": 97.2,
-          "releaseDate": "11/03"
+          "value": 82.98,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -871,11 +886,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/盎司",
       "source": "COMEX (GC=F)",
-      "latestValue": 3934.5,
+      "latestValue": 3551,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "對沖全球主權債務擴張與法幣購買力稀釋之終極硬資產",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -914,8 +929,8 @@
         },
         {
           "period": "2026-11",
-          "value": 3934.5,
-          "releaseDate": "11/03"
+          "value": 3551,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -926,11 +941,11 @@
       "categoryZh": "科技權值",
       "unit": "元",
       "source": "TWSE (2330.TW)",
-      "latestValue": 2295,
+      "latestValue": 2000,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "全球先進製程晶圓代工龍頭，AI 算力基礎建設核心定價權",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -969,8 +984,8 @@
         },
         {
           "period": "2026-11",
-          "value": 2295,
-          "releaseDate": "11/03"
+          "value": 2000,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -981,11 +996,11 @@
       "categoryZh": "科技權值",
       "unit": "美元",
       "source": "NASDAQ (NVDA)",
-      "latestValue": 202.06,
+      "latestValue": 145.98,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "全球 GPU 算力架構與雲端巨頭 (CSP) 資本支出總指標",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -1024,8 +1039,8 @@
         },
         {
           "period": "2026-11",
-          "value": 202.06,
-          "releaseDate": "11/03"
+          "value": 145.98,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -1036,11 +1051,11 @@
       "categoryZh": "科技權值",
       "unit": "點",
       "source": "PHLX (^SOX)",
-      "latestValue": 10328.3,
+      "latestValue": 9419.7,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "全球半導體硬體製造與設備景氣風向標",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -1079,8 +1094,8 @@
         },
         {
           "period": "2026-11",
-          "value": 10328.3,
-          "releaseDate": "11/03"
+          "value": 9419.7,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -1091,11 +1106,11 @@
       "categoryZh": "科技權值",
       "unit": "點",
       "source": "TWSE (^TWII)",
-      "latestValue": 43308,
+      "latestValue": 36120,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "高度連動全球科技供應鏈與外資資本流向之核心股指",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -1134,8 +1149,8 @@
         },
         {
           "period": "2026-11",
-          "value": 43308,
-          "releaseDate": "11/03"
+          "value": 36120,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -1146,11 +1161,11 @@
       "categoryZh": "科技權值",
       "unit": "點",
       "source": "CBOE (^VIX)",
-      "latestValue": 21.15,
+      "latestValue": 28.44,
       "latestPeriod": "2026-11",
-      "latestReleaseDate": "11/03",
+      "latestReleaseDate": "11/20",
       "description": "S&P 500 選擇權隱含波動率，20 以下為平穩，30 以上為市場極度恐慌",
-      "lastUpdated": "2026-11-03T05:56:11.595Z",
+      "lastUpdated": "2026-11-20T02:57:35.711Z",
       "history": [
         {
           "period": "2026-03",
@@ -1189,8 +1204,8 @@
         },
         {
           "period": "2026-11",
-          "value": 21.15,
-          "releaseDate": "11/03"
+          "value": 28.44,
+          "releaseDate": "11/20"
         }
       ]
     },
@@ -1205,7 +1220,7 @@
       "latestPeriod": "2026-Q3",
       "latestReleaseDate": "10/29",
       "description": "衡量美國整體經濟實質產出成長動能，為景氣擴張或衰退之終極基準",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
           "period": "2025-Q2",
@@ -1385,7 +1400,7 @@
       "latestPeriod": "2026-09",
       "latestReleaseDate": "10/27",
       "description": "領先反映美國消費者個人財務評價、耐久財購買意願與長期通膨預期",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
           "period": "2026-04",
@@ -1430,7 +1445,7 @@
       "latestPeriod": "2026-09",
       "latestReleaseDate": "10/27",
       "description": "宏觀金融市場的實質流動性水庫，引導風險資產評價與實體信用擴張總源頭",
-      "lastUpdated": "2026-11-03T05:56:15.323Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
           "period": "2026-04",
@@ -1516,41 +1531,41 @@
       "categoryZh": "就業消費",
       "unit": "%",
       "source": "Census Bureau / FRED (NEWORDER)",
-      "latestValue": 0.5,
+      "latestValue": 0.6,
       "latestPeriod": "2026-09",
-      "latestReleaseDate": "10/25",
+      "latestReleaseDate": "11/19",
       "description": "排除國防與飛機之非國防核心資本財新訂單，為企業實質設備投資 (CAPEX) 領先指針",
-      "lastUpdated": "2026-11-13T16:34:47.498Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
           "period": "2026-04",
-          "value": 0.2,
-          "releaseDate": "05/24"
+          "value": -0.6,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-05",
-          "value": -0.6,
-          "releaseDate": "06/27"
+          "value": 1.9,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-06",
-          "value": 0.1,
-          "releaseDate": "07/25"
+          "value": 1.7,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-07",
-          "value": -0.1,
-          "releaseDate": "08/26"
+          "value": 0.6,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-08",
-          "value": 0.3,
-          "releaseDate": "09/26"
+          "value": 1.5,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-09",
-          "value": 0.5,
-          "releaseDate": "10/25"
+          "value": 0.6,
+          "releaseDate": "11/19"
         }
       ]
     },
@@ -1561,41 +1576,41 @@
       "categoryZh": "貨幣利率",
       "unit": "%",
       "source": "Freddie Mac / FRED (MORTGAGE30US)",
-      "latestValue": 6.72,
-      "latestPeriod": "2026-10",
-      "latestReleaseDate": "10/31",
+      "latestValue": 7.28,
+      "latestPeriod": "2026-11",
+      "latestReleaseDate": "11/19",
       "description": "美國房貸融資之核心基準，體現 10Y 美債殖利率向實體居民房地產購屋信貸成本之傳導",
-      "lastUpdated": "2026-11-13T16:34:47.498Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
-          "period": "2026-05",
-          "value": 7.03,
-          "releaseDate": "05/30"
-        },
-        {
-          "period": "2026-06",
-          "value": 6.86,
-          "releaseDate": "06/27"
-        },
-        {
-          "period": "2026-07",
-          "value": 6.78,
-          "releaseDate": "07/25"
-        },
-        {
-          "period": "2026-08",
-          "value": 6.5,
-          "releaseDate": "08/29"
-        },
-        {
-          "period": "2026-09",
-          "value": 6.2,
-          "releaseDate": "09/26"
+          "period": "2026-10",
+          "value": 7.4,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-10",
-          "value": 6.72,
-          "releaseDate": "10/31"
+          "value": 7.32,
+          "releaseDate": "11/19"
+        },
+        {
+          "period": "2026-10",
+          "value": 7.24,
+          "releaseDate": "11/19"
+        },
+        {
+          "period": "2026-11",
+          "value": 7.18,
+          "releaseDate": "11/19"
+        },
+        {
+          "period": "2026-11",
+          "value": 7.11,
+          "releaseDate": "11/19"
+        },
+        {
+          "period": "2026-11",
+          "value": 7.28,
+          "releaseDate": "11/19"
         }
       ]
     },
@@ -1696,41 +1711,41 @@
       "categoryZh": "大宗重工",
       "unit": "萬戶",
       "source": "Census Bureau / FRED (HOUST)",
-      "latestValue": 135.4,
-      "latestPeriod": "2026-09",
-      "latestReleaseDate": "10/18",
+      "latestValue": 130.9,
+      "latestPeriod": "2026-10",
+      "latestReleaseDate": "11/19",
       "description": "年化新屋開工總戶數，直接帶動實體鋼筋、型鋼、螺絲釘與銅喉管等重工營造材料需求",
-      "lastUpdated": "2026-11-13T16:34:47.498Z",
+      "lastUpdated": "2026-11-20T02:57:18.572Z",
       "history": [
         {
-          "period": "2026-04",
-          "value": 134,
-          "releaseDate": "05/16"
-        },
-        {
           "period": "2026-05",
-          "value": 131.4,
-          "releaseDate": "06/20"
+          "value": 118.2,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-06",
-          "value": 132.9,
-          "releaseDate": "07/17"
+          "value": 143.9,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-07",
-          "value": 123.7,
-          "releaseDate": "08/16"
+          "value": 136.9,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-08",
-          "value": 136.1,
-          "releaseDate": "09/18"
+          "value": 128,
+          "releaseDate": "11/19"
         },
         {
           "period": "2026-09",
-          "value": 135.4,
-          "releaseDate": "10/18"
+          "value": 119.1,
+          "releaseDate": "11/19"
+        },
+        {
+          "period": "2026-10",
+          "value": 130.9,
+          "releaseDate": "11/19"
         }
       ]
     }

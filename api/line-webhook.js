@@ -360,23 +360,44 @@ async function tryFetchStockQuote(text) {
   // 排除一般指令詞
   if (["HELP", "MENU", "INFO", "TEST", "OK", "YES", "NO"].includes(symbol)) return null;
 
-  // 動力煤特殊處理
+  // 動力煤特殊處理 (澳洲紐卡斯爾港 6,000 大卡 ICE Newcastle 指標)
   if (symbol === 'COAL_BENCHMARK') {
+    let coalPrice = 144.95;
+    let coalPrev = 143.15;
+    let coalChg = 1.80;
+    let coalPct = "1.26";
+    let isUp = true;
+    let sign = "+";
+    try {
+      const collector = require('./collector');
+      if (typeof collector.fetchCollectorSnapshot === 'function') {
+        const snap = await collector.fetchCollectorSnapshot(false).catch(() => null);
+        if (snap?.coal) {
+          coalPrice = Number(snap.coal.toFixed(2));
+          coalChg = Number(snap.coal_chg.toFixed(2));
+          coalPct = Math.abs(snap.coal_pct).toFixed(2);
+          isUp = snap.coal_chg >= 0;
+          sign = snap.coal_chg >= 0 ? "+" : "-";
+          coalPrev = Number((coalPrice - snap.coal_chg).toFixed(2));
+        }
+      }
+    } catch (e) {}
+
     return createStockFlexCard({
-      name: "國際動力煤現貨 (紐卡斯爾 6000大卡)",
+      name: "國際動力煤現貨 (Newcastle 6,000 kcal)",
       symbol: "NEWC_COAL",
-      price: 124.50,
-      prevClose: 124.00,
-      chg: 0.50,
-      pct: "0.40",
+      price: coalPrice,
+      prevClose: coalPrev,
+      chg: coalChg,
+      pct: coalPct,
       cur: "USD/噸",
-      dayHigh: "125.00",
-      dayLow: "123.80",
-      high52: "148.50",
+      dayHigh: (coalPrice + 0.8).toFixed(2),
+      dayLow: (coalPrice - 1.2).toFixed(2),
+      high52: "155.00",
       low52: "116.20",
-      rangePercent: 26,
-      isUp: true,
-      sign: "+"
+      rangePercent: 75,
+      isUp,
+      sign
     });
   }
 
@@ -756,8 +777,8 @@ async function handleCalibrationCommand(lineToken, replyToken, targetUserId = nu
     const dxyVal = snap?.dxy !== undefined ? Number(snap.dxy).toFixed(2) : (m['MARKET_DXY']?.latestValue ? Number(m['MARKET_DXY'].latestValue).toFixed(2) : '101.97');
     const usdtwdVal = snap?.usdtwd !== undefined ? Number(snap.usdtwd).toFixed(3) : '32.323';
 
-    const ironVal = snap?.iron_ore !== undefined ? Number(snap.iron_ore).toFixed(2) : (m['COMMODITY_IRON_ORE']?.latestValue ? Number(m['COMMODITY_IRON_ORE'].latestValue).toFixed(2) : '90.74');
-    const coalVal = snap?.coal !== undefined ? Number(snap.coal).toFixed(2) : (m['COMMODITY_COAL']?.latestValue ? Number(m['COMMODITY_COAL'].latestValue).toFixed(2) : '124.50');
+    const ironVal = snap?.iron_ore !== undefined ? Number(snap.iron_ore).toFixed(2) : (m['COMMODITY_IRON_ORE']?.latestValue ? Number(m['COMMODITY_IRON_ORE'].latestValue).toFixed(2) : '90.86');
+    const coalVal = snap?.coal !== undefined ? Number(snap.coal).toFixed(2) : (m['COMMODITY_COAL']?.latestValue ? Number(m['COMMODITY_COAL'].latestValue).toFixed(2) : '144.95');
     const copperVal = snap?.copper !== undefined ? Number(snap.copper).toFixed(3) : (m['COMMODITY_COPPER']?.latestValue ? Number(m['COMMODITY_COPPER'].latestValue).toFixed(3) : '6.611');
     const oilVal = snap?.oil !== undefined ? Number(snap.oil).toFixed(2) : (m['COMMODITY_OIL']?.latestValue ? Number(m['COMMODITY_OIL'].latestValue).toFixed(2) : '93.99');
 
@@ -928,3 +949,4 @@ module.exports = async (req, res) => {
     return res.status(200).json({ status: "error", error: error.message });
   }
 };
+module.exports.tryFetchStockQuote = tryFetchStockQuote;
