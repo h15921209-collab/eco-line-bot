@@ -184,15 +184,16 @@ async function syncFredLiveTrends() {
         const history = [];
         for (let i = 0; i < 6; i++) {
           const [y, m] = validFed[i].date.split('-');
-          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validFed[i].value) });
+          history.unshift({ label: `${parseInt(m)}月`, val: parseFloat(validFed[i].value), period: `${y}-${m}` });
         }
         const lastVal = history[history.length - 1].val;
         const lastLbl = history[history.length - 1].label;
         trends['US_FOMC'] = {
           unit: '%',
           trendDir: history[history.length - 1].val < history[0].val ? 'down' : 'neutral',
-          latestReleaseDate: '09/01',
-          summary: `Fed基準 ${lastLbl} ${lastVal}% │ 09/01`,
+          latestReleaseDate: '11/01',
+          latestPeriod: validFed[0].date.substring(0, 7),
+          summary: `Fed基準 ${lastLbl} ${lastVal}% │ 11/01`,
           history
         };
       }
@@ -417,6 +418,62 @@ async function syncFredLiveTrends() {
         };
       }
     } catch (e) { console.warn('FRED NEWORDER error:', e.message); }
+
+    // 16. 🇺🇸 PPI 生產者物價年增率 (PPIFIS)
+    try {
+      const ppiObs = await fetchFredObservations('PPIFIS', 30);
+      const validPpi = ppiObs.filter(o => o.value && o.value !== '.');
+      if (validPpi.length >= 14) {
+        const history = [];
+        for (let i = 0; i < Math.min(6, validPpi.length); i++) {
+          const cur = parseFloat(validPpi[i].value);
+          const [y, m, day] = validPpi[i].date.split('-');
+          const targetPrevDate = `${parseInt(y) - 1}-${m}-${day}`;
+          const prevItem = validPpi.find(o => o.date === targetPrevDate);
+          const prev = prevItem ? parseFloat(prevItem.value) : (validPpi[i + 12] ? parseFloat(validPpi[i + 12].value) : cur);
+          const yoy = Number((((cur - prev) / prev) * 100).toFixed(2));
+          history.unshift({ label: `${parseInt(m)}月`, val: yoy, period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validPpi[0].realtime_start ? validPpi[0].realtime_start.substring(5).replace('-', '/') : '11/14';
+        trends['US_PPI'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: validPpi[0].date.substring(0, 7),
+          summary: `FRED PPI ${lastLbl} ${lastVal}% │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED PPI error:', e.message); }
+
+    // 17. 🇺🇸 零售銷售月增率 (RSAFS)
+    try {
+      const retObs = await fetchFredObservations('RSAFS', 15);
+      const validRet = retObs.filter(o => o.value && o.value !== '.');
+      if (validRet.length >= 7) {
+        const history = [];
+        for (let i = 0; i < 6; i++) {
+          const cur = parseFloat(validRet[i].value);
+          const prev = parseFloat(validRet[i + 1].value);
+          const mom = Number((((cur - prev) / prev) * 100).toFixed(2));
+          const [y, m] = validRet[i].date.split('-');
+          history.unshift({ label: `${parseInt(m)}月`, val: mom, period: `${y}-${m}` });
+        }
+        const lastVal = history[history.length - 1].val;
+        const lastLbl = history[history.length - 1].label;
+        const relDate = validRet[0].realtime_start ? validRet[0].realtime_start.substring(5).replace('-', '/') : '11/15';
+        trends['US_RETAIL'] = {
+          unit: '%',
+          trendDir: history[history.length - 1].val > history[0].val ? 'up' : 'down',
+          latestReleaseDate: relDate,
+          latestPeriod: validRet[0].date.substring(0, 7),
+          summary: `零售銷售 ${lastLbl} ${lastVal}% │ ${relDate}`,
+          history
+        };
+      }
+    } catch (e) { console.warn('FRED RSAFS error:', e.message); }
 
     if (Object.keys(trends).length > 0) {
       cachedFredTrends = trends;

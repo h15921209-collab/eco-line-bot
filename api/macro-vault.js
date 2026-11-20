@@ -150,11 +150,11 @@ const METRIC_DEFINITIONS = {
     category: 'inflation',
     categoryZh: '通膨指標',
     unit: '%',
-    source: 'BLS (PPIACO)',
-    defaultVal: 2.8,
-    defaultPeriod: '2026-08',
-    defaultRelease: '09/12',
-    description: '批發端出廠物價，為消費者端通膨之上游先行預警指標'
+    source: 'BLS / FRED (PPIFIS)',
+    defaultVal: 6.52,
+    defaultPeriod: '2026-10',
+    defaultRelease: '11/14',
+    description: '最終需求出廠物價，為消費者端通膨之上游核心先行預警指標'
   },
 
   // 2. 就業市場與消費活力
@@ -188,10 +188,10 @@ const METRIC_DEFINITIONS = {
     category: 'labor',
     categoryZh: '就業消費',
     unit: '%',
-    source: 'Census Bureau (RSAFS)',
-    defaultVal: 0.5,
-    defaultPeriod: '2026-08',
-    defaultRelease: '09/16',
+    source: 'Census Bureau / FRED (RSAFS)',
+    defaultVal: 0.21,
+    defaultPeriod: '2026-10',
+    defaultRelease: '11/15',
     description: '衡量佔美國 GDP 70% 之終端消費支出動能強度'
   },
   'US_UMICH': {
@@ -826,9 +826,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_FOMC', {
       value: last.val,
-      period: fredTrends.US_FOMC.latestPeriod || (last.period || `2026-${last.label}`),
-      releaseDate: fredTrends.US_FOMC.latestReleaseDate || '09/01',
-      history: hist.map(h => ({ period: h.period || `2026-${h.label}`, value: h.val, releaseDate: fredTrends.US_FOMC.latestReleaseDate }))
+      period: fredTrends.US_FOMC.latestPeriod || (last.period || '2026-10'),
+      releaseDate: fredTrends.US_FOMC.latestReleaseDate || '11/01',
+      history: hist.map(h => ({ period: h.period || '2026-10', value: h.val, releaseDate: fredTrends.US_FOMC.latestReleaseDate || '11/01' }))
     });
   }
 
@@ -838,9 +838,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_10Y', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: last.label,
       releaseDate: fredTrends.US_10Y.latestReleaseDate || '近期',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: h.label }))
+      history: hist.map(h => ({ period: h.label, value: h.val, releaseDate: h.label }))
     });
   }
 
@@ -850,9 +850,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_2Y', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: last.label,
       releaseDate: fredTrends.US_2Y.latestReleaseDate || '近期',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: h.label }))
+      history: hist.map(h => ({ period: h.label, value: h.val, releaseDate: h.label }))
     });
   }
 
@@ -862,9 +862,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_SPREAD', {
       value: last.val,
-      period: `2026-${last.label}`,
+      period: last.label,
       releaseDate: fredTrends.US_SPREAD.latestReleaseDate || '近期',
-      history: hist.map(h => ({ period: `2026-${h.label}`, value: h.val, releaseDate: h.label }))
+      history: hist.map(h => ({ period: h.label, value: h.val, releaseDate: h.label }))
     });
   }
 
@@ -910,9 +910,9 @@ function recordFredTrends(fredTrends) {
     const last = hist[hist.length - 1];
     recordMacroMetric('US_MORTGAGE', {
       value: last.val,
-      period: fredTrends.US_MORTGAGE.latestPeriod || last.period,
+      period: last.label,
       releaseDate: fredTrends.US_MORTGAGE.latestReleaseDate || '近期',
-      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_MORTGAGE.latestReleaseDate }))
+      history: hist.map(h => ({ period: h.label, value: h.val, releaseDate: h.label }))
     });
   }
 
@@ -937,6 +937,30 @@ function recordFredTrends(fredTrends) {
       period: fredTrends.US_DURABLE.latestPeriod || last.period,
       releaseDate: fredTrends.US_DURABLE.latestReleaseDate || '近期',
       history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_DURABLE.latestReleaseDate }))
+    });
+  }
+
+  // 16. 🇺🇸 US_PPI (最終需求 PPI 年增率)
+  if (fredTrends.US_PPI && fredTrends.US_PPI.history?.length > 0) {
+    const hist = fredTrends.US_PPI.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_PPI', {
+      value: last.val,
+      period: fredTrends.US_PPI.latestPeriod || last.period,
+      releaseDate: fredTrends.US_PPI.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_PPI.latestReleaseDate }))
+    });
+  }
+
+  // 17. 🇺🇸 US_RETAIL (零售銷售月增率)
+  if (fredTrends.US_RETAIL && fredTrends.US_RETAIL.history?.length > 0) {
+    const hist = fredTrends.US_RETAIL.history;
+    const last = hist[hist.length - 1];
+    recordMacroMetric('US_RETAIL', {
+      value: last.val,
+      period: fredTrends.US_RETAIL.latestPeriod || last.period,
+      releaseDate: fredTrends.US_RETAIL.latestReleaseDate || '近期',
+      history: hist.map(h => ({ period: h.period || h.label, value: h.val, releaseDate: fredTrends.US_RETAIL.latestReleaseDate }))
     });
   }
 }
