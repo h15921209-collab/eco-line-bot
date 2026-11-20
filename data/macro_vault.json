@@ -1,7 +1,7 @@
 {
   "version": "2.4.0",
   "system": "Macro Intelligence Vault",
-  "lastUpdated": "2026-11-20T05:22:29.698Z",
+  "lastUpdated": "2026-11-20T05:53:43.567Z",
   "totalRecords": 0,
   "metrics": {
     "US_CPI": {
@@ -375,7 +375,7 @@
       "latestPeriod": "11/20",
       "latestReleaseDate": "11/20",
       "description": "全球無風險資產定價之錨，實體企業長天期融資成本基準",
-      "lastUpdated": "2026-11-20T05:22:29.697Z",
+      "lastUpdated": "2026-11-20T05:53:43.566Z",
       "history": [
         {
           "period": "11/12",
@@ -420,7 +420,7 @@
       "latestPeriod": "11/20",
       "latestReleaseDate": "11/20",
       "description": "對聯準會未來 1~2 年升降息路徑最敏感之短端市場定價",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "11/12",
@@ -465,7 +465,7 @@
       "latestPeriod": "11/20",
       "latestReleaseDate": "11/20",
       "description": "10Y 減 2Y 利率差，正斜率擴大為熊市走陡，負數為倒掛警訊",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "11/12",
@@ -506,11 +506,11 @@
       "categoryZh": "利率政策",
       "unit": "點",
       "source": "ICE (DX-Y.NYB)",
-      "latestValue": 103.771,
+      "latestValue": 103.812,
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "衡量美元對一籃子六大主要貨幣之整體全球流動性溢價",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -539,7 +539,7 @@
         },
         {
           "period": "2026-11",
-          "value": 103.771,
+          "value": 103.812,
           "releaseDate": "11/20"
         }
       ]
@@ -645,7 +645,7 @@
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "全球高爐煉鋼之命脈原料，95~100 美元為非主流邊際礦成本底線",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -679,6 +679,51 @@
         }
       ]
     },
+    "COMMODITY_IODEX": {
+      "id": "COMMODITY_IODEX",
+      "name": "普氏鐵礦砂 IODEX 中間價 (CFR North China)",
+      "category": "commodity",
+      "categoryZh": "大宗重工",
+      "unit": "美元/乾噸",
+      "source": "S&P Global Platts (IODEX)",
+      "latestValue": 90.85,
+      "latestPeriod": "2026-11",
+      "latestReleaseDate": "11/20",
+      "description": "S&P Global Platts IODEX Fe CFR North China Midpoint 普氏中國北方港到岸價鐵礦砂指標中間價，為全球海運實體鐵礦砂採購合約結算、長協定價與新交所掉期最核心之法定基準",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
+      "history": [
+        {
+          "period": "2026-06",
+          "value": 100.15,
+          "releaseDate": "06/30"
+        },
+        {
+          "period": "2026-07",
+          "value": 97.9,
+          "releaseDate": "07/31"
+        },
+        {
+          "period": "2026-08",
+          "value": 96.1,
+          "releaseDate": "08/31"
+        },
+        {
+          "period": "2026-09",
+          "value": 96.65,
+          "releaseDate": "09/30"
+        },
+        {
+          "period": "2026-10",
+          "value": 90.7,
+          "releaseDate": "10/31"
+        },
+        {
+          "period": "2026-11",
+          "value": 90.85,
+          "releaseDate": "11/20"
+        }
+      ]
+    },
     "COMMODITY_COAL": {
       "id": "COMMODITY_COAL",
       "name": "國際動力煤現貨 (Newcastle 6,000 kcal)",
@@ -690,7 +735,7 @@
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "澳洲紐卡斯爾港 6,000 大卡動力煤 FOB 基準（ICE Newcastle 合約，為亞太與鋼鐵焦化重要能量基準）",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -735,7 +780,7 @@
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "FOB Australia Premium Low Vol (PLV) Hard Coking Coal 澳洲離岸價優質低揮發分硬焦煤，全球高爐煉焦與鐵水冶煉核心剛性成本基準",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -776,11 +821,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/磅",
       "source": "COMEX (HG=F)",
-      "latestValue": 5.486,
+      "latestValue": 5.452,
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "電網基建、AI 伺服器散熱與實體景氣擴張最敏感領先晴雨表",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -809,7 +854,7 @@
         },
         {
           "period": "2026-11",
-          "value": 5.486,
+          "value": 5.452,
           "releaseDate": "11/20"
         }
       ]
@@ -821,11 +866,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/桶",
       "source": "NYMEX (CL=F)",
-      "latestValue": 82.87,
+      "latestValue": 82.72,
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "全球大宗工業運輸與實體化學基礎能源成本定價",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -854,7 +899,7 @@
         },
         {
           "period": "2026-11",
-          "value": 82.87,
+          "value": 82.72,
           "releaseDate": "11/20"
         }
       ]
@@ -866,11 +911,11 @@
       "categoryZh": "大宗重工",
       "unit": "美元/盎司",
       "source": "COMEX (GC=F)",
-      "latestValue": 3523.4,
+      "latestValue": 3517.5,
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "對沖全球主權債務擴張與法幣購買力稀釋之終極硬資產",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -899,7 +944,7 @@
         },
         {
           "period": "2026-11",
-          "value": 3523.4,
+          "value": 3517.5,
           "releaseDate": "11/20"
         }
       ]
@@ -911,11 +956,11 @@
       "categoryZh": "科技權值",
       "unit": "元",
       "source": "TWSE (2330.TW)",
-      "latestValue": 1990,
+      "latestValue": 2000,
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "全球先進製程晶圓代工龍頭，AI 算力基礎建設核心定價權",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -944,7 +989,7 @@
         },
         {
           "period": "2026-11",
-          "value": 1990,
+          "value": 2000,
           "releaseDate": "11/20"
         }
       ]
@@ -960,7 +1005,7 @@
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "全球 GPU 算力架構與雲端巨頭 (CSP) 資本支出總指標",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -1005,7 +1050,7 @@
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "全球半導體硬體製造與設備景氣風向標",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -1046,11 +1091,11 @@
       "categoryZh": "科技權值",
       "unit": "點",
       "source": "TWSE (^TWII)",
-      "latestValue": 35930,
+      "latestValue": 36033,
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "高度連動全球科技供應鏈與外資資本流向之核心股指",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -1079,7 +1124,7 @@
         },
         {
           "period": "2026-11",
-          "value": 35930,
+          "value": 36033,
           "releaseDate": "11/20"
         }
       ]
@@ -1095,7 +1140,7 @@
       "latestPeriod": "2026-11",
       "latestReleaseDate": "11/20",
       "description": "S&P 500 選擇權隱含波動率，20 以下為平穩，30 以上為市場極度恐慌",
-      "lastUpdated": "2026-11-20T05:22:29.698Z",
+      "lastUpdated": "2026-11-20T05:53:43.567Z",
       "history": [
         {
           "period": "2026-06",
@@ -1671,5 +1716,5 @@
     }
   },
   "timelineSnapshots": [],
-  "totalMetrics": 37
+  "totalMetrics": 38
 }

@@ -468,6 +468,18 @@
             </div>
 
             <div class="space-y-2.5" id="group-commodity-tickers">
+              <!-- 普氏 IODEX 鐵礦砂中間價 -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-950/20 hover:bg-amber-950/35 border border-amber-500/35 transition-all duration-150 shadow-sm">
+                <div>
+                  <div class="text-xs font-bold text-white">🧱 普氏鐵礦砂 IODEX (CFR)</div>
+                  <div class="text-[10px] text-amber-400">北方港到岸指標中間價 (Midpoint)</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-amber-300 tabular-nums" id="tick-iodex">--</div>
+                  <div class="text-[10px] font-mono tabular-nums" id="tick-iodex-sub">--</div>
+                </div>
+              </div>
+
               <!-- 鐵礦砂 -->
               <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-950/20 hover:bg-amber-950/35 border border-amber-500/35 transition-all duration-150 shadow-sm">
                 <div>
@@ -1543,6 +1555,15 @@
         }
 
         // 3. 大宗原料與重工業
+        const iodexEl = document.getElementById('tick-iodex');
+        if (iodexEl && d.iodex) iodexEl.innerText = '$' + Number(d.iodex).toFixed(2);
+        const iodexSub = document.getElementById('tick-iodex-sub');
+        if (iodexSub && d.iodex_pct !== undefined) {
+          const c = formatChange(d.iodex_chg, d.iodex_pct, 2);
+          iodexSub.innerText = c.text;
+          iodexSub.className = `text-[10px] font-mono ${c.color}`;
+        }
+
         const ironEl = document.getElementById('tick-iron');
         if (ironEl && d.iron_ore) ironEl.innerText = '$' + d.iron_ore.toFixed(2);
         const ironSub = document.getElementById('tick-iron-sub');

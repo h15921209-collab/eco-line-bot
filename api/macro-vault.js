@@ -432,6 +432,18 @@ const METRIC_DEFINITIONS = {
     defaultRelease: '10/14',
     description: '全球高爐煉鋼之命脈原料，90~100 美元為非主流邊際礦成本底線'
   },
+  'COMMODITY_IODEX': {
+    id: 'COMMODITY_IODEX',
+    name: '普氏鐵礦砂 IODEX 中間價 (CFR North China)',
+    category: 'commodity',
+    categoryZh: '大宗重工',
+    unit: '美元/乾噸',
+    source: 'S&P Global Platts (IODEX)',
+    defaultVal: 90.85,
+    defaultPeriod: '2026-11',
+    defaultRelease: '11/20',
+    description: 'IODEX Fe CFR North China Midpoint 普氏中國北方港到岸價鐵礦砂指標中間價，全球實體鋼廠長協與現貨採購結算權威之錨'
+  },
   'COMMODITY_COAL': {
     id: 'COMMODITY_COAL',
     name: '國際動力煤現貨 (Newcastle 6,000 kcal)',
@@ -1004,6 +1016,9 @@ function recordCollectorSnapshot(latestSnapshot) {
   }
   if (latestSnapshot.iron_ore) {
     recordMacroMetric('COMMODITY_IRON_ORE', { value: latestSnapshot.iron_ore, period: periodStr, releaseDate: dateStr });
+  }
+  if (latestSnapshot.iodex) {
+    recordMacroMetric('COMMODITY_IODEX', { value: latestSnapshot.iodex, period: periodStr, releaseDate: dateStr });
   }
   if (latestSnapshot.coal) {
     recordMacroMetric('COMMODITY_COAL', { value: latestSnapshot.coal, period: periodStr, releaseDate: dateStr });

@@ -70,6 +70,7 @@ function extractRelatedIndicators(title) {
   if (/pmi|採購經理人|製造業指數/.test(t)) indicators.push('CN_PMI');
 
   // 大宗原物料
+  if (/iodex|普氏|北方港|到岸價/i.test(t)) indicators.push('COMMODITY_IODEX');
   if (/鐵礦砂|鐵礦石|高爐|煉鋼|熱軋/.test(t)) indicators.push('COMMODITY_IRON_ORE');
   if (/煤炭|動力煤|電煤/.test(t)) indicators.push('COMMODITY_COAL');
   if (/焦煤|硬焦煤|冶金煤|plv|coking/i.test(t)) indicators.push('COMMODITY_COKING_COAL');
