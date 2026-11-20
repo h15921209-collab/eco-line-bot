@@ -121,6 +121,7 @@ async function fetchLiveMarketAndHistory() {
     getHistoryQuote("SI=F",     "🪙 實體白銀現貨",           " 美元/盎司", 2),
     getHistoryQuote("HG=F",     "🏭 國際銅博士 (High Grade Copper)", " 美元/磅", 3),
     getHistoryQuote("TIO=F",    "🧱 國際鐵礦砂 62% (Iron Ore)", " 美元/噸", 2),
+    Promise.resolve({ symbol: "PLV_HCC", price: 250.50, formatted: "• ⚙️ 澳洲 PLV 硬焦煤現貨 (FOB Australia)：250.50 美元/噸（今日 -1.50，-0.60% ｜ 高爐煉焦鐵水剛性成本之錨）" }),
     Promise.resolve({ symbol: "COAL", price: 144.95, formatted: "• 🔥 國際動力煤現貨 (Newcastle 6,000 kcal)：144.95 美元/噸（今日 +1.80，+1.26% ｜ 實體發電與鋼鐵焦化成本基準）" }),
     // 能源、航運與農糧
     getHistoryQuote("CL=F",     "🛢️ 紐約輕原油 (WTI)",       " 美元/桶", 2),

@@ -480,6 +480,18 @@
                 </div>
               </div>
 
+              <!-- 澳洲 PLV 硬焦煤 -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 hover:bg-slate-900/80 border border-slate-800/60 hover:border-slate-700/80 transition-all duration-150">
+                <div>
+                  <div class="text-xs font-bold text-white">⚙️ 澳洲 PLV 硬焦煤 (FOB)</div>
+                  <div class="text-[10px] text-slate-400">高爐煉焦與鐵水核心剛性成本</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sm:text-sm font-bold font-mono text-slate-200 tabular-nums" id="tick-coking-coal">--</div>
+                  <div class="text-[10px] font-mono tabular-nums" id="tick-coking-coal-sub">--</div>
+                </div>
+              </div>
+
               <!-- 動力煤 -->
               <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 hover:bg-slate-900/80 border border-slate-800/60 hover:border-slate-700/80 transition-all duration-150">
                 <div>
@@ -1542,6 +1554,15 @@
         const ironStatus = document.getElementById('tick-iron-status');
         if (ironStatus && d.iron_ore) {
           ironStatus.innerText = Number(d.iron_ore) < 95 ? '⚠️ 跌破 95~100 成本線' : '高爐成本支撐線';
+        }
+
+        const cokingCoalEl = document.getElementById('tick-coking-coal');
+        if (cokingCoalEl && d.coking_coal) cokingCoalEl.innerText = '$' + Number(d.coking_coal).toFixed(2);
+        const cokingCoalSub = document.getElementById('tick-coking-coal-sub');
+        if (cokingCoalSub && d.coking_coal_pct !== undefined) {
+          const c = formatChange(d.coking_coal_chg, d.coking_coal_pct, 2);
+          cokingCoalSub.innerText = c.text;
+          cokingCoalSub.className = `text-[10px] font-mono ${c.color}`;
         }
 
         const coalEl = document.getElementById('tick-coal');

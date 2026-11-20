@@ -444,6 +444,18 @@ const METRIC_DEFINITIONS = {
     defaultRelease: '11/20',
     description: '澳洲紐卡斯爾港 6,000 大卡動力煤 FOB 基準（ICE Newcastle 合約，為亞太與鋼鐵焦化重要能量基準）'
   },
+  'COMMODITY_COKING_COAL': {
+    id: 'COMMODITY_COKING_COAL',
+    name: '澳洲 PLV 硬焦煤現貨 (FOB Australia)',
+    category: 'commodity',
+    categoryZh: '大宗重工',
+    unit: '美元/噸',
+    source: 'S&P Global Platts / SGX TSI',
+    defaultVal: 250.50,
+    defaultPeriod: '2026-11',
+    defaultRelease: '11/20',
+    description: 'FOB Australia Premium Low Vol (PLV) Hard Coking Coal 澳洲離岸價優質低揮發分硬焦煤，全球高爐煉焦與鐵水冶煉核心剛性成本基準'
+  },
   'COMMODITY_COPPER': {
     id: 'COMMODITY_COPPER',
     name: '國際銅博士 (High Grade Copper)',
@@ -995,6 +1007,9 @@ function recordCollectorSnapshot(latestSnapshot) {
   }
   if (latestSnapshot.coal) {
     recordMacroMetric('COMMODITY_COAL', { value: latestSnapshot.coal, period: periodStr, releaseDate: dateStr });
+  }
+  if (latestSnapshot.coking_coal) {
+    recordMacroMetric('COMMODITY_COKING_COAL', { value: latestSnapshot.coking_coal, period: periodStr, releaseDate: dateStr });
   }
   if (latestSnapshot.oil) {
     recordMacroMetric('COMMODITY_OIL', { value: latestSnapshot.oil, period: periodStr, releaseDate: dateStr });

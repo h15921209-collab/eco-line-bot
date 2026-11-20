@@ -71,7 +71,8 @@ function extractRelatedIndicators(title) {
 
   // 大宗原物料
   if (/鐵礦砂|鐵礦石|高爐|煉鋼|熱軋/.test(t)) indicators.push('COMMODITY_IRON_ORE');
-  if (/煤炭|動力煤|焦煤/.test(t)) indicators.push('COMMODITY_COAL');
+  if (/煤炭|動力煤|電煤/.test(t)) indicators.push('COMMODITY_COAL');
+  if (/焦煤|硬焦煤|冶金煤|plv|coking/i.test(t)) indicators.push('COMMODITY_COKING_COAL');
   if (/銅|銅價|銅博士/.test(t)) indicators.push('COMMODITY_COPPER');
   if (/原油|油價|wti|布蘭特/.test(t)) indicators.push('COMMODITY_OIL');
   if (/黃金|金價|金銀比/.test(t)) indicators.push('COMMODITY_GOLD');
