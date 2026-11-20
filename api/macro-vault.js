@@ -735,7 +735,7 @@ function recordMacroMetric(metricId, data) {
 
   // 若歷史陣列存在，更新或追加當期走勢
   if (data.history && Array.isArray(data.history)) {
-    m.history = data.history;
+    m.history = data.history.slice(-6);
   } else if (data.period && m.latestValue !== undefined) {
     const existingIdx = m.history.findIndex(h => h.period === data.period);
     if (existingIdx >= 0) {
@@ -747,7 +747,7 @@ function recordMacroMetric(metricId, data) {
         value: m.latestValue,
         releaseDate: data.releaseDate || m.latestReleaseDate
       });
-      if (m.history.length > 18) m.history.shift(); // 保留近 18 期
+      while (m.history.length > 6) m.history.shift(); // 嚴格保持固定 6 期
     }
   }
 
@@ -973,13 +973,13 @@ function recordCollectorSnapshot(latestSnapshot) {
   const periodStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
   if (latestSnapshot.us10y) {
-    recordMacroMetric('US_10Y', { value: latestSnapshot.us10y, period: periodStr, releaseDate: dateStr });
+    recordMacroMetric('US_10Y', { value: latestSnapshot.us10y, period: dateStr, releaseDate: dateStr });
   }
   if (latestSnapshot.us2y) {
-    recordMacroMetric('US_2Y', { value: latestSnapshot.us2y, period: periodStr, releaseDate: dateStr });
+    recordMacroMetric('US_2Y', { value: latestSnapshot.us2y, period: dateStr, releaseDate: dateStr });
   }
   if (latestSnapshot.spread_10y2y !== undefined) {
-    recordMacroMetric('US_SPREAD', { value: latestSnapshot.spread_10y2y, period: periodStr, releaseDate: dateStr });
+    recordMacroMetric('US_SPREAD', { value: latestSnapshot.spread_10y2y, period: dateStr, releaseDate: dateStr });
   }
   if (latestSnapshot.dxy) {
     recordMacroMetric('MARKET_DXY', { value: latestSnapshot.dxy, period: periodStr, releaseDate: dateStr });
